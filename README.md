@@ -6,7 +6,7 @@ New brand "sonar" game
 #Installation
 
 ```
-$ npm install -g phonegap
+$ sudo npm install -g phonegap
 ```
 
 
@@ -28,7 +28,7 @@ First step is to install android sdk
 
 <pre>
 # Android sdk OSX example
-export ANDROID_HOME=/Users/%username$/Development/android-sdk-macosx
+export ANDROID_HOME=/Users/%username%/Development/android-sdk-macosx
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 </pre>
 
