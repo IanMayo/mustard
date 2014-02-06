@@ -1,4 +1,4 @@
-angular.module('spatialViewDirective', [])
+angular.module('mustard.game.spatialViewDirective', [])
 
 .directive('spatialView', function () {
     return {};

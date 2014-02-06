@@ -1,10 +1,10 @@
-angular.module('mustard.game', [])
+angular.module('mustard.game.simulator', [])
 
 /**
  * @module Game
  * @class GameCtrl (controller)
  */
-.controller('GameCtrl', ['$scope', function ($scope) {
+.controller('SimulatorCtrl', ['$scope', function ($scope) {
 
     /**
      * Target vessels list
@@ -29,7 +29,7 @@ angular.module('mustard.game', [])
  * @module Game
  * @class MissionCtrl (controller)
  */
-.controller('MissionCtrl', ['$scope', function ($scope) {
+.controller('MissionSimulatorCtrl', ['$scope', function ($scope) {
 
 }])
 
@@ -37,6 +37,6 @@ angular.module('mustard.game', [])
  * @module Game
  * @class TrainingCtrl (controller)
  */
-.controller('TrainingCtrl', ['$scope', function ($scope) {
+.controller('TrainingSimulatorCtrl', ['$scope', function ($scope) {
 
 }]);
