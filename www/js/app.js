@@ -1,13 +1,13 @@
-angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.controllers'])
+angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game'])
     .config(function ($routeProvider) {
         $routeProvider
-        .when('/', {
-            controller: 'MainCtrl',
-            templateUrl: 'partials/main.html'
+        .when('/mission', {
+            controller: 'GameCtrl',
+            templateUrl: 'js/game/mission.tpl.html'
         })
-        .when('/view', {
-            controller: 'ViewCtrl',
-            templateUrl: 'partials/view.html'
+        .when('/training', {
+            controller: 'GameCtrl',
+            templateUrl: 'js/game/training.tpl.html'
         })
         .otherwise({redirectTo: '/'});
     });
