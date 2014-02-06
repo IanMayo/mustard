@@ -1,7 +1,7 @@
 Mustard
 =======
 
-New brand "sonar" game
+Open Source (MIT License) mobile app to gamify Sonar best practices.
 
 #Installation
 
