@@ -1,10 +1,11 @@
-angular.module('mustard.game.simulator', [])
+angular.module('mustard.game.simulator', ['mustard.game.movementSimulation'])
 
 /**
  * @module Game
  * @class GameCtrl (controller)
  */
-.controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
+.controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario, movement) {
+        console.log('movement', movement);
     /**
      * Target vessels state.
      * @type {Array}
