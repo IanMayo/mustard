@@ -121,17 +121,44 @@
             }
         }
 
+        function runStraight()
+        {
+            var movement = {deltaLat:0.0, deltaLong:0.0, deltaHeight:0.0};
+            outputMsg("Origin " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+            doStraight(100, 10, Math.PI/2, movement);
+            outputMsg("One step East " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+            doStraight(100, 10, Math.PI, movement);
+            outputMsg("One step South " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+            doStraight(100, 10, Math.PI+Math.PI/2, movement);
+            outputMsg("One step West " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+            doStraight(100, 10, 2*Math.PI, movement);
+            outputMsg("One step North " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+        }
+
         function output(state) {
             var tNow = new Date();
             var box = document.getElementById("results");
-            box.value = tNow.toLocaleTimeString() + ', ' + state.time + ', ' + state.lat + ', ' + state.long + '\n' + box.value;
+            outputMsg( state.time + ', ' + state.lat + ', ' + state.long);
+        }
+
+        function outputMsg(msg) {
+            var tNow = new Date();
+            var box = document.getElementById("results");
+            box.value = tNow.toLocaleTimeString() + ', ' + msg + '\n' + box.value;
         }
 
     </script>
 </head>
 <body>
 <h1>Movement</h1>
-<label for="results">Results</label><br/><textarea rows="20" cols="80" id="results"></textarea>
+<label for="results">Results</label><br/><textarea rows="20" cols="80" id="results" style="float:left"></textarea>
+<ul style="list-style-type: none">
+    <li>
 <input type="button" onclick="run()" value="run"/>
+    </li>
+    <li>
+<input type="button" onclick="runStraight()" value="straight"/>
+    </li>
+</ul>
 </body>
 </html>
