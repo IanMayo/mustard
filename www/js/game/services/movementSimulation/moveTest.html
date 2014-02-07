@@ -4,96 +4,19 @@
     <title>Movement test</title>
     <script type="text/javascript">
 
-        function toRads(degVal) {
-            return degVal / 180.0 *  Math.PI;
-        }
-        function toDegs(radVal)
-        {
-            return radVal * 180.0 / Math.PI;
-        }
-
-        function doStraight(time, speed, course, movement)
-        {
-            movement.deltaLong += speed * time * Math.sin(course);
-            movement.deltaLat += speed * time * Math.cos(course);
-        }
-
         function doMove(newTime, curState, vPerf) {
-
-            var oldTime = curState.time;
-            var timeDelta = (newTime - oldTime) / 1000.0;
-            var curSpeed = curState.speed;
-            var curCourseRads = toRads(curState.course);
-            var curHeight = curState.height;
-            var demSpeed = curState.demSpeed;
-            var demCourseRads = toRads(curState.demCourse);
-            var demHeight = curState.demHeight;
-
-            var movement = {deltaLat:0.0, deltaLong:0.0, deltaHeight:0.0};
-
-            var maxSpeed = vPerf.maxSpeed;
-            var minSpeed = vPerf.minSpeed;
-
-            // trim the demanded speed
-            demSpeed = Math.min(demSpeed, maxSpeed);
-            demSpeed = Math.max(demSpeed, minSpeed);
-
-            if (demHeight != curHeight) {
-                // sort out the height change
-                // TODO
-            }
-
-            var accel_time = 0.0;
-            if(demSpeed != curSpeed)
-            {
-                // sort out the speed change
-                // TODO
-            }
-
-            var turn_time = 0.0;
-            if(demCourseRads != curCourseRads)
-            {
-                // sort out the course change
-                // TODO
-            }
-
-
-            doStraight(timeDelta, curSpeed, curCourseRads, movement);
-
-            // apply the movement delta to the state
-            curState.lat += movement.deltaLat;
-            curState.long += movement.deltaLong;
-
-
-            var res =
-            {
-                time: newTime,
-                lat: curState.lat,
-                long: curState.long,
-                height: curState.height,
-                course: toDegs(curCourseRads),
-                speed: curSpeed,
-                demCourse: toDegs(demCourseRads),
-                demSpeed: demSpeed,
-                demHeight: demHeight
-            };
-
-            return res;
+            return {time:newTime};
         }
 
         function run() {
 
             var state =
             {
-                time: 0,
-                lat: 0,
-                long: 0,
-                height: -40,
-                course: 30,
-                speed: 10,
-                demCourse: 90,
-                demSpeed: 10,
-                demHeight: -40.0
+                location: [0, 0],
+                course:0,
+                speed:0,
+                demCourse:90,
+                demSpeed:10
             };
 
             var perf =
@@ -110,13 +33,7 @@
 
             for (var i = 0; i < 9; i++) {
                 tNow += tStep;
-                state = doMove(tNow, state, perf);
-                output(state);
-            }
-            state.course = 210;
-            for (var j = 0; j < 9; j++) {
-                tNow += tStep;
-                state = doMove(tNow, state, perf);
+                state = doMove(tNow,state, perf );
                 output(state);
             }
         }
@@ -124,7 +41,7 @@
         function output(state) {
             var tNow = new Date();
             var box = document.getElementById("results");
-            box.value = tNow.toLocaleTimeString() + ', ' + state.time + ', ' + state.lat + ', ' + state.long + '\n' + box.value;
+            box.value = tNow.toLocaleTimeString() + ', ' + state.time + '\n' + box.value;
         }
 
     </script>
