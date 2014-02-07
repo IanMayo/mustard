@@ -4,8 +4,7 @@ angular.module('mustard.game.simulator', [])
  * @module Game
  * @class GameCtrl (controller)
  */
-.controller('SimulatorCtrl', ['$scope', function ($scope) {
-
+.controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
     /**
      * Target vessels state.
      * @type {Array}
@@ -16,19 +15,19 @@ angular.module('mustard.game.simulator', [])
      * Environment state
      * @type {Object}
      */
-    $scope.environment = {};
+    $scope.environment = scenario.environment;
 
     /**
      * Mission objectives
      * @type {Object}
      */
-    $scope.objectives = {};
+    $scope.objectives = scenario.objectives;
 
     /**
      * Initial properties properties for vessels
      * @type {Array}
      */
-    $scope.vesselsScenario = [];
+    $scope.vesselsScenario = scenario.vessels;
 
     /**
      * Current state of game
