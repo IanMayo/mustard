@@ -1,9 +1,0 @@
-{
-  "name": "mustard",
-  "version": "0.0.1",
-  "dependencies": {
-    "bootstrap": "~3.1.0",
-    "angular": "~1.2.12",
-    "angular-route": "~1.2.12"
-  }
-}
