@@ -41,6 +41,35 @@ function calcNewHeight(curHeight, dHeight, climbRate, diveRate, secs) {
 
 }
 
+function calcNewSpeed(curSpeed, demSpeed, accelerationRate, decelerationRate, timeDelta)
+{
+    var speedDelta = demSpeed - curSpeed;
+    var newSpeed;
+
+    // see if it's a trivial height change
+    if (Math.abs(speedDelta) < 0.01) {
+        // trivial, just jump to it
+        newSpeed = demSpeed;
+    }
+    else {
+        // calculate how far we get
+        var changeRate;
+        if (speedDelta > 0) {
+            changeRate = accelerationRate;
+        }
+        else {
+            changeRate = -decelerationRate;
+        }
+
+        var speedChangeTime = speedDelta / changeRate;
+
+        speedChangeTime = Math.min(speedChangeTime, timeDelta);
+
+        newSpeed = curSpeed + speedChangeTime * changeRate;
+    }
+    return newSpeed;
+}
+
 function doStraight(time, speed, course, movement) {
     movement.deltaLong += speed * time * Math.sin(course);
     movement.deltaLat += speed * time * Math.cos(course);
@@ -67,13 +96,19 @@ function doMove(newTime, curState, vPerf) {
     demSpeed = Math.max(demSpeed, minSpeed);
 
     // sort out the new height
-    curHeight = calcNewHeight(curHeight,demHeight,  vPerf.climbRate, vPerf.diveRate, timeDelta);
+    curHeight = calcNewHeight(curHeight, demHeight, vPerf.climbRate, vPerf.diveRate, timeDelta);
 
     // now for the acceleration
-    var accel_time = 0.0;
-    if (demSpeed != curSpeed) {
-        // sort out the speed change
-        // TODO
+    var speedDelta = demSpeed - curSpeed;
+    if(speedDelta < 0.01)
+    {
+        // ok, just jump to the new course
+        curSpeed = demSpeed;
+    }
+    else
+    {
+        // ok, calculate how long we need to change speed
+        curSpeed = calcNewSpeed(curSpeed, demSpeed, vPerf.accelerationRate, vPerf.decelerationRate, timeDelta);
     }
 
     var turn_time = 0.0;
@@ -125,6 +160,7 @@ function run() {
     {
         turnCircle: 1200.0,
         accelerationRate: 1.0,
+        decelerationRate: 1.0,
         minSpeed: 4,
         maxSpeed: 40,
         batteryUsage: 1.03,
@@ -177,7 +213,14 @@ function testHeightChange() {
     outputMsg("change 0.002 to 0: " + calcNewHeight(0.002, 0, 10, 20, 0.0001));
     outputMsg("try some zeros: " + calcNewHeight(0, 0, 0, 0, 0.00));
 }
-
+function testAccelTime()
+{
+    outputMsg("accelerate 0 to 60, time lim, will get to: " + calcNewSpeed(0, 60, 1,2,10));
+    outputMsg("decelerate 60 to 0, time lim, will get to: " + calcNewSpeed(60, 0, 1,2,10));
+    outputMsg("accelerate 0 to 60, will get to: " + calcNewSpeed(0, 60, 1,2,100));
+    outputMsg("decelerate 60 to 0, will get to: " + calcNewSpeed(60, 0, 1,2,100));
+    outputMsg("maintain 60 to 60, will get to: " + calcNewSpeed(60, 60, 1,2,100));
+}
 </script>
 </head>
 <body>
@@ -192,6 +235,9 @@ function testHeightChange() {
     </li>
     <li>
         <input type="button" onclick="testHeightChange()" value="height change"/>
+    </li>
+    <li>
+        <input type="button" onclick="testAccelTime()" value="accel time"/>
     </li>
 </ul>
 </body>
