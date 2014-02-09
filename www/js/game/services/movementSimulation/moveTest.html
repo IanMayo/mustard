@@ -1,163 +1,197 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Movement test</title>
-    <script type="text/javascript">
+<title>Movement test</title>
+<script type="text/javascript">
 
-        function toRads(degVal) {
-            return degVal / 180.0 *  Math.PI;
+function toRads(degVal) {
+    return degVal / 180.0 * Math.PI;
+}
+function toDegs(radVal) {
+    return radVal * 180.0 / Math.PI;
+}
+
+function calcNewHeight(curHeight, dHeight, climbRate, diveRate, secs) {
+    var heightDelta = dHeight - curHeight;
+    var newHeight;
+
+    // see if it's a trivial height change
+    if (Math.abs(heightDelta) < 0.01) {
+        // trivial, just jump to it
+        newHeight = dHeight;
+    }
+    else {
+        // calculate how far we get
+        var changeRate;
+        if (heightDelta > 0) {
+            changeRate = climbRate;
         }
-        function toDegs(radVal)
-        {
-            return radVal * 180.0 / Math.PI;
-        }
-
-        function doStraight(time, speed, course, movement)
-        {
-            movement.deltaLong += speed * time * Math.sin(course);
-            movement.deltaLat += speed * time * Math.cos(course);
-        }
-
-        function doMove(newTime, curState, vPerf) {
-
-            var oldTime = curState.time;
-            var timeDelta = (newTime - oldTime) / 1000.0;
-            var curSpeed = curState.speed;
-            var curCourseRads = toRads(curState.course);
-            var curHeight = curState.height;
-            var demSpeed = curState.demSpeed;
-            var demCourseRads = toRads(curState.demCourse);
-            var demHeight = curState.demHeight;
-
-            var movement = {deltaLat:0.0, deltaLong:0.0, deltaHeight:0.0};
-
-            var maxSpeed = vPerf.maxSpeed;
-            var minSpeed = vPerf.minSpeed;
-
-            // trim the demanded speed
-            demSpeed = Math.min(demSpeed, maxSpeed);
-            demSpeed = Math.max(demSpeed, minSpeed);
-
-            if (demHeight != curHeight) {
-                // sort out the height change
-                // TODO
-            }
-
-            var accel_time = 0.0;
-            if(demSpeed != curSpeed)
-            {
-                // sort out the speed change
-                // TODO
-            }
-
-            var turn_time = 0.0;
-            if(demCourseRads != curCourseRads)
-            {
-                // sort out the course change
-                // TODO
-            }
-
-
-            doStraight(timeDelta, curSpeed, curCourseRads, movement);
-
-            // apply the movement delta to the state
-            curState.lat += movement.deltaLat;
-            curState.long += movement.deltaLong;
-
-
-            var res =
-            {
-                time: newTime,
-                lat: curState.lat,
-                long: curState.long,
-                height: curState.height,
-                course: toDegs(curCourseRads),
-                speed: curSpeed,
-                demCourse: toDegs(demCourseRads),
-                demSpeed: demSpeed,
-                demHeight: demHeight
-            };
-
-            return res;
+        else {
+            changeRate = -diveRate;
         }
 
-        function run() {
+        var heightChangeTime = heightDelta / changeRate;
 
-            var state =
-            {
-                time: 0,
-                lat: 0,
-                long: 0,
-                height: -40,
-                course: 30,
-                speed: 10,
-                demCourse: 90,
-                demSpeed: 10,
-                demHeight: -40.0
-            };
+        heightChangeTime = Math.min(heightChangeTime, secs);
 
-            var perf =
-            {
-                turnCircle: 1200.0,
-                accelerationRate: 1.0,
-                minSpeed: 4,
-                maxSpeed: 40,
-                batteryUsage: 1.03
-            };
+        newHeight = curHeight + heightChangeTime * changeRate;
+    }
+    return newHeight;
 
-            var tNow = 0;
-            var tStep = 5000;
 
-            for (var i = 0; i < 9; i++) {
-                tNow += tStep;
-                state = doMove(tNow, state, perf);
-                output(state);
-            }
-            state.course = 210;
-            for (var j = 0; j < 9; j++) {
-                tNow += tStep;
-                state = doMove(tNow, state, perf);
-                output(state);
-            }
-        }
+}
 
-        function runStraight()
-        {
-            var movement = {deltaLat:0.0, deltaLong:0.0, deltaHeight:0.0};
-            outputMsg("Origin " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
-            doStraight(100, 10, Math.PI/2, movement);
-            outputMsg("One step East " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
-            doStraight(100, 10, Math.PI, movement);
-            outputMsg("One step South " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
-            doStraight(100, 10, Math.PI+Math.PI/2, movement);
-            outputMsg("One step West " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
-            doStraight(100, 10, 2*Math.PI, movement);
-            outputMsg("One step North " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
-        }
+function doStraight(time, speed, course, movement) {
+    movement.deltaLong += speed * time * Math.sin(course);
+    movement.deltaLat += speed * time * Math.cos(course);
+}
 
-        function output(state) {
-            var tNow = new Date();
-            var box = document.getElementById("results");
-            outputMsg( state.time + ', ' + state.lat + ', ' + state.long);
-        }
+function doMove(newTime, curState, vPerf) {
 
-        function outputMsg(msg) {
-            var tNow = new Date();
-            var box = document.getElementById("results");
-            box.value = tNow.toLocaleTimeString() + ', ' + msg + '\n' + box.value;
-        }
+    var oldTime = curState.time;
+    var timeDelta = (newTime - oldTime) / 1000.0;
+    var curSpeed = curState.speed;
+    var curCourseRads = toRads(curState.course);
+    var curHeight = curState.height;
+    var demSpeed = curState.demSpeed;
+    var demCourseRads = toRads(curState.demCourse);
+    var demHeight = curState.demHeight;
 
-    </script>
+    var movement = {deltaLat: 0.0, deltaLong: 0.0, deltaHeight: 0.0};
+
+    var maxSpeed = vPerf.maxSpeed;
+    var minSpeed = vPerf.minSpeed;
+
+    // trim the demanded speed
+    demSpeed = Math.min(demSpeed, maxSpeed);
+    demSpeed = Math.max(demSpeed, minSpeed);
+
+    // sort out the new height
+    curHeight = calcNewHeight(curHeight,demHeight,  vPerf.climbRate, vPerf.diveRate, timeDelta);
+
+    // now for the acceleration
+    var accel_time = 0.0;
+    if (demSpeed != curSpeed) {
+        // sort out the speed change
+        // TODO
+    }
+
+    var turn_time = 0.0;
+    if (demCourseRads != curCourseRads) {
+        // sort out the course change
+        // TODO
+    }
+
+
+    doStraight(timeDelta, curSpeed, curCourseRads, movement);
+
+    // update the location
+    curState.lat += movement.deltaLat;
+    curState.long += movement.deltaLong;
+
+
+    var res =
+    {
+        time: newTime,
+        lat: curState.lat,
+        long: curState.long,
+        height: curHeight,
+        course: toDegs(curCourseRads),
+        speed: curSpeed,
+        demCourse: toDegs(demCourseRads),
+        demSpeed: demSpeed,
+        demHeight: demHeight
+    };
+
+    return res;
+}
+
+function run() {
+
+    var state =
+    {
+        time: 0,
+        lat: 0,
+        long: 0,
+        height: -40,
+        course: 30,
+        speed: 10,
+        demCourse: 90,
+        demSpeed: 10,
+        demHeight: -10.0
+    };
+
+    var perf =
+    {
+        turnCircle: 1200.0,
+        accelerationRate: 1.0,
+        minSpeed: 4,
+        maxSpeed: 40,
+        batteryUsage: 1.03,
+        climbRate: 1,
+        diveRate: 2
+    };
+
+    var tNow = 0;
+    var tStep = 5000;
+
+    for (var i = 0; i < 9; i++) {
+        tNow += tStep;
+        state = doMove(tNow, state, perf);
+        output(state);
+    }
+    state.course = 210;
+    for (var j = 0; j < 9; j++) {
+        tNow += tStep;
+        state = doMove(tNow, state, perf);
+        output(state);
+    }
+}
+
+function runStraight() {
+    var movement = {deltaLat: 0.0, deltaLong: 0.0, deltaHeight: 0.0};
+    outputMsg("Origin " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+    doStraight(100, 10, Math.PI / 2, movement);
+    outputMsg("One step East " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+    doStraight(100, 10, Math.PI, movement);
+    outputMsg("One step South " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+    doStraight(100, 10, Math.PI + Math.PI / 2, movement);
+    outputMsg("One step West " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+    doStraight(100, 10, 2 * Math.PI, movement);
+    outputMsg("One step North " + movement.deltaLat + " " + movement.deltaLong + " " + movement.deltaHeight);
+}
+
+function output(state) {
+    outputMsg(state.time + ', ' + Math.floor(state.lat) + ', ' + Math.floor(state.long) + ', ' + Math.floor(state.height));
+}
+
+function outputMsg(msg) {
+    var tNow = new Date();
+    var box = document.getElementById("results");
+    box.value = tNow.toLocaleTimeString() + ', ' + msg + '\n' + box.value;
+}
+
+function testHeightChange() {
+    outputMsg("change 0 to 100: " + calcNewHeight(0, 100, 10, 20, 5));
+    outputMsg("change 100 to 0: " + calcNewHeight(100, 0, 10, 20, 5));
+    outputMsg("change 0.002 to 0: " + calcNewHeight(0.002, 0, 10, 20, 0.0001));
+    outputMsg("try some zeros: " + calcNewHeight(0, 0, 0, 0, 0.00));
+}
+
+</script>
 </head>
 <body>
 <h1>Movement</h1>
 <label for="results">Results</label><br/><textarea rows="20" cols="80" id="results" style="float:left"></textarea>
 <ul style="list-style-type: none">
     <li>
-<input type="button" onclick="run()" value="run"/>
+        <input type="button" onclick="run()" value="run"/>
     </li>
     <li>
-<input type="button" onclick="runStraight()" value="straight"/>
+        <input type="button" onclick="runStraight()" value="straight"/>
+    </li>
+    <li>
+        <input type="button" onclick="testHeightChange()" value="height change"/>
     </li>
 </ul>
 </body>
