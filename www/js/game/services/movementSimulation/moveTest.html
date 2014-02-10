@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Movement test</title>
-<style>
-    .retro
-    {
-        font-family:monospace ;
-        background-color: #000;
-        color:#0f0
-    }
-</style>
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <title>Movement test</title>
+    <style>
+        .retro {
+            font-family: monospace;
+            background-color: #000;
+            color: #0f0
+        }
+    </style>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
 
 </head>
 <body>
@@ -18,31 +17,40 @@
 <table style="width:100%">
     <tr>
         <td>
-                SONAR DISPLAY GOES HERE
+            SONAR DISPLAY GOES HERE
         </td>
         <td>
             <span>MAP:</span>
+
             <div id="map" style="width: 600px; height: 400px"></div>
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <fieldset style="float:left"><legend>Demanded</legend>
-                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="6" type="text" value="90.00" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
-                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="6" type="text" value="10.00" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
+            <fieldset style="float:left">
+                <legend>Demanded</legend>
+                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input
+                    class="retro" size="6" type="text" value="90.00" id="inCourse"/><input type="button" value="+5"
+                                                                                           onclick="changeCourse(5)">
+                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input
+                    class="retro" size="6" type="text" value="10.00" id="inSpeed"/><input type="button" value="+1"
+                                                                                          onclick="changeSpeed(1)">
             </fieldset>
-            <fieldset style="float:left"><legend>Actual</legend>
-                <span>Course:</span><span class="retro"  id="outCourse">000.00</span>
-                <span>Speed:</span><span class="retro"  id="outSpeed">00.00</span>
-                <span>Location:</span><span class="retro"  id="outLocation">0.0000000,0.0000000</span>
+            <fieldset style="float:left">
+                <legend>Actual</legend>
+                <span>Course:</span><span class="retro" id="outCourse">000.00</span>
+                <span>Speed:</span><span class="retro" id="outSpeed">00.00</span>
+                <span>Location:</span><span class="retro" id="outLocation">0.0000000,0.0000000</span>
             </fieldset>
-            <fieldset ><legend>Time</legend>
+            <fieldset>
+                <legend>Time</legend>
                 <input style="float:left;font-style: italic" type="button" onclick="doStep()" value="[Step]"/>
-                <div  style="float:left" id="tNow" class="retro" >01:00:00</div>
+
+                <div style="float:left" id="tNow" class="retro">01:00:00</div>
                 <input type="button" id="btnPause" onclick="doPause()" value="||"/>
                 <input type="button" id="btnPlay" onclick="doPlay()" value=">"/>
                 <input type="button" id="btnFaster" onclick="doFaster()" value=">>"/>
-                <span id="accelRate" style="width:90px"  >[stopped]</span>
+                <span id="accelRate" style="width:90px">[stopped]</span>
             </fieldset>
         </td>
     </tr>
@@ -53,147 +61,218 @@
 
 <script type="text/javascript">
 
-var state =
-{
-    time: 0,
-    location:{lat:53, long:-3},
-    height: -40,
-    course: 100,
-    speed: 33,
-    demCourse: 100,
-    demSpeed: 33,
-    demHeight: -10.0
-};
+    var scenario = {
+        "vessels" : [
 
-var perf =
-{
-    turnRadius: 1200.0,
-    accelerationRate: 0.3,
-    decelerationRate: 0.8,
-    minSpeed: 4,
-    maxSpeed: 40,
-    batteryUsage: 1.03,
-    climbRate: 1,
-    diveRate: 2
-};
+            {
 
-/* timer-related objects
+                "state": {
+                    time: 0,
+                    location: {lat: 53, long: -3},
+                    height: -40,
+                    course: 100,
+                    speed: 33,
+                    demCourse: 100,
+                    demSpeed: 33,
+                    demHeight: -10.0
+                },
+                "perf": {
+                    turnRadius: 1200.0,
+                    accelerationRate: 0.3,
+                    decelerationRate: 0.8,
+                    minSpeed: 4,
+                    maxSpeed: 40,
+                    batteryUsage: 1.03,
+                    climbRate: 1,
+                    diveRate: 2
+                }
+            },
+            {
 
- */
-var timerId;            // the id of a running timer
-var tNow = 0;           // the current time
-const tStep = 2000;     // the model time step
-var accelRate = 1;      // how fast to run model time
+                "state": {
+                    time: 0,
+                    location: {lat: 53.00005, long: -3.00004},
+                    height: -40,
+                    course: 200,
+                    speed: 33,
+                    demCourse: 200,
+                    demSpeed: 33,
+                    demHeight: -10.0
+                },
+                "perf": {
+                    turnRadius: 1200.0,
+                    accelerationRate: 0.3,
+                    decelerationRate: 0.8,
+                    minSpeed: 4,
+                    maxSpeed: 40,
+                    batteryUsage: 1.03,
+                    climbRate: 1,
+                    diveRate: 2
+                }
+            }
 
 
-function doStep()
-{
-
-    // is this the first step?
-    if(tNow == 0)
-    {
-        // do some init
-        document.getElementById("inCourse").value = state.demCourse.toFixed(2);
-        document.getElementById("inSpeed").value = state.demSpeed.toFixed(2);
+        ],
+        "environment" : {},
+        "objectives" : {}
     }
 
-    // put the current boxes into the states
-    var curCourseDegs = parseInt(document.getElementById("inCourse").value);
-    var curSpeedKts = parseInt(document.getElementById("inSpeed").value);
+    /* timer-related objects
 
-    state.demCourse = curCourseDegs;
-    state.demSpeed = curSpeedKts;
+     */
+    var timerId;            // the id of a running timer
+    var tNow = 0;           // the current time
+    const tStep = 2000;     // the model time step
+    var accelRate = 1;      // how fast to run model time
 
-    // move the scenario forward
-    tNow += tStep;
-    doMove(tNow, state, perf);
 
-    // put the results into the UI
-    document.getElementById("outCourse").innerHTML="" + state.course.toFixed(2);
-    document.getElementById("outSpeed").innerHTML="" + state.speed.toFixed(2);
+    function doStep() {
 
-    var locStr = "" + toString(state.location.lat, state.location.long, 'DMS');
-    document.getElementById("outLocation").innerHTML="" + locStr;
+        var v1 = scenario.vessels[0];
+        var v2 = scenario.vessels[1];
 
-    // and sort out the time
-    var timeVal = new Date(tNow);
-    document.getElementById("tNow").innerHTML=timeVal.toLocaleTimeString();
+        // is this the first step?
+        if (tNow == 0) {
+            // do some init
+            document.getElementById("inCourse").value = v1.state.demCourse.toFixed(2);
+            document.getElementById("inSpeed").value = v1.state.demSpeed.toFixed(2);
+        }
 
-    // try to move the marker
-    var newPos = L.latLng(state.location.lat, state.location.long);
-    posMarker.setLatLng(newPos);
+        // put the current boxes into the states
+        var curCourseDegs = parseInt(document.getElementById("inCourse").value);
+        var curSpeedKts = parseInt(document.getElementById("inSpeed").value);
 
-    // do we need to move the map?
-    if(!map.getBounds().contains(newPos))
-    {
-        map.panTo(newPos);
+        v1.state.demCourse = curCourseDegs;
+        v1.state.demSpeed = curSpeedKts;
+
+        /////////////////////////
+        // GAME LOOP STARTS HERE
+        /////////////////////////
+
+
+        // move the scenario forward
+        tNow += tStep;
+
+        // loop through the vessels
+        for(var i=0;i<scenario.vessels.length;i++)
+        {
+            var thisV = scenario.vessels[i];
+            doMove(tNow, thisV.state, thisV.perf);
+        }
+
+        // now do the detections
+
+
+
+        // and now the decisions
+
+        /////////////////////////
+        // GAME LOOP ENDS HERE
+        /////////////////////////
+
+
+
+        // put the results into the UI
+        document.getElementById("outCourse").innerHTML = "" + v1.state.course.toFixed(2);
+        document.getElementById("outSpeed").innerHTML = "" + v1.state.speed.toFixed(2);
+
+        var locStr = "" + toString(v1.state.location.lat, v1.state.location.long, 'DMS');
+        document.getElementById("outLocation").innerHTML = "" + locStr;
+
+        // and sort out the time
+        var timeVal = new Date(tNow);
+        document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
+
+        // try to move the marker
+        var newPos = L.latLng(v1.state.location.lat, v1.state.location.long);
+        updateMarker("ownship", newPos);
+
+        // try to move other marker
+        var newPos = L.latLng(v2.state.location.lat + 0.02, v2.state.location.long - 0.02);
+        updateMarker("other", newPos);
+
+
+        // do we need to move the map?
+        if (!map.getBounds().contains(newPos)) {
+            map.panTo(newPos);
+        }
     }
 
-
-}
-
-function doPause()
-{
-    if(timerId != null)
-    {
-        window.clearInterval(timerId);
-        document.getElementById("accelRate").innerHTML = "[stopped]";
+    function doPause() {
+        if (timerId != null) {
+            window.clearInterval(timerId);
+            document.getElementById("accelRate").innerHTML = "[stopped]";
+        }
     }
-}
 
-function updateInterval()
-{
-    doPause();
-    timerId = window.setInterval("doStep()",1000 / accelRate);
-    document.getElementById("accelRate").innerHTML = "[x" + accelRate + "]";
-}
-
-function doPlay()
-{
-    accelRate = 1;
-    updateInterval();
-}
-
-function doFaster()
-{
-    accelRate *= 2;
-    updateInterval()
-}
-
-function changeCourse(val)
-{
-    var inCourse = document.getElementById("inCourse");
-    var newCourse = parseFloat(inCourse.value) + val;
-    if(newCourse >= 360)
-    {
-        newCourse -= 360;
+    function updateInterval() {
+        doPause();
+        timerId = window.setInterval("doStep()", 1000 / accelRate);
+        document.getElementById("accelRate").innerHTML = "[x" + accelRate + "]";
     }
-    else if(newCourse < 0)
-    {
-        newCourse += 360;
+
+    function doPlay() {
+        accelRate = 1;
+        updateInterval();
     }
-    inCourse.value = newCourse.toFixed(2);
-}
-function changeSpeed(val)
-{
-    var inSpeed = document.getElementById("inSpeed");
-    inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
-}
+
+    function doFaster() {
+        accelRate *= 2;
+        updateInterval()
+    }
+
+    function changeCourse(val) {
+        var inCourse = document.getElementById("inCourse");
+        var newCourse = parseFloat(inCourse.value) + val;
+        if (newCourse >= 360) {
+            newCourse -= 360;
+        }
+        else if (newCourse < 0) {
+            newCourse += 360;
+        }
+        inCourse.value = newCourse.toFixed(2);
+    }
+    function changeSpeed(val) {
+        var inSpeed = document.getElementById("inSpeed");
+        inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
+    }
+
+    /** store a collection of position markers
+     */
+    var posDict = {};
+
+    /** for the track of the given name, specify a new marker location
+     *
+     * @param vName
+     * @param location
+     */
+    function updateMarker(vName, location) {
+        // do we have it already?
+        var thisPos = posDict[vName];
+        if (thisPos == null) {
+            // ok - new marker.
+            if(vName == "ownship")
+                thisPos = L.marker(location,{title:vName}).addTo(map);
+            else
+            {
+                // use a new marker
+                var newIcon = L.icon({iconUrl:'YellowSub.png'});
+                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
+            }
+            posDict[vName] = thisPos;
 
 
-var map = L.map('map',{minZoom:0,maxZoom:30}).setView([50,-4], 13);
+        }
 
-L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-}).addTo(map);
+        thisPos.setLatLng(location);
+    }
 
-var posMarker = L.marker([0.5, -0.09]).addTo(map);
-L.control.scale().addTo(map);
+    var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 13);
 
-// set the initial location - so that the text block is the correct size
-document.getElementById("outLocation").innerHTML=toString(state.location.lat, state.location.long, 'DMS');
-
+    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+    }).addTo(map);
 
 </script>
 </body>
