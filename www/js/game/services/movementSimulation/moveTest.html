@@ -17,52 +17,49 @@
 <h1>Movement</h1>
 <table>
     <tr>
-        <td style="width:60%">
-            <label for="results">Results:</label><br/><textarea rows="20" cols="80" id="results"></textarea>
+        <td>
+                SONAR DISPLAY GOES HERE
         </td>
-        <td><ul style="list-style-type: none">
-       <!--   LEGACY TESTS
-            <li>
-                <input type="button" onclick="run()" value="run"/>
-            </li>
-            <li>
-                <input type="button" onclick="runStraight()" value="straight"/>
-            </li>
-            <li>
-                <input type="button" onclick="testHeightChange()" value="height change"/>
-            </li>
-            <li>
-                <input type="button" onclick="testAccelTime()" value="accel time"/>
-            </li>
-            <li>
-                <input type="button" onclick="testNewCourse()" value="new course"/>
-            </li>  -->
-            <li>
-                <div id="tNow" style="width:90px" class="retro" >01:00:00</div>
-            </li>
-            <li>
-                <input type="button" onclick="doStep()" value="single step"/>
-            </li>
-            <li>
-                <label for="doRun" >Run</label><input type="checkbox" id="doRun" onchange="doRun()" value="Auto run"/>
-            </li>
-        </ul>
-            <form id="inputs">
-                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="3" type="text" value="90" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
-                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="3" type="text" value="10" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
-            </form>
-            <span>Course:</span><span class="retro"  id="outCourse">000</span>
-            <span>Speed:</span><span class="retro"  id="outSpeed">000</span>
-            <br/>
-            <span>Location:</span><span class="retro"  id="outLocation">0.0000000,0.0000000</span>
-        </td>
-    </tr>
-    <tr>
         <td>
             <span>MAP:</span>
             <div id="map" style="width: 600px; height: 400px"></div>
         </td>
-        <td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <fieldset style="float:left"><legend>Demanded</legend>
+                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="6" type="text" value="90.00" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
+                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="6" type="text" value="10.00" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
+            </fieldset>
+            <fieldset style="float:left"><legend>Actual</legend>
+                <span>Course:</span><span class="retro"  id="outCourse">000.00</span>
+                <span>Speed:</span><span class="retro"  id="outSpeed">00.00</span>
+                <br/>
+                <span>Location:</span><span class="retro"  id="outLocation">0.0000000,0.0000000</span>
+            </fieldset>
+            <fieldset ><legend>Time</legend>
+                <input style="float:left;font-style: italic" type="button" onclick="doStep()" value="[Step]"/>
+                <div  style="float:left" id="tNow" style="width:90px" class="retro" >01:00:00</div>
+                <input type="button" id="btnPause" onclick="doPause()" value="||"/>
+                <input type="button" id="btnPlay" onclick="doPlay()" value=">"/>
+                <input type="button" id="btnFaster" onclick="doFaster()" value=">>"/>
+            </fieldset>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:60%">
+            <label for="results">Results:</label><br/><textarea rows="5" cols="80" id="results"></textarea>
+        </td>
+        <td><ul style="list-style-type: none">
+            <li>
+            </li>
+            <li>
+            </li>
+            <li>
+            </li>
+        </ul>
+            <form id="inputs">
+            </form>
         </td>
     </tr>
 </table>
@@ -289,9 +286,9 @@ var state =
     time: 0,
     location:{lat:53, long:-3},
     height: -40,
-    course: 200,
+    course: 100,
     speed: 33,
-    demCourse: 200,
+    demCourse: 100,
     demSpeed: 33,
     demHeight: -10.0
 };
@@ -299,8 +296,8 @@ var state =
 var perf =
 {
     turnRadius: 1200.0,
-    accelerationRate: 0.07,
-    decelerationRate: 0.5,
+    accelerationRate: 0.3,
+    decelerationRate: 0.8,
     minSpeed: 4,
     maxSpeed: 40,
     batteryUsage: 1.03,
@@ -309,6 +306,7 @@ var perf =
 };
 var tNow = 0;
 const tStep = 2000;
+var curInterval = 1000;
 
 
 function doStep()
@@ -316,7 +314,10 @@ function doStep()
 
     if(tNow == 0)
     {
+        // do some init
         outputMsg("model time,x,y,height,speed, course");
+        document.getElementById("inCourse").value = state.demCourse.toFixed(2);
+        document.getElementById("inSpeed").value = state.demSpeed.toFixed(2);
     }
 
     // put the current boxes into the states
@@ -332,10 +333,10 @@ function doStep()
   //  output(state);
 
     // put the results into the UI
-    document.getElementById("outCourse").innerHTML="" + Math.floor(state.course);
-    document.getElementById("outSpeed").innerHTML="" + Math.floor(state.speed);
+    document.getElementById("outCourse").innerHTML="" + state.course.toFixed(2);
+    document.getElementById("outSpeed").innerHTML="" + state.speed.toFixed(2);
 
-    var locStr = "" + state.location.lat + ", " + state.location.long;
+    var locStr = "" + toString(state.location.lat, state.location.long, 'DMS');
     document.getElementById("outLocation").innerHTML="" + locStr;
 
     // and sort out the time
@@ -349,33 +350,46 @@ function doStep()
 
 }
 
-function doRun()
+function doPause()
 {
-    var chkRun = document.getElementById("doRun");
-    if(chkRun.checked)
+    if(timerId != null)
     {
-        // ok, run it
-        console.log(" start running");
-        timerId = window.setInterval("doStep()", 1000);
-    }
-    else
-    {
-        // ok, stop it
-        console.log(" stop running");
         window.clearInterval(timerId);
     }
-
-    console.log(map.maxZoom);
 }
+
+function updateInterval()
+{
+    doPause();
+    timerId = window.setInterval("doStep()", curInterval);
+}
+
+function doPlay()
+{
+    curInterval = 1000;
+    updateInterval();
+}
+
+function doFaster()
+{
+    curInterval /= 2;
+    updateInterval()
+}
+
 function changeCourse(val)
 {
     var inCourse = document.getElementById("inCourse");
-    inCourse.value = Math.floor(inCourse.value) + val;
+    var newCourse = parseFloat(inCourse.value) + val;
+    if(newCourse >= 360)
+    {
+        newCourse -= 360;
+    }
+    inCourse.value = newCourse.toFixed(2);
 }
 function changeSpeed(val)
 {
     var inSpeed = document.getElementById("inSpeed");
-    inSpeed.value = Math.floor(inSpeed.value) + val;
+    inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
 }
 
 /**
@@ -424,6 +438,100 @@ function rhumbDestinationPoint(location, brng, dist) {
 
 }
 
+
+/**
+ * Convert decimal degrees to deg/min/sec format
+ *  - degree, prime, double-prime symbols are added, but sign is discarded, though no compass
+ *    direction is added
+ *
+ * @private
+ * @param   {Number} deg: Degrees
+ * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
+ * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
+ * @returns {String} deg formatted as deg/min/secs according to specified format
+ * @throws  {TypeError} deg is an object, perhaps DOM object without .value?
+ */
+function toDMS(deg, format, dp) {
+    if (typeof deg == 'object') throw new TypeError('Geo.toDMS - deg is [DOM?] object');
+    if (isNaN(deg)) return null;  // give up here if we can't make a number from deg
+
+    // default values
+    if (typeof format == 'undefined') format = 'dms';
+    if (typeof dp == 'undefined') {
+        switch (format) {
+            case 'd': dp = 4; break;
+            case 'dm': dp = 2; break;
+            case 'dms': dp = 0; break;
+            default: format = 'dms'; dp = 0;  // be forgiving on invalid format
+        }
+    }
+
+    deg = Math.abs(deg);  // (unsigned result ready for appending compass dir'n)
+
+    switch (format) {
+        case 'd':
+            d = deg.toFixed(dp);     // round degrees
+            if (d<100) d = '0' + d;  // pad with leading zeros
+            if (d<10) d = '0' + d;
+            dms = d + '\u00B0';      // add º symbol
+            break;
+        case 'dm':
+            var min = (deg*60).toFixed(dp);  // convert degrees to minutes & round
+            var d = Math.floor(min / 60);    // get component deg/min
+            var m = (min % 60).toFixed(dp);  // pad with trailing zeros
+            if (d<100) d = '0' + d;          // pad with leading zeros
+            if (d<10) d = '0' + d;
+            if (m<10) m = '0' + m;
+            dms = d + '\u00B0' + m + '\u2032';  // add º, ' symbols
+            break;
+        case 'dms':
+            var sec = (deg*3600).toFixed(dp);  // convert degrees to seconds & round
+            var d = Math.floor(sec / 3600);    // get component deg/min/sec
+            var m = Math.floor(sec/60) % 60;
+            var s = (sec % 60).toFixed(dp);    // pad with trailing zeros
+            if (d<100) d = '0' + d;            // pad with leading zeros
+            if (d<10) d = '0' + d;
+            if (m<10) m = '0' + m;
+            if (s<10) s = '0' + s;
+            dms = d + '\u00B0' + m + '\u2032' + s + '\u2033';  // add º, ', " symbols
+            break;
+    }
+
+    return dms;
+}
+
+/**
+ * Convert numeric degrees to deg/min/sec latitude (suffixed with N/S)
+ *
+ * @param   {Number} deg: Degrees
+ * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
+ * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
+ * @returns {String} Deg/min/seconds
+ */
+function toLat(deg, format, dp) {
+    var lat = toDMS(deg, format, dp);
+    return lat==null ? '–' : lat.slice(1) + (deg<0 ? 'S' : 'N');  // knock off initial '0' for lat!
+}
+
+
+/**
+ * Convert numeric degrees to deg/min/sec longitude (suffixed with E/W)
+ *
+ * @param   {Number} deg: Degrees
+ * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
+ * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
+ * @returns {String} Deg/min/seconds
+ */
+ function toLon(deg, format, dp) {
+    var lon = toDMS(deg, format, dp);
+    return lon==null ? '–' : lon + (deg<0 ? 'W' : 'E');
+}
+
+function toString(degLat, degLon, format, dp) {
+    if (typeof format == 'undefined') format = 'dms';
+
+    return toLat(degLat, format, dp) + ', ' + toLon(degLon, format, dp);
+}
 
 var map = L.map('map',{minZoom:0,maxZoom:30}).setView([50,-4], 13);
 
