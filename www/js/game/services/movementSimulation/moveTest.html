@@ -15,7 +15,7 @@
 </head>
 <body>
 <h1>Movement</h1>
-<table>
+<table width="100%">
     <tr>
         <td>
                 SONAR DISPLAY GOES HERE
@@ -38,7 +38,7 @@
             </fieldset>
             <fieldset ><legend>Time</legend>
                 <input style="float:left;font-style: italic" type="button" onclick="doStep()" value="[Step]"/>
-                <div  style="float:left" id="tNow" style="width:90px" class="retro" >01:00:00</div>
+                <div  style="float:left" id="tNow" class="retro" >01:00:00</div>
                 <input type="button" id="btnPause" onclick="doPause()" value="||"/>
                 <input type="button" id="btnPlay" onclick="doPlay()" value=">"/>
                 <input type="button" id="btnFaster" onclick="doFaster()" value=">>"/>
@@ -46,240 +46,12 @@
             </fieldset>
         </td>
     </tr>
-    <tr>
-        <td style="width:60%">
-            <label for="results">Results:</label><br/><textarea rows="5" cols="80" id="results"></textarea>
-        </td>
-        <td><ul style="list-style-type: none">
-            <li>
-            </li>
-            <li>
-            </li>
-            <li>
-            </li>
-        </ul>
-            <form id="inputs">
-            </form>
-        </td>
-    </tr>
 </table>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<script src="geo.js"></script>
+<script src="movement.js"></script>
+
 <script type="text/javascript">
-
-function toRads(degVal) {
-    return degVal / 180.0 * Math.PI;
-}
-function toDegs(radVal) {
-    return radVal * 180.0 / Math.PI;
-}
-
-function calcNewHeight(curHeight, dHeight, climbRate, diveRate, secs) {
-    var heightDelta = dHeight - curHeight;
-    var newHeight;
-
-    // see if it's a trivial height change
-    if (Math.abs(heightDelta) < 0.01) {
-        // trivial, just jump to it
-        newHeight = dHeight;
-    }
-    else {
-        // calculate how far we get
-        var changeRate;
-        if (heightDelta > 0) {
-            changeRate = climbRate;
-        }
-        else {
-            changeRate = -diveRate;
-        }
-
-        var heightChangeTime = heightDelta / changeRate;
-
-        heightChangeTime = Math.min(heightChangeTime, secs);
-
-        newHeight = curHeight + heightChangeTime * changeRate;
-    }
-    return newHeight;
-
-
-}
-
-function calcNewSpeed(curSpeed, demSpeed, accelerationRate, decelerationRate, timeDelta) {
-    var speedDelta = demSpeed - curSpeed;
-    var newSpeed;
-
-    // see if it's a trivial speed change
-    if (Math.abs(speedDelta) < 0.01) {
-        // trivial, just jump to it
-        newSpeed = demSpeed;
-    }
-    else {
-        // calculate how far we get
-        var changeRate;
-        if (speedDelta > 0) {
-            changeRate = accelerationRate;
-        }
-        else {
-            changeRate = -decelerationRate;
-        }
-
-        var speedChangeTime = speedDelta / changeRate;
-
-        speedChangeTime = Math.min(speedChangeTime, timeDelta);
-
-        newSpeed = curSpeed + speedChangeTime * changeRate;
-    }
-    return newSpeed;
-}
-
-
-function calcNewCourse(curCourse, demCourse, turnRadius, speed, timeDelta) {
-    // put the dem course in the +ve domain
-    if (demCourse < 0) {
-        demCourse += Math.PI * 2;
-    }
-
-    // and calculate the delta
-    var courseDelta = demCourse - curCourse;
-
-    // put the course delta into the +/- 180 domain
-    if (courseDelta > Math.PI) {
-        courseDelta -= 2 * Math.PI;
-    }
-    if (courseDelta < -Math.PI) {
-        courseDelta += 2 * Math.PI;
-    }
-
-    var newCourse;
-
-    // see if it's a trivial course change
-    if (Math.abs(courseDelta) < 0.01) {
-        // trivial, just jump to it
-        newCourse = demCourse;
-    }
-    else {
-        // calculate new course
-        var turnRate = speed / turnRadius;
-
-        // are we going left or right?
-        if (courseDelta < 0)
-            turnRate *= -1;
-
-        var turnTime = courseDelta / turnRate;
-        turnTime = Math.min(turnTime, timeDelta);
-
-        newCourse = curCourse + turnTime * turnRate;
-
-        if (newCourse < 0) {
-            newCourse += Math.PI * 2;
-        }
-
-        // if we're very close to the dem course, just use the dem course
-        if (Math.abs(newCourse - demCourse) < 0.0001) {
-            newCourse = demCourse;
-        }
-    }
-    return newCourse;
-}
-
-function doStraight(time, speed, course, movement) {
-    movement.deltaLong += speed * time * Math.sin(course);
-    movement.deltaLat += speed * time * Math.cos(course);
-}
-
-function doMove(newTime, curState, vPerf) {
-
-    var oldTime = curState.time;
-    var timeDelta = (newTime - oldTime) / 1000.0;
-    var curSpeed = curState.speed;
-    var curCourseRads = toRads(curState.course);
-    var curHeight = curState.height;
-    var demSpeed = curState.demSpeed;
-    var demCourseRads = toRads(curState.demCourse);
-    var demHeight = curState.demHeight;
-
-    var movement = {deltaLat: 0.0, deltaLong: 0.0, deltaHeight: 0.0};
-
-    var maxSpeed = vPerf.maxSpeed;
-    var minSpeed = vPerf.minSpeed;
-
-    // trim the demanded speed
-    demSpeed = Math.min(demSpeed, maxSpeed);
-    demSpeed = Math.max(demSpeed, minSpeed);
-
-    // sort out the new height
-    curHeight = calcNewHeight(curHeight, demHeight, vPerf.climbRate, vPerf.diveRate, timeDelta);
-
-    // now for the acceleration
-    var speedDelta = demSpeed - curSpeed;
-    if (speedDelta < 0.01) {
-        // ok, just jump to the new course
-        curSpeed = demSpeed;
-    }
-    else {
-        // ok, calculate how long we need to change speed
-        curSpeed = calcNewSpeed(curSpeed, demSpeed, vPerf.accelerationRate, vPerf.decelerationRate, timeDelta);
-    }
-
-    // what was the mean speed during the time step?
-    var meanSpeed = curSpeed - (speedDelta / 2);
-
-    // remember the previous course
-    var oldCourseRads = curCourseRads;
-
-    // calcualate the new course
-    curCourseRads = calcNewCourse(curCourseRads, demCourseRads, vPerf.turnRadius, meanSpeed, timeDelta);
-
-    // work out the mean course
-    var newCourseDelta = curCourseRads - oldCourseRads;
-    if(newCourseDelta > Math.PI)
-    {
-        newCourseDelta -= Math.PI * 2;
-    }
-    var meanCourseRads = oldCourseRads + (newCourseDelta) / 2;
-
-    // and now move
-    doStraight(timeDelta, curSpeed, meanCourseRads, movement);
-
-    // update the state object
-    // get range bearing form deltaLat/deltaLong
-    var bearingRads = Math.atan2(movement.deltaLong, movement.deltaLat);
-    var rangeM = Math.sqrt(movement.deltaLong*movement.deltaLong + movement.deltaLat*movement.deltaLat);
-    rhumbDestinationPoint(curState.location, bearingRads, rangeM);
-
-    curState.time = newTime;
-    curState.height = curHeight;
-    curState.course = toDegs(curCourseRads);
-    curState.speed = curSpeed;
-    curState.demCourse = toDegs(demCourseRads);
-    curState.demSpeed = demSpeed;
-    curState.demHeight = demHeight;
-}
-
-
-function output(state) {
-    outputMsg((state.time / 1000) + ', ' + Math.floor(state.location.long) + ', ' + Math.floor(state.location.lat) + ', ' + Math.floor(state.height) + ', ' + state.speed + ', ' + Math.floor(state.course));
-}
-
-function outputMsg(msg) {
-    var tNow = new Date();
-    var box = document.getElementById("results");
-    var outMsg = tNow.toLocaleTimeString() + ', ' + msg + '\n';
-    if(box)
-    {
-        box.value = outMsg + box.value;
-    }
-    else
-    {
-        console.log("can't find the results object")
-    }
-}
-
-function clearBox() {
-    var box = document.getElementById("results");
-    box.value = "";
-}
-
-var timerId;
 
 var state =
 {
@@ -304,18 +76,23 @@ var perf =
     climbRate: 1,
     diveRate: 2
 };
-var tNow = 0;
-const tStep = 2000;
-var accelRate = 1;
+
+/* timer-related objects
+
+ */
+var timerId;            // the id of a running timer
+var tNow = 0;           // the current time
+const tStep = 2000;     // the model time step
+var accelRate = 1;      // how fast to run model time
 
 
 function doStep()
 {
 
+    // is this the first step?
     if(tNow == 0)
     {
         // do some init
-        outputMsg("model time,x,y,height,speed, course");
         document.getElementById("inCourse").value = state.demCourse.toFixed(2);
         document.getElementById("inSpeed").value = state.demSpeed.toFixed(2);
     }
@@ -330,7 +107,6 @@ function doStep()
     // move the scenario forward
     tNow += tStep;
     doMove(tNow, state, perf);
-  //  output(state);
 
     // put the results into the UI
     document.getElementById("outCourse").innerHTML="" + state.course.toFixed(2);
@@ -404,146 +180,6 @@ function changeSpeed(val)
     inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
 }
 
-/**
- * Returns the destination point from this point having travelled the given distance (in km) on the
- * given bearing along a rhumb line
- *
- * @param   {Object} location: origin location
- * @param   {Number} brng: Bearing in radians from North
- * @param   {Number} dist: Distance in m
- */
-function rhumbDestinationPoint(location, brng, dist) {
-
-    if(brng < 0)
-    {
-      brng += Math.PI * 2;
-    }
-
-    const R = 6371000;  // radius in metres
-    var d = dist/R;  // d = angular distance covered on earth’s surface
-    var lat1 = toRads(location.lat);
-    var lon1 = toRads(location.long);
-
-    var dLat = d*Math.cos(brng);
-
-    // nasty kludge to overcome ill-conditioned results around parallels of latitude:
-    if (Math.abs(dLat) < 1e-10) dLat = 0; // dLat < 1 mm
-
-    var lat2 = lat1 + dLat;
-
- //   outputMsg("lat1:" + lat1 + " dLat:" + dLat + " lat2:" + lat2);
-
-    var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
-    var q = (isFinite(dLat/dPhi)) ? dLat/dPhi : Math.cos(lat1);  // E-W line gives dPhi=0
-    var dLon = d*Math.sin(brng)/q;
-
-    // check for some daft bugger going past the pole, normalise latitude if so
-    if (Math.abs(lat2) > Math.PI/2) lat2 = lat2>0 ? Math.PI-lat2 : -Math.PI-lat2;
-
-    var lon2 = (lon1+dLon+3*Math.PI)%(2*Math.PI) - Math.PI;
-
-    location.lat = toDegs(lat2);
-    location.long = toDegs(lon2);
-
-
-  //  outputMsg("old:" + lat1 + ", " + lon1 + ", new:" + lat2 + ", " + lon2 + " dist:" + dist + " brg:" + brng);
-
-}
-
-
-/**
- * Convert decimal degrees to deg/min/sec format
- *  - degree, prime, double-prime symbols are added, but sign is discarded, though no compass
- *    direction is added
- *
- * @private
- * @param   {Number} deg: Degrees
- * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
- * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
- * @returns {String} deg formatted as deg/min/secs according to specified format
- * @throws  {TypeError} deg is an object, perhaps DOM object without .value?
- */
-function toDMS(deg, format, dp) {
-    if (typeof deg == 'object') throw new TypeError('Geo.toDMS - deg is [DOM?] object');
-    if (isNaN(deg)) return null;  // give up here if we can't make a number from deg
-
-    // default values
-    if (typeof format == 'undefined') format = 'dms';
-    if (typeof dp == 'undefined') {
-        switch (format) {
-            case 'd': dp = 4; break;
-            case 'dm': dp = 2; break;
-            case 'dms': dp = 0; break;
-            default: format = 'dms'; dp = 0;  // be forgiving on invalid format
-        }
-    }
-
-    deg = Math.abs(deg);  // (unsigned result ready for appending compass dir'n)
-
-    switch (format) {
-        case 'd':
-            d = deg.toFixed(dp);     // round degrees
-            if (d<100) d = '0' + d;  // pad with leading zeros
-            if (d<10) d = '0' + d;
-            dms = d + '\u00B0';      // add º symbol
-            break;
-        case 'dm':
-            var min = (deg*60).toFixed(dp);  // convert degrees to minutes & round
-            var d = Math.floor(min / 60);    // get component deg/min
-            var m = (min % 60).toFixed(dp);  // pad with trailing zeros
-            if (d<100) d = '0' + d;          // pad with leading zeros
-            if (d<10) d = '0' + d;
-            if (m<10) m = '0' + m;
-            dms = d + '\u00B0' + m + '\u2032';  // add º, ' symbols
-            break;
-        case 'dms':
-            var sec = (deg*3600).toFixed(dp);  // convert degrees to seconds & round
-            var d = Math.floor(sec / 3600);    // get component deg/min/sec
-            var m = Math.floor(sec/60) % 60;
-            var s = (sec % 60).toFixed(dp);    // pad with trailing zeros
-            if (d<100) d = '0' + d;            // pad with leading zeros
-            if (d<10) d = '0' + d;
-            if (m<10) m = '0' + m;
-            if (s<10) s = '0' + s;
-            dms = d + '\u00B0' + m + '\u2032' + s + '\u2033';  // add º, ', " symbols
-            break;
-    }
-
-    return dms;
-}
-
-/**
- * Convert numeric degrees to deg/min/sec latitude (suffixed with N/S)
- *
- * @param   {Number} deg: Degrees
- * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
- * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
- * @returns {String} Deg/min/seconds
- */
-function toLat(deg, format, dp) {
-    var lat = toDMS(deg, format, dp);
-    return lat==null ? '–' : lat.slice(1) + (deg<0 ? 'S' : 'N');  // knock off initial '0' for lat!
-}
-
-
-/**
- * Convert numeric degrees to deg/min/sec longitude (suffixed with E/W)
- *
- * @param   {Number} deg: Degrees
- * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
- * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
- * @returns {String} Deg/min/seconds
- */
- function toLon(deg, format, dp) {
-    var lon = toDMS(deg, format, dp);
-    return lon==null ? '–' : lon + (deg<0 ? 'W' : 'E');
-}
-
-function toString(degLat, degLon, format, dp) {
-    if (typeof format == 'undefined') format = 'dms';
-
-    return toLat(degLat, format, dp) + ', ' + toLon(degLon, format, dp);
-}
 
 var map = L.map('map',{minZoom:0,maxZoom:30}).setView([50,-4], 13);
 
@@ -554,6 +190,9 @@ L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/
 
 var posMarker = L.marker([0.5, -0.09]).addTo(map);
 L.control.scale().addTo(map);
+
+// set the initial location - so that the text block is the correct size
+document.getElementById("outLocation").innerHTML=toString(state.location.lat, state.location.long, 'DMS');
 
 
 </script>
