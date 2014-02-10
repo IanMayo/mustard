@@ -2,6 +2,14 @@
 <html>
 <head>
 <title>Movement test</title>
+<style>
+    .retro
+    {
+        font-family:monospace ;
+        background-color: #000;
+        color:#0f0
+    }
+</style>
 <script type="text/javascript">
 
 function toRads(degVal) {
@@ -195,30 +203,7 @@ function doMove(newTime, curState, vPerf) {
 
 function run() {
 
-    var state =
-    {
-        time: 0,
-        lat: 0,
-        long: 0,
-        height: -40,
-        course: 200,
-        speed: 33,
-        demCourse: 200,
-        demSpeed: 33,
-        demHeight: -10.0
-    };
 
-    var perf =
-    {
-        turnRadius: 1200.0,
-        accelerationRate: 0.07,
-        decelerationRate: 0.5,
-        minSpeed: 4,
-        maxSpeed: 40,
-        batteryUsage: 1.03,
-        climbRate: 1,
-        diveRate: 2
-    };
 
     var tNow = 0;
     var tStep = 10000;
@@ -258,7 +243,15 @@ function output(state) {
 function outputMsg(msg) {
     var tNow = new Date();
     var box = document.getElementById("results");
-    box.value = box.value + tNow.toLocaleTimeString() + ', ' + msg + '\n';
+    var outMsg = tNow.toLocaleTimeString() + ', ' + msg + '\n';
+    if(box)
+    {
+        box.value = outMsg + box.value;
+    }
+    else
+    {
+        console.log("can't find the results object")
+    }
 }
 
 function testHeightChange() {
@@ -288,30 +281,145 @@ function clearBox() {
     var box = document.getElementById("results");
     box.value = "";
 }
+
+var timerId;
+
+var state =
+{
+    time: 0,
+    lat: 0,
+    long: 0,
+    height: -40,
+    course: 200,
+    speed: 33,
+    demCourse: 200,
+    demSpeed: 33,
+    demHeight: -10.0
+};
+
+var perf =
+{
+    turnRadius: 1200.0,
+    accelerationRate: 0.07,
+    decelerationRate: 0.5,
+    minSpeed: 4,
+    maxSpeed: 40,
+    batteryUsage: 1.03,
+    climbRate: 1,
+    diveRate: 2
+};
+var tNow = 0;
+
+
+
+function doStep()
+{
+
+    if(tNow == 0)
+    {
+        outputMsg("model time,x,y,height,speed, course");
+    }
+
+    // put the current boxes into the states
+    var curCourseDegs = parseInt(document.getElementById("inCourse").value);
+    var curSpeedKts = parseInt(document.getElementById("inSpeed").value);
+
+    state.demCourse = curCourseDegs;
+    state.demSpeed = curSpeedKts;
+
+    var tStep = 2000;
+
+    tNow += tStep;
+    doMove(tNow, state, perf);
+    output(state);
+
+    // put the results into the UI
+    document.getElementById("outCourse").innerHTML=Math.floor(state.course);
+    document.getElementById("outSpeed").innerHTML=Math.floor(state.speed);
+
+    // and sort out the time
+    var timeVal = new Date(tNow);
+    document.getElementById("tNow").innerHTML=timeVal.toLocaleTimeString();
+
+}
+
+function doRun()
+{
+    var chkRun = document.getElementById("doRun");
+    if(chkRun.checked)
+    {
+        // ok, run it
+        console.log(" start running");
+        timerId = window.setInterval("doStep()", 1000);
+    }
+    else
+    {
+        // ok, stop it
+        console.log(" stop running");
+        window.clearInterval(timerId);
+    }
+}
+function changeCourse(val)
+{
+    var inCourse = document.getElementById("inCourse")
+    inCourse.value = Math.floor(inCourse.value) + val;
+}
+function changeSpeed(val)
+{
+    var inSpeed = document.getElementById("inSpeed")
+    inSpeed.value = Math.floor(inSpeed.value) + val;
+}
 </script>
 </head>
 <body>
 <h1>Movement</h1>
-<label for="results">Results</label><br/><textarea rows="20" cols="80" id="results" style="float:left"></textarea>
-<ul style="list-style-type: none">
-    <li>
-        <input type="button" onclick="clearBox()" value="[CLEAR]"/>
-    </li>
-    <li>
-        <input type="button" onclick="run()" value="run"/>
-    </li>
-    <li>
-        <input type="button" onclick="runStraight()" value="straight"/>
-    </li>
-    <li>
-        <input type="button" onclick="testHeightChange()" value="height change"/>
-    </li>
-    <li>
-        <input type="button" onclick="testAccelTime()" value="accel time"/>
-    </li>
-    <li>
-        <input type="button" onclick="testNewCourse()" value="new course"/>
-    </li>
-</ul>
+<table>
+    <tr>
+        <td style="width:60%"><textarea rows="20" cols="80" id="results"></textarea>
+        </td>
+        <td><ul style="list-style-type: none">
+       <!--   LEGACY TESTS
+            <li>
+                <input type="button" onclick="run()" value="run"/>
+            </li>
+            <li>
+                <input type="button" onclick="runStraight()" value="straight"/>
+            </li>
+            <li>
+                <input type="button" onclick="testHeightChange()" value="height change"/>
+            </li>
+            <li>
+                <input type="button" onclick="testAccelTime()" value="accel time"/>
+            </li>
+            <li>
+                <input type="button" onclick="testNewCourse()" value="new course"/>
+            </li>  -->
+            <li>
+                <div id="tNow" style="width:90px" class="retro" >01:00:00</div>
+            </li>
+            <li>
+                <input type="button" onclick="doStep()" value="single step"/>
+            </li>
+            <li>
+                <label for="doRun" >Run</label><input type="checkbox" id="doRun" onchange="doRun()" value="Auto run"/>
+            </li>
+        </ul>
+            <form id="inputs">
+                <span>Course</span><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="3" type="text" value="90" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
+                <span>Speed</span><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="3" type="text" value="10" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
+            </form>
+            <span>Course:</span><span class="retro"  id="outCourse">000</span>
+            <span>Speed:</span><span class="retro"  id="outSpeed">000</span>
+            <span>Location:</span><span class="retro"  id="outLocation">000,000</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>
