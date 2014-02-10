@@ -344,8 +344,14 @@ function doStep()
     document.getElementById("tNow").innerHTML=timeVal.toLocaleTimeString();
 
     // try to move the marker
-    posMarker.setLatLng(L.latLng(state.location.lat, state.location.long));
-    map.panTo(L.latLng(state.location.lat, state.location.long));
+    var newPos = L.latLng(state.location.lat, state.location.long);
+    posMarker.setLatLng(newPos);
+
+    // do we need to move the map?
+    if(!map.getBounds().contains(newPos))
+    {
+        map.panTo(newPos);
+    }
 
 
 }
@@ -385,6 +391,10 @@ function changeCourse(val)
     if(newCourse >= 360)
     {
         newCourse -= 360;
+    }
+    else if(newCourse < 0)
+    {
+        newCourse += 360;
     }
     inCourse.value = newCourse.toFixed(2);
 }
