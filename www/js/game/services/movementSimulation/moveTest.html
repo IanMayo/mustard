@@ -34,7 +34,6 @@
             <fieldset style="float:left"><legend>Actual</legend>
                 <span>Course:</span><span class="retro"  id="outCourse">000.00</span>
                 <span>Speed:</span><span class="retro"  id="outSpeed">00.00</span>
-                <br/>
                 <span>Location:</span><span class="retro"  id="outLocation">0.0000000,0.0000000</span>
             </fieldset>
             <fieldset ><legend>Time</legend>
@@ -43,6 +42,7 @@
                 <input type="button" id="btnPause" onclick="doPause()" value="||"/>
                 <input type="button" id="btnPlay" onclick="doPlay()" value=">"/>
                 <input type="button" id="btnFaster" onclick="doFaster()" value=">>"/>
+                <span id="accelRate" style="width:90px"  >[stopped]</span>
             </fieldset>
         </td>
     </tr>
@@ -306,7 +306,7 @@ var perf =
 };
 var tNow = 0;
 const tStep = 2000;
-var curInterval = 1000;
+var accelRate = 1;
 
 
 function doStep()
@@ -355,24 +355,26 @@ function doPause()
     if(timerId != null)
     {
         window.clearInterval(timerId);
+        document.getElementById("accelRate").innerHTML = "[stopped]";
     }
 }
 
 function updateInterval()
 {
     doPause();
-    timerId = window.setInterval("doStep()", curInterval);
+    timerId = window.setInterval("doStep()",1000 / accelRate);
+    document.getElementById("accelRate").innerHTML = "[x" + accelRate + "]";
 }
 
 function doPlay()
 {
-    curInterval = 1000;
+    accelRate = 1;
     updateInterval();
 }
 
 function doFaster()
 {
-    curInterval /= 2;
+    accelRate *= 2;
     updateInterval()
 }
 
