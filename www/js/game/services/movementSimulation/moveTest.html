@@ -187,15 +187,16 @@
         var newPos = L.latLng(v1.state.location.lat, v1.state.location.long);
         updateMarker("ownship", newPos);
 
+        // do we need to move the map?
+        if (!map.getBounds().contains(newPos)) {
+            map.panTo(newPos);
+        }
+
         // try to move other marker
         var newPos = L.latLng(v2.state.location.lat + 0.02, v2.state.location.long - 0.02);
         updateMarker("other", newPos);
 
 
-        // do we need to move the map?
-        if (!map.getBounds().contains(newPos)) {
-            map.panTo(newPos);
-        }
     }
 
     function doPause() {
@@ -260,8 +261,6 @@
                 thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
             }
             posDict[vName] = thisPos;
-
-
         }
 
         thisPos.setLatLng(location);
