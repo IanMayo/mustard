@@ -309,7 +309,7 @@ var perf =
     diveRate: 2
 };
 var tNow = 0;
-
+const tStep = 2000;
 
 
 function doStep()
@@ -327,15 +327,14 @@ function doStep()
     state.demCourse = curCourseDegs;
     state.demSpeed = curSpeedKts;
 
-    var tStep = 2000;
-
+    // move the scenario forward
     tNow += tStep;
     doMove(tNow, state, perf);
     output(state);
 
     // put the results into the UI
-    document.getElementById("outCourse").innerHTML=Math.floor(state.course);
-    document.getElementById("outSpeed").innerHTML=Math.floor(state.speed);
+    document.getElementById("outCourse").innerHTML="" + Math.floor(state.course);
+    document.getElementById("outSpeed").innerHTML="" + Math.floor(state.speed);
 
     // and sort out the time
     var timeVal = new Date(tNow);
@@ -361,12 +360,12 @@ function doRun()
 }
 function changeCourse(val)
 {
-    var inCourse = document.getElementById("inCourse")
+    var inCourse = document.getElementById("inCourse");
     inCourse.value = Math.floor(inCourse.value) + val;
 }
 function changeSpeed(val)
 {
-    var inSpeed = document.getElementById("inSpeed")
+    var inSpeed = document.getElementById("inSpeed");
     inSpeed.value = Math.floor(inSpeed.value) + val;
 }
 </script>
@@ -375,7 +374,8 @@ function changeSpeed(val)
 <h1>Movement</h1>
 <table>
     <tr>
-        <td style="width:60%"><textarea rows="20" cols="80" id="results"></textarea>
+        <td style="width:60%">
+            <label for="results">Results:</label><br/><textarea rows="20" cols="80" id="results"></textarea>
         </td>
         <td><ul style="list-style-type: none">
        <!--   LEGACY TESTS
@@ -405,8 +405,8 @@ function changeSpeed(val)
             </li>
         </ul>
             <form id="inputs">
-                <span>Course</span><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="3" type="text" value="90" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
-                <span>Speed</span><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="3" type="text" value="10" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
+                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input  class="retro" size="3" type="text" value="90" id="inCourse"/><input type="button" value="+5" onclick="changeCourse(5)">
+                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input   class="retro" size="3" type="text" value="10" id="inSpeed"/><input type="button" value="+1" onclick="changeSpeed(1)">
             </form>
             <span>Course:</span><span class="retro"  id="outCourse">000</span>
             <span>Speed:</span><span class="retro"  id="outSpeed">000</span>
