@@ -15,9 +15,9 @@ function toDegs(radVal) {
  * Returns the destination point from this point having travelled the given distance (in km) on the
  * given bearing along a rhumb line
  *
- * @param   {Object} location: origin location
- * @param   {Number} brng: Bearing in radians from North
- * @param   {Number} dist: Distance in m
+ * @param   {Object} [location]: origin location
+ * @param   {Number} [brng]: Bearing in radians from North
+ * @param   {Number} [dist]: Distance in m
  */
 function rhumbDestinationPoint(location, brng, dist) {
 
@@ -58,7 +58,7 @@ function rhumbDestinationPoint(location, brng, dist) {
  *    direction is added
  *
  * @private
- * @param   {Number} deg: Degrees
+ * @param   {Number} [deg]: Degrees
  * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
  * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
  * @returns {String} deg formatted as deg/min/secs according to specified format
@@ -81,6 +81,8 @@ function toDMS(deg, format, dp) {
 
     deg = Math.abs(deg);  // (unsigned result ready for appending compass dir'n)
 
+    var dms;
+
     switch (format) {
         case 'd':
             d = deg.toFixed(dp);     // round degrees
@@ -90,23 +92,23 @@ function toDMS(deg, format, dp) {
             break;
         case 'dm':
             var min = (deg*60).toFixed(dp);  // convert degrees to minutes & round
-            var d = Math.floor(min / 60);    // get component deg/min
-            var m = (min % 60).toFixed(dp);  // pad with trailing zeros
-            if (d<100) d = '0' + d;          // pad with leading zeros
-            if (d<10) d = '0' + d;
-            if (m<10) m = '0' + m;
-            dms = d + '\u00B0' + m + '\u2032';  // add º, ' symbols
+            var d1 = Math.floor(min / 60);    // get component deg/min
+            var m1 = (min % 60).toFixed(dp);  // pad with trailing zeros
+            if (d1<100) d1 = '0' + d1;          // pad with leading zeros
+            if (d1<10) d1 = '0' + d1;
+            if (m1<10) m1 = '0' + m1;
+            dms = d + '\u00B0' + m1 + '\u2032';  // add º, ' symbols
             break;
         case 'dms':
             var sec = (deg*3600).toFixed(dp);  // convert degrees to seconds & round
-            var d = Math.floor(sec / 3600);    // get component deg/min/sec
-            var m = Math.floor(sec/60) % 60;
-            var s = (sec % 60).toFixed(dp);    // pad with trailing zeros
-            if (d<100) d = '0' + d;            // pad with leading zeros
-            if (d<10) d = '0' + d;
-            if (m<10) m = '0' + m;
-            if (s<10) s = '0' + s;
-            dms = d + '\u00B0' + m + '\u2032' + s + '\u2033';  // add º, ', " symbols
+            var d2 = Math.floor(sec / 3600);    // get component deg/min/sec
+            var m2 = Math.floor(sec/60) % 60;
+            var s2 = (sec % 60).toFixed(dp);    // pad with trailing zeros
+            if (d2<100) d2 = '0' + d2;            // pad with leading zeros
+            if (d2<10) d2 = '0' + d2;
+            if (m2<10) m2 = '0' + m2;
+            if (s2<10) s2 = '0' + s2;
+            dms = d2 + '\u00B0' + m2 + '\u2032' + s2 + '\u2033';  // add º, ', " symbols
             break;
     }
 
@@ -116,7 +118,7 @@ function toDMS(deg, format, dp) {
 /**
  * Convert numeric degrees to deg/min/sec latitude (suffixed with N/S)
  *
- * @param   {Number} deg: Degrees
+ * @param   {Number} [deg]: Degrees
  * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
  * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
  * @returns {String} Deg/min/seconds
@@ -129,7 +131,7 @@ function toLat(deg, format, dp) {
 /**
  * Convert numeric degrees to deg/min/sec longitude (suffixed with E/W)
  *
- * @param   {Number} deg: Degrees
+ * @param   {Number} [deg]: Degrees
  * @param   {String} [format=dms]: Return value as 'd', 'dm', 'dms'
  * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
  * @returns {String} Deg/min/seconds
