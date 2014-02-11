@@ -50,6 +50,7 @@ function rhumbDestinationPoint(location, brng, dist) {
     var res  = {};
     res.lat  =  toDegs(lat2);
     res.long = toDegs(lon2);
+
     return res;
 }
 
@@ -85,7 +86,7 @@ function rhumbDistanceTo(origin, point) {
 * @param   {LatLon} [point]: Latitude/longitude of destination point
 * @returns {Number} Bearing in degrees from North
 */
-function rhumbBearingTo(origin, point) {
+function rhumbBearingFromTo(origin, point) {
     var lat1 =  toRads(origin.lat), lat2 = toRads(point.lat);
     var dLon = toRads(point.long-origin.long);
 

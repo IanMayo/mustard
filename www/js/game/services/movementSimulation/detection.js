@@ -14,7 +14,7 @@ function hasCategory(thisCat, theCats) {
 
 function getOrigin(location, offset, heading)
 {
-    return rhumbDestinationPoint(location, offset, toRads(heading));
+    return rhumbDestinationPoint(location,toRads(heading), offset);
 }
 
 function doDetections(tNow, myVessel, allVessels) {
@@ -35,15 +35,13 @@ function doDetections(tNow, myVessel, allVessels) {
     // store the detections
     var newDetections = [];
 
- //   console.log("processing " + myVessel.name);
-
     // first, loop through my sonars
     for (var j = 0; j < myVessel.sonars.length; j++) {
 
         // get the sonar
         var sonar = myVessel.sonars[j];
 
-        // get the origin of the sonar
+        // get the origin of the sonar  TODO: worm in hole, not directly behind.
         var origin = getOrigin(myVessel.state.location, sonar.offset, myVessel.state.course);
 
         sonar.location = origin;
@@ -56,27 +54,32 @@ function doDetections(tNow, myVessel, allVessels) {
             if (thisV == myVessel) {
                 // yes, sort out self-noise
 
+                // sort out the angle to ownship
+                var theBrg = rhumbBearingFromTo(origin, myVessel.state.location);
+
                 // does this sonar have simple self-noise?
                 if(! hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories))
                 {
-                    var theBrg = rhumbBearingTo(myVessel.state.location, origin);
-
-                    var newDet = {
-                        "time" : tNow,
-                        "bearing": + theBrg
-                    };
-
-                    newDetections.push(newDet);
+                    insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"OS", false, 4);
                 }
-                else
-                {
 
+                // does this sonar have simple self-noise?
+                if(! hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories))
+                {
+                    var offsetBearing = theBrg + 15;
+                    insertDetections(newDetections, tNow, myVessel.state.course, offsetBearing,"OS (lobe)", true, 4);
                 }
 
             }
             else {
-                // no, sort out detections
+                // no, sort out proper detections
 
+                // sort out the angle to target
+                var theBrg = rhumbBearingFromTo(origin, thisV.state.location);
+
+                var doAmbiguous = ! hasCategory("NO_AMBIGUOUS", sonar.categories);
+
+                insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"thisV.name", true, 4);
             }
         }
     }
@@ -84,5 +87,24 @@ function doDetections(tNow, myVessel, allVessels) {
     // and store the new detections
     myVessel.newDetections = newDetections;
 
+}
+
+function insertDetections(detectionList,tNow,  osCourse, bearing,source, doAmbiguous, errorRange)
+{
+    bearing = bearing % 360;
+
+    // ok, what's the relative angle?
+    var relBearing = bearing - osCourse;
+
+    // do the port angle
+    var thisError = relBearing -errorRange + 2 * Math.random() * errorRange;
+    detectionList.push({"time":tNow, "bearing" : osCourse + thisError, "source":source});
+
+    // ambiguous?
+    if(doAmbiguous)
+    {
+        thisError = - (relBearing -errorRange + 2 * Math.random() * errorRange);
+        detectionList.push({"time":tNow, "bearing" : osCourse + thisError, "source":source});
+    }
 }
 

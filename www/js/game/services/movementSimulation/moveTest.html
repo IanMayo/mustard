@@ -15,6 +15,19 @@
             margin: 8px auto;
         }
 
+        .leaflet-div-icon-red {
+            background: #f00;
+            border: 1px solid #666;
+        }
+        .leaflet-div-icon-green {
+            background: #0f0;
+            border: 1px solid #666;
+        }
+        .leaflet-div-icon-blue {
+            background: #00f;
+            border: 1px solid #666;
+        }
+
     </style>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
     <script type="text/javascript"
@@ -265,6 +278,16 @@
         addPoint("AngularVelocity", tNow, -50 + Math.random()*100);
         addPoint("SelfNoise", tNow,  v1.radiatedNoise.osNoise, v2.radiatedNoise.osNoise);
 
+        // share the good news about detections
+        if(v1.newDetections)
+        {
+            for( var k=0;k<v1.newDetections.length;k++)
+            {
+                var thisD = v1.newDetections[k];
+                console.log("time:" + thisD.time + " source:" + thisD.source + " bearing:"  + thisD.bearing);
+            }
+        }
+
     }
 
     function doPause() {
@@ -322,19 +345,22 @@
             // ok - new marker.
             if(vName == "Ownship")
             {
-                thisPos = L.marker(location,{title:vName}).addTo(map);
+                var myIcon = L.divIcon({className: 'leaflet-div-icon-blue'});
+                thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
+//                thisPos = L.marker(location,{title:vName}).addTo(map);
             }
             else if(vName == "Target")
             {
+                var myIcon = L.divIcon({className: 'leaflet-div-icon-red'});
+                thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
                 // use a new marker
-                var newIcon = L.icon({iconUrl:'YellowSub.png'});
-                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
+//                var newIcon = L.icon({iconUrl:'YellowSub.png'});
+//                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
             }
             else if(vName == "BASIC_TOWED")
             {
-                // use a new marker
-                var newIcon = L.icon({iconUrl:'sonar.png'});
-                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
+                var myIcon = L.divIcon({className: 'leaflet-div-icon-green'});
+                thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
             }
             else
             {
