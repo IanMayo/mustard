@@ -24,23 +24,23 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
+    /*background-color:#E4E4E4;*/
+    /*background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
+    /*background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
+    /*background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
+    /*background-image:-webkit-gradient(*/
+        /*linear,*/
+        /*left top,*/
+        /*left bottom,*/
+        /*color-stop(0, #A7A7A7),*/
+        /*color-stop(0.51, #E4E4E4)*/
+    /*);*/
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
     height:100%;
-    margin:0px;
-    padding:0px;
+    margin:0;
+    padding:0;
     text-transform:uppercase;
     width:100%;
 }
@@ -54,8 +54,8 @@ body {
     height:50px;                   /* text area height */
     width:225px;                   /* text area width */
     text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+    padding:180px 0 0 0;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0 0 -112px;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
 
@@ -63,8 +63,8 @@ body {
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
         background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+        padding:75px 0 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0 0 -198px;  /* offset vertical: half of image height */
                                       /* offset horizontal: half of image width and text area width */
     }
 }
@@ -72,9 +72,9 @@ body {
 h1 {
     font-size:24px;
     font-weight:normal;
-    margin:0px;
+    margin:0;
     overflow:visible;
-    padding:0px;
+    padding:0;
     text-align:center;
 }
 
@@ -83,8 +83,8 @@ h1 {
     -webkit-border-radius:4px;
     color:#FFFFFF;
     font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+    margin:0 30px;
+    padding:2px 0;
 }
 
 .event.listening {
