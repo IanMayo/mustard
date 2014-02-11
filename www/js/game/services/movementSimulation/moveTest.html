@@ -8,8 +8,15 @@
             background-color: #000;
             color: #0f0
         }
+
+        #sonar {
+            width : 400px;
+            height: 384px;
+            margin: 8px auto;
+        }
     </style>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
+    <script type="text/javascript" src="flotr2.min.js"></script>
 
 </head>
 <body>
@@ -17,7 +24,7 @@
 <table style="width:100%">
     <tr>
         <td>
-            SONAR DISPLAY GOES HERE
+            <div id="sonar"></div>
         </td>
         <td>
             <span>MAP:</span>
@@ -115,7 +122,7 @@
         ],
         "environment" : {},
         "objectives" : {}
-    }
+    };
 
     /* timer-related objects
 
@@ -193,9 +200,11 @@
         }
 
         // try to move other marker
-        var newPos = L.latLng(v2.state.location.lat + 0.02, v2.state.location.long - 0.02);
-        updateMarker("other", newPos);
+        var otherPos = L.latLng(v2.state.location.lat + 0.02, v2.state.location.long - 0.02);
+        updateMarker("other", otherPos);
 
+        // try to show a graph marker
+        addPoint("course", tNow, v1.state.course);
 
     }
 
@@ -272,6 +281,95 @@
         maxZoom: 18,
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
     }).addTo(map);
+
+
+    function updateTimeGraph(series, time, yVal)
+    {
+
+    }
+
+    var graph;
+    
+
+
+    function addPoint(series, xVal, yVal)
+    {
+        var options = {
+            xaxis : {
+                mode : 'time',
+                labelsAngle : 45
+            },
+            yaxis : {
+                max : 360,
+                min : 0
+            },
+            selection : {
+                mode : 'x'
+            },
+            HtmlText : false,
+            title : 'Course'
+        };
+
+        d1.push([xVal, yVal]);
+
+        return Flotr.draw(
+                sonar,
+                [ d1 ],
+                options);
+    }
+
+    var d1 = [];
+
+
+
+    // try the graph
+    (function () {
+
+        var container = document.getElementById('sonar');
+        var start = 0,
+                options,
+                graph,
+                i, x, o;
+
+        options = {
+            xaxis : {
+                mode : 'time',
+                labelsAngle : 45
+            },
+            selection : {
+                mode : 'x'
+            },
+            HtmlText : false,
+            title : 'Time'
+        };
+
+        // Draw graph with default options, overwriting with passed options
+        function drawGraph (opts) {
+
+            // Clone the options, so the 'options' variable always keeps intact.
+            o = Flotr._.extend(Flotr._.clone(options), opts || {});
+
+            // Return a new graph.
+            return Flotr.draw(
+                    container,
+                    [ d1 ],
+                    o
+            );
+        }
+
+        graph = drawGraph();
+
+        Flotr.EventAdapter.observe(container, 'flotr:select', function(area){
+            // Draw selected area
+            graph = drawGraph({
+                xaxis : { min : area.x1, max : area.x2, mode : 'time', labelsAngle : 45 },
+                yaxis : { min : area.y1, max : area.y2 }
+            });
+        });
+
+        // When graph is clicked, draw the graph with default area.
+        Flotr.EventAdapter.observe(container, 'flotr:click', function () { graph = drawGraph(); });
+    })();
 
 </script>
 </body>
