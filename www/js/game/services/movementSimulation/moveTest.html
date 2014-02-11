@@ -218,10 +218,10 @@
         }
 
         // now that everyone is in their new location, do the detections
-        for(var i=0;i<scenario.vessels.length;i++)
+        for(var j=0;j<scenario.vessels.length;j++)
         {
-            var thisV = scenario.vessels[i];
-            doDetections(tNow, thisV, scenario.vessels);
+            var thisV2 = scenario.vessels[j];
+            doDetections(tNow, thisV2, scenario.vessels);
         }
 
         // and now the decisions

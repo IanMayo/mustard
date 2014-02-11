@@ -59,7 +59,7 @@ function rhumbDestinationPoint(location, brng, dist) {
  *
  *   see http://williams.best.vwh.net/avform.htm#Rhumb
  *
- * @param   {LatLon} point: Latitude/longitude of destination point
+ * @param   {LatLon} [point] Latitude/longitude of destination point
  * @returns {Number} Distance in km between this point and destination point
  */
 function rhumbDistanceTo(origin, point) {
@@ -76,16 +76,13 @@ function rhumbDistanceTo(origin, point) {
     if (Math.abs(dLon) > Math.PI) {
         dLon = dLon>0 ? -(2*Math.PI-dLon) : (2*Math.PI+dLon);
     }
-
-    var dist = Math.sqrt(dLat*dLat + q*q*dLon*dLon) * R;
-
-    return dist;  // 4 sig figs reflects typical 0.3% accuracy of spherical model
+    return Math.sqrt(dLat*dLat + q*q*dLon*dLon) * R;
 }
 
 /**
 * Returns the bearing from this point to the supplied point along a rhumb line, in degrees
 *
-* @param   {LatLon} point: Latitude/longitude of destination point
+* @param   {LatLon} [point]: Latitude/longitude of destination point
 * @returns {Number} Bearing in degrees from North
 */
 function rhumbBearingTo(origin, point) {

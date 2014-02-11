@@ -14,14 +14,7 @@ function hasCategory(thisCat, theCats) {
 
 function getOrigin(location, offset, heading)
 {
-//    * @param   {Object} [location]: origin location
-//* @param   {Number} [brng]: Bearing in radians from North
-//* @param   {Number} [dist]: Distance in m
-//    */
-//function rhumbDestinationPoint(location, brng, dist) {
-
-    var ptOrigin = rhumbDestinationPoint(location, offset, toRads(heading));
-    return ptOrigin;
+    return rhumbDestinationPoint(location, offset, toRads(heading));
 }
 
 function doDetections(tNow, myVessel, allVessels) {
@@ -71,7 +64,7 @@ function doDetections(tNow, myVessel, allVessels) {
                     var newDet = {
                         "time" : tNow,
                         "bearing": + theBrg
-                    }
+                    };
 
                     newDetections.push(newDet);
                 }
