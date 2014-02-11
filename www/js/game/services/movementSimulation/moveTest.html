@@ -9,7 +9,7 @@
             color: #0f0
         }
 
-        #Course, #Speed , #AngularVelocity  {
+        #Course, #Speed , #AngularVelocity, #SelfNoise  {
             width : 300px;
             height: 200px;
             margin: 8px auto;
@@ -31,7 +31,7 @@
         <td colspan="2">
             <span>MAP:</span>
 
-            <div id="map" style="width: 600px; height: 400px"></div>
+            <div id="map" style="width: 600px; height: 300px"></div>
         </td>
     </tr>
     <tr>
@@ -65,6 +65,17 @@
     </tr>
     <tr>
         <td>
+            <div id="SelfNoise"></div>
+        </td>
+        <td>
+            <div id="pendingA"></div>
+        </td>
+        <td>
+            <div id="pendingB"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <div id="Course"></div>
         </td>
         <td>
@@ -78,14 +89,27 @@
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <script src="geo.js"></script>
 <script src="movement.js"></script>
+<script src="detection.js"></script>
 
 <script type="text/javascript">
 
     var scenario = {
         "vessels" : [
-
             {
-
+                "name": "Ownship",
+                "categories":  ["BLUE", "SURFACE", "WARSHIP"],
+                "behaviours": [],
+                "sonars" : [
+                    {
+                        "name":"BASIC_TOWED",
+                        "categories" : [],
+                        "RD" : 1.4,
+                        "offset" : -1000
+                    }],
+                "radiatedNoise" : {
+                    "baseLevel" : 100,
+                    "speedPattern" : "Uniform"    /* pattern of how the noise level changes with speed */
+                },
                 "state": {
                     time: 0,
                     location: {lat: 53, long: -3},
@@ -108,7 +132,20 @@
                 }
             },
             {
-
+                "name": "Target",
+                "categories":  ["RED", "SUBSURFACE", "SUBMARINE"],
+                "behaviours": [],
+                "sonars" : [
+                    {
+                        "name":"BASIC_HULL",
+                        "categories" : ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE","NO_AMBIGUOUS"],
+                        "RD" : 1.4,
+                        "offset" : 0
+                    }],
+                "radiatedNoise" : {
+                    "baseLevel" : 110,
+                    "speedPattern" : "Uniform"    /* pattern of how the noise level changes with speed */
+                },
                 "state": {
                     time: 0,
                     location: {lat: 53.00005, long: -3.00004},
@@ -180,9 +217,12 @@
             doMove(tNow, thisV.state, thisV.perf);
         }
 
-        // now do the detections
-
-
+        // now that everyone is in their new location, do the detections
+        for(var i=0;i<scenario.vessels.length;i++)
+        {
+            var thisV = scenario.vessels[i];
+            doDetections(tNow, thisV, scenario.vessels);
+        }
 
         // and now the decisions
 
@@ -203,21 +243,27 @@
 
         // try to move the marker
         var newPos = L.latLng(v1.state.location.lat, v1.state.location.long);
-        updateMarker("ownship", newPos);
+        updateMarker(v1.name, newPos);
 
         // do we need to move the map?
         if (!map.getBounds().contains(newPos)) {
             map.panTo(newPos);
         }
 
+        // and the sonar marker
+        var sonarLoc = v1.sonars[0].location;
+        var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.long);
+        updateMarker(v1.sonars[0].name, sonarPos);
+
         // try to move other marker
-        var otherPos = L.latLng(v2.state.location.lat + 0.02, v2.state.location.long - 0.02);
-        updateMarker("other", otherPos);
+        var otherPos = L.latLng(v2.state.location.lat, v2.state.location.long);
+        updateMarker(v2.name, otherPos);
 
         // try to show a graph marker
         addPoint("Course", tNow,  v1.state.demCourse, v1.state.course);
         addPoint("Speed", tNow,  v1.state.demSpeed, v1.state.speed);
         addPoint("AngularVelocity", tNow, -50 + Math.random()*100);
+        addPoint("SelfNoise", tNow,  v1.radiatedNoise.osNoise, v2.radiatedNoise.osNoise);
 
     }
 
@@ -274,13 +320,25 @@
         var thisPos = posDict[vName];
         if (thisPos == null) {
             // ok - new marker.
-            if(vName == "ownship")
+            if(vName == "Ownship")
+            {
                 thisPos = L.marker(location,{title:vName}).addTo(map);
-            else
+            }
+            else if(vName == "Target")
             {
                 // use a new marker
                 var newIcon = L.icon({iconUrl:'YellowSub.png'});
                 thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
+            }
+            else if(vName == "BASIC_TOWED")
+            {
+                // use a new marker
+                var newIcon = L.icon({iconUrl:'sonar.png'});
+                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
+            }
+            else
+            {
+                console.log("marker not found for:" + vName);
             }
             posDict[vName] = thisPos;
         }
@@ -340,9 +398,7 @@
     initGraph("Course", [new Date(0),0,0],['Time', 'Demanded Course', 'Actual Course'], "Course (degs)",[0.0, 360] );
     initGraph("Speed", [new Date(0),0,0],['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)",[0.0, 40] );
     initGraph("AngularVelocity", [new Date(0),0],['Time', 'Angular Velocity'], "Turn Rate (degs/s)",[-50, 50] );
-
-
-
+    initGraph("SelfNoise", [new Date(0),0,0],['Time', 'Own noise', 'Target noise'], "dB",[0, 200] );
 
 </script>
 </body>

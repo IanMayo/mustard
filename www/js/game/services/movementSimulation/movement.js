@@ -173,7 +173,7 @@ function doMove(newTime, curState, vPerf) {
     // get range bearing form deltaLat/deltaLong
     var bearingRads = Math.atan2(movement.deltaLong, movement.deltaLat);
     var rangeM = Math.sqrt(movement.deltaLong*movement.deltaLong + movement.deltaLat*movement.deltaLat);
-    rhumbDestinationPoint(curState.location, bearingRads, rangeM);
+    curState.location = rhumbDestinationPoint(curState.location, bearingRads, rangeM);
 
     curState.time = newTime;
     curState.height = curHeight;

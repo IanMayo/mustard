@@ -47,8 +47,56 @@ function rhumbDestinationPoint(location, brng, dist) {
 
     var lon2 = (lon1+dLon+3*Math.PI)%(2*Math.PI) - Math.PI;
 
-    location.lat = toDegs(lat2);
-    location.long = toDegs(lon2);
+    var res  = {};
+    res.lat  =  toDegs(lat2);
+    res.long = toDegs(lon2);
+    return res;
+}
+
+
+/**
+ * Returns the distance from this point to the supplied point, in km, travelling along a rhumb line
+ *
+ *   see http://williams.best.vwh.net/avform.htm#Rhumb
+ *
+ * @param   {LatLon} point: Latitude/longitude of destination point
+ * @returns {Number} Distance in km between this point and destination point
+ */
+function rhumbDistanceTo(origin, point) {
+    const R = 6371000;  // earth radius in m
+    var lat1 = toRads(origin.lat);
+    var lat2 = toRads(point.lat);
+    var dLat = toRads(point.lat-origin.lat);
+    var dLon = toRads(Math.abs(point.lon-origin.lon));
+
+    var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
+    var q = (isFinite(dLat/dPhi)) ? dLat/dPhi : Math.cos(lat1);  // E-W line gives dPhi=0
+
+    // if dLon over 180° take shorter rhumb across anti-meridian:
+    if (Math.abs(dLon) > Math.PI) {
+        dLon = dLon>0 ? -(2*Math.PI-dLon) : (2*Math.PI+dLon);
+    }
+
+    var dist = Math.sqrt(dLat*dLat + q*q*dLon*dLon) * R;
+
+    return dist;  // 4 sig figs reflects typical 0.3% accuracy of spherical model
+}
+
+/**
+* Returns the bearing from this point to the supplied point along a rhumb line, in degrees
+*
+* @param   {LatLon} point: Latitude/longitude of destination point
+* @returns {Number} Bearing in degrees from North
+*/
+function rhumbBearingTo(origin, point) {
+    var lat1 =  toRads(origin.lat), lat2 = toRads(point.lat);
+    var dLon = toRads(point.long-origin.long);
+
+    var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
+    if (Math.abs(dLon) > Math.PI) dLon = dLon>0 ? -(2*Math.PI-dLon) : (2*Math.PI+dLon);
+    var brng = Math.atan2(dLon, dPhi);
+
+    return (toDegs(brng)+360) % 360;
 }
 
 
