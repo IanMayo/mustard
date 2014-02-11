@@ -91,9 +91,9 @@
                     location: {lat: 53, long: -3},
                     height: -40,
                     course: 100,
-                    speed: 33,
+                    speed: 10,
                     demCourse: 100,
-                    demSpeed: 33,
+                    demSpeed: 10,
                     demHeight: -10.0
                 },
                 "perf": {
@@ -114,9 +114,9 @@
                     location: {lat: 53.00005, long: -3.00004},
                     height: -40,
                     course: 200,
-                    speed: 33,
+                    speed: 8,
                     demCourse: 200,
-                    demSpeed: 33,
+                    demSpeed: 8,
                     demHeight: -10.0
                 },
                 "perf": {
@@ -124,7 +124,7 @@
                     accelerationRate: 0.3,
                     decelerationRate: 0.8,
                     minSpeed: 4,
-                    maxSpeed: 40,
+                    maxSpeed: 20,
                     batteryUsage: 1.03,
                     climbRate: 1,
                     diveRate: 2
@@ -302,9 +302,14 @@
         var data = dataSeries[series];
         var graph = graphs[series];
 
+        // store the new data values
         data.push([new Date(time), demValue, actualValue]);
-            var newStart = new Date(time - 2000 * 60);
-            graph.updateOptions( { 'file': data, dateWindow:[newStart, new Date(time)] } );
+
+        // calculate the 5 minute window
+        var newStart = new Date(time - 2000 * 60);
+
+        // get the chart to redraw
+        graph.updateOptions( { 'file': data, dateWindow:[newStart, new Date(time)] } );
     }
 
     function initGraph(name, datum,labels, yLabel, valueRange)
