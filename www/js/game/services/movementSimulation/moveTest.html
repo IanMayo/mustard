@@ -28,6 +28,11 @@
             border: 1px solid #666;
         }
 
+        tr.diagnostics
+        {
+            background-color: #dddddd;
+        }
+
     </style>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
     <script type="text/javascript"
@@ -76,7 +81,9 @@
             </fieldset>
         </td>
     </tr>
-    <tr>
+    </table>
+<table style="width:100%">
+    <tr class="diagnostics">
         <td>
             <div id="SelfNoise"></div>
         </td>
@@ -95,7 +102,7 @@
             </fieldset>
         </td>
     </tr>
-    <tr>
+    <tr class="diagnostics">
         <td>
             <div id="Course"></div>
         </td>
@@ -405,7 +412,7 @@
         return document.getElementById(checkboxName).checked;
     }
 
-    var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 13);
+    var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 12);
 
     L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
         maxZoom: 18,
