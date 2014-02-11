@@ -23,6 +23,8 @@ function doDetections(tNow, myVessel, allVessels) {
     var speed = myVessel.state.speed;
     var baseLevel = myVessel.radiatedNoise.baseLevel;
 
+    const SENSOR_ERROR = 2;
+
     var osNoise = 0.0000252 * Math.pow(speed, 5) -
         0.001456 * Math.pow(speed, 4) +
         0.02165 * Math.pow(speed, 3) +
@@ -55,21 +57,20 @@ function doDetections(tNow, myVessel, allVessels) {
                 // yes, sort out self-noise
 
                 // sort out the angle to ownship
-                var theBrg = rhumbBearingFromTo(origin, myVessel.state.location);
+                var theSelfBrg = rhumbBearingFromTo(origin, myVessel.state.location);
 
                 // does this sonar have simple self-noise?
                 if(! hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories))
                 {
-                    insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"OS", false, 4);
+                    insertDetections(newDetections, tNow, myVessel.state.course, theSelfBrg,"OS", false, SENSOR_ERROR);
                 }
 
                 // does this sonar have simple self-noise?
                 if(! hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories))
                 {
-                    var offsetBearing = theBrg + 15;
-                    insertDetections(newDetections, tNow, myVessel.state.course, offsetBearing,"OS (lobe)", true, 4);
+                    var offsetBearing = theSelfBrg + 15;
+                    insertDetections(newDetections, tNow, myVessel.state.course, offsetBearing,"OS (lobe)", true, SENSOR_ERROR);
                 }
-
             }
             else {
                 // no, sort out proper detections
@@ -79,7 +80,7 @@ function doDetections(tNow, myVessel, allVessels) {
 
                 var doAmbiguous = ! hasCategory("NO_AMBIGUOUS", sonar.categories);
 
-                insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"thisV.name", true, 4);
+                insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"thisV.name", doAmbiguous, SENSOR_ERROR);
             }
         }
     }
@@ -91,20 +92,30 @@ function doDetections(tNow, myVessel, allVessels) {
 
 function insertDetections(detectionList,tNow,  osCourse, bearing,source, doAmbiguous, errorRange)
 {
-    bearing = bearing % 360;
-
     // ok, what's the relative angle?
     var relBearing = bearing - osCourse;
 
     // do the port angle
     var thisError = relBearing -errorRange + 2 * Math.random() * errorRange;
-    detectionList.push({"time":tNow, "bearing" : osCourse + thisError, "source":source});
+    var thisValue = osCourse + thisError;
+    if(thisValue < 0)
+    {
+        thisValue += 360;
+    }
+    thisValue =  thisValue % 360;
+    detectionList.push({"time":tNow, "bearing" : thisValue, "source":source});
 
     // ambiguous?
     if(doAmbiguous)
     {
         thisError = - (relBearing -errorRange + 2 * Math.random() * errorRange);
-        detectionList.push({"time":tNow, "bearing" : osCourse + thisError, "source":source});
+        thisValue = osCourse + thisError;
+        if(thisValue < 0)
+        {
+            thisValue += 360;
+        }
+        thisValue = thisValue % 360;
+        detectionList.push({"time":tNow, "bearing" :thisValue , "source":source + "(ambig)"});
     }
 }
 

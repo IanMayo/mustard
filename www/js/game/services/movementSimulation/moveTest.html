@@ -39,7 +39,7 @@
 <table style="width:100%">
     <tr>
         <td>
-            Sonar goes here
+            <div id="Sonar"></div>
         </td>
         <td colspan="2">
             <span>MAP:</span>
@@ -84,7 +84,15 @@
             <div id="pendingA"></div>
         </td>
         <td>
-            <div id="pendingB"></div>
+            <fieldset><legend>Diagnostics</legend>
+                <ul>
+                    <li><input  type="checkbox" id="showTarget">Show Target</li>
+                    <li><input checked type="checkbox" id="showSelfNoise">Show Self Noise</li>
+                    <li><input checked type="checkbox" id="showCourse">Show Course</li>
+                    <li><input checked type="checkbox" id="showSpeed">Show Speed</li>
+                    <li><input checked type="checkbox" id="showAngularVelocity">Show Angular Velocity</li>
+                </ul>
+            </fieldset>
         </td>
     </tr>
     <tr>
@@ -281,11 +289,22 @@
         // share the good news about detections
         if(v1.newDetections)
         {
+            var dets;
             for( var k=0;k<v1.newDetections.length;k++)
             {
                 var thisD = v1.newDetections[k];
-                console.log("time:" + thisD.time + " source:" + thisD.source + " bearing:"  + thisD.bearing);
+
+                // is this the first item?
+                if(!dets)
+                {
+                    dets = [new Date(thisD.time)];
+                }
+
+                // add this detection to the list
+                dets.push(thisD.bearing);
+
             }
+            addDetections(dets);
         }
 
     }
@@ -341,25 +360,29 @@
     function updateMarker(vName, location) {
         // do we have it already?
         var thisPos = posDict[vName];
-        if (thisPos == null) {
+
+        // check we can show the target
+        if(vName == "Target" && ! showThis("showTarget"))
+        {
+            thisPos = null;
+        }
+        else if (thisPos == null) {
+            var myIcon;
+
             // ok - new marker.
             if(vName == "Ownship")
             {
-                var myIcon = L.divIcon({className: 'leaflet-div-icon-blue'});
+                myIcon = L.divIcon({className: 'leaflet-div-icon-blue'});
                 thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
-//                thisPos = L.marker(location,{title:vName}).addTo(map);
             }
             else if(vName == "Target")
             {
-                var myIcon = L.divIcon({className: 'leaflet-div-icon-red'});
+                myIcon = L.divIcon({className: 'leaflet-div-icon-red'});
                 thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
-                // use a new marker
-//                var newIcon = L.icon({iconUrl:'YellowSub.png'});
-//                thisPos = L.marker(location, {title:vName, icon:newIcon}).addTo(map);
             }
             else if(vName == "BASIC_TOWED")
             {
-                var myIcon = L.divIcon({className: 'leaflet-div-icon-green'});
+                myIcon = L.divIcon({className: 'leaflet-div-icon-green'});
                 thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
             }
             else
@@ -369,7 +392,17 @@
             posDict[vName] = thisPos;
         }
 
-        thisPos.setLatLng(location);
+
+
+        if(thisPos)
+        {
+            thisPos.setLatLng(location);
+        }
+    }
+
+    function showThis(checkboxName)
+    {
+        return document.getElementById(checkboxName).checked;
     }
 
     var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 13);
@@ -379,6 +412,20 @@
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
     }).addTo(map);
 
+
+    function addDetections(dataValues)
+    {
+        var time = dataValues[0];
+        var data = dataSeries["Sonar"];
+        var graph = graphs["Sonar"];
+        data.push(dataValues);
+        // calculate the 5 minute window
+        var newStart = new Date(time - 10000 * 60);
+
+        // get the chart to redraw
+        graph.updateOptions( {'colors':["#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0"],
+            'strokePattern':[0,4],'legend':'none', 'pointSize':4, 'file': data, dateWindow:[newStart, new Date(time)] } );
+    }
 
     function addPoint(series, time, demValue, actualValue)
     {
@@ -392,8 +439,11 @@
         // calculate the 5 minute window
         var newStart = new Date(time - 2000 * 60);
 
-        // get the chart to redraw
-        graph.updateOptions( { 'file': data, dateWindow:[newStart, new Date(time)] } );
+        if(showThis("show" + series))
+        {
+            // get the chart to redraw
+            graph.updateOptions( { 'file': data, dateWindow:[newStart, new Date(time)] } );
+        }
     }
 
     function initGraph(name, datum,labels, yLabel, valueRange)
@@ -425,6 +475,7 @@
     initGraph("Speed", [new Date(0),0,0],['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)",[0.0, 40] );
     initGraph("AngularVelocity", [new Date(0),0],['Time', 'Angular Velocity'], "Turn Rate (degs/s)",[-50, 50] );
     initGraph("SelfNoise", [new Date(0),0,0],['Time', 'Own noise', 'Target noise'], "dB",[0, 200] );
+    initGraph("Sonar", [new Date(0),0,0,0,0,0,0,0,0,0,0],['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9','S10'], "Bearing",[0, 360] );
 
 </script>
 </body>
