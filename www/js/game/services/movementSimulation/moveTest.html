@@ -30,6 +30,11 @@
             border: 1px solid #666;
         }
 
+        #map
+        {
+            background-color: #cde;
+        }
+
         tr.diagnostics {
             background-color: #dddddd;
             color: #000;
@@ -148,7 +153,7 @@ var scenario = {
             },
             "state": {
                 time: 0,
-                location: {lat: 53, long: -3},
+                location: {lat: 50, long:-8},
                 height: 0,
                 course: 100,
                 speed: 10,
@@ -185,12 +190,7 @@ var scenario = {
             },
             "state": {
                 time: 0,
-                location: {lat: 53.00005, long: -3.00004},
                 height: -40,
-                course: 200,
-                speed: 8,
-                demCourse: 200,
-                demSpeed: 8,
                 demHeight: -40.0,
                 batteryLevel: 90
             },
@@ -229,6 +229,30 @@ function doStep() {
 
     // is this the first step?
     if (tNow == 0) {
+
+        // see if the target has a location
+        if(!v2.state.location)
+        {
+            // cool, generate one - up to 10 miles from v1
+            var direction = Math.random() * 360;
+            var range = 2000 + Math.random() * 10000;
+            v2.state.location =  rhumbDestinationPoint(v1.state.location, toRads(direction), range);
+        }
+
+        if(!v2.state.course)
+        {
+            var newCourse = Math.random() * 360;
+            v2.state.course = newCourse;
+            v2.state.demCourse = newCourse;
+        }
+
+        if(!v2.state.speed)
+        {
+            var newSpeed = 6 + Math.random()*8;
+            v2.state.speed = newSpeed;
+            v2.state.demSpeed = newSpeed;
+        }
+
         // do some init
         document.getElementById("inCourse").value = v1.state.demCourse.toFixed(2);
         document.getElementById("inSpeed").value = v1.state.demSpeed.toFixed(2);
@@ -453,12 +477,12 @@ function showThis(checkboxName) {
     return !theControl || theControl.checked;
 }
 
-var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 12);
+var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 12);
 
-L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attributionControl: false
-}).addTo(map);
+//L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+//    maxZoom: 18,
+//    attributionControl: false
+//}).addTo(map);
 
 L.control.scale({metric: true, imperial: true}).addTo(map);
 
