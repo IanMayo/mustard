@@ -19,6 +19,9 @@ function getOrigin(location, offset, heading) {
 const ABSORPTION_COEFFICIENT = 0.000073152;
 /* db / metre */
 
+const BOW_NULL = 20;
+/* degrees either side */
+
 function lossFor(range) {
     var loss;
     // idiot check
@@ -95,36 +98,46 @@ function doDetections(tNow, myVessel, allVessels) {
             else {
                 // no, sort out proper detections
 
-                // his radiated noise:
-                var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel);
+                // sort out the angle to target
+                var theBrg = rhumbBearingFromTo(origin, thisV.state.location);
 
-                // what's the loss?
-                //  - start with the range
-                var range = rhumbDistanceFromTo(origin, thisV.state.location);
+                var relBrg = Math.abs(theBrg - myVessel.state.course);
+                relBrg = relBrg % 360;
 
-                // and now the loss itself
-                var NW = lossFor(range);
+                var hasBowNull = hasCategory("HAS_BOW_NULL", sonar.categories);
 
-                var DT = sonar.DT;
-                var AG = sonar.ArrayGain;
+                // are we without a bow null, or would this be outside the null anyway?
+                if ((!hasBowNull) || relBrg > BOW_NULL) {
 
-                var SE = LS - NW - (LN - AG) - DT;
+                    // his radiated noise:
+                    var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel);
 
-                // DEBUG - put the SE in the state
-//                myVessel.state.SE = SE;
-//                myVessel.state.loss = NW;
+                    // what's the loss?
+                    //  - start with the range
+                    var range = rhumbDistanceFromTo(origin, thisV.state.location);
+
+                    // and now the loss itself
+                    var NW = lossFor(range);
+
+                    var DT = sonar.DT;
+                    var AG = sonar.ArrayGain;
+
+                    var SE = LS - NW - (LN - AG) - DT;
+
+                    // DEBUG - put the SE in the state
+                    myVessel.state.SE = SE;
+             //       myVessel.state.loss = NW;
 
 //                console.log("" + myVessel.name +" == SE:" + SE + " range:" + Math.floor(range) + " LS:" + Math.floor(LS) + " NW:" +Math.floor( NW) + " LN:" + Math.floor(LN) + " AG:" + AG + " DT:" + DT);
 
-                // +ve?
-                if (SE > 0) {
-                    // do 10 log SE, to make it smoother
-                    SE = 10 * Math.log(SE);
+                    // +ve?
+                    if (SE > 0) {
+                        // do 10 log SE, to make it smoother
+                        SE = 10 * Math.log(SE);
 
-                    // sort out the angle to target
-                    var theBrg = rhumbBearingFromTo(origin, thisV.state.location);
-                    var doAmbiguous = !hasCategory("NO_AMBIGUOUS", sonar.categories);
-                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
+                        var doAmbiguous = !hasCategory("NO_AMBIGUOUS", sonar.categories);
+                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
+                    }
                 }
             }
         }

@@ -136,7 +136,7 @@ var scenario = {
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": [],
+                    "categories": ["HAS_BOW_NULL"],
                     "offset": -1000,
                     "ArrayGain": 20,
                     "DT":-8
@@ -296,7 +296,7 @@ function doStep() {
     updateMarker(v2.name, otherPos);
 
     // try to show a graph marker
-    addPoint("Course", tNow, v1.state.loss, v2.state.loss);
+    addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
     addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
@@ -532,7 +532,7 @@ var graphs = {};
 
 // initialise the graphs
 initGraph("SignalExcess", [new Date(0), 0, 0], ['Time', 'Own SE', 'tgt SE'], "dB", [-50,50]);
-initGraph("Course", [new Date(0), 0, 0], ['Time', 'signal loss', 'His loss'], "Course (degs)", [0.0, 100]);
+initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
 initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
 initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
 initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
