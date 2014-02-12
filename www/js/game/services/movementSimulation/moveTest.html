@@ -31,6 +31,7 @@
         tr.diagnostics
         {
             background-color: #dddddd;
+            color: #000
         }
 
     </style>
@@ -39,7 +40,7 @@
             src="dygraph-combined.js"></script>
 
 </head>
-<body>
+<body class="retro">
 <div>Physics Demonstrator UI</div>
 <table style="width:100%">
     <tr>
@@ -47,8 +48,6 @@
             <div id="Sonar"></div>
         </td>
         <td colspan="2">
-            <span>MAP:</span>
-
             <div id="map" style="width: 600px; height: 300px"></div>
         </td>
     </tr>
@@ -65,9 +64,9 @@
             </fieldset>
             <fieldset style="float:left">
                 <legend>Actual</legend>
-                <span>Course:</span><span class="retro" id="outCourse">000.00</span>
-                <span>Speed:</span><span class="retro" id="outSpeed">00.00</span>
-                <span>Location:</span><span class="retro" id="outLocation">00.00.00.N, 000.00.00.W</span>
+                <span class="retro" id="outCourse">000.00</span>&deg
+                <span class="retro" id="outSpeed">00.00</span>m/s
+                <span class="retro" id="outLocation">00.00.00.N, 000.00.00.W</span>
             </fieldset>
             <fieldset>
                 <legend>Time</legend>
@@ -76,7 +75,8 @@
                 <div style="float:left" id="tNow" class="retro">01:00:00</div>
                 <input type="button" id="btnPause" onclick="doPause()" value="||"/>
                 <input type="button" id="btnPlay" onclick="doPlay()" value=">"/>
-                <input type="button" id="btnFaster" onclick="doFaster()" value=">>"/>
+                <input type="button" id="btnSlower" onclick="doSlower()" value="-"/>/
+                <input type="button" id="btnFaster" onclick="doFaster()" value="+"/>
                 <span id="accelRate" style="width:90px">[stopped]</span>
             </fieldset>
         </td>
@@ -270,18 +270,19 @@
         document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
 
         // try to move the marker
-        var newPos = L.latLng(v1.state.location.lat, v1.state.location.long);
-        updateMarker(v1.name, newPos);
-
-        // do we need to move the map?
-        if (!map.getBounds().contains(newPos)) {
-            map.panTo(newPos);
-        }
+        var ownshipPos = L.latLng(v1.state.location.lat, v1.state.location.long);
 
         // and the sonar marker
         var sonarLoc = v1.sonars[0].location;
         var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.long);
-        updateMarker(v1.sonars[0].name, sonarPos);
+        updateOwnship(ownshipPos, sonarPos, v1.state.course, v1.state.speed);
+//        updateMarker(v1.name, ownshipPos);
+//        updateMarker(v1.sonars[0].name, sonarPos);
+
+        // do we need to move the map?
+        if (!map.getBounds().contains(ownshipPos)) {
+            map.panTo(ownshipPos);
+        }
 
         // try to move other marker
         var otherPos = L.latLng(v2.state.location.lat, v2.state.location.long);
@@ -339,6 +340,11 @@
         updateInterval()
     }
 
+    function doSlower() {
+        accelRate /= 2;
+        updateInterval()
+    }
+
     function changeCourse(val) {
         var inCourse = document.getElementById("inCourse");
         var newCourse = parseFloat(inCourse.value) + val;
@@ -358,6 +364,47 @@
     /** store a collection of position markers
      */
     var posDict = {};
+
+    var osHeadLine, sonarLine;
+
+    function updateOwnship(oPos, sonarPos, course, speed)
+    {
+        // first position the marker
+        updateMarker("Ownship", oPos);
+
+        // get oPos in screen coords
+        var sPos = map.project(oPos);
+        var FACTOR = 2;
+        var dx = Math.sin(toRads(course)) * speed * FACTOR;
+        var dy = -Math.cos(toRads(course)) * speed * FACTOR;
+        var offset = L.point(dx, dy);
+        var otherPos= sPos.add(offset);
+        var otherEnd = map.unproject(otherPos);
+        var locations = [oPos, otherEnd];
+
+        // now the heading indicator
+        if(!osHeadLine)
+        {
+            osHeadLine = L.polyline(locations, {color:'blue', weight:2}).addTo(map);
+        }
+        else
+        {
+            osHeadLine.setLatLngs(locations);
+        }
+
+        var sonarlocations = [oPos, sonarPos];
+        if(!sonarLine)
+        {
+            sonarLine = L.polyline(sonarlocations, {color:'#111', weight:2}).addTo(map);
+        }
+        else
+        {
+            sonarLine.setLatLngs(sonarlocations);
+        }
+
+        // now the sonar
+      //  updateMarker("Sonar", sonarPos);
+    }
 
     /** for the track of the given name, specify a new marker location
      *
@@ -387,7 +434,7 @@
                 myIcon = L.divIcon({className: 'leaflet-div-icon-red'});
                 thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
             }
-            else if(vName == "BASIC_TOWED")
+            else if(vName == "Sonar")
             {
                 myIcon = L.divIcon({className: 'leaflet-div-icon-green'});
                 thisPos = L.marker(location, {title:vName, icon: myIcon}).addTo(map);
@@ -416,8 +463,10 @@
 
     L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
         maxZoom: 18,
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+        attributionControl: false
     }).addTo(map);
+
+    L.control.scale({metric:true,imperial:true}).addTo(map);
 
 
     function addDetections(dataValues)
@@ -431,7 +480,7 @@
 
         // get the chart to redraw
         graph.updateOptions( {'colors':["#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0","#0f0"],
-            'strokePattern':[0,4],'legend':'none', 'pointSize':4, 'file': data, dateWindow:[newStart, new Date(time)] } );
+            'strokePattern':[0,4],   showLabelsOnHighlight:false, 'pointSize':4, 'file': data, dateWindow:[newStart, new Date(time)] } );
     }
 
     function addPoint(series, time, demValue, actualValue)
@@ -463,8 +512,8 @@
                     drawPoints: true,
                     showRoller: false,
                     valueRange: valueRange,
+                    legend:'always',
                     labels: labels,
-                    legend:"always",
                     ylabel:yLabel
                 });
 
