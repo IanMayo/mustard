@@ -60,7 +60,8 @@ function rhumbDestinationPoint(location, brng, dist) {
  *
  *   see http://williams.best.vwh.net/avform.htm#Rhumb
  *
- * @param   {LatLon} [point] Latitude/longitude of destination point
+ * @param   {Object} [origin] Latitude/longitude of start point
+ * @param   {Object} [point] Latitude/longitude of destination point
  * @returns {Number} Distance in km between this point and destination point
  */
 function rhumbDistanceFromTo(origin, point) {
@@ -83,7 +84,8 @@ function rhumbDistanceFromTo(origin, point) {
 /**
 * Returns the bearing from this point to the supplied point along a rhumb line, in degrees
 *
-* @param   {LatLon} [point]: Latitude/longitude of destination point
+* @param   {Object} [origin]: Latitude/longitude of start point
+* @param   {Object} [point]: Latitude/longitude of destination point
 * @returns {Number} Bearing in degrees from North
 */
 function rhumbBearingFromTo(origin, point) {
