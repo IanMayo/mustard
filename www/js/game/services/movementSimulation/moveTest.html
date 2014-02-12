@@ -90,7 +90,7 @@
         </td>
     </tr>
 </table>
-<table style="width:100%">
+<!--<table style="width:100%">
     <tr class="diagnostics">
         <td>
             <div id="SelfNoise"></div>
@@ -124,7 +124,7 @@
             <div id="AngularVelocity"></div>
         </td>
     </tr>
-</table>
+</table>  -->
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <script src="geo.js"></script>
 <script src="movement.js"></script>
@@ -319,6 +319,7 @@ function doStep() {
     var otherPos = L.latLng(v2.state.location.lat, v2.state.location.long);
     updateMarker(v2.name, otherPos);
 
+/**
     // try to show a graph marker
     addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
@@ -326,6 +327,8 @@ function doStep() {
     addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
 
     addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
+
+ **/
 
     // share the good news about detections
     if (v1.newDetections) {
@@ -555,11 +558,14 @@ var dataSeries = {};
 var graphs = {};
 
 // initialise the graphs
+/*
 initGraph("SignalExcess", [new Date(0), 0, 0], ['Time', 'Own SE', 'tgt SE'], "dB", [-50,50]);
 initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
 initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
 initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
 initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
+
+*/
 initGraph("Sonar", [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10'], "Bearing", [0, 360]);
 
 </script>
