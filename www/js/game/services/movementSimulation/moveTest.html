@@ -142,13 +142,13 @@ var scenario = {
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 30,
                 "speedPattern": "Uniform"    /* pattern of how the noise level changes with speed */
             },
             "state": {
                 time: 0,
                 location: {lat: 53, long: -3},
-                height: -40,
+                height: 0,
                 course: 100,
                 speed: 10,
                 demCourse: 100,
@@ -161,7 +161,6 @@ var scenario = {
                 decelerationRate: 0.8,
                 minSpeed: 4,
                 maxSpeed: 40,
-                batteryUsage: 1.03,
                 climbRate: 1,
                 diveRate: 2
             }
@@ -179,7 +178,7 @@ var scenario = {
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 110,
+                "baseLevel": 100,
                 "speedPattern": "Uniform"    /* pattern of how the noise level changes with speed */
             },
             "state": {
@@ -190,7 +189,8 @@ var scenario = {
                 speed: 8,
                 demCourse: 200,
                 demSpeed: 8,
-                demHeight: -10.0
+                demHeight: -40.0,
+                batteryLevel: 90
             },
             "perf": {
                 turnRadius: 1200.0,
@@ -198,7 +198,8 @@ var scenario = {
                 decelerationRate: 0.8,
                 minSpeed: 4,
                 maxSpeed: 20,
-                batteryUsage: 1.03,
+                batteryUsage: 0.00035, /* should be: 0.00035  */
+                chargeRate: 0.013,     /* should be: 0.013  */
                 climbRate: 1,
                 diveRate: 2
             }
@@ -282,8 +283,6 @@ function doStep() {
     var sonarLoc = v1.sonars[0].location;
     var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.long);
     updateOwnship(ownshipPos, sonarPos, v1.state.course, v1.state.speed);
-//        updateMarker(v1.name, ownshipPos);
-//        updateMarker(v1.sonars[0].name, sonarPos);
 
     // do we need to move the map?
     if (!map.getBounds().contains(ownshipPos)) {
@@ -528,7 +527,7 @@ var graphs = {};
 // initialise the graphs
 initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
 initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
-initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Turn Rate (degs/s)", [-50, 50]);
+initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
 initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
 initGraph("Sonar", [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10'], "Bearing", [0, 360]);
 
