@@ -139,6 +139,10 @@ function doDetections(tNow, myVessel, allVessels) {
                         insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
                     }
                 }
+                else
+                {
+                    myVessel.state.SE = 0;
+                }
             }
         }
     }
