@@ -43,6 +43,10 @@ angular.module('mustard.game.spatialViewDirective', [])
                 scope.$apply(function () {
                     scope.paths['ownShipTravelling'].latlngs = visiblePoints;
                 });
+
+                // update center coordinates of the map
+                scope.mapCenter.lat = ownShipState.lat;
+                scope.mapCenter.lng = ownShipState.lng;
             };
 
             /**
