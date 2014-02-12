@@ -460,16 +460,23 @@ L.control.scale({metric: true, imperial: true}).addTo(map);
 
 
 function addDetections(dataValues) {
-    var time = dataValues[0];
     var data = dataSeries["Sonar"];
     var graph = graphs["Sonar"];
     data.push(dataValues);
     // calculate the 5 minute window
+    var time = dataValues[0];
     var newStart = new Date(time - 10000 * 60);
 
     // get the chart to redraw
-    graph.updateOptions({'colors': ["#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0"],
-        'strokePattern': [0, 4], showLabelsOnHighlight: false, 'pointSize': 4, 'file': data, dateWindow: [newStart, new Date(time)] });
+    graph.updateOptions({
+        'colors': ["#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0"],
+        'strokePattern': [0, 4], showLabelsOnHighlight: false,
+        axes: {
+            x: {axisLabelColor: "#0f0"},
+            y: {axisLabelColor: "#0f0"}
+        },
+        'pointSize': 4, 'file': data,
+        dateWindow: [newStart, new Date(time)] });
 }
 
 function addPoint(series, time, demValue, actualValue) {
