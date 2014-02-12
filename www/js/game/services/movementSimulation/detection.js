@@ -12,13 +12,29 @@ function hasCategory(thisCat, theCats) {
     return (theCats.indexOf(thisCat) > -1);
 }
 
-function getOrigin(location, offset, heading)
-{
-    return rhumbDestinationPoint(location,toRads(heading), offset);
+function getOrigin(location, offset, heading) {
+    return rhumbDestinationPoint(location, toRads(heading), offset);
 }
 
-function getRadiatedNoiseFor(speed, baseLevel)
-{
+const ABSORPTION_COEFFICIENT = 0.000073152;
+/* db / metre */
+
+function lossFor(range) {
+    var loss;
+    // idiot check
+    if (range <= 0) {
+        loss = 0;
+    }
+    else {
+        var absorption = ABSORPTION_COEFFICIENT * range;
+        var spreading = 20 * Math.log(range) / Math.log(10);
+        loss = absorption + spreading;
+    }
+    return loss;
+
+}
+
+function getRadiatedNoiseFor(speed, baseLevel) {
     return 0.0000252 * Math.pow(speed, 5) -
         0.001456 * Math.pow(speed, 4) +
         0.02165 * Math.pow(speed, 3) +
@@ -34,10 +50,11 @@ function doDetections(tNow, myVessel, allVessels) {
 
     const SENSOR_ERROR = 2;
 
-    var osNoise = getRadiatedNoiseFor(speed, baseLevel);
+    // we half ownship noise, to get required detection ranges
+    var LN = getRadiatedNoiseFor(speed, baseLevel) / 2;
 
     // ok, store it, in case we want to analyse it
-    myVessel.radiatedNoise.osNoise = osNoise;
+    myVessel.state.osNoise = LN;
 
     // store the detections
     var newDetections = [];
@@ -65,27 +82,50 @@ function doDetections(tNow, myVessel, allVessels) {
                 var theSelfBrg = rhumbBearingFromTo(origin, myVessel.state.location);
 
                 // does this sonar have simple self-noise?
-                if(! hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories))
-                {
-                    insertDetections(newDetections, tNow,origin, myVessel.state.course, theSelfBrg,"OS", false, SENSOR_ERROR);
+                if (!hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
+                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, "OS", false, SENSOR_ERROR);
                 }
 
                 // does this sonar have simple self-noise?
-                if(! hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories))
-                {
+                if (!hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
                     var offsetBearing = theSelfBrg + 15;
-                    insertDetections(newDetections, tNow,origin, myVessel.state.course, offsetBearing,"OS (lobe)", true, SENSOR_ERROR);
+                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, "OS (lobe)", true, SENSOR_ERROR);
                 }
             }
             else {
                 // no, sort out proper detections
 
-                // sort out the angle to target
-                var theBrg = rhumbBearingFromTo(origin, thisV.state.location);
+                // his radiated noise:
+                var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel);
 
-                var doAmbiguous = ! hasCategory("NO_AMBIGUOUS", sonar.categories);
+                // what's the loss?
+                //  - start with the range
+                var range = rhumbDistanceFromTo(origin, thisV.state.location);
 
-                insertDetections(newDetections, tNow,origin, myVessel.state.course, theBrg,"thisV.name", doAmbiguous, SENSOR_ERROR);
+                // and now the loss itself
+                var NW = lossFor(range);
+
+                var DT = sonar.DT;
+                var AG = sonar.ArrayGain;
+
+                var SE = LS - NW - (LN - AG) - DT;
+
+                // DEBUG - put the SE in the state
+//                myVessel.state.SE = SE;
+//                myVessel.state.loss = NW;
+
+//                console.log("" + myVessel.name +" == SE:" + SE + " range:" + Math.floor(range) + " LS:" + Math.floor(LS) + " NW:" +Math.floor( NW) + " LN:" + Math.floor(LN) + " AG:" + AG + " DT:" + DT);
+
+                // +ve?
+                if (SE > 0) {
+                    // do 10 log SE, to make it smoother
+                    SE = 10 * Math.log(SE);
+
+                    // sort out the angle to target
+                    var theBrg = rhumbBearingFromTo(origin, thisV.state.location);
+                    var doAmbiguous = !hasCategory("NO_AMBIGUOUS", sonar.categories);
+                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
+                }
             }
         }
     }
@@ -95,32 +135,28 @@ function doDetections(tNow, myVessel, allVessels) {
 
 }
 
-function insertDetections(detectionList,tNow,origin,  osCourse, bearing,source, doAmbiguous, errorRange)
-{
+function insertDetections(detectionList, tNow, origin, osCourse, bearing, source, doAmbiguous, errorRange, SE) {
     // ok, what's the relative angle?
     var relBearing = bearing - osCourse;
 
     // do the port angle
-    var thisError = relBearing -errorRange + 2 * Math.random() * errorRange;
+    var thisError = relBearing - errorRange + 2 * Math.random() * errorRange;
     var thisValue = osCourse + thisError;
-    if(thisValue < 0)
-    {
+    if (thisValue < 0) {
         thisValue += 360;
     }
-    thisValue =  thisValue % 360;
-    detectionList.push({"time":tNow, "bearing" : thisValue, "source":source, "origin":{"lat":origin.lat,"long":origin.long}});
+    thisValue = thisValue % 360;
+    detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "origin": {"lat": origin.lat, "long": origin.long, "strength": SE}});
 
     // ambiguous?
-    if(doAmbiguous)
-    {
-        thisError = - (relBearing -errorRange + 2 * Math.random() * errorRange);
+    if (doAmbiguous) {
+        thisError = -(relBearing - errorRange + 2 * Math.random() * errorRange);
         thisValue = osCourse + thisError;
-        if(thisValue < 0)
-        {
+        if (thisValue < 0) {
             thisValue += 360;
         }
         thisValue = thisValue % 360;
-        detectionList.push({"time":tNow, "bearing" :thisValue , "source":source + "(ambig)", "origin":{"lat":origin.lat,"long":origin.long}});
+        detectionList.push({"time": tNow, "bearing": thisValue, "source": source + "(ambig)", "origin": {"lat": origin.lat, "long": origin.long}});
     }
 }
 
