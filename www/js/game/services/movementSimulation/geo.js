@@ -63,12 +63,12 @@ function rhumbDestinationPoint(location, brng, dist) {
  * @param   {LatLon} [point] Latitude/longitude of destination point
  * @returns {Number} Distance in km between this point and destination point
  */
-function rhumbDistanceTo(origin, point) {
+function rhumbDistanceFromTo(origin, point) {
     const R = 6371000;  // earth radius in m
     var lat1 = toRads(origin.lat);
     var lat2 = toRads(point.lat);
     var dLat = toRads(point.lat-origin.lat);
-    var dLon = toRads(Math.abs(point.lon-origin.lon));
+    var dLon = toRads(Math.abs(point.long-origin.long));
 
     var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
     var q = (isFinite(dLat/dPhi)) ? dLat/dPhi : Math.cos(lat1);  // E-W line gives dPhi=0
