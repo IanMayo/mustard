@@ -2,6 +2,15 @@
  * Created by ian on 10/02/14.
  */
 
+/** calculate new height
+ *
+ * @param curHeight  (m)
+ * @param dHeight   (m)
+ * @param climbRate  (m/s)
+ * @param diveRate   (m/s)
+ * @param secs max time allowed (s)
+ * @returns {number} height at end of step
+ */
 function calcNewHeight(curHeight, dHeight, climbRate, diveRate, secs) {
     var heightDelta = dHeight - curHeight;
     var newHeight;
@@ -32,6 +41,15 @@ function calcNewHeight(curHeight, dHeight, climbRate, diveRate, secs) {
 
 }
 
+/** calculate new speed
+ *
+ * @param curSpeed  current speed (m/s)
+ * @param demSpeed demanded speed (m/s)
+ * @param accelerationRate  (m/s/s)
+ * @param decelerationRate  (m/s/s)
+ * @param timeDelta  max time allowed (s)
+ * @returns {number} speed at end of time step
+ */
 function calcNewSpeed(curSpeed, demSpeed, accelerationRate, decelerationRate, timeDelta) {
     var speedDelta = demSpeed - curSpeed;
     var newSpeed;
@@ -60,7 +78,15 @@ function calcNewSpeed(curSpeed, demSpeed, accelerationRate, decelerationRate, ti
     return newSpeed;
 }
 
-
+/** calcualte new course
+ *
+ * @param curCourse (degs)
+ * @param demCourse  (degs)
+ * @param turnRadius  (m)
+ * @param speed      (m/s)
+ * @param timeDelta  (s)
+ * @returns {number} course at end of step (degs)
+ */
 function calcNewCourse(curCourse, demCourse, turnRadius, speed, timeDelta) {
     // put the dem course in the +ve domain
     if (demCourse < 0) {
@@ -110,11 +136,24 @@ function calcNewCourse(curCourse, demCourse, turnRadius, speed, timeDelta) {
     return newCourse;
 }
 
+/** calculate how far forward the vessel will go in the time specified
+ *
+ * @param time (s)
+ * @param speed  (m/s)
+ * @param course  (degs)
+ * @param movement  (placeholder)
+ */
 function doStraight(time, speed, course, movement) {
     movement.deltaLong += speed * time * Math.sin(course);
     movement.deltaLat += speed * time * Math.cos(course);
 }
 
+/** handle the movement for this vessel
+ *
+ * @param newTime  time at the end of this step (secs)
+ * @param curState the current vessel status
+ * @param vPerf  the performance for this vessel
+ */
 function doMove(newTime, curState, vPerf) {
 
     var oldTime = curState.time;
@@ -152,6 +191,9 @@ function doMove(newTime, curState, vPerf) {
     // what was the mean speed during the time step?
     var meanSpeed = curSpeed - (speedDelta / 2);
 
+    // just double check that we always get +ve speed
+    meanSpeed = Math.max(0, meanSpeed);
+
     // remember the previous course
     var oldCourseRads = curCourseRads;
 
@@ -166,7 +208,36 @@ function doMove(newTime, curState, vPerf) {
     }
     var meanCourseRads = oldCourseRads + (newCourseDelta) / 2;
 
-    // and now move
+    // do we know battery usage?
+    if(vPerf.batteryUsage)
+    {
+        if(curState.batteryLevel)
+        {
+            curState.batteryLevel -= timeDelta * vPerf.batteryUsage * meanSpeed;
+
+            // oops, just check if we are recharging
+            if(curHeight > -20)
+            {
+                // yes, charging
+                curState.batteryLevel += timeDelta * vPerf.chargeRate;
+            }
+
+            // trim to sensible limits. Note - we don't use zero for level, since it fails the
+            // curState.batteryLevel test above.
+
+            curState.batteryLevel = Math.min(100, curState.batteryLevel);
+            curState.batteryLevel = Math.max(0.01, curState.batteryLevel);
+
+            // just check that the battery isn't dead
+            if(curState.batteryLevel < 0.1)
+            {
+                // yes, slow to a stop!
+                curSpeed = 0;
+            }
+        }
+    }
+
+    // and now move  (note: speed may be zero if the battery is empty)
     doStraight(timeDelta, curSpeed, meanCourseRads, movement);
 
     // update the state object
@@ -174,6 +245,7 @@ function doMove(newTime, curState, vPerf) {
     var bearingRads = Math.atan2(movement.deltaLong, movement.deltaLat);
     var rangeM = Math.sqrt(movement.deltaLong*movement.deltaLong + movement.deltaLat*movement.deltaLat);
     curState.location = rhumbDestinationPoint(curState.location, bearingRads, rangeM);
+
 
     curState.time = newTime;
     curState.height = curHeight;
