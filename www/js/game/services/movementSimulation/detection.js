@@ -17,6 +17,15 @@ function getOrigin(location, offset, heading)
     return rhumbDestinationPoint(location,toRads(heading), offset);
 }
 
+function getRadiatedNoiseFor(speed, baseLevel)
+{
+    return 0.0000252 * Math.pow(speed, 5) -
+        0.001456 * Math.pow(speed, 4) +
+        0.02165 * Math.pow(speed, 3) +
+        0.06 * Math.pow(speed, 2) -
+        0.66 * speed + baseLevel;
+}
+
 function doDetections(tNow, myVessel, allVessels) {
     // ok, sort out my own noise levels
     var name = myVessel.name;
@@ -25,11 +34,7 @@ function doDetections(tNow, myVessel, allVessels) {
 
     const SENSOR_ERROR = 2;
 
-    var osNoise = 0.0000252 * Math.pow(speed, 5) -
-        0.001456 * Math.pow(speed, 4) +
-        0.02165 * Math.pow(speed, 3) +
-        0.04 * Math.pow(speed, 2) -
-        0.66 * speed + baseLevel;
+    var osNoise = getRadiatedNoiseFor(speed, baseLevel);
 
     // ok, store it, in case we want to analyse it
     myVessel.radiatedNoise.osNoise = osNoise;
@@ -62,14 +67,14 @@ function doDetections(tNow, myVessel, allVessels) {
                 // does this sonar have simple self-noise?
                 if(! hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories))
                 {
-                    insertDetections(newDetections, tNow, myVessel.state.course, theSelfBrg,"OS", false, SENSOR_ERROR);
+                    insertDetections(newDetections, tNow,origin, myVessel.state.course, theSelfBrg,"OS", false, SENSOR_ERROR);
                 }
 
                 // does this sonar have simple self-noise?
                 if(! hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories))
                 {
                     var offsetBearing = theSelfBrg + 15;
-                    insertDetections(newDetections, tNow, myVessel.state.course, offsetBearing,"OS (lobe)", true, SENSOR_ERROR);
+                    insertDetections(newDetections, tNow,origin, myVessel.state.course, offsetBearing,"OS (lobe)", true, SENSOR_ERROR);
                 }
             }
             else {
@@ -80,7 +85,7 @@ function doDetections(tNow, myVessel, allVessels) {
 
                 var doAmbiguous = ! hasCategory("NO_AMBIGUOUS", sonar.categories);
 
-                insertDetections(newDetections, tNow, myVessel.state.course, theBrg,"thisV.name", doAmbiguous, SENSOR_ERROR);
+                insertDetections(newDetections, tNow,origin, myVessel.state.course, theBrg,"thisV.name", doAmbiguous, SENSOR_ERROR);
             }
         }
     }
@@ -90,7 +95,7 @@ function doDetections(tNow, myVessel, allVessels) {
 
 }
 
-function insertDetections(detectionList,tNow,  osCourse, bearing,source, doAmbiguous, errorRange)
+function insertDetections(detectionList,tNow,origin,  osCourse, bearing,source, doAmbiguous, errorRange)
 {
     // ok, what's the relative angle?
     var relBearing = bearing - osCourse;
@@ -103,7 +108,7 @@ function insertDetections(detectionList,tNow,  osCourse, bearing,source, doAmbig
         thisValue += 360;
     }
     thisValue =  thisValue % 360;
-    detectionList.push({"time":tNow, "bearing" : thisValue, "source":source});
+    detectionList.push({"time":tNow, "bearing" : thisValue, "source":source, "origin":{"lat":origin.lat,"long":origin.long}});
 
     // ambiguous?
     if(doAmbiguous)
@@ -115,7 +120,7 @@ function insertDetections(detectionList,tNow,  osCourse, bearing,source, doAmbig
             thisValue += 360;
         }
         thisValue = thisValue % 360;
-        detectionList.push({"time":tNow, "bearing" :thisValue , "source":source + "(ambig)"});
+        detectionList.push({"time":tNow, "bearing" :thisValue , "source":source + "(ambig)", "origin":{"lat":origin.lat,"long":origin.long}});
     }
 }
 
