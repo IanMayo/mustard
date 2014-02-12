@@ -9,7 +9,7 @@
             color: #0f0
         }
 
-        #Course, #Speed, #AngularVelocity, #SelfNoise {
+        #Course, #Speed, #AngularVelocity, #SelfNoise, #SignalExcess {
             width: 300px;
             height: 200px;
             margin: 8px auto;
@@ -91,7 +91,7 @@
             <div id="SelfNoise"></div>
         </td>
         <td>
-            <div id="pendingA"></div>
+            <div id="SignalExcess"></div>
         </td>
         <td>
             <fieldset>
@@ -137,12 +137,13 @@ var scenario = {
                 {
                     "name": "BASIC_TOWED",
                     "categories": [],
-                    "RD": 1.4,
-                    "offset": -1000
+                    "offset": -1000,
+                    "ArrayGain": 20,
+                    "DT":-8
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 30,
+                "baseLevel": 90,
                 "speedPattern": "Uniform"    /* pattern of how the noise level changes with speed */
             },
             "state": {
@@ -173,8 +174,9 @@ var scenario = {
                 {
                     "name": "BASIC_HULL",
                     "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "RD": 1.4,
-                    "offset": 0
+                    "offset": 0,
+                    "ArrayGain": 28,
+                    "DT":-8
                 }
             ],
             "radiatedNoise": {
@@ -294,10 +296,12 @@ function doStep() {
     updateMarker(v2.name, otherPos);
 
     // try to show a graph marker
-    addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
+    addPoint("Course", tNow, v1.state.loss, v2.state.loss);
     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
-    addPoint("SelfNoise", tNow, v1.radiatedNoise.osNoise, v2.radiatedNoise.osNoise);
+    addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
+
+    addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
 
     // share the good news about detections
     if (v1.newDetections) {
@@ -445,7 +449,8 @@ function updateMarker(vName, location) {
 }
 
 function showThis(checkboxName) {
-    return document.getElementById(checkboxName).checked;
+    var theControl = document.getElementById(checkboxName);
+    return !theControl || theControl.checked;
 }
 
 var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -4], 12);
@@ -474,7 +479,7 @@ function addDetections(dataValues) {
             x: {axisLabelColor: "#0f0"},
             y: {axisLabelColor: "#0f0"}
         },
-        'pointSize': 4, 'file': data,
+       'pointSize': 4, 'file': data,
         dateWindow: [newStart, new Date(time)] });
 }
 
@@ -520,12 +525,14 @@ function initGraph(name, datum, labels, yLabel, valueRange) {
     graphs[name] = thisGraph;
 }
 
+
 // collections of graphs & data series'
 var dataSeries = {};
 var graphs = {};
 
 // initialise the graphs
-initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
+initGraph("SignalExcess", [new Date(0), 0, 0], ['Time', 'Own SE', 'tgt SE'], "dB", [-50,50]);
+initGraph("Course", [new Date(0), 0, 0], ['Time', 'signal loss', 'His loss'], "Course (degs)", [0.0, 100]);
 initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
 initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
 initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
