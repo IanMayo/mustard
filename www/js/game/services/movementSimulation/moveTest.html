@@ -31,7 +31,7 @@
         tr.diagnostics
         {
             background-color: #dddddd;
-            color: #000
+            color: #000;
         }
 
     </style>
@@ -514,8 +514,14 @@
                     valueRange: valueRange,
                     legend:'always',
                     labels: labels,
-                    ylabel:yLabel
-                });
+                    ylabel:yLabel,
+                    yLabelWidth:12,
+                    axes:{
+                        x: {axisLabelFontSize:10},
+                        y: {axisLabelFontSize:10}
+                    }
+                }
+    );
 
         // and store them
         dataSeries[name] = data;
