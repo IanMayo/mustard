@@ -29,12 +29,19 @@ function lossFor(range) {
 
 }
 
-function getRadiatedNoiseFor(speed, baseLevel) {
-    return 0.0000252 * Math.pow(speed, 5) -
+function getRadiatedNoiseFor(speed, baseLevel, state) {
+    var res = 0.0000252 * Math.pow(speed, 5) -
         0.001456 * Math.pow(speed, 4) +
         0.02165 * Math.pow(speed, 3) +
         0.06 * Math.pow(speed, 2) -
         0.66 * speed + baseLevel;
+
+    if (state.categories) {
+        if (hasCategory("SNORT", state.categories)) {
+            res += 10;
+        }
+    }
+    return res;
 }
 
 function doDetections(tNow, myVessel, allVessels) {
@@ -46,7 +53,7 @@ function doDetections(tNow, myVessel, allVessels) {
     const SENSOR_ERROR = 2;
 
     // we half ownship noise, to get required detection ranges
-    var LN = getRadiatedNoiseFor(speed, baseLevel) / 2;
+    var LN = getRadiatedNoiseFor(speed, baseLevel, myVessel.state) / 2;
 
     // ok, store it, in case we want to analyse it
     myVessel.state.osNoise = LN;
@@ -102,7 +109,7 @@ function doDetections(tNow, myVessel, allVessels) {
                 if ((!hasBowNull) || relBrg > BOW_NULL) {
 
                     // his radiated noise:
-                    var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel);
+                    var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel, thisV.state);
 
                     // what's the loss?
                     //  - start with the range
@@ -118,7 +125,7 @@ function doDetections(tNow, myVessel, allVessels) {
 
                     // DEBUG - put the SE in the state
                     myVessel.state.SE = SE;
-             //       myVessel.state.loss = NW;
+                    //       myVessel.state.loss = NW;
 
 //                console.log("" + myVessel.name +" == SE:" + SE + " range:" + Math.floor(range) + " LS:" + Math.floor(LS) + " NW:" +Math.floor( NW) + " LN:" + Math.floor(LN) + " AG:" + AG + " DT:" + DT);
 
@@ -131,8 +138,7 @@ function doDetections(tNow, myVessel, allVessels) {
                         insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
                     }
                 }
-                else
-                {
+                else {
                     myVessel.state.SE = 0;
                 }
             }
