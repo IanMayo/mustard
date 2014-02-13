@@ -178,9 +178,16 @@ var scenario = {
                 {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
-                    "tl" : {"Lat": 50.05, "lng": -8.05},
-                    "br" : {"Lat": 49.95, "lng": -7.95},
+                    "tl" : {"lat": 50.05, "lng": -8.08},
+                    "br" : {"lat": 49.95, "lng": -7.92},
                     "height" : -30
+                },
+                {
+                    "name": "Basic snort",
+                    "type": "SNORT",
+                    "height" : -10,
+                    "startLevel" : 20,
+                    "stopLevel" : 90
                 }
             ],
             "sonars": [
@@ -242,7 +249,7 @@ function doStep() {
         if (!v2.state.location) {
             // cool, generate one - up to 10 miles from v1
             var direction = Math.random() * 360;
-            var range = 2000 + Math.random() * 10000;
+            var range = 2000 + Math.random() * 5000;
             v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
         }
 
@@ -315,9 +322,7 @@ function doStep() {
     var ownshipPos = L.latLng(v1.state.location.lat, v1.state.location.lng);
 
     // and the sonar marker
-    var sonarLoc = v1.sonars[0].location;
-    var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.lng);
-    updateOwnship(ownshipPos, sonarPos, v1.state.course, v1.state.speed);
+    updateOwnship(ownshipPos, v1.sonars[0].location, v1.state.course, v1.state.speed);
 
     // do we need to move the map?
     if (!map.getBounds().contains(ownshipPos)) {
@@ -497,6 +502,11 @@ var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 12);
 //}).addTo(map);
 
 L.control.scale({metric: true, imperial: true}).addTo(map);
+
+var circle = L.rectangle([[50.05, -8.08],[49.95, -7.92]], {
+    color: 'red',
+    fillOpacity: 0.5
+}).addTo(map);
 
 
 function addDetections(dataValues) {

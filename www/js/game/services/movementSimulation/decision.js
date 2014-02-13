@@ -7,12 +7,32 @@ function doDecisions(tNow, myState, myDetections, myBehaviours) {
 
     var demState;
 
-    if (!myBehaviours) {
+    if (myBehaviours) {
         // ok, loop through them
         var ctr = 0;
+
         while (ctr < myBehaviours.length && (!demState)) {
             var thisB = myBehaviours[ctr];
+            ctr++;
+
             demState = implementThis(tNow, myState, myDetections, thisB);
+        }
+
+        // do we have something to do?
+        if(demState)
+        {
+            if(demState.demCourse)
+            {
+                myState.demCourse = demState.demCourse;
+            }
+            if(demState.demSpeed)
+            {
+                myState.demSpeed = demState.demSpeed;
+            }
+            if(demState.demHeight)
+            {
+                myState.demHeight = demState.demHeight;
+            }
         }
     }
     else {
@@ -40,24 +60,33 @@ function handleRectWander(tNow, myState, myDetections, thisB) {
 
     // are we current changing course? maybe we're still turning
     if (myState.course == myState.demCourse) {
+
         var bounds = thisB.bounds;
         if (!bounds) {
             // ok, inject the bounds
             var tl = L.latLng(thisB.tl.lat, thisB.tl.lng);
-            var br = L.latlng(thisB.br.lat, thisB.br.lng);
-            var bounds = L.latLngBounds(tl, br);
+            var br = L.latLng(thisB.br.lat, thisB.br.lng);
+            bounds = L.latLngBounds(tl, br);
             thisB.bounds = bounds;
         }
 
-        // ok, get the current point
+        // are we in the patrol area?
         var myLoc = L.latLng(myState.location.lat, myState.location.lng);
-
-        if (!bounds.contains(myLoc)) {
+        if (!(bounds.contains(myLoc))) {
             // ok, plot course to centre
             var centre = bounds.getCenter();
 
             // what's the angle to the center?
-         //   var bearing =
+            var bearing = rhumbBearingFromTo(myState.location, centre);
+
+            res = {};
+            res.demCourse = bearing;
+
+            // do we have a demanded height?
+            if(thisB.height)
+            {
+                res.demHeight = thisB.height;
+            }
         }
     }
 
