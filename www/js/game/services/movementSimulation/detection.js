@@ -11,8 +11,6 @@ function getOrigin(location, offset, heading) {
 const ABSORPTION_COEFFICIENT = 0.000073152;
 /* db / metre */
 
-const BOW_NULL = 20;
-/* degrees either side */
 
 function lossFor(range) {
     var loss;
@@ -49,6 +47,17 @@ function doDetections(tNow, myVessel, allVessels) {
     var name = myVessel.name;
     var speed = myVessel.state.speed;
     var baseLevel = myVessel.radiatedNoise.baseLevel;
+
+    // sort out the size of the bow null
+    var bowNull;
+    if(speed >= 15)
+    {
+        bowNull = 35;
+    }
+    else
+    {
+        bowNull = 18;
+    }
 
     const SENSOR_ERROR = 2;
 
@@ -92,6 +101,13 @@ function doDetections(tNow, myVessel, allVessels) {
                 if (!hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
                     var offsetBearing = theSelfBrg + 15;
                     insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, "OS (lobe)", true, SENSOR_ERROR);
+
+                    // hey, just check if we're "roaring" along.
+                    if(speed >= 15)
+                    {
+                        var offsetBearing = theSelfBrg + 25;
+                        insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, "OS (lobe 2)", true, SENSOR_ERROR);
+                    }
                 }
             }
             else {
@@ -106,7 +122,7 @@ function doDetections(tNow, myVessel, allVessels) {
                 var hasBowNull = hasCategory("HAS_BOW_NULL", sonar.categories);
 
                 // are we without a bow null, or would this be outside the null anyway?
-                if ((!hasBowNull) || relBrg > BOW_NULL) {
+                if ((!hasBowNull) || relBrg > bowNull) {
 
                     // his radiated noise:
                     var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel, thisV.state);
