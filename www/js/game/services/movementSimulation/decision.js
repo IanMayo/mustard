@@ -18,6 +18,9 @@ function doDecisions(tNow, myState, myDetections, myBehaviours) {
             demState = implementThis(tNow, myState, myDetections, thisB);
         }
 
+        // clear any existing activity
+        delete myState.description;
+
         // do we have something to do?
         if (demState) {
             if (demState.demCourse) {
@@ -29,6 +32,8 @@ function doDecisions(tNow, myState, myDetections, myBehaviours) {
             if (demState.demHeight) {
                 myState.demHeight = demState.demHeight;
             }
+            // a null description is valid - store it.
+            myState.description = demState.description;
         }
     }
     else {
@@ -84,6 +89,8 @@ function handleRectWander(tNow, myState, myDetections, thisB) {
             if (thisB.height) {
                 res.demHeight = thisB.height;
             }
+
+            res.description = "Heading back to patrol area";
         }
     }
 
@@ -101,14 +108,15 @@ function handleSnort(tNow, myState, myDetections, thisB) {
 
             // hey, remember the previous depth, so we can return to it. Note: we also
             // use this as a flag to indicate that we're snorting
-            if(!thisB.previousHeight)
-            {
+            if (!thisB.previousHeight) {
                 thisB.previousHeight = myState.height;
             }
 
             // ok, go to relevant depth
             res = {};
             res.demHeight = thisB.height;
+
+            res.description = "Prepare to snort";
 
             // and insert snort flag
             if (!(myState.categories)) {
@@ -120,6 +128,9 @@ function handleSnort(tNow, myState, myDetections, thisB) {
         }
         else if (thisB.previousHeight) {
 
+            res = {};
+            res.description = "Snorting";
+
             // aah, we're already snorting. are we there yet?
             if (myState.batteryLevel > thisB.stopLevel) {
 
@@ -128,12 +139,18 @@ function handleSnort(tNow, myState, myDetections, thisB) {
                     removeCategory("SNORT", myState.categories);
                 }
 
-                // and return to the previous depth (if necessary)
-                res = {};
-                res.demHeight = thisB.previousHeight;
-
-                // clear the height flag
-                delete thisB.previousHeight;
+                if(myState.height != thisB.previousHeight)
+                {
+                    // and return to the previous depth (if necessary)
+                    res.demHeight = thisB.previousHeight;
+                    res.description = "Snort complete. Returning to depth";
+                }
+                else
+                {
+                    res.description = "Snort complete. Back at patrol depth";
+                    // clear the height flag
+                    delete thisB.previousHeight;
+                }
             }
         }
     }
