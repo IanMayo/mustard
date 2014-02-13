@@ -11,7 +11,7 @@ angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game.simulato
                 var deferred = $q.defer();
                 $http({
                     method: "GET",
-                    url: "/www/js/game/scenarios/PracticeScenario.json"
+                    url: "js/game/scenarios/PracticeScenario.json"
                 }).success(function (response) {
                         deferred.resolve(response);
                     });
