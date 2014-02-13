@@ -152,6 +152,10 @@ function doDetections(tNow, myVessel, allVessels) {
 
                         var doAmbiguous = !hasCategory("NO_AMBIGUOUS", sonar.categories);
                         insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, "thisV.name", doAmbiguous, SENSOR_ERROR, SE);
+
+                        // TODO: hey, if he's snorting, why not show extra lobes
+                        // TODO: no, do it if there's a really high SE.
+                        console.log("height:" + thisV.height + " LS:" + LS);
                     }
                 }
                 else {
