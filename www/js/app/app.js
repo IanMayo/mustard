@@ -1,8 +1,19 @@
-angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game.simulator', 'leaflet-directive'])
+angular.module('mustard', [
+    'ngRoute',
+    'mustard.services',
+    'mustard.app.login',
+    'mustard.game.simulator',
+    'leaflet-directive'
+])
 
 .config(function ($routeProvider) {
 
     $routeProvider
+    .when('/login', {
+        controller: 'LoginCtrl',
+        templateUrl: 'js/app/controllers/login/login.tpl.html'
+    })
+
     .when('/game/mission', {
         controller: 'SimulatorCtrl',
         templateUrl: 'js/game/controllers/simulator/mission.tpl.html',
@@ -13,12 +24,13 @@ angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game.simulato
                     method: "GET",
                     url: "js/game/scenarios/PracticeScenario.json"
                 }).success(function (response) {
-                        deferred.resolve(response);
-                    });
+                    deferred.resolve(response);
+                });
                 return deferred.promise;
             }]
         }
     })
+
     .when('/game/training', {
         controller: 'SimulatorCtrl',
         templateUrl: 'js/game/controllers/simulator/training.tpl.html',
@@ -35,5 +47,6 @@ angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game.simulato
             }]
         }
     })
-    .otherwise({redirectTo: '/'});
+
+    .otherwise({redirectTo: '/login'});
 });
