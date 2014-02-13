@@ -153,7 +153,7 @@ var scenario = {
             },
             "state": {
                 time: 0,
-                location: {lat: 50, long: -8},
+                location: {lat: 50, lng: -8},
                 height: 0,
                 course: 100,
                 speed: 10,
@@ -178,8 +178,8 @@ var scenario = {
                 {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
-                    "tl" : {"Lat": 50.05, "Long": -8.05},
-                    "br" : {"Lat": 49.95, "Long": -7.95},
+                    "tl" : {"Lat": 50.05, "lng": -8.05},
+                    "br" : {"Lat": 49.95, "lng": -7.95},
                     "height" : -30
                 }
             ],
@@ -304,7 +304,7 @@ function doStep() {
     document.getElementById("outCourse").innerHTML = "" + v1.state.course.toFixed(2);
     document.getElementById("outSpeed").innerHTML = "" + v1.state.speed.toFixed(2);
 
-    var locStr = "" + toString(v1.state.location.lat, v1.state.location.long, 'DMS');
+    var locStr = "" + toString(v1.state.location.lat, v1.state.location.lng, 'DMS');
     document.getElementById("outLocation").innerHTML = "" + locStr;
 
     // and sort out the time
@@ -312,11 +312,11 @@ function doStep() {
     document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
 
     // try to move the marker
-    var ownshipPos = L.latLng(v1.state.location.lat, v1.state.location.long);
+    var ownshipPos = L.latLng(v1.state.location.lat, v1.state.location.lng);
 
     // and the sonar marker
     var sonarLoc = v1.sonars[0].location;
-    var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.long);
+    var sonarPos = L.latLng(sonarLoc.lat, sonarLoc.lng);
     updateOwnship(ownshipPos, sonarPos, v1.state.course, v1.state.speed);
 
     // do we need to move the map?
@@ -325,7 +325,7 @@ function doStep() {
     }
 
     // try to move other marker
-    var otherPos = L.latLng(v2.state.location.lat, v2.state.location.long);
+    var otherPos = L.latLng(v2.state.location.lat, v2.state.location.lng);
     updateMarker(v2.name, otherPos);
 
     /**

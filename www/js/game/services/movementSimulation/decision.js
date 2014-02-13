@@ -43,14 +43,14 @@ function handleRectWander(tNow, myState, myDetections, thisB) {
         var bounds = thisB.bounds;
         if (!bounds) {
             // ok, inject the bounds
-            var tl = L.latLng(thisB.tl.lat, thisB.tl.long);
-            var br = L.latlng(thisB.br.lat, thisB.br.long);
+            var tl = L.latLng(thisB.tl.lat, thisB.tl.lng);
+            var br = L.latlng(thisB.br.lat, thisB.br.lng);
             var bounds = L.latLngBounds(tl, br);
             thisB.bounds = bounds;
         }
 
         // ok, get the current point
-        var myLoc = L.latLng(myState.location.lat, myState.location.long);
+        var myLoc = L.latLng(myState.location.lat, myState.location.lng);
 
         if (!bounds.contains(myLoc)) {
             // ok, plot course to centre

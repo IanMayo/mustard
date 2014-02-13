@@ -29,7 +29,7 @@ function rhumbDestinationPoint(location, brng, dist) {
     const R = 6371000;  // radius in metres
     var d = dist/R;  // d = angular distance covered on earth’s surface
     var lat1 = toRads(location.lat);
-    var lon1 = toRads(location.long);
+    var lon1 = toRads(location.lng);
 
     var dLat = d*Math.cos(brng);
 
@@ -49,7 +49,7 @@ function rhumbDestinationPoint(location, brng, dist) {
 
     var res  = {};
     res.lat  =  toDegs(lat2);
-    res.long = toDegs(lon2);
+    res.lng = toDegs(lon2);
 
     return res;
 }
@@ -69,7 +69,7 @@ function rhumbDistanceFromTo(origin, point) {
     var lat1 = toRads(origin.lat);
     var lat2 = toRads(point.lat);
     var dLat = toRads(point.lat-origin.lat);
-    var dLon = toRads(Math.abs(point.long-origin.long));
+    var dLon = toRads(Math.abs(point.lng-origin.lng));
 
     var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
     var q = (isFinite(dLat/dPhi)) ? dLat/dPhi : Math.cos(lat1);  // E-W line gives dPhi=0
@@ -90,7 +90,7 @@ function rhumbDistanceFromTo(origin, point) {
 */
 function rhumbBearingFromTo(origin, point) {
     var lat1 =  toRads(origin.lat), lat2 = toRads(point.lat);
-    var dLon = toRads(point.long-origin.long);
+    var dLon = toRads(point.lng-origin.lng);
 
     var dPhi = Math.log(Math.tan(lat2/2+Math.PI/4)/Math.tan(lat1/2+Math.PI/4));
     if (Math.abs(dLon) > Math.PI) dLon = dLon>0 ? -(2*Math.PI-dLon) : (2*Math.PI+dLon);

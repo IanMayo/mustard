@@ -163,7 +163,7 @@ function insertDetections(detectionList, tNow, origin, osCourse, bearing, source
         thisValue += 360;
     }
     thisValue = thisValue % 360;
-    detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "origin": {"lat": origin.lat, "long": origin.long, "strength": SE}});
+    detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
 
     // ambiguous?
     if (doAmbiguous) {
@@ -173,7 +173,7 @@ function insertDetections(detectionList, tNow, origin, osCourse, bearing, source
             thisValue += 360;
         }
         thisValue = thisValue % 360;
-        detectionList.push({"time": tNow, "bearing": thisValue, "source": source + "(ambig)", "origin": {"lat": origin.lat, "long": origin.long}});
+        detectionList.push({"time": tNow, "bearing": thisValue, "source": source + "(ambig)", "origin": {"lat": origin.lat, "lng": origin.lng}});
     }
 }
 
