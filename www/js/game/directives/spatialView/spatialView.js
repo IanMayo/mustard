@@ -1,7 +1,7 @@
 angular.module('mustard.game.spatialViewDirective', [])
 
 .constant('spatialViewConfig', {
-    ownShipVisiblePointsTime: 1000 * 20 // 10 min
+    ownShipVisiblePointsTime: 1000 * 60 * 10 // 10 min
 })
 
 .directive('spatialView', ['spatialViewConfig', function (spatialViewConfig) {
@@ -50,25 +50,45 @@ angular.module('mustard.game.spatialViewDirective', [])
             };
 
             /**
-             * Show sonar detections on the map
+             * Show sonar detections lines on the map
              * @param {Object} ownShip
-             * @param {Object} targets
+             * @param {Object} destinations
              */
-            var sonarDetections = function (ownShip, targets) {
-                var coordinates = [];
+            var sonarDetections = function (ownShip, destinations) {
+                var detectionPoints = [];
+                var detectionLinesCoordinates = [];
 
-                _.each(targets, function (target, index) {
+                _.each(destinations, function (destination, index) {
+                    var destinationState = angular.copy(destination);
+
                     if (!localVesselsState[index]) {
-                        // a new vessel in object
+                        // a new detection in object
                         localVesselsState[index] = {history: []}
                     }
+                    destinationState.time = _.now();
+                    destinationState.origin = {
+                        lat: ownShip.lat,
+                        lng: ownShip.lng
+                    };
 
-                    localVesselsState[index].history.push(target);
-                    coordinates.push([ownShip, target]);
+                    // split detection points array into two arrays: expired and visible
+                    detectionPoints = _.partition(localVesselsState[index].history, function (item) {
+                        return item.time < (destinationState.time - spatialViewConfig.ownShipVisiblePointsTime);
+                    });
+
+                    // keep only visible detection points
+                    localVesselsState[index].history = detectionPoints.pop();
+                    // add new detection to history
+                    localVesselsState[index].history.push(destinationState);
+
+                    // create line coordinates array
+                    _.each(localVesselsState[index].history, function (item) {
+                        detectionLinesCoordinates.push([item.origin, _.pick(item, 'lat', 'lng')]);
+                    });
                 });
 
                 scope.$apply(function () {
-                    scope.paths['sonarDetections'].latlngs = coordinates;
+                    scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
                 });
             };
 
@@ -84,10 +104,13 @@ angular.module('mustard.game.spatialViewDirective', [])
             scope.paths = {
                 sonarDetections : {
                     type: 'multiPolyline',
+                    color: '#A9A9A9',
+                    weight: 2,
                     latlngs: [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]]
                 },
                 ownShipTravelling: {
                     type: 'polyline',
+                    weight: 4,
                     latlngs: []
                 }
             };
