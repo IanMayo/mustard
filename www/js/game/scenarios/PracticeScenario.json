@@ -1,96 +1,97 @@
 {
-    "Vessels": [
+    "vessels": [
         {
-            "Name": "Some name",
-            "Categories": [
-                "BLUE",
-                "SURFACE",
-                "WARSHIP"
+            "name": "Ownship",
+            "categories": ["BLUE", "SURFACE", "WARSHIP"],
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["HAS_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 20,
+                    "DT": -8
+                }
             ],
-            "InitialState": {
-                "Time": 0,
-                "Location": {
-                    "Lat": 12.2,
-                    "Long": 44.3
-                },
-                "Speed": 12.3,
-                "Course": 0.12,
-                "DemandedSpeed": 10,
-                "DemandedCourse": 1,
-                "TurnRate": 0.02
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
             },
-            "Behaviour": {
-                "Name": "UserControlled",
-                "Type": "USER_CONTROL"
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {"lat": 50, "lng": -8},
+                "height": 0,
+                "course": 100,
+                "speed": 10,
+                "demCourse": 100,
+                "demSpeed": 10,
+                "demHeight": -10.0
             },
-            "Performance": {
-                "TurnCircle": 1200,
-                "AccelerationRate": 1,
-                "MinSpeed": 4,
-                "MaxSpeed": 40
-            },
-            "Sensors": [{
-                "Name": "Towed Alpha",
-                "RecogDiff": 1,
-                "Offset": -1200
-            }]
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "climbRate": 1,
+                "diveRate": 2
+            }
         },
         {
-            "Name": "Target Alpha",
-            "Categories": [
-                "RED",
-                "SUBSURFACE",
-                "SUBMARINE"
+            "name": "Target",
+            "categories": ["RED", "SUBSURFACE", "SUBMARINE"],
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {"lat": 50.05, "lng": -8.08},
+                    "br": {"lat": 49.95, "lng": -7.92},
+                    "height": -30
+                },
+                {
+                    "name": "Basic snort",
+                    "type": "SNORT",
+                    "height": -10,
+                    "startLevel": 20,
+                    "stopLevel": 90
+                }
             ],
-            "InitialState": {
-                "Time": 0,
-                "Location": {
-                    "Lat": 14.2,
-                    "Long": 42.3
-                },
-                "Speed": 12.3,
-                "Course": 3.14,
-                "DemandedSpeed": 12.3,
-                "DemandedCourse": 3.14,
-                "TurnRate": 0.02,
-                "BatteryLevel": 40
+            "sonars": [
+                {
+                    "name": "BASIC_HULL",
+                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+                    "offset": 0,
+                    "ArrayGain": 28,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 100,
+                "speedPattern": "Uniform"
             },
-            "Behaviour": {
-                "Name": "Target Walk",
-                "Type": "RECTANGLE_WANDER",
-                "TL": {
-                    "Lat": 13.2,
-                    "Long": 21.3
-                },
-                "BR": {
-                    "Lat": 10.9,
-                    "Long": 24.3
-                },
-                "Altitude": -30
+            "state": {
+                "categories": [],
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 90
             },
-            "Performance": {
-                "TurnCircle": 1200,
-                "AccelerationRate": 1,
-                "MinSpeed": 4,
-                "MaxSpeed": 40,
-                "BatteryUsage": 1.03
-            },
-            "Sensors": [{
-                "Name": "Towed Bravo",
-                "RecogDiff": 1,
-                "Offset": -1200
-            }]
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
         }
+
+
     ],
-    "Objectives": [{
-        "Name": "15 min safe trail",
-        "Type": "SAFE_TRAIL",
-        "MINR": 5000,
-        "MAXR": 15000,
-        "PERIOD" : 900000
-    }],
-    "Environment": {
-        "Name":"Atlantic Summer",
-        "SeaState" : 4
-    }
+    "environment": {},
+    "objectives": {}
 }
