@@ -89,14 +89,14 @@
         </td>
     </tr>
 </table>
-<!--<table style="width:100%">
+<table style="width:100%">
     <tr class="diagnostics">
-        <td>
-            <div id="SelfNoise"></div>
-        </td>
-        <td>
-            <div id="SignalExcess"></div>
-        </td>
+        <!--<td>-->
+            <!--<div id="SelfNoise"></div>-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--<div id="SignalExcess"></div>-->
+        <!--</td>-->
         <td>
             <fieldset>
                 <legend>Diagnostics</legend>
@@ -113,17 +113,17 @@
         </td>
     </tr>
     <tr class="diagnostics">
-        <td>
-            <div id="Course"></div>
-        </td>
-        <td>
-            <div id="Speed"></div>
-        </td>
-        <td>
-            <div id="AngularVelocity"></div>
-        </td>
+        <!--<td>-->
+            <!--<div id="Course"></div>-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--<div id="Speed"></div>-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--<div id="AngularVelocity"></div>-->
+        <!--</td>-->
     </tr>
-</table>  -->
+</table>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <script src="geo.js"></script>
 <script src="movement.js"></script>
@@ -154,11 +154,11 @@ var scenario = {
             "state": {
                 "time": 0,
                 "categories": [],
-                "location": {"lat": 50, "lng": -8},
+                "location": {"lat": 50, "lng": -8.2},
                 "height": 0,
-                "course": 100,
+                "course": 130,
                 "speed": 10,
-                "demCourse": 100,
+                "demCourse": 130,
                 "demSpeed": 10,
                 "demHeight": -10.0
             },
@@ -179,8 +179,8 @@ var scenario = {
                 {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
-                    "tl": {"lat": 50.05, "lng": -8.08},
-                    "br": {"lat": 49.95, "lng": -7.92},
+                    "tl": {"lat": 50.15, "lng": -8.25},
+                    "br": {"lat": 49.85, "lng": -7.75},
                     "height": -30
                 },
                 {
@@ -209,7 +209,7 @@ var scenario = {
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
-                "batteryLevel": 90
+                "batteryLevel": 60
             },
             "perf": {
                 "turnRadius": 1200.0,
@@ -251,8 +251,11 @@ function doStep() {
         if (!v2.state.location) {
             // cool, generate one - up to 10 miles from v1
             var direction = Math.random() * 360;
-            var range = 2000 + Math.random() * 5000;
-            v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
+            var range = 2000 + Math.random() * 20000;
+
+            var pBounds = L.latLngBounds(patrolArea);
+
+             v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
         }
 
         if (!v2.state.course) {
@@ -335,16 +338,15 @@ function doStep() {
     var otherPos = L.latLng(v2.state.location.lat, v2.state.location.lng);
     updateMarker(v2.name, otherPos);
 
-    /**
      // try to show a graph marker
-     addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
-     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
-     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
-     addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
+//     addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
+//     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
+//     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
+//     addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
+//
+//     addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
 
-     addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
 
-     **/
 
     // share the good news about detections
     if (v1.newDetections) {
@@ -357,8 +359,16 @@ function doStep() {
                 dets = [new Date(thisD.time)];
             }
 
+            var thisB = thisD.bearing;
+
+            // clip to +/- 180
+            if(thisB > 180)
+            {
+                thisB -= 360;
+            }
+
             // add this detection to the list
-            dets.push(thisD.bearing);
+            dets.push(thisB);
 
         }
         addDetections(dets);
@@ -513,7 +523,7 @@ function showThis(checkboxName) {
     return !theControl || theControl.checked;
 }
 
-var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 12);
+var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 9);
 
 //L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 //    maxZoom: 18,
@@ -522,10 +532,12 @@ var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 12);
 
 L.control.scale({metric: true, imperial: true}).addTo(map);
 
-var circle = L.rectangle([
-    [50.05, -8.08],
-    [49.95, -7.92]
-], {
+var patrolArea = [
+    [50.15, -8.25],
+    [49.85, -7.75]
+];
+
+var circle = L.rectangle(patrolArea, {
     color: 'red',
     fillOpacity: 0.5
 }).addTo(map);
@@ -599,15 +611,15 @@ var dataSeries = {};
 var graphs = {};
 
 // initialise the graphs
-/*
- initGraph("SignalExcess", [new Date(0), 0, 0], ['Time', 'Own SE', 'tgt SE'], "dB", [-50,50]);
- initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
- initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
- initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
- initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
 
- */
-initGraph("Sonar", [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10'], "Bearing", [0, 360]);
+// initGraph("SignalExcess", [new Date(0), 0, 0], ['Time', 'Own SE', 'tgt SE'], "dB", [-50,50]);
+// initGraph("Course", [new Date(0), 0, 0], ['Time', 'Demanded Course', 'Actual Course'], "Course (degs)", [0.0, 360]);
+// initGraph("Speed", [new Date(0), 0, 0], ['Time', 'Demanded Speed', 'Actual Speed'], "Speed (m/s)", [0.0, 40]);
+// initGraph("AngularVelocity", [new Date(0), 0], ['Time', 'Angular Velocity'], "Degs/sec", [0, 100]);
+// initGraph("SelfNoise", [new Date(0), 0, 0], ['Time', 'Own noise', 'Target noise'], "dB", [0, 200]);
+
+
+initGraph("Sonar", [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10'], "Bearing", [-180, 180]);
 
 </script>
 </body>
