@@ -1,96 +1,96 @@
 {
-    "Vessels": [
+    "vessels": [
         {
-            "Name": "Some name",
-            "Categories": [
+            "name": "Some name",
+            "categories": [
                 "BLUE",
                 "SURFACE",
                 "WARSHIP"
             ],
-            "InitialState": {
-                "Time": 0,
-                "Location": {
-                    "Lat": 12.2,
-                    "Long": 44.3
+            "initialState": {
+                "time": 0,
+                "location": {
+                    "lat": 12.2,
+                    "long": 44.3
                 },
-                "Speed": 12.3,
-                "Course": 0.12,
-                "DemandedSpeed": 10,
-                "DemandedCourse": 1,
-                "TurnRate": 0.02
+                "speed": 12.3,
+                "course": 0.12,
+                "demandedSpeed": 10,
+                "demandedCourse": 1,
+                "turnRate": 0.02
             },
-            "Behaviour": {
-                "Name": "UserControlled",
-                "Type": "USER_CONTROL"
+            "behaviour": {
+                "name": "UserControlled",
+                "type": "USER_CONTROL"
             },
-            "Performance": {
-                "TurnCircle": 1200,
-                "AccelerationRate": 1,
-                "MinSpeed": 4,
-                "MaxSpeed": 40
+            "performance": {
+                "turnCircle": 1200,
+                "accelerationRate": 1,
+                "minSpeed": 4,
+                "maxSpeed": 40
             },
-            "Sensors": [{
-                "Name": "Towed Alpha",
-                "RecogDiff": 1,
-                "Offset": -1200
+            "sensors": [{
+                "name": "towed Alpha",
+                "recogDiff": 1,
+                "offset": -1200
             }]
         },
         {
-            "Name": "Target Alpha",
-            "Categories": [
+            "name": "Target Alpha",
+            "categories": [
                 "RED",
                 "SUBSURFACE",
                 "SUBMARINE"
             ],
-            "InitialState": {
-                "Time": 0,
-                "Location": {
-                    "Lat": 14.2,
-                    "Long": 42.3
+            "initialState": {
+                "time": 0,
+                "location": {
+                    "lat": 14.2,
+                    "long": 42.3
                 },
-                "Speed": 12.3,
-                "Course": 3.14,
-                "DemandedSpeed": 12.3,
-                "DemandedCourse": 3.14,
-                "TurnRate": 0.02,
-                "BatteryLevel": 40
+                "speed": 12.3,
+                "course": 3.14,
+                "demandedSpeed": 12.3,
+                "demandedCourse": 3.14,
+                "turnRate": 0.02,
+                "batteryLevel": 40
             },
-            "Behaviour": {
-                "Name": "Target Walk",
-                "Type": "RECTANGLE_WANDER",
+            "behaviour": {
+                "name": "Target Walk",
+                "type": "RECTANGLE_WANDER",
                 "TL": {
-                    "Lat": 13.2,
-                    "Long": 21.3
+                    "lat": 13.2,
+                    "long": 21.3
                 },
                 "BR": {
-                    "Lat": 10.9,
-                    "Long": 24.3
+                    "lat": 10.9,
+                    "long": 24.3
                 },
-                "Altitude": -30
+                "bltitude": -30
             },
-            "Performance": {
-                "TurnCircle": 1200,
-                "AccelerationRate": 1,
-                "MinSpeed": 4,
-                "MaxSpeed": 40,
-                "BatteryUsage": 1.03
+            "performance": {
+                "turnCircle": 1200,
+                "accelerationRate": 1,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "batteryUsage": 1.03
             },
-            "Sensors": [{
-                "Name": "Towed Bravo",
-                "RecogDiff": 1,
-                "Offset": -1200
+            "sensors": [{
+                "name": "towed Bravo",
+                "recogDiff": 1,
+                "offset": -1200
             }]
         }
     ],
-    "Objectives": [{
-        "Name": "15 min safe trail",
-        "Type": "SAFE_TRAIL",
+    "objectives": [{
+        "name": "15 min safe trail",
+        "type": "sAFE_TRAIL",
         "MINR": 5000,
         "MAXR": 15000,
         "PERIOD" : 900000
     }],
-    "Environment": {
-        "Name":"Atlantic Summer",
-        "SeaState" : 4
+    "environment": {
+        "name":"btlantic Summer",
+        "seaState" : 4
     }
 }
