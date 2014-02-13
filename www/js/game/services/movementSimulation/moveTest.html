@@ -153,6 +153,7 @@ var scenario = {
             },
             "state": {
                 time: 0,
+                categories: [],
                 location: {lat: 50, lng: -8},
                 height: 0,
                 course: 100,
@@ -178,16 +179,16 @@ var scenario = {
                 {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
-                    "tl" : {"lat": 50.05, "lng": -8.08},
-                    "br" : {"lat": 49.95, "lng": -7.92},
-                    "height" : -30
+                    "tl": {"lat": 50.05, "lng": -8.08},
+                    "br": {"lat": 49.95, "lng": -7.92},
+                    "height": -30
                 },
                 {
                     "name": "Basic snort",
                     "type": "SNORT",
-                    "height" : -10,
-                    "startLevel" : 20,
-                    "stopLevel" : 90
+                    "height": -10,
+                    "startLevel": 20,
+                    "stopLevel": 90
                 }
             ],
             "sonars": [
@@ -204,6 +205,7 @@ var scenario = {
                 "speedPattern": "Uniform"    /* pattern of how the noise level changes with speed */
             },
             "state": {
+                categories: [],
                 time: 0,
                 height: -40,
                 demHeight: -40.0,
@@ -215,8 +217,10 @@ var scenario = {
                 decelerationRate: 0.8,
                 minSpeed: 4,
                 maxSpeed: 20,
-                batteryUsage: 0.00035, /* should be: 0.00035  */
-                chargeRate: 0.013, /* should be: 0.013  */
+                batteryUsage: 0.035, /* should be: 0.00035  */
+                chargeRate: 0.83, /* should be: 0.013  */
+//                batteryUsage: 0.00035, /* should be: 0.00035  */
+//                chargeRate: 0.013, /* should be: 0.013  */
                 climbRate: 1,
                 diveRate: 2
             }
@@ -408,6 +412,23 @@ function changeSpeed(val) {
     inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
 }
 
+
+/**
+ *
+ * @param thisCat the categoiry we're looking for
+ * @param theCats an array of categories
+ * @returns {boolean} true/false for finding item
+ */
+function hasCategory(thisCat, theCats) {
+    return (theCats.indexOf(thisCat) > -1);
+}
+
+function removeCategory(thisCat, theCats) {
+    var index = theCats.indexOf(thisCat);    // <-- Not supported in <IE9
+    if (index !== -1) {
+        theCats.splice(index, 1);
+    }
+}
 /** store a collection of position markers
  */
 var posDict = {};
@@ -478,7 +499,7 @@ function updateMarker(vName, location) {
             thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
         }
         else {
-            console.log("marker not found for:" + vName);
+            console.log("icon marker not found for:" + vName);
         }
         posDict[vName] = thisPos;
     }
@@ -503,7 +524,10 @@ var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 12);
 
 L.control.scale({metric: true, imperial: true}).addTo(map);
 
-var circle = L.rectangle([[50.05, -8.08],[49.95, -7.92]], {
+var circle = L.rectangle([
+    [50.05, -8.08],
+    [49.95, -7.92]
+], {
     color: 'red',
     fillOpacity: 0.5
 }).addTo(map);

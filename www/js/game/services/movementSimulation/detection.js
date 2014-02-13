@@ -2,15 +2,7 @@
  * Created by ian on 11/02/14.
  */
 
-/**
- *
- * @param thisCat the categoiry we're looking for
- * @param theCats an array of categories
- * @returns {boolean} true/false for finding item
- */
-function hasCategory(thisCat, theCats) {
-    return (theCats.indexOf(thisCat) > -1);
-}
+
 
 function getOrigin(location, offset, heading) {
     return rhumbDestinationPoint(location, toRads(heading), offset);

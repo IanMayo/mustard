@@ -19,18 +19,14 @@ function doDecisions(tNow, myState, myDetections, myBehaviours) {
         }
 
         // do we have something to do?
-        if(demState)
-        {
-            if(demState.demCourse)
-            {
+        if (demState) {
+            if (demState.demCourse) {
                 myState.demCourse = demState.demCourse;
             }
-            if(demState.demSpeed)
-            {
+            if (demState.demSpeed) {
                 myState.demSpeed = demState.demSpeed;
             }
-            if(demState.demHeight)
-            {
+            if (demState.demHeight) {
                 myState.demHeight = demState.demHeight;
             }
         }
@@ -46,6 +42,9 @@ function implementThis(tNow, myState, myDetections, thisB) {
         case "RECTANGLE_WANDER":
             res = handleRectWander(tNow, myState, myDetections, thisB);
             break;
+        case "SNORT":
+            res = handleSnort(tNow, myState, myDetections, thisB);
+            break;
         case "xxx.dev.yyy.com":
             // Blah
             break;
@@ -53,7 +52,6 @@ function implementThis(tNow, myState, myDetections, thisB) {
 
     return res;
 }
-
 
 function handleRectWander(tNow, myState, myDetections, thisB) {
     var res;
@@ -83,9 +81,59 @@ function handleRectWander(tNow, myState, myDetections, thisB) {
             res.demCourse = bearing;
 
             // do we have a demanded height?
-            if(thisB.height)
-            {
+            if (thisB.height) {
                 res.demHeight = thisB.height;
+            }
+        }
+    }
+
+    return res;
+}
+
+function handleSnort(tNow, myState, myDetections, thisB) {
+    var res;
+
+    // is this battery powered?
+    if (myState.batteryLevel) {
+
+        // ok, is it enough?
+        if (myState.batteryLevel < thisB.startLevel) {
+
+            // hey, remember the previous depth, so we can return to it. Note: we also
+            // use this as a flag to indicate that we're snorting
+            if(!thisB.previousHeight)
+            {
+                thisB.previousHeight = myState.height;
+            }
+
+            // ok, go to relevant depth
+            res = {};
+            res.demHeight = thisB.height;
+
+            // and insert snort flag
+            if (!(myState.categories)) {
+                myState.categories = [];
+            }
+            if (!(hasCategory("SNORT", myState.categories))) {
+                myState.categories.push("SNORT");
+            }
+        }
+        else if (thisB.previousHeight) {
+
+            // aah, we're already snorting. are we there yet?
+            if (myState.batteryLevel > thisB.stopLevel) {
+
+                // ok, we're topped up. clear the snort
+                if (myState.categories) {
+                    removeCategory("SNORT", myState.categories);
+                }
+
+                // and return to the previous depth (if necessary)
+                res = {};
+                res.demHeight = thisB.previousHeight;
+
+                // clear the height flag
+                delete thisB.previousHeight;
             }
         }
     }
