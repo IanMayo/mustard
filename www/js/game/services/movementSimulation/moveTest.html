@@ -38,7 +38,6 @@
             background-color: #dddddd;
             color: #000;
         }
-
     </style>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
     <script type="text/javascript"
@@ -92,10 +91,10 @@
 <table style="width:100%">
     <tr class="diagnostics">
         <!--<td>-->
-            <!--<div id="SelfNoise"></div>-->
+        <!--<div id="SelfNoise"></div>-->
         <!--</td>-->
         <!--<td>-->
-            <!--<div id="SignalExcess"></div>-->
+        <!--<div id="SignalExcess"></div>-->
         <!--</td>-->
         <td>
             <fieldset>
@@ -114,13 +113,13 @@
     </tr>
     <tr class="diagnostics">
         <!--<td>-->
-            <!--<div id="Course"></div>-->
+        <!--<div id="Course"></div>-->
         <!--</td>-->
         <!--<td>-->
-            <!--<div id="Speed"></div>-->
+        <!--<div id="Speed"></div>-->
         <!--</td>-->
         <!--<td>-->
-            <!--<div id="AngularVelocity"></div>-->
+        <!--<div id="AngularVelocity"></div>-->
         <!--</td>-->
     </tr>
 </table>
@@ -223,11 +222,27 @@ var scenario = {
                 "diveRate": 2
             }
         }
-
-
+    ],
+    "patolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
     ],
     "environment": {},
-    "objectives": {}
+    "objectives": {},
+    "features": {
+        "type": "FeatureCollection", "features": [
+            {"type": "Feature",
+                "properties": {"name": "Ops Area"},
+                "geometry": {"type": "Polygon", "coordinates": [
+                    [
+                        [-8.25, 50.15],
+                        [-8.25, 49.85],
+                        [-7.75, 49.85],
+                        [-7.75, 50.15],
+                        [-8.25, 50.15 ]
+                    ]
+                ]}, "id": "OpsArea"}
+        ]}
 };
 
 /* timer-related objects
@@ -253,9 +268,15 @@ function doStep() {
             var direction = Math.random() * 360;
             var range = 2000 + Math.random() * 20000;
 
-            var pBounds = L.latLngBounds(patrolArea);
-
-             v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
+            if(scenario.patrolArea)
+            {
+                var pBounds = L.latLngBounds(scenario.patrolArea);
+                v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
+            }
+            else
+            {
+                v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
+            }
         }
 
         if (!v2.state.course) {
@@ -338,14 +359,13 @@ function doStep() {
     var otherPos = L.latLng(v2.state.location.lat, v2.state.location.lng);
     updateMarker(v2.name, otherPos);
 
-     // try to show a graph marker
+    // try to show a graph marker
 //     addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
 //     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
 //     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
 //     addPoint("SelfNoise", tNow, v1.state.osNoise, v2.state.osNoise);
 //
 //     addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
-
 
 
     // share the good news about detections
@@ -362,8 +382,7 @@ function doStep() {
             var thisB = thisD.bearing;
 
             // clip to +/- 180
-            if(thisB > 180)
-            {
+            if (thisB > 180) {
                 thisB -= 360;
             }
 
@@ -379,12 +398,23 @@ function doStep() {
 function doPause() {
     if (timerId != null) {
         window.clearInterval(timerId);
+        timerId = null;
         document.getElementById("accelRate").innerHTML = "[stopped]";
+    }
+    else
+    {
+        updateInterval();
     }
 }
 
 function updateInterval() {
-    doPause();
+
+    // are we running?
+    if (timerId != null) {
+        window.clearInterval(timerId);
+        timerId = null;
+    }
+
     timerId = window.setInterval("doStep()", 1000 / accelRate);
     document.getElementById("accelRate").innerHTML = "[x" + accelRate + "]";
 }
@@ -525,22 +555,12 @@ function showThis(checkboxName) {
 
 var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 9);
 
-//L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-//    maxZoom: 18,
-//    attributionControl: false
-//}).addTo(map);
-
 L.control.scale({metric: true, imperial: true}).addTo(map);
 
-var patrolArea = [
-    [50.15, -8.25],
-    [49.85, -7.75]
-];
-
-var circle = L.rectangle(patrolArea, {
-    color: 'red',
-    fillOpacity: 0.5
-}).addTo(map);
+var features = scenario.features;
+if (features) {
+    L.geoJson(scenario.features).addTo(map);
+}
 
 
 function addDetections(dataValues) {
