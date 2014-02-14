@@ -123,135 +123,32 @@
         <!--</td>-->
     </tr>
 </table>
-<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<script src="leaflet.js"></script>
 <script src="geo.js"></script>
 <script src="movement.js"></script>
 <script src="detection.js"></script>
 <script src="decision.js"></script>
 
+<!--import the scenario-->
+<script src="../../scenarios/2c_random_walker.js"></script>
+
+
 <script type="text/javascript">
 
-var scenario = {
-    "vessels": [
-        {
-            "name": "Ownship",
-            "categories": ["BLUE", "SURFACE", "WARSHIP"],
-            "behaviours": [],
-            "sonars": [
-                {
-                    "name": "BASIC_TOWED",
-                    "categories": ["HAS_BOW_NULL"],
-                    "offset": -1000,
-                    "ArrayGain": 20,
-                    "DT": -8
-                }
-            ],
-            "radiatedNoise": {
-                "baseLevel": 90,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "time": 0,
-                "categories": [],
-                "location": {"lat": 50, "lng": -8.2},
-                "height": 0,
-                "course": 130,
-                "speed": 10,
-                "demCourse": 130,
-                "demSpeed": 10,
-                "demHeight": -10.0
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 40,
-                "climbRate": 1,
-                "diveRate": 2
-            }
-        },
-        {
-            "name": "Target",
-            "categories": ["RED", "SUBSURFACE", "SUBMARINE"],
-            "behaviours": [
-                {
-                    "name": "Patrol area",
-                    "type": "RECTANGLE_WANDER",
-                    "tl": {"lat": 50.15, "lng": -8.25},
-                    "br": {"lat": 49.85, "lng": -7.75},
-                    "height": -30
-                },
-                {
-                    "name": "Basic snort",
-                    "type": "SNORT",
-                    "height": -10,
-                    "startLevel": 20,
-                    "stopLevel": 90
-                }
-            ],
-            "sonars": [
-                {
-                    "name": "BASIC_HULL",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "offset": 0,
-                    "ArrayGain": 28,
-                    "DT": -8
-                }
-            ],
-            "radiatedNoise": {
-                "baseLevel": 100,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "categories": [],
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
-            }
-        }
-    ],
-    "patolArea": [
-        [50.15, -8.25],
-        [49.85, -7.75]
-    ],
-    "environment": {},
-    "objectives": {},
-    "features": {
-        "type": "FeatureCollection", "features": [
-            {"type": "Feature",
-                "properties": {"name": "Ops Area"},
-                "geometry": {"type": "Polygon", "coordinates": [
-                    [
-                        [-8.25, 50.15],
-                        [-8.25, 49.85],
-                        [-7.75, 49.85],
-                        [-7.75, 50.15],
-                        [-8.25, 50.15 ]
-                    ]
-                ]}, "id": "OpsArea"}
-        ]}
-};
-
 /* timer-related objects
-
  */
 var timerId;            // the id of a running timer
 var tNow = 0;           // the current time
 const tStep = 2000;     // the model time step
 var accelRate = 1;      // how fast to run model time
+
+/** map related objects
+ */
+/** store a collection of position markers
+ */
+var positionMarkers = {};  // the position markers
+var osHeadLine, sonarLine;
+var map;  // our map object
 
 
 function doStep() {
@@ -268,13 +165,11 @@ function doStep() {
             var direction = Math.random() * 360;
             var range = 2000 + Math.random() * 20000;
 
-            if(scenario.patrolArea)
-            {
+            if (scenario.patrolArea) {
                 var pBounds = L.latLngBounds(scenario.patrolArea);
                 v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
             }
-            else
-            {
+            else {
                 v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
             }
         }
@@ -323,8 +218,8 @@ function doStep() {
     }
 
     // and now the decisions
-    for (var j = 0; j < scenario.vessels.length; j++) {
-        var thisV3 = scenario.vessels[j];
+    for (var k = 0; k < scenario.vessels.length; k++) {
+        var thisV3 = scenario.vessels[k];
         doDecisions(tNow, thisV3.state, thisV3.newDetections, thisV3.behaviours);
     }
 
@@ -371,8 +266,8 @@ function doStep() {
     // share the good news about detections
     if (v1.newDetections) {
         var dets;
-        for (var k = 0; k < v1.newDetections.length; k++) {
-            var thisD = v1.newDetections[k];
+        for (var l = 0; l < v1.newDetections.length; l++) {
+            var thisD = v1.newDetections[l];
 
             // is this the first item?
             if (!dets) {
@@ -401,8 +296,7 @@ function doPause() {
         timerId = null;
         document.getElementById("accelRate").innerHTML = "[stopped]";
     }
-    else
-    {
+    else {
         updateInterval();
     }
 }
@@ -412,7 +306,6 @@ function updateInterval() {
     // are we running?
     if (timerId != null) {
         window.clearInterval(timerId);
-        timerId = null;
     }
 
     timerId = window.setInterval("doStep()", 1000 / accelRate);
@@ -450,28 +343,6 @@ function changeSpeed(val) {
     inSpeed.value = (parseFloat(inSpeed.value) + val).toFixed(2);
 }
 
-
-/**
- *
- * @param thisCat the categoiry we're looking for
- * @param theCats an array of categories
- * @returns {boolean} true/false for finding item
- */
-function hasCategory(thisCat, theCats) {
-    return (theCats.indexOf(thisCat) > -1);
-}
-
-function removeCategory(thisCat, theCats) {
-    var index = theCats.indexOf(thisCat);    // <-- Not supported in <IE9
-    if (index !== -1) {
-        theCats.splice(index, 1);
-    }
-}
-/** store a collection of position markers
- */
-var posDict = {};
-
-var osHeadLine, sonarLine;
 
 function updateOwnship(oPos, sonarPos, course, speed) {
     // first position the marker
@@ -514,7 +385,7 @@ function updateOwnship(oPos, sonarPos, course, speed) {
  */
 function updateMarker(vName, location) {
     // do we have it already?
-    var thisPos = posDict[vName];
+    var thisPos = positionMarkers[vName];
 
     // check we can show the target
     if (vName == "Target" && !showThis("showTarget")) {
@@ -537,12 +408,11 @@ function updateMarker(vName, location) {
             console.log("icon marker not found for:" + vName);
         }
 
-        if(myIcon)
-        {
+        if (myIcon) {
             thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
         }
 
-        posDict[vName] = thisPos;
+        positionMarkers[vName] = thisPos;
     }
 
 
@@ -556,13 +426,18 @@ function showThis(checkboxName) {
     return !theControl || theControl.checked;
 }
 
-var map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 9);
 
-L.control.scale({metric: true, imperial: true}).addTo(map);
 
-var features = scenario.features;
-if (features) {
-    L.geoJson(scenario.features).addTo(map);
+function initMap() {
+
+    map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 9);
+
+    L.control.scale({metric: true, imperial: true}).addTo(map);
+
+    var features = scenario.features;
+    if (features) {
+        L.geoJson(scenario.features).addTo(map);
+    }
 }
 
 function addDetections(dataValues) {
@@ -621,7 +496,6 @@ function initGraph(name, datum, labels, yLabel, valueRange) {
                 }
             }
     );
-
     // and store them
     dataSeries[name] = data;
     graphs[name] = thisGraph;
@@ -631,6 +505,8 @@ function initGraph(name, datum, labels, yLabel, valueRange) {
 // collections of graphs & data series'
 var dataSeries = {};
 var graphs = {};
+
+initMap();
 
 // initialise the graphs
 

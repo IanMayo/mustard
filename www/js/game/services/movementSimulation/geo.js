@@ -12,6 +12,28 @@ function toDegs(radVal) {
 
 
 /**
+ *
+ * @param thisCat the categoiry we're looking for
+ * @param theCats an array of categories
+ * @returns {boolean} true/false for finding item
+ */
+function hasCategory(thisCat, theCats) {
+    return (theCats.indexOf(thisCat) > -1);
+}
+
+/** remove the specified category from the list
+ *
+ * @param {String} thisCat  the category to remove
+ * @param {Array} theCats  an array of categories
+ */
+function removeCategory(thisCat, theCats) {
+    var index = theCats.indexOf(thisCat);    // <-- Not supported in <IE9
+    if (index !== -1) {
+        theCats.splice(index, 1);
+    }
+}
+
+/**
  * Returns the destination point from this point having travelled the given distance (in km) on the
  * given bearing along a rhumb line
  *
