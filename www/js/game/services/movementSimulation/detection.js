@@ -155,7 +155,6 @@ function doDetections(tNow, myVessel, allVessels) {
 
                         // TODO: hey, if he's snorting, why not show extra lobes
                         // TODO: no, do it if there's a really high SE.
-                        console.log("height:" + thisV.height + " LS:" + LS);
                     }
                 }
                 else {
