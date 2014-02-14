@@ -35,63 +35,158 @@ handleThis = function (gameState, objective, scenario) {
                 var child = objective.children[thisId];
 
                 // is this one complete?
-                if(!(child.complete))
-                {
+                if (!(child.complete)) {
                     // ok, run it
                     handleThis(gameState, child, scenario);
 
                     // did it finish?
-                    if(child.complete)
-                    {
+                    if (child.complete) {
                         // OK. For a sequence we have to override the game state setting.
                         // this is because a STOP is actually a PAUSE if we're not at the last one yet.
 
                         // is this the last one?  If it's not we  will switch
                         // a stop instruction to a pause one
-                        if((thisId+1) == objective.children.length)
-                        {
+                        if ((thisId + 1) == objective.children.length) {
                             // ok, this is the last one. we can do an actual stop
-                            gameState.state="DO_STOP";
+                            gameState.state = "DO_STOP";
                             console.log("doing stop");
                         }
-                        else
-                        {
-                            gameState.state="DO_PAUSE";
+                        else {
+                            gameState.state = "DO_PAUSE";
                             console.log("doing pause");
                         }
                     }
-                    else
-                    {
+                    else {
                         // that one isn't ready. move on
                         STOP_CHECKING = true;
                     }
                 }
-                else
-                {
+                else {
                     // don't worry - move on the next one
                 }
 
                 // move to the next child
                 thisId++;
             }
-            while((thisId < objective.children.length) && (!STOP_CHECKING))
+            while ((thisId < objective.children.length) && (!STOP_CHECKING))
 
             // Blah
             break;
         case "PROXIMITY":
             handleProximity(gameState, objective, scenario);
             break;
+        case "GAIN_CONTACT":
+            handleGainContact(gameState, objective, scenario);
+            break;
+        case "MAINTAIN_CONTACT":
+            handleMaintainContact(gameState, objective, scenario);
+            break;
+
+
     }
 }
 
-handleProximity = function(gameState, proximity, scenario)
-{
+handleMaintainContact = function (gameState, maintainContact, scenario) {
+
+    // ok, have we gained contact on someone other than us
+    var ownship = scenario.vessels[0];
+    var detections = ownship.newDetections;
+
+    var inContact;
+
+    if (detections && detections.length > 0) {
+
+        // ok, are any from a target?
+        for (var i = 0; i < detections.length; i++) {
+            var thisD = detections[i];
+
+            if (thisD.source != ownship.name) {
+
+                inContact = true;
+
+                // is this our first one?
+                if (!maintainContact.stopTime) {
+                    maintainContact.stopTime = gameState.tNow + (maintainContact.elapsed * 1000);
+                }
+
+                // have we held contact for long enough
+                if (gameState.tNow >= maintainContact.stopTime) {
+                    // great - we're done.
+                    maintainContact.complete = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    // did we just finish?
+    if (maintainContact.complete) {
+        console.log("successfully maintained");
+        // cool,handle the success
+        gameState.successMessage = maintainContact.success;
+        gameState.state = "DO_STOP";
+        maintainContact.complete = true;
+    }
+
+    if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.tNow > maintainContact.stopTime)) ) {
+        // ok, game failure
+        maintainContact.complete = true;
+
+        // how many minutes did we trail for?
+        var elapsedMins = (gameState.tNow - (maintainContact.stopTime - (maintainContact.elapsed * 1000)))/1000/60;
+
+        // inject the elapsed time message
+        failMessage = failMessage.replace("[time]",""+ Math.floor(elapsedMins));
+        gameState.failureMessage = failMessage;
+        gameState.state = "DO_STOP";
+    }
+}
+
+handleGainContact = function (gameState, gainContact, scenario) {
+    if (!gainContact.stopTime) {
+        gainContact.stopTime = gameState.tNow + gainContact.elapsed * 1000;
+    }
+
+    // ok, have we gained contact on someone other than us
+    var ownship = scenario.vessels[0];
+    var detections = ownship.newDetections;
+
+    if (detections && detections.length > 0) {
+        // ok, are any from a target?
+        for (var i = 0; i < detections.length; i++) {
+            var thisD = detections[i];
+
+            if (thisD.source != ownship.name) {
+                gainContact.complete = true;
+                // great - we're done.
+                break;
+            }
+        }
+    }
+
+    if (gainContact.complete) {
+        // cool,handle the success
+        gameState.successMessage = gainContact.success;
+        gameState.state = "DO_STOP";
+    }
+
+    if (!gainContact.complete) {
+
+        if (gameState.tNow > gainContact.stopTime) {
+            // ok, game failure
+            gainContact.complete = true;
+            gameState.failureMessage = gainContact.failure;
+            gameState.state = "DO_STOP";
+        }
+    }
+
+}
+
+handleProximity = function (gameState, proximity, scenario) {
     // right, do we have an elapsed time limit
-    if(proximity.elapsed)
-    {
+    if (proximity.elapsed) {
         // ok. do we know when this objective started?
-        if(!proximity.stopTime)
-        {
+        if (!proximity.stopTime) {
             // no, better store it
             proximity.stopTime = gameState.tNow + (proximity.elapsed * 1000);
         }
@@ -106,10 +201,9 @@ handleProximity = function(gameState, proximity, scenario)
     // what's the range?
     var range = rhumbDistanceFromTo(dest, current);
 
-    console.log("doing:" + proximity.name + " at:" + gameState.tNow+ "  stop Time:" + proximity.stopTime + " range:" + Math.floor(range));
+    console.log("doing:" + proximity.name + " at:" + gameState.tNow + "  stop Time:" + proximity.stopTime + " range:" + Math.floor(range));
 
-    if(range < proximity.range)
-    {
+    if (range < proximity.range) {
         proximity.complete = true;
         console.log("Proximity complete:" + proximity.name);
         gameState.successMessage = proximity.success;
@@ -117,18 +211,14 @@ handleProximity = function(gameState, proximity, scenario)
     }
 
     // right, just check if we have failed to reach our proximity in time
-    if(proximity.stopTime)
-    {
-        if(gameState.tNow > proximity.stopTime)
-        {
+    if (proximity.stopTime) {
+        if (gameState.tNow > proximity.stopTime) {
             // did we succeed on this step
-            if(proximity.complete)
-            {
+            if (proximity.complete) {
                 // ok, let's allow the success
                 console.log("allow elapsed proximity to succeed");
             }
-            else
-            {
+            else {
                 // ok, game failure
                 proximity.complete = true;
                 console.log("proximity failed");
