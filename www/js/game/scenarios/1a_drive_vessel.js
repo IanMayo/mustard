@@ -18,9 +18,9 @@ var scenario = {
                 "categories": [],
                 "location": {"lat": 50, "lng": -8.2},
                 "height": 0,
-                "course": 130,
+                "course": 90,
                 "speed": 10,
-                "demCourse": 130,
+                "demCourse": 90,
                 "demSpeed": 10,
                 "demHeight": -10.0
             },
@@ -43,9 +43,9 @@ var scenario = {
     "environment": {},
     "objectives": [
         {"name": "Reach Targets", "type": "SEQUENCE", "children": [
-            {"name": "Point A", type: "PROXIMITY", "location": [-8, 50], "range": 2000,
+            {"name": "Point A", type: "PROXIMITY", "location": {"lat":50,"lng": -8.18}, "range": 2000,
                 "success": "Well done, now get to point B for some silly reason"},
-            {"name": "Point B", type: "PROXIMITY", "location": [-8, 50], "range": 2000,
+            {"name": "Point B", type: "PROXIMITY", "location": {"lat":51,"lng": -8.06}, "range": 2000,
                 "elapsed": 30, "success": "Well done, you made it. Let's get the array fitted and move on",
                 "failure": "Sorry, you missed your slow. You'll have to restart this mission"}
         ]}
@@ -54,20 +54,14 @@ var scenario = {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",
                 "properties": {"name": "Ops Area"},
-                "geometry": {"type": "Polygon", "coordinates": [
-                    [
-                        [-8.25, 50.15],
-                        [-8.25, 49.85],
-                        [-7.75, 49.85],
-                        [-7.75, 50.15],
-                        [-8.25, 50.15 ]
-                    ]
-                ]}, "id": "OpsArea"},
+                "geometry": {"type": "Point", "coordinates": [-8.18, 50]
+
+                }, "id": "DestinationA"},
             {"type": "Feature",
                 "properties": {"name": "Ops Area"},
-                "geometry": {"type": "Point", "coordinates": [-8, 50]
+                "geometry": {"type": "Point", "coordinates": [-8.06, 50]
 
-                }, "id": "Destination"}
+                }, "id": "DestinationB"}
         ]
     }
 };

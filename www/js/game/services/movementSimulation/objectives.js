@@ -29,14 +29,31 @@ handleThis = function (gameState, objective, scenario) {
         case "SEQUENCE":
 
             var thisId = 0;
+            var complete = false;
 
             // loop through all, or until we don't get a result object
             do
             {
                 var child = objective.children[thisId++];
-                handleThis(gameState, child, scenario);
+
+                // is this one complete?
+                if(!(child.complete))
+                {
+                    // ok, run it
+                    handleThis(gameState, child, scenario);
+
+                    // did it fail?
+                    if(gameState.successMessage || gameState.failureMessage)
+                    {
+                        complete = true;
+                    }
+                }
+                else
+                {
+                    // don't worry - move on the next one
+                }
             }
-            while((thisId < objective.children.length) && (gameState.complete))
+            while((thisId < objective.children.length) && (!complete))
 
             // Blah
             break;
@@ -54,7 +71,7 @@ handleThis = function (gameState, objective, scenario) {
 handleProximity = function(gameState, proximity, scenario)
 {
     // ok, where has he got to get to?
-    var dest = L.latLng(proximity.location);
+    var dest = proximity.location;
 
     // where is v1
     var current = scenario.vessels[0].state.location;
@@ -62,11 +79,10 @@ handleProximity = function(gameState, proximity, scenario)
     // what's the range?
     var range = rhumbDistanceFromTo(dest, current);
 
-    console.log("range:" + range + " needs to be: " + proximity.range);
-
     if(range < proximity.range)
     {
-        gameState.complete = "Success";
-        gameState.message = proximity.success;
+        console.log("Proximity complete:" + proximity.name);
+        gameState.successMessage = proximity.success;
+        proximity.complete = true;
     }
 }

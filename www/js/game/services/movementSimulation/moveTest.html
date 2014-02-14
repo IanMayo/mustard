@@ -235,10 +235,32 @@ function doStep() {
         doObjectives(gameState, scenario.objectives, scenario);
     }
 
+    // update the UI
+    updateUI();
 
-/////////////////////////
-// GAME LOOP ENDS HERE
-/////////////////////////
+    // scenario complete?
+    if(gameState.completeMessage)
+    {
+        gameState.state = "COMPLETED";
+        alert(gameState.completeMessage);
+        doPause();
+    }
+    else if (gameState.failureMessage)
+    {
+        gameState.state = "FAILED";
+        alert(gameState.failureMesasge);
+        doPause();
+    }
+
+    /////////////////////////
+    // GAME LOOP ENDS HERE
+    /////////////////////////
+}
+
+function updateUI()
+{
+    var v1 = scenario.vessels[0];
+    var v2 = scenario.vessels[1];
 
 // put the results into the UI
     document.getElementById("outCourse").innerHTML = "" + v1.state.course.toFixed(2);
