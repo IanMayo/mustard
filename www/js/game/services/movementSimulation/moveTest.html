@@ -526,19 +526,22 @@ function updateMarker(vName, location) {
         // ok - new marker.
         if (vName == "Ownship") {
             myIcon = L.divIcon({className: 'leaflet-div-icon-blue'});
-            thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
         }
         else if (vName == "Target") {
             myIcon = L.divIcon({className: 'leaflet-div-icon-red'});
-            thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
         }
         else if (vName == "Sonar") {
             myIcon = L.divIcon({className: 'leaflet-div-icon-green'});
-            thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
         }
         else {
             console.log("icon marker not found for:" + vName);
         }
+
+        if(myIcon)
+        {
+            thisPos = L.marker(location, {title: vName, icon: myIcon}).addTo(map);
+        }
+
         posDict[vName] = thisPos;
     }
 
@@ -561,7 +564,6 @@ var features = scenario.features;
 if (features) {
     L.geoJson(scenario.features).addTo(map);
 }
-
 
 function addDetections(dataValues) {
     var data = dataSeries["Sonar"];
