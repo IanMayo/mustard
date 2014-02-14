@@ -8,17 +8,14 @@
  * @param objectives the array of objectives
  * @param scenario the current scenario state
  */
-doObjectives = function (gameState, objectives, scenario, gameState) {
+doObjectives = function (gameState, objectives, scenario) {
     var res;
 
     // ok, loop through the objectives
     for (var i = 0; i < objectives.length; i++) {
         var thisObj = objectives[i];
-        res = handleThis(tNow, thisObj, scenario)
+        res = handleThis(gameState, thisObj, scenario)
     }
-
-
-
 }
 
 handleThis = function (gameState, objective, scenario) {
@@ -29,12 +26,13 @@ handleThis = function (gameState, objective, scenario) {
         case "SEQUENCE":
 
             var thisId = 0;
-            var complete = false;
+            var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
 
             // loop through all, or until we don't get a result object
             do
             {
-                var child = objective.children[thisId++];
+                // get the next child
+                var child = objective.children[thisId];
 
                 // is this one complete?
                 if(!(child.complete))
@@ -42,29 +40,47 @@ handleThis = function (gameState, objective, scenario) {
                     // ok, run it
                     handleThis(gameState, child, scenario);
 
-                    // did it fail?
-                    if(gameState.successMessage || gameState.failureMessage)
+                    // did it finish?
+                    if(child.complete)
                     {
-                        complete = true;
+                        // OK. For a sequence we have to override the game state setting.
+                        // this is because a STOP is actually a PAUSE if we're not at the last one yet.
+
+                        // is this the last one?  If it's not we  will switch
+                        // a stop instruction to a pause one
+                        if((thisId+1) == objective.children.length)
+                        {
+                            // ok, this is the last one. we can do an actual stop
+                            gameState.state="DO_STOP";
+                            console.log("doing stop");
+                        }
+                        else
+                        {
+                            gameState.state="DO_PAUSE";
+                            console.log("doing pause");
+                        }
+                    }
+                    else
+                    {
+                        // that one isn't ready. move on
+                        STOP_CHECKING = true;
                     }
                 }
                 else
                 {
                     // don't worry - move on the next one
                 }
+
+                // move to the next child
+                thisId++;
             }
-            while((thisId < objective.children.length) && (!complete))
+            while((thisId < objective.children.length) && (!STOP_CHECKING))
 
             // Blah
             break;
         case "PROXIMITY":
-            res = handleProximity(gameState, objective, scenario);
+            handleProximity(gameState, objective, scenario);
             break;
-    }
-
-    if(res)
-    {
-        gameState.state = res;
     }
 }
 
@@ -81,8 +97,9 @@ handleProximity = function(gameState, proximity, scenario)
 
     if(range < proximity.range)
     {
+        proximity.complete = true;
         console.log("Proximity complete:" + proximity.name);
         gameState.successMessage = proximity.success;
-        proximity.complete = true;
+        gameState.state = "DO_STOP";
     }
 }

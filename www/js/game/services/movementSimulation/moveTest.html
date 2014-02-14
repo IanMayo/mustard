@@ -238,18 +238,49 @@ function doStep() {
     // update the UI
     updateUI();
 
-    // scenario complete?
-    if(gameState.completeMessage)
+    // do we need to pause/stop?
+    if((gameState.state=="DO_PAUSE") || (gameState.state== "DO_STOP"))
     {
-        gameState.state = "COMPLETED";
-        alert(gameState.completeMessage);
         doPause();
-    }
-    else if (gameState.failureMessage)
-    {
-        gameState.state = "FAILED";
-        alert(gameState.failureMesasge);
-        doPause();
+        var timeState = gameState.state;
+
+        // scenario complete?
+        if(gameState.successMessage)
+        {
+            gameState.state = "SUCCESS";
+            alert(gameState.successMessage);
+            delete gameState.successMessage;
+        }
+        else if (gameState.failureMessage)
+        {
+            gameState.state = "FAILED";
+            alert(gameState.failureMesasge);
+            delete gameState.failureMessage;
+        }
+
+        if(timeState=="DO_PAUSE")
+        {
+            // console.log("resuming");
+
+            // ok, resume
+            gameState.state = "RUNNING";
+
+            updateInterval();
+        }
+        else if (timeState== "DO_STOP")
+        {
+            // ok, move on to the review stage
+            var r = confirm("Ready for the debriefing?");
+            if(r == true)
+            {
+                alert("switch to the new route");
+            }
+            else
+            {
+                alert("let the user view/pan/zoom the plot");
+            }
+        }
+
     }
 
     /////////////////////////
