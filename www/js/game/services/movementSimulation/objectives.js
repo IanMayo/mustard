@@ -46,7 +46,7 @@ handleThis = function (gameState, objective, scenario) {
 
                         // is this the last one?  If it's not we  will switch
                         // a stop instruction to a pause one
-                        if ((thisId + 1) == objective.children.length) {
+                        if (((thisId + 1) == objective.children.length)||(gameState.failureMessage)) {
                             // ok, this is the last one. we can do an actual stop
                             gameState.state = "DO_STOP";
                             console.log("doing stop");
@@ -136,6 +136,7 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
         var elapsedMins = (gameState.tNow - (maintainContact.stopTime - (maintainContact.elapsed * 1000)))/1000/60;
 
         // inject the elapsed time message
+        var failMessage = maintainContact.failure;
         failMessage = failMessage.replace("[time]",""+ Math.floor(elapsedMins));
         gameState.failureMessage = failMessage;
         gameState.state = "DO_STOP";

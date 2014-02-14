@@ -132,7 +132,7 @@
 
 <!--import the scenario-->
 <!--<script src="../../scenarios/1a_drive_vessel.js"></script>-->
-<script src="../../scenarios/1b_read_bearings.js"></script>
+<script src="../../scenarios/1c_resolve_ambiguity.js"></script>
 
 
 <script type="text/javascript">
@@ -268,7 +268,7 @@ function doStep() {
 
             updateInterval();
         }
-        else if (timeState== "DO_STOP")
+        else if ((timeState== "DO_STOP")||(gameState.state == "FAILED"))
         {
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");
