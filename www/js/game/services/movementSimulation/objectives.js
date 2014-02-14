@@ -46,7 +46,7 @@ handleThis = function (gameState, objective, scenario) {
 
                         // is this the last one?  If it's not we  will switch
                         // a stop instruction to a pause one
-                        if (((thisId + 1) == objective.children.length)||(gameState.failureMessage)) {
+                        if (((thisId + 1) == objective.children.length) || (gameState.failureMessage)) {
                             // ok, this is the last one. we can do an actual stop
                             gameState.state = "DO_STOP";
                             console.log("doing stop");
@@ -128,16 +128,16 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
         maintainContact.complete = true;
     }
 
-    if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.tNow > maintainContact.stopTime)) ) {
+    if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.tNow > maintainContact.stopTime))) {
         // ok, game failure
         maintainContact.complete = true;
 
         // how many minutes did we trail for?
-        var elapsedMins = (gameState.tNow - (maintainContact.stopTime - (maintainContact.elapsed * 1000)))/1000/60;
+        var elapsedMins = (gameState.tNow - (maintainContact.stopTime - (maintainContact.elapsed * 1000))) / 1000 / 60;
 
         // inject the elapsed time message
         var failMessage = maintainContact.failure;
-        failMessage = failMessage.replace("[time]",""+ Math.floor(elapsedMins));
+        failMessage = failMessage.replace("[time]", "" + Math.floor(elapsedMins));
         gameState.failureMessage = failMessage;
         gameState.state = "DO_STOP";
     }
@@ -192,7 +192,6 @@ handleProximity = function (gameState, proximity, scenario) {
             proximity.stopTime = gameState.tNow + (proximity.elapsed * 1000);
         }
     }
-
     // ok, where has he got to get to?
     var dest = proximity.location;
 
@@ -202,14 +201,46 @@ handleProximity = function (gameState, proximity, scenario) {
     // what's the range?
     var range = rhumbDistanceFromTo(dest, current);
 
-    console.log("doing:" + proximity.name + " at:" + gameState.tNow + "  stop Time:" + proximity.stopTime + " range:" + Math.floor(range));
-
     if (range < proximity.range) {
-        proximity.complete = true;
-        console.log("Proximity complete:" + proximity.name);
-        gameState.successMessage = proximity.success;
-        gameState.state = "DO_STOP";
+
+        var failed = false;
+
+        // do we have anything else to check?
+        if (proximity.course) {
+            // what is o/s course?
+            var osCourse = scenario.vessels[0].state.course;
+
+            var courseError = osCourse - proximity.course;
+
+            // trim to acceptable values
+            courseError = courseError % 360;
+
+            console.log("course error:" + courseError);
+
+            if (courseError > proximity.courseError) {
+                failed = true;
+            }
+        }
+
+        // ok, have we failed?
+        if (proximity.maxSpeed) {
+            var osSpeed = scenario.vessels[0].state.speed;
+            console.log("speed:" + osSpeed);
+
+            if (osSpeed > proximity.maxSpeed) {
+                failed = true;
+            }
+        }
+
+        // are we ok so far?
+        if (!failed) {
+            proximity.complete = true;
+            gameState.successMessage = proximity.success;
+            gameState.state = "DO_STOP";
+        }
     }
+
+    console.log(" proximity tNow:" + gameState.tNow + " stop time:" + proximity.stopTime);
 
     // right, just check if we have failed to reach our proximity in time
     if (proximity.stopTime) {
@@ -217,7 +248,6 @@ handleProximity = function (gameState, proximity, scenario) {
             // did we succeed on this step
             if (proximity.complete) {
                 // ok, let's allow the success
-                console.log("allow elapsed proximity to succeed");
             }
             else {
                 // ok, game failure
