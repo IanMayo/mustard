@@ -5,4 +5,7 @@
   <span data-ng-show="speed">||</span>
 </button>
 <button data-ng-click="faster()">&raquo;</button>
-<div>Speed: {{speed || 'stopped'}}</div>
+<div ng-switch on="speed">
+  <span ng-switch-when="0">stopped</span>
+  <span ng-switch-default>{{speed}}x</span>
+</div>
