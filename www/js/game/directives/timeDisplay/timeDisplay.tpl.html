@@ -1,0 +1,8 @@
+<div>{{timerLabel}}</div>
+<button data-ng-click="slower()">&laquo;</button>
+<button data-ng-click="simulate()">
+  <span data-ng-show="!speed">&gt;</span>
+  <span data-ng-show="speed">||</span>
+</button>
+<button data-ng-click="faster()">&raquo;</button>
+<div>Speed: {{speed || 'stopped'}}</div>
