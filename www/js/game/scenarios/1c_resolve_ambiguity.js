@@ -1,7 +1,7 @@
 /**
  * Created by ian on 14/02/14.
  */
-var scenario = {
+scenarios.scenario1c = {
     "vessels": [
         {
             "name": "Ownship",
@@ -106,6 +106,7 @@ var scenario = {
                 "failure": "More practice needed, you only held contact for [time] minutes."}
         ]}
     ],
+    "welcome" : "Right, time to increase the complexity. The array will no longer do bearing resolution for you - the target could be to the left or right. So, head to the East, and gain your contact. You've got 15 minutes",
     "features": {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",

@@ -1,7 +1,7 @@
 /**
  * Created by ian on 14/02/14.
  */
-var scenario = {
+scenarios.scenario2c = {
     "vessels": [
         {
             "name": "Ownship",
@@ -99,6 +99,7 @@ var scenario = {
     ],
     "environment": {},
     "objectives": {},
+    "welcome" : "No objectives set for this one yet. But, have a play and see the self-noise displayed",
     "features": {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",

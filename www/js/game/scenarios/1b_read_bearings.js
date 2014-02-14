@@ -1,7 +1,7 @@
 /**
  * Created by ian on 14/02/14.
  */
-var scenario = {
+scenarios.scenario1b = {
     "vessels": [
         {
             "name": "Ownship",
@@ -99,11 +99,13 @@ var scenario = {
     "objectives": [
         {"name": "Gain & keep contact", "type": "SEQUENCE", "children": [
             {"name": "Gain contact", type: "GAIN_CONTACT", "elapsed":480,
-                "success": "Well done, you've gained contact within the 8 minute limit", "failure":"Sorry, you didn't make contact in time. You do just have to keep heading East!"},
+                "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.", "failure":"Sorry, you didn't make contact in time. You do just have to keep heading East!"},
             {"name": "Maintain contact", type: "MAINTAIN_CONTACT", "elapsed":3600,
                 "success": "Well done, you've held contact for one hour", "failure":"More practice needed, you only held contact for [time] minutes."}
         ]}
     ],
+    "welcome" : "Ok, we've got a training sonar fitted. Luckily it is able to fully screen out self-noise. " +
+        "Head East, and gain contact on the training target - you've got 8 minutes to do that.",
     "features": {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",

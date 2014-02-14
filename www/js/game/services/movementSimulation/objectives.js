@@ -49,11 +49,9 @@ handleThis = function (gameState, objective, scenario) {
                         if (((thisId + 1) == objective.children.length) || (gameState.failureMessage)) {
                             // ok, this is the last one. we can do an actual stop
                             gameState.state = "DO_STOP";
-                            console.log("doing stop");
                         }
                         else {
                             gameState.state = "DO_PAUSE";
-                            console.log("doing pause");
                         }
                     }
                     else {
@@ -121,7 +119,6 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
 
     // did we just finish?
     if (maintainContact.complete) {
-        console.log("successfully maintained");
         // cool,handle the success
         gameState.successMessage = maintainContact.success;
         gameState.state = "DO_STOP";
@@ -215,8 +212,6 @@ handleProximity = function (gameState, proximity, scenario) {
             // trim to acceptable values
             courseError = courseError % 360;
 
-            console.log("course error:" + courseError);
-
             if (courseError > proximity.courseError) {
                 failed = true;
             }
@@ -225,7 +220,6 @@ handleProximity = function (gameState, proximity, scenario) {
         // ok, have we failed?
         if (proximity.maxSpeed) {
             var osSpeed = scenario.vessels[0].state.speed;
-            console.log("speed:" + osSpeed);
 
             if (osSpeed > proximity.maxSpeed) {
                 failed = true;
@@ -240,7 +234,6 @@ handleProximity = function (gameState, proximity, scenario) {
         }
     }
 
-    console.log(" proximity tNow:" + gameState.tNow + " stop time:" + proximity.stopTime);
 
     // right, just check if we have failed to reach our proximity in time
     if (proximity.stopTime) {
@@ -252,7 +245,6 @@ handleProximity = function (gameState, proximity, scenario) {
             else {
                 // ok, game failure
                 proximity.complete = true;
-                console.log("proximity failed");
                 gameState.failureMessage = proximity.failure;
                 gameState.state = "DO_STOP";
             }

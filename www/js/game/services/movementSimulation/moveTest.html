@@ -99,6 +99,16 @@
         <td>
             <fieldset>
                 <legend>Diagnostics</legend>
+                <h4>Select scenario</h4>
+                <label for="newScenario">Please choose a scenario:</label>
+                <select id="newScenario" onchange="newScenario()">
+                    <option selected value="scenario1a">[please choose]</option>
+                    <option value="scenario1a">1a. Drive vessel</option>
+                    <option value="scenario1b">1b. Reading bearings</option>
+                    <option value="scenario1c">1c. Resolving ambiguity</option>
+                    <option value="scenario2c">2c. Full Self-noise</option>
+                </select>
+                <h4>Scenario controls</h4>
                 <ul>
                     <li><input type="checkbox" id="showTarget"><label for="showTarget">Show Target</label></li>
                     <li><input checked type="checkbox" id="showSelfNoise"><label for="showSelfNoise">Show Self
@@ -130,10 +140,16 @@
 <script src="decision.js"></script>
 <script src="objectives.js"></script>
 
+
+<script type="text/javascript">
+    var scenarios = {};
+</script>
 <!--import the scenario-->
 <!--<script src="../../scenarios/1a_drive_vessel.js"></script>-->
 <script src="../../scenarios/1a_drive_vessel.js"></script>
-
+<script src="../../scenarios/1b_read_bearings.js"></script>
+<script src="../../scenarios/1c_resolve_ambiguity.js"></script>
+<script src="../../scenarios/2c_random_walker.js"></script>
 
 <script type="text/javascript">
 
@@ -141,7 +157,7 @@
  */
 var timerId;            // the id of a running timer
 
-var gameState = {tNow:0, tStep:2000, accelRate:1, state:"PENDING"};
+var gameState = {tNow: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
 
 /** map related objects
  */
@@ -150,7 +166,7 @@ var gameState = {tNow:0, tStep:2000, accelRate:1, state:"PENDING"};
 var positionMarkers = {};  // the position markers
 var osHeadLine, sonarLine;
 var map;  // our map object
-
+var features;  // any loaded geojson features
 
 function doStep() {
 
@@ -231,8 +247,7 @@ function doStep() {
     }
 
     // let the referees run
-    if(scenario.objectives && scenario.objectives.length > 0)
-    {
+    if (scenario.objectives && scenario.objectives.length > 0) {
         doObjectives(gameState, scenario.objectives, scenario);
     }
 
@@ -240,27 +255,23 @@ function doStep() {
     updateUI();
 
     // do we need to pause/stop?
-    if((gameState.state=="DO_PAUSE") || (gameState.state== "DO_STOP"))
-    {
+    if ((gameState.state == "DO_PAUSE") || (gameState.state == "DO_STOP")) {
         doPause();
         var timeState = gameState.state;
 
         // scenario complete?
-        if(gameState.successMessage)
-        {
+        if (gameState.successMessage) {
             gameState.state = "SUCCESS";
             alert(gameState.successMessage);
             delete gameState.successMessage;
         }
-        else if (gameState.failureMessage)
-        {
+        else if (gameState.failureMessage) {
             gameState.state = "FAILED";
             alert(gameState.failureMessage);
             delete gameState.failureMessage;
         }
 
-        if(timeState=="DO_PAUSE")
-        {
+        if (timeState == "DO_PAUSE") {
             // console.log("resuming");
 
             // ok, resume
@@ -268,16 +279,13 @@ function doStep() {
 
             updateInterval();
         }
-        else if ((timeState== "DO_STOP")||(gameState.state == "FAILED"))
-        {
+        else if ((timeState == "DO_STOP") || (gameState.state == "FAILED")) {
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");
-            if(r == true)
-            {
+            if (r == true) {
                 alert("switch to the new route");
             }
-            else
-            {
+            else {
                 alert("let the user view/pan/zoom the plot");
             }
         }
@@ -289,8 +297,7 @@ function doStep() {
     /////////////////////////
 }
 
-function updateUI()
-{
+function updateUI() {
     var v1 = scenario.vessels[0];
     var v2 = scenario.vessels[1];
 
@@ -403,6 +410,27 @@ function doSlower() {
     updateInterval()
 }
 
+function newScenario() {
+    var scenName =  document.getElementById("newScenario").value;
+    scenario = eval("scenarios." + scenName);
+
+    // ok, refresh the scenario settings
+    gameState = {tNow: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
+
+    initFeatures();
+
+    // ditch any old detections
+    var data = [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    dataSeries["Sonar"] = [];
+    addDetections(data);
+
+    // do we have a welcome?
+    if(scenario.welcome)
+    {
+        alert(scenario.welcome);
+    }
+}
+
 function changeCourse(val) {
     var inCourse = document.getElementById("inCourse");
     var newCourse = parseFloat(inCourse.value) + val;
@@ -507,14 +535,21 @@ function showThis(checkboxName) {
 
 
 function initMap() {
-
     map = L.map('map', {minZoom: 0, maxZoom: 30}).setView([50, -8], 9);
-
     L.control.scale({metric: true, imperial: true}).addTo(map);
+}
 
-    var features = scenario.features;
-    if (features) {
-        L.geoJson(scenario.features).addTo(map);
+function initFeatures() {
+    if (scenario) {
+        if (features) {
+            map.removeLayer(features);
+        }
+
+        // and load some new ones
+        var geoJson = scenario.features;
+        if (geoJson) {
+            features = L.geoJson(geoJson).addTo(map);
+        }
     }
 }
 
