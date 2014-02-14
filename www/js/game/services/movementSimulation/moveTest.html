@@ -130,7 +130,7 @@
 <script src="decision.js"></script>
 
 <!--import the scenario-->
-<script src="../../scenarios/2c_random_walker.js"></script>
+<script src="../../scenarios/1a_drive_vessel.js"></script>
 
 
 <script type="text/javascript">
@@ -159,102 +159,112 @@ function doStep() {
     // is this the first step?
     if (tNow == 0) {
 
-        // see if the target has a location
-        if (!v2.state.location) {
-            // cool, generate one - up to 10 miles from v1
-            var direction = Math.random() * 360;
-            var range = 2000 + Math.random() * 20000;
+        // do we have a target?
+        if (v2) {
 
-            if (scenario.patrolArea) {
-                var pBounds = L.latLngBounds(scenario.patrolArea);
-                v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
+            // see if the target has a location
+            if (!v2.state.location) {
+                // cool, generate one - up to 10 miles from v1
+                var direction = Math.random() * 360;
+                var range = 2000 + Math.random() * 20000;
+
+                if (scenario.patrolArea) {
+                    var pBounds = L.latLngBounds(scenario.patrolArea);
+                    v2.state.location = rhumbDestinationPoint(pBounds.getCenter(), toRads(direction), range);
+                }
+                else {
+                    v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
+                }
             }
-            else {
-                v2.state.location = rhumbDestinationPoint(v1.state.location, toRads(direction), range);
+
+            if (!v2.state.course) {
+                var newCourse = Math.random() * 360;
+                v2.state.course = newCourse;
+                v2.state.demCourse = newCourse;
             }
-        }
 
-        if (!v2.state.course) {
-            var newCourse = Math.random() * 360;
-            v2.state.course = newCourse;
-            v2.state.demCourse = newCourse;
-        }
+            if (!v2.state.speed) {
+                var newSpeed = 6 + Math.random() * 8;
+                v2.state.speed = newSpeed;
+                v2.state.demSpeed = newSpeed;
+            }
 
-        if (!v2.state.speed) {
-            var newSpeed = 6 + Math.random() * 8;
-            v2.state.speed = newSpeed;
-            v2.state.demSpeed = newSpeed;
         }
-
         // do some init
         document.getElementById("inCourse").value = v1.state.demCourse.toFixed(2);
         document.getElementById("inSpeed").value = v1.state.demSpeed.toFixed(2);
     }
 
-    // put the current boxes into the states
+// put the current boxes into the states
     var curCourseDegs = parseInt(document.getElementById("inCourse").value);
     var curSpeedKts = parseInt(document.getElementById("inSpeed").value);
 
     v1.state.demCourse = curCourseDegs;
     v1.state.demSpeed = curSpeedKts;
 
-    /////////////////////////
-    // GAME LOOP STARTS HERE
-    /////////////////////////
+/////////////////////////
+// GAME LOOP STARTS HERE
+/////////////////////////
 
 
-    // move the scenario forward
+// move the scenario forward
     tNow += tStep;
 
-    // loop through the vessels
+// loop through the vessels
     for (var i = 0; i < scenario.vessels.length; i++) {
         var thisV = scenario.vessels[i];
         doMove(tNow, thisV.state, thisV.perf);
     }
 
-    // now that everyone is in their new location, do the detections
+// now that everyone is in their new location, do the detections
     for (var j = 0; j < scenario.vessels.length; j++) {
         doDetections(tNow, scenario.vessels[j], scenario.vessels);
     }
 
-    // and now the decisions
+// and now the decisions
     for (var k = 0; k < scenario.vessels.length; k++) {
         var thisV3 = scenario.vessels[k];
         doDecisions(tNow, thisV3.state, thisV3.newDetections, thisV3.behaviours);
     }
 
 
-    /////////////////////////
-    // GAME LOOP ENDS HERE
-    /////////////////////////
+/////////////////////////
+// GAME LOOP ENDS HERE
+/////////////////////////
 
-    // put the results into the UI
+// put the results into the UI
     document.getElementById("outCourse").innerHTML = "" + v1.state.course.toFixed(2);
     document.getElementById("outSpeed").innerHTML = "" + v1.state.speed.toFixed(2);
 
     var locStr = "" + toString(v1.state.location.lat, v1.state.location.lng, 'DMS');
     document.getElementById("outLocation").innerHTML = "" + locStr;
 
-    // and sort out the time
+// and sort out the time
     var timeVal = new Date(tNow);
     document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
 
-    // try to move the marker
+// try to move the marker
     var ownshipPos = L.latLng(v1.state.location.lat, v1.state.location.lng);
 
-    // and the sonar marker
-    updateOwnship(ownshipPos, v1.sonars[0].location, v1.state.course, v1.state.speed);
+// and the sonar marker
+    var sonarLoc;
+    if (v1.sonars.length > 0) {
+        sonarLoc = v1.sonars[0].location;
+    }
+    updateOwnship(ownshipPos, sonarLoc, v1.state.course, v1.state.speed);
 
-    // do we need to move the map?
+// do we need to move the map?
     if (!map.getBounds().contains(ownshipPos)) {
         map.panTo(ownshipPos);
     }
 
-    // try to move other marker
-    var otherPos = L.latLng(v2.state.location.lat, v2.state.location.lng);
-    updateMarker(v2.name, otherPos);
+// try to move other marker
+    if (v2) {
+        var otherPos = L.latLng(v2.state.location.lat, v2.state.location.lng);
+        updateMarker(v2.name, otherPos);
+    }
 
-    // try to show a graph marker
+// try to show a graph marker
 //     addPoint("Course", tNow, v1.state.demCourse, v1.state.course);
 //     addPoint("Speed", tNow, v1.state.demSpeed, v1.state.speed);
 //     addPoint("AngularVelocity", tNow, -50 + Math.random() * 100);
@@ -263,7 +273,7 @@ function doStep() {
 //     addPoint("SignalExcess", tNow, v1.state.SE, v2.state.SE);
 
 
-    // share the good news about detections
+// share the good news about detections
     if (v1.newDetections) {
         var dets;
         for (var l = 0; l < v1.newDetections.length; l++) {
@@ -285,7 +295,11 @@ function doStep() {
             dets.push(thisB);
 
         }
-        addDetections(dets);
+
+        // did we find any?
+        if (dets) {
+            addDetections(dets);
+        }
     }
 
 }
@@ -366,12 +380,15 @@ function updateOwnship(oPos, sonarPos, course, speed) {
         osHeadLine.setLatLngs(locations);
     }
 
-    var sonarlocations = [oPos, sonarPos];
-    if (!sonarLine) {
-        sonarLine = L.polyline(sonarlocations, {color: '#111', weight: 2}).addTo(map);
-    }
-    else {
-        sonarLine.setLatLngs(sonarlocations);
+    // do we have a sonar
+    if (sonarPos) {
+        var sonarlocations = [oPos, sonarPos];
+        if (!sonarLine) {
+            sonarLine = L.polyline(sonarlocations, {color: '#111', weight: 2}).addTo(map);
+        }
+        else {
+            sonarLine.setLatLngs(sonarlocations);
+        }
     }
 
     // now the sonar
@@ -425,7 +442,6 @@ function showThis(checkboxName) {
     var theControl = document.getElementById(checkboxName);
     return !theControl || theControl.checked;
 }
-
 
 
 function initMap() {
