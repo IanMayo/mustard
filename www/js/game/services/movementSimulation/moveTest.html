@@ -128,6 +128,7 @@
 <script src="movement.js"></script>
 <script src="detection.js"></script>
 <script src="decision.js"></script>
+<script src="objectives.js"></script>
 
 <!--import the scenario-->
 <script src="../../scenarios/1a_drive_vessel.js"></script>
@@ -138,9 +139,8 @@
 /* timer-related objects
  */
 var timerId;            // the id of a running timer
-var tNow = 0;           // the current time
-const tStep = 2000;     // the model time step
-var accelRate = 1;      // how fast to run model time
+
+var gameState = {tNow:0, tStep:2000, accelRate:1, state:"PENDING"};
 
 /** map related objects
  */
@@ -157,7 +157,7 @@ function doStep() {
     var v2 = scenario.vessels[1];
 
     // is this the first step?
-    if (tNow == 0) {
+    if (gameState.tNow == 0) {
 
         // do we have a target?
         if (v2) {
@@ -193,6 +193,8 @@ function doStep() {
         // do some init
         document.getElementById("inCourse").value = v1.state.demCourse.toFixed(2);
         document.getElementById("inSpeed").value = v1.state.demSpeed.toFixed(2);
+
+        gameState.state = "RUNNING"
     }
 
 // put the current boxes into the states
@@ -208,23 +210,29 @@ function doStep() {
 
 
 // move the scenario forward
-    tNow += tStep;
+    gameState.tNow += gameState.tStep;
 
 // loop through the vessels
     for (var i = 0; i < scenario.vessels.length; i++) {
         var thisV = scenario.vessels[i];
-        doMove(tNow, thisV.state, thisV.perf);
+        doMove(gameState.tNow, thisV.state, thisV.perf);
     }
 
 // now that everyone is in their new location, do the detections
     for (var j = 0; j < scenario.vessels.length; j++) {
-        doDetections(tNow, scenario.vessels[j], scenario.vessels);
+        doDetections(gameState.tNow, scenario.vessels[j], scenario.vessels);
     }
 
 // and now the decisions
     for (var k = 0; k < scenario.vessels.length; k++) {
         var thisV3 = scenario.vessels[k];
-        doDecisions(tNow, thisV3.state, thisV3.newDetections, thisV3.behaviours);
+        doDecisions(gameState.tNow, thisV3.state, thisV3.newDetections, thisV3.behaviours);
+    }
+
+    // let the referees run
+    if(scenario.objectives && scenario.objectives.length > 0)
+    {
+        doObjectives(gameState.tNow, scenario.objectives, scenario);
     }
 
 
@@ -240,7 +248,7 @@ function doStep() {
     document.getElementById("outLocation").innerHTML = "" + locStr;
 
 // and sort out the time
-    var timeVal = new Date(tNow);
+    var timeVal = new Date(gameState.tNow);
     document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
 
 // try to move the marker
@@ -322,22 +330,22 @@ function updateInterval() {
         window.clearInterval(timerId);
     }
 
-    timerId = window.setInterval("doStep()", 1000 / accelRate);
-    document.getElementById("accelRate").innerHTML = "[x" + accelRate + "]";
+    timerId = window.setInterval("doStep()", 1000 / gameState.accelRate);
+    document.getElementById("accelRate").innerHTML = "[x" + gameState.accelRate + "]";
 }
 
 function doPlay() {
-    accelRate = 1;
+    gameState.accelRate = 1;
     updateInterval();
 }
 
 function doFaster() {
-    accelRate *= 2;
+    gameState.accelRate *= 2;
     updateInterval()
 }
 
 function doSlower() {
-    accelRate /= 2;
+    gameState.accelRate /= 2;
     updateInterval()
 }
 

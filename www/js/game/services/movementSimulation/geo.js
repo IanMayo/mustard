@@ -84,7 +84,7 @@ function rhumbDestinationPoint(location, brng, dist) {
  *
  * @param   {Object} [origin] Latitude/longitude of start point
  * @param   {Object} [point] Latitude/longitude of destination point
- * @returns {Number} Distance in km between this point and destination point
+ * @returns {Number} Distance in m between this point and destination point
  */
 function rhumbDistanceFromTo(origin, point) {
     const R = 6371000;  // earth radius in m
