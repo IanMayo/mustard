@@ -86,6 +86,17 @@ handleThis = function (gameState, objective, scenario) {
 
 handleProximity = function(gameState, proximity, scenario)
 {
+    // right, do we have an elapsed time limit
+    if(proximity.elapsed)
+    {
+        // ok. do we know when this objective started?
+        if(!proximity.stopTime)
+        {
+            // no, better store it
+            proximity.stopTime = gameState.tNow + (proximity.elapsed * 1000);
+        }
+    }
+
     // ok, where has he got to get to?
     var dest = proximity.location;
 
@@ -95,11 +106,35 @@ handleProximity = function(gameState, proximity, scenario)
     // what's the range?
     var range = rhumbDistanceFromTo(dest, current);
 
+    console.log("doing:" + proximity.name + " at:" + gameState.tNow+ "  stop Time:" + proximity.stopTime + " range:" + Math.floor(range));
+
     if(range < proximity.range)
     {
         proximity.complete = true;
         console.log("Proximity complete:" + proximity.name);
         gameState.successMessage = proximity.success;
         gameState.state = "DO_STOP";
+    }
+
+    // right, just check if we have failed to reach our proximity in time
+    if(proximity.stopTime)
+    {
+        if(gameState.tNow > proximity.stopTime)
+        {
+            // did we succeed on this step
+            if(proximity.complete)
+            {
+                // ok, let's allow the success
+                console.log("allow elapsed proximity to succeed");
+            }
+            else
+            {
+                // ok, game failure
+                proximity.complete = true;
+                console.log("proximity failed");
+                gameState.failureMessage = proximity.failure;
+                gameState.state = "DO_STOP";
+            }
+        }
     }
 }

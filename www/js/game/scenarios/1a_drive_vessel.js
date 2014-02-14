@@ -43,10 +43,10 @@ var scenario = {
     "environment": {},
     "objectives": [
         {"name": "Reach Targets", "type": "SEQUENCE", "children": [
-            {"name": "Point A", type: "PROXIMITY", "location": {"lat":50,"lng": -8.14}, "range": 2000,
+            {"name": "Point A", type: "PROXIMITY", "location": {"lat":50,"lng": -8.06}, "range": 2000,
                 "success": "Well done, now get to point B for some silly reason"},
-            {"name": "Point B", type: "PROXIMITY", "location": {"lat":50,"lng": -8.06}, "range": 2000,
-                "elapsed": 30, "success": "Well done, you made it. Let's get the array fitted and move on",
+            {"name": "Point B", type: "PROXIMITY", "location": {"lat":50.2,"lng": -8.20}, "range": 1000,
+                "elapsed": 1500, "success": "Well done, you made it. Let's get the array fitted and move on",
                 "failure": "Sorry, you missed your slow. You'll have to restart this mission"}
         ]}
     ],
@@ -54,13 +54,12 @@ var scenario = {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",
                 "properties": {"name": "Ops Area"},
-                "geometry": {"type": "Point", "coordinates": [-8.14, 50]
+                "geometry": {"type": "Point", "coordinates": [-8.06, 50]
 
                 }, "id": "DestinationA"},
             {"type": "Feature",
                 "properties": {"name": "Ops Area"},
-                "geometry": {"type": "Point", "coordinates": [-8.06, 50]
-
+                "geometry": {"type": "Point", "coordinates": [-8.20, 50.2]
                 }, "id": "DestinationB"}
         ]
     }

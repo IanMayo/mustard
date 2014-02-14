@@ -59,14 +59,14 @@
         <td colspan="3">
             <fieldset style="float:left">
                 <legend>Demanded</legend>
-                <label for="inCourse">Course</label><input type="button" value="-5" onclick="changeCourse(-5)"><input
+                <label for="inCourse"></label><input type="button" value="-5" onclick="changeCourse(-5)"><input
                     type="button" value="+5"
                     onclick="changeCourse(5)"><input
-                    class="retro" size="6" type="text" value="90.00" id="inCourse"/>
-                <label for="inSpeed">Speed</label><input type="button" value="-1" onclick="changeSpeed(-1)"><input
+                    class="retro" size="6" type="text" value="90.00" id="inCourse"/>&deg
+                <label for="inSpeed"></label><input type="button" value="-1" onclick="changeSpeed(-1)"><input
                     type="button" value="+1"
                     onclick="changeSpeed(1)"><input
-                    class="retro" size="6" type="text" value="10.00" id="inSpeed"/>
+                    class="retro" size="6" type="text" value="10.00" id="inSpeed"/>Kts
             </fieldset>
             <fieldset style="float:left">
                 <legend>Actual</legend>
@@ -254,7 +254,7 @@ function doStep() {
         else if (gameState.failureMessage)
         {
             gameState.state = "FAILED";
-            alert(gameState.failureMesasge);
+            alert(gameState.failureMessage);
             delete gameState.failureMessage;
         }
 
