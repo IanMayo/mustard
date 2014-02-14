@@ -52,7 +52,9 @@ scenarios.scenario1a = {
         ]}
     ],
     "welcome" : "Let's start you off on a tracked range. " +
-        "We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you).",
+        "We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you). " +
+        "\nYou're going to have to press the Play ('>') button in the Time controls, you may also wish to use +/- buttons to speed up or slow down the time. " +
+        "\nYou will also have to steer to the correct course using the 'Demanded' course control (+5/-5)",
     "features": {
         "type": "FeatureCollection", "features": [
             {"type": "Feature",
