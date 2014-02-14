@@ -93,7 +93,7 @@ var scenario = {
             }
         }
     ],
-    "patolArea": [
+    "patrolArea": [
         [50.15, -8.25],
         [49.85, -7.75]
     ],
