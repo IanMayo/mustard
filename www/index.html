@@ -21,15 +21,19 @@
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1,
+          minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css">
         <title>Angular PhoneGap Seed</title>
     </head>
     <body>
         <div class="app-body">
             <h1>mustard</h1>
             
-            <a href="#/game/mission">Mission Game View</a>
+            <a href="#/game/mission/1a_drive_vessel">Mission 1a_drive_vessel</a>
+            <a href="#/game/mission/1b_read_bearings">Mission 1b_read_bearings</a>
             <a href="#/game/training">Training Game View</a>
 
             <div ng-view></div>
@@ -37,15 +41,23 @@
 
         <!-- Libs -->
         <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+        <script type="text/javascript" src="lib/Marker.Rotate.js"></script>
+
+        <script type="text/javascript" src="lib/underscore-min.js"></script>
         <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="lib/angular-leaflet/dist/angular-leaflet-directive.js"></script>
+        <!--<script type="text/javascript" src="lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>-->
+
         <script type="text/javascript" src="lib/angular/angular-route.js"></script>
 
         <!-- App -->
         <script type="text/javascript" src="js/app/index.js"></script>
         <script type="text/javascript" src="js/app/app.js"></script>
-        <script type="text/javascript" src="js/app/services.js"></script>
+        <script type="text/javascript" src="js/app/controllers/login/login.js"></script>
+        <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 
-        <!-- Game -->
+        <!-- Game controllers -->
         <script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
 
         <!-- Game directives -->
@@ -56,6 +68,10 @@
 
         <!-- Game services -->
         <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
+        <script type="text/javascript" src="js/game/services/decision/decision.js"></script>
+        <script type="text/javascript" src="js/game/services/detection/detection.js"></script>
+        <script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
+        <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
 
         <script type="text/javascript">
             app.initialize();

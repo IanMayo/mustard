@@ -1,9 +1,23 @@
 angular.module('mustard', ['ngRoute', 'mustard.services', 'mustard.game.simulator'])
     .config(function ($routeProvider) {
         $routeProvider
-        .when('/game/mission', {
+        .when('/game/mission/:scenario', {
             controller: 'SimulatorCtrl',
-            templateUrl: 'js/game/controllers/simulator/mission.tpl.html'
+            templateUrl: 'js/game/controllers/simulator/mission.tpl.html',
+            resolve: {
+                scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
+                    var deferred = $q.defer();
+                    var scenario = $route.current.params.scenario + '.json';
+
+                    $http({
+                        method: "GET",
+                        url: '/www/js/game/scenarios/' + scenario
+                    }).success(function (response) {
+                        deferred.resolve(response);
+                    });
+                    return deferred.promise;
+                }]
+            }
         })
         .when('/game/training', {
             controller: 'SimulatorCtrl',

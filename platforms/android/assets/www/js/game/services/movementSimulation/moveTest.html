@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movement test</title>
+    <script type="text/javascript">
+
+        function doMove(newTime, curState, vPerf) {
+            return {time:newTime};
+        }
+
+        function run() {
+
+            var state =
+            {
+                location: [0, 0],
+                course:0,
+                speed:0,
+                demCourse:90,
+                demSpeed:10
+            };
+
+            var perf =
+            {
+                turnCircle: 1200.0,
+                accelerationRate: 1.0,
+                minSpeed: 4,
+                maxSpeed: 40,
+                batteryUsage: 1.03
+            };
+
+            var tNow = 0;
+            var tStep = 5000;
+
+            for (var i = 0; i < 9; i++) {
+                tNow += tStep;
+                state = doMove(tNow,state, perf );
+                output(state);
+            }
+        }
+
+        function output(state) {
+            var tNow = new Date();
+            var box = document.getElementById("results");
+            box.value = tNow.toLocaleTimeString() + ', ' + state.time + '\n' + box.value;
+        }
+
+    </script>
+</head>
+<body>
+<h1>Movement</h1>
+<label for="results">Results</label><br/><textarea rows="20" cols="80" id="results"></textarea>
+<input type="button" onclick="run()" value="run"/>
+</body>
+</html>

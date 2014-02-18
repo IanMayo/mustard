@@ -9,7 +9,6 @@ Open Source (MIT License) mobile app to gamify Sonar best practices.
 $ sudo npm install -g phonegap
 ```
 
-
 ###iOS emulator installation
 
 ```
