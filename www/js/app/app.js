@@ -17,7 +17,7 @@ angular.module('mustard', [
 
                 $http({
                     method: "GET",
-                    url: '/www/js/game/scenarios/' + scenario
+                    url: '/mustard/www/js/game/scenarios/' + scenario
                 }).success(function (response) {
                     deferred.resolve(response);
                 });
@@ -33,7 +33,7 @@ angular.module('mustard', [
                 var deferred = $q.defer();
                 $http({
                     method: "GET",
-                    url: "/www/js/game/scenarios/PracticeScenario.json"
+                    url: "/mustard/www/js/game/scenarios/PracticeScenario.json"
                 }).success(function (response) {
                     deferred.resolve(response);
                 });
