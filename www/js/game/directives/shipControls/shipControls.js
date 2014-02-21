@@ -4,7 +4,7 @@ angular.module('mustard.game.shipControlsDirective', [])
     courseRate: 5.00,
     speed: {
         min: 0,
-        max: 10,
+        max: 40,
         rate: 1
     }
 })
