@@ -10,7 +10,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
  * @description Detection service
  */
 
-.service('detection', 'geoMath', function (geoMath) {
+.service('detection', ['geoMath', function (geoMath) {
 
     const ABSORPTION_COEFFICIENT = 0.000073152;
     /* db / metre */
@@ -78,32 +78,28 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
      */
     return {
         doDetections: function (tNow, myVessel, allVessels) {
+            const SENSOR_ERROR = 2;
             // ok, sort out my own noise levels
             var name = myVessel.name;
             var speed = myVessel.state.speed;
             var baseLevel = myVessel.radiatedNoise.baseLevel;
 
-            // sort out the size of the bow null
-            var bowNull;
-            if(speed >= 15)
-            {
-                bowNull = 35;
-            }
-            else
-            {
-                bowNull = 18;
-            }
-
-            const SENSOR_ERROR = 2;
-
             // we half ownship noise, to get required detection ranges
             var LN = getRadiatedNoiseFor(speed, baseLevel, myVessel.state) / 2;
 
-            // ok, store it, in case we want to analyse it
-            myVessel.state.osNoise = LN;
-
+            // sort out the size of the bow null
+            var bowNull;
             // store the detections
             var newDetections = [];
+
+            if(speed >= 15) {
+                bowNull = 35;
+            } else {
+                bowNull = 18;
+            }
+
+            // ok, store it, in case we want to analyse it
+            myVessel.state.osNoise = LN;
 
             // first, loop through my sonars
             for (var j = 0; j < myVessel.sonars.length; j++) {
@@ -117,7 +113,8 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 sonar.location = origin;
 
                 // now loop through the vessels
-                for (var i = 0; i < allVessels.length; i++) {
+//                for (var i = 0; i < allVessels.length; i++) {
+                for (var i in allVessels) {
                     var thisV = allVessels[i];
 
                     // is this me?
@@ -144,8 +141,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                                 insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, "OS (lobe 2)", true, SENSOR_ERROR);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         // no, sort out proper detections
 
                         // sort out the angle to target
@@ -191,8 +187,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                                 // TODO: hey, if he's snorting, why not show extra lobes
                                 // TODO: no, do it if there's a really high SE.
                             }
-                        }
-                        else {
+                        } else {
                             myVessel.state.SE = 0;
                         }
                     }
@@ -203,4 +198,4 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
             myVessel.newDetections = newDetections;
         }
     };
-});
+}]);

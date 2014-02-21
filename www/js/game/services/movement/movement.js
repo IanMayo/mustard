@@ -10,7 +10,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
  * @description Physics movement simulation
  */
 
-.service('movement', 'geoMath', function (geoMath) {
+.service('movement', ['geoMath', function (geoMath) {
 
     /** calculate new height
      *
@@ -270,4 +270,4 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
             curState.demHeight = demHeight;
         }
     };
-});
+}]);

@@ -2,7 +2,7 @@
  * @module Objectives
  */
 
-angular.module('mustard.game.movement', ['mustard.game.geoMath'])
+angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
 /**
  * @module Objectives
@@ -10,7 +10,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
  * @description Game objectives
  */
 
-.service('objectives', 'geoMath', function (geoMath) {
+.service('objectives', ['geoMath', function (geoMath) {
 
     var handleThis = function (gameState, objective, scenario) {
         var thisType = objective.type;
@@ -81,7 +81,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
     var handleMaintainContact = function (gameState, maintainContact, scenario) {
 
         // ok, have we gained contact on someone other than us
-        var ownship = scenario.vessels[0];
+        var ownship = scenario;
         var detections = ownship.newDetections;
 
         var inContact;
@@ -140,7 +140,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
         }
 
         // ok, have we gained contact on someone other than us
-        var ownship = scenario.vessels[0];
+        var ownship = scenario;
         var detections = ownship.newDetections;
 
         if (detections && detections.length > 0) {
@@ -187,7 +187,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
         var dest = proximity.location;
 
         // where is v1
-        var current = scenario.vessels[0].state.location;
+        var current = scenario.state.location;
 
         // what's the range?
         var range = geoMath.rhumbDistanceFromTo(dest, current);
@@ -199,7 +199,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
             // do we have anything else to check?
             if (proximity.course) {
                 // what is o/s course?
-                var osCourse = scenario.vessels[0].state.course;
+                var osCourse = scenario.state.course;
 
                 var courseError = osCourse - proximity.course;
 
@@ -213,7 +213,7 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
 
             // ok, have we failed?
             if (proximity.maxSpeed) {
-                var osSpeed = scenario.vessels[0].state.speed;
+                var osSpeed = scenario.state.speed;
 
                 if (osSpeed > proximity.maxSpeed) {
                     failed = true;
@@ -257,13 +257,11 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
          * @param scenario the current scenario state
          */
         doObjectives: function (gameState, objectives, scenario) {
-            var res;
 
             // ok, loop through the objectives
-            for (var i = 0; i < objectives.length; i++) {
-                var thisObj = objectives[i];
-                res = handleThis(gameState, thisObj, scenario)
-            }
+            _.each(objectives, function (item) {
+                handleThis(gameState, item, scenario)
+            });
         }
     }
-});
+}]);

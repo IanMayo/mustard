@@ -34,6 +34,8 @@
             
             <a href="#/game/mission/1a_drive_vessel">Mission 1a_drive_vessel</a>
             <a href="#/game/mission/1b_read_bearings">Mission 1b_read_bearings</a>
+            <a href="#/game/mission/1c_resolve_ambiguity">Mission 1c_resolve_ambiguity</a>
+            <a href="#/game/mission/2c_random_walker">Mission 2c_random_walker</a>
             <a href="#/game/training">Training Game View</a>
 
             <div ng-view></div>
@@ -47,7 +49,7 @@
         <script type="text/javascript" src="lib/underscore-min.js"></script>
         <script type="text/javascript" src="lib/angular/angular.js"></script>
         <script type="text/javascript" src="lib/angular-leaflet/dist/angular-leaflet-directive.js"></script>
-        <!--<script type="text/javascript" src="lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>-->
+        <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
 
         <script type="text/javascript" src="lib/angular/angular-route.js"></script>
 
@@ -72,6 +74,7 @@
         <script type="text/javascript" src="js/game/services/detection/detection.js"></script>
         <script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
         <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
+        <script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
 
         <script type="text/javascript">
             app.initialize();

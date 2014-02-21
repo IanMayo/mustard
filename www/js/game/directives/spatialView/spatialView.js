@@ -1,10 +1,11 @@
-angular.module('mustard.game.spatialViewDirective', [])
+angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath'])
 
 .constant('spatialViewConfig', {
-    ownShipVisiblePointsTime: 1000 * 60 * 10 // 10 min
+    ownShipVisiblePointsTime: 1000 * 60 * 10, // 10 min
+    detectionFanLineLength: 40000 // in m
 })
 
-.directive('spatialView', ['spatialViewConfig', function (spatialViewConfig) {
+.directive('spatialView', ['spatialViewConfig', 'geoMath', function (spatialViewConfig, geoMath) {
     return {
         restrict: 'EA',
         scope: true,
@@ -40,9 +41,7 @@ angular.module('mustard.game.spatialViewDirective', [])
                     return _.pick(item, 'lat', 'lng');
                 });
 
-                scope.$apply(function () {
-                    scope.paths['ownShipTravelling'].latlngs = visiblePoints;
-                });
+                scope.paths['ownShipTravelling'].latlngs = visiblePoints;
 
                 // update center coordinates of the map
                 scope.mapCenter.lat = ownShipState.lat;
@@ -59,37 +58,35 @@ angular.module('mustard.game.spatialViewDirective', [])
                 var detectionLinesCoordinates = [];
 
                 _.each(destinations, function (destination, index) {
-                    var destinationState = angular.copy(destination);
-
                     if (!localVesselsState[index]) {
                         // a new detection in object
                         localVesselsState[index] = {history: []}
                     }
-                    destinationState.time = _.now();
-                    destinationState.origin = {
-                        lat: ownShip.lat,
-                        lng: ownShip.lng
-                    };
+                    destination.time = _.now();
+                    //
+                    destination.endPoint = geoMath.rhumbDestinationPoint(
+                        destination.origin,
+                        geoMath.toRads(destination.bearing),
+                        spatialViewConfig.detectionFanLineLength
+                    );
 
                     // split detection points array into two arrays: expired and visible
                     detectionPoints = _.partition(localVesselsState[index].history, function (item) {
-                        return item.time < (destinationState.time - spatialViewConfig.ownShipVisiblePointsTime);
+                        return item.time < (destination.time - spatialViewConfig.ownShipVisiblePointsTime);
                     });
 
                     // keep only visible detection points
                     localVesselsState[index].history = detectionPoints.pop();
                     // add new detection to history
-                    localVesselsState[index].history.push(destinationState);
+                    localVesselsState[index].history.push(destination);
 
                     // create line coordinates array
                     _.each(localVesselsState[index].history, function (item) {
-                        detectionLinesCoordinates.push([item.origin, _.pick(item, 'lat', 'lng')]);
+                        detectionLinesCoordinates.push([item.origin, item.endPoint]);
                     });
                 });
 
-                scope.$apply(function () {
-                    scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
-                });
+                scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
             };
 
             /**
@@ -100,6 +97,7 @@ angular.module('mustard.game.spatialViewDirective', [])
 
             /**
              * Available path types on the map
+             * @type {Object}
              */
             scope.paths = {
                 sonarDetections : {
@@ -115,14 +113,32 @@ angular.module('mustard.game.spatialViewDirective', [])
                 }
             };
 
+            /**
+             * GeoJson map features
+             * @type {Object}
+             */
+            scope.features = {};
+
             scope.$on('vesselsStateUpdated', function () {
                 var vessels = angular.copy(scope.vesselsMarker);
                 var ownShip = vessels.ownShip;
-                var targets = _.omit(vessels, 'ownShip');
                 ownShipTraveling(ownShip);
-                sonarDetections(ownShip, targets);
+                sonarDetections(ownShip, ownShip.newDetections);
             });
 
+            /**
+             * Add geoJson to the map
+             */
+            scope.$watch('mapFeatures', function mapFeatures(newVal) {
+                if (newVal) {
+                    // geoJson directive requires features config with "data" key
+                    scope.features.data = newVal.features;
+                }
+            });
+
+            /**
+             * Change  visibility of the layer with target markers
+             */
             scope.toggleTargets = function () {
                 scope.layers.overlays.targets.visible = !scope.layers.overlays.targets.visible;
             };

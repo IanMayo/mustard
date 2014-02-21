@@ -10,7 +10,7 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
  * @description Decision service
  */
 
-.service('decision', 'geoMath', function (geoMath) {
+.service('decision', ['geoMath', function (geoMath) {
 
     var implementThis = function (tNow, myState, myDetections, thisB) {
         var res;
@@ -171,4 +171,4 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
             }
         }
     }
-});
+}]);

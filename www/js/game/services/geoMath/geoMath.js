@@ -96,28 +96,34 @@ angular.module('mustard.game.geoMath', [])
      * @param   {Number} [dp=0|2|4]: No of decimal places to use - default 0 for dms, 2 for dm, 4 for d
      * @returns {String} Deg/min/seconds
      */
-    var toLon = function (deg, format, dp) {
+    var toLon = function(deg, format, dp) {
         var lon = toDMS(deg, format, dp);
         return lon==null ? '–' : lon + (deg<0 ? 'W' : 'E');
     };
 
-    function toString(degLat, degLon, format, dp) {
+    var toString =  function(degLat, degLon, format, dp) {
         if (typeof format == 'undefined') format = 'dms';
 
         return toLat(degLat, format, dp) + ', ' + toLon(degLon, format, dp);
-    }
+    };
 
-    /**
+    var toRads = function(degVal) {
+        return degVal / 180.0 * Math.PI;
+    };
+
+    var toDegs = function (radVal) {
+        return radVal * 180.0 / Math.PI;
+    };
+
+
+
+        /**
      * Module API
      */
     return {
-        toRads: function (degVal) {
-            return degVal / 180.0 * Math.PI;
-        },
+        toRads: toRads,
 
-        toDegs: function (radVal) {
-            return radVal * 180.0 / Math.PI;
-        },
+        toDegs: toDegs,
 
         /**
          *
