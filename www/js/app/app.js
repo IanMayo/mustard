@@ -13,7 +13,7 @@ angular.module('mustard', [
         resolve: {
             scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
                 var deferred = $q.defer();
-                var scenario = $route.current.params.scenario + '.json';
+                var scenario = $route.current.params.scenario.replace(/^\/?/,'') + '.json';
 
                 $http({
                     method: "GET",
