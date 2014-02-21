@@ -13,11 +13,11 @@ angular.module('mustard', [
         resolve: {
             scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
                 var deferred = $q.defer();
-                var scenario = $route.current.params.scenario.replace(/^\/?/,'') + '.json';
+                var scenario = $route.current.params.scenario + '.json';
 
                 $http({
                     method: "GET",
-                    url: '/www/js/game/scenarios/' + scenario
+                    url: 'js/game/scenarios/' + scenario
                 }).success(function (response) {
                     deferred.resolve(response);
                 });
