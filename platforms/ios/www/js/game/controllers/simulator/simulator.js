@@ -1,4 +1,9 @@
-angular.module('mustard.game.simulator', ['mustard.game.movementSimulation', 'mustard.game.spatialViewDirective'])
+angular.module('mustard.game.simulator', [
+    'mustard.game.movementSimulation',
+    'mustard.game.spatialViewDirective',
+    'mustard.game.timeDisplayDirective',
+    'mustard.game.shipControlsDirective'
+])
 
 /**
  * @module Game
@@ -33,7 +38,14 @@ angular.module('mustard.game.simulator', ['mustard.game.movementSimulation', 'mu
      * Current state of game
      * @type {Object}
      */
-    $scope.gameState = {};
+    $scope.gameState = {
+        speed: 0,
+        simulationTime: 0,
+        ownShip: {
+            course: 0.00,
+            speed: 1
+        }
+    };
 }])
 
 /**
