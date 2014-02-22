@@ -2,6 +2,7 @@ angular.module('mustard', [
     'ngRoute',
     'mustard.services',
     'mustard.app.login',
+    'mustard.app.registration',
     'mustard.game.simulator',
     'leaflet-directive'
 ])
@@ -12,6 +13,11 @@ angular.module('mustard', [
     .when('/login', {
         controller: 'LoginCtrl',
         templateUrl: 'js/app/controllers/login/login.tpl.html'
+    })
+
+    .when('/register', {
+        controller: 'RegistrationCtrl',
+        templateUrl: 'js/app/controllers/registration/registration.tpl.html'
     })
 
     .when('/game/mission', {
