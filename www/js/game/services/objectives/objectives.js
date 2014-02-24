@@ -197,7 +197,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             var failed = false;
 
             // do we have anything else to check?
-            if (proximity.course) {
+            if (proximity.hasOwnProperty('course')) {
                 // what is o/s course?
                 var osCourse = scenario.state.course;
 

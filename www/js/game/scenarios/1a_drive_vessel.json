@@ -63,7 +63,7 @@
                     },
                     "range": 1000,
                     "elapsed": 1800,
-                    "course:": 0,
+                    "course": 0,
                     "courseError": 10,
                     "maxSpeed": 3,
                     "success": "Well done, you made it. Let's get the array fitted and move on",
