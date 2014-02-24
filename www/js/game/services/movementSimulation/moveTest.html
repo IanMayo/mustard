@@ -162,7 +162,7 @@
  */
 var timerId;            // the id of a running timer
 
-var gameState = {tNow: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
+var gameState = {simulationTime: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
 
 /** map related objects
  */
@@ -179,7 +179,7 @@ function doStep() {
     var v2 = scenario.vessels[1];
 
     // is this the first step?
-    if (gameState.tNow == 0) {
+    if (gameState.simulationTime == 0) {
 
         // do we have a target?
         if (v2) {
@@ -232,23 +232,23 @@ function doStep() {
 
 
 // move the scenario forward
-    gameState.tNow += gameState.tStep;
+    gameState.simulationTime += gameState.tStep;
 
 // loop through the vessels
     for (var i = 0; i < scenario.vessels.length; i++) {
         var thisV = scenario.vessels[i];
-        doMove(gameState.tNow, thisV.state, thisV.perf);
+        doMove(gameState.simulationTime, thisV.state, thisV.perf);
     }
 
 // now that everyone is in their new location, do the detections
     for (var j = 0; j < scenario.vessels.length; j++) {
-        doDetections(gameState.tNow, scenario.vessels[j], scenario.vessels);
+        doDetections(gameState.simulationTime, scenario.vessels[j], scenario.vessels);
     }
 
 // and now the decisions
     for (var k = 0; k < scenario.vessels.length; k++) {
         var thisV3 = scenario.vessels[k];
-        doDecisions(gameState.tNow, thisV3.state, thisV3.newDetections, thisV3.behaviours);
+        doDecisions(gameState.simulationTime, thisV3.state, thisV3.newDetections, thisV3.behaviours);
     }
 
     // let the referees run
@@ -314,7 +314,7 @@ function updateUI() {
     document.getElementById("outLocation").innerHTML = "" + locStr;
 
 // and sort out the time
-    var timeVal = new Date(gameState.tNow);
+    var timeVal = new Date(gameState.simulationTime);
     document.getElementById("tNow").innerHTML = timeVal.toLocaleTimeString();
 
 // try to move the marker
@@ -420,7 +420,7 @@ function newScenario() {
     scenario = eval("scenarios." + scenName);
 
     // ok, refresh the scenario settings
-    gameState = {tNow: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
+    gameState = {simulationTime: 0, tStep: 2000, accelRate: 1, state: "PENDING"};
 
     initFeatures();
 

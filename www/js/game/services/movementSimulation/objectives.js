@@ -104,11 +104,11 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
 
                 // is this our first one?
                 if (!maintainContact.stopTime) {
-                    maintainContact.stopTime = gameState.tNow + (maintainContact.elapsed * 1000);
+                    maintainContact.stopTime = gameState.simulationTime + (maintainContact.elapsed * 1000);
                 }
 
                 // have we held contact for long enough
-                if (gameState.tNow >= maintainContact.stopTime) {
+                if (gameState.simulationTime >= maintainContact.stopTime) {
                     // great - we're done.
                     maintainContact.complete = true;
                     break;
@@ -125,12 +125,12 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
         maintainContact.complete = true;
     }
 
-    if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.tNow > maintainContact.stopTime))) {
+    if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.simulationTime > maintainContact.stopTime))) {
         // ok, game failure
         maintainContact.complete = true;
 
         // how many minutes did we trail for?
-        var elapsedMins = (gameState.tNow - (maintainContact.stopTime - (maintainContact.elapsed * 1000))) / 1000 / 60;
+        var elapsedMins = (gameState.simulationTime - (maintainContact.stopTime - (maintainContact.elapsed * 1000))) / 1000 / 60;
 
         // inject the elapsed time message
         var failMessage = maintainContact.failure;
@@ -142,7 +142,7 @@ handleMaintainContact = function (gameState, maintainContact, scenario) {
 
 handleGainContact = function (gameState, gainContact, scenario) {
     if (!gainContact.stopTime) {
-        gainContact.stopTime = gameState.tNow + gainContact.elapsed * 1000;
+        gainContact.stopTime = gameState.simulationTime + gainContact.elapsed * 1000;
     }
 
     // ok, have we gained contact on someone other than us
@@ -170,7 +170,7 @@ handleGainContact = function (gameState, gainContact, scenario) {
 
     if (!gainContact.complete) {
 
-        if (gameState.tNow > gainContact.stopTime) {
+        if (gameState.simulationTime > gainContact.stopTime) {
             // ok, game failure
             gainContact.complete = true;
             gameState.failureMessage = gainContact.failure;
@@ -186,7 +186,7 @@ handleProximity = function (gameState, proximity, scenario) {
         // ok. do we know when this objective started?
         if (!proximity.stopTime) {
             // no, better store it
-            proximity.stopTime = gameState.tNow + (proximity.elapsed * 1000);
+            proximity.stopTime = gameState.simulationTime + (proximity.elapsed * 1000);
         }
     }
     // ok, where has he got to get to?
@@ -237,7 +237,7 @@ handleProximity = function (gameState, proximity, scenario) {
 
     // right, just check if we have failed to reach our proximity in time
     if (proximity.stopTime) {
-        if (gameState.tNow > proximity.stopTime) {
+        if (gameState.simulationTime > proximity.stopTime) {
             // did we succeed on this step
             if (proximity.complete) {
                 // ok, let's allow the success
