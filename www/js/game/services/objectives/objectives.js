@@ -69,6 +69,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             case "MAINTAIN_CONTACT":
                 handleMaintainContact(gameState, objective, vesselsState);
                 break;
+            case "START_MISSION":
+                handleStartMission(gameState, objective, vesselsState);
+                break;
         }
     };
 
@@ -98,7 +101,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         // ok, this is the last one. we can do an actual stop
                         gameState.state = "DO_STOP";
                     }
-                    else {
+                    else{
                         gameState.state = "DO_PAUSE";
                     }
                 }
@@ -228,6 +231,15 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             }
         }
 
+    };
+
+
+    var handleStartMission = function (gameState, startMission, vesselsState) {
+
+        // and store any achievements
+        processAchievements(startMission, gameState);
+
+        startMission.complete = true;
     };
 
     var handleProximity = function (gameState, proximity, vesselsState) {

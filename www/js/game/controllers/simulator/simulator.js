@@ -185,7 +185,11 @@ angular.module('mustard.game.simulator', [
             if($scope.gameState.achievements)
             {
                 var showIt = function(element){
-                    alert("New achievement, element:" + element.name +" message:" + element.message);
+                    if(!element.hasDisplayed)
+                    {
+                        alert("Well done, you've been awarded a new achievement:\n'" + element.name +"'\n\n" + element.message);
+                        element.hasDisplayed = true;
+                    }
                 };
                 _.each($scope.gameState.achievements, showIt);
             }
