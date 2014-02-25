@@ -273,7 +273,7 @@ angular.module('mustard.game.simulator', [
         });
 
         // let the referees run
-        objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vesselsState.ownShip);
+        objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vesselsState);
 
         // update the UI
         shareSonarDetections();

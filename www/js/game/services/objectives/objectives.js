@@ -31,7 +31,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         }
     };
 
-    var handleThis = function (gameState, objective, scenario) {
+    var handleThis = function (gameState, objective, vesselsState) {
         var thisType = objective.type;
 
         switch (thisType) {
@@ -49,7 +49,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     // is this one complete?
                     if (!(child.complete)) {
                         // ok, run it
-                        handleThis(gameState, child, scenario);
+                        handleThis(gameState, child, vesselsState);
 
                         // did it finish?
                         if (child.complete) {
@@ -83,22 +83,23 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // Blah
                 break;
             case "PROXIMITY":
-                handleProximity(gameState, objective, scenario);
+                handleProximity(gameState, objective, vesselsState);
                 break;
             case "GAIN_CONTACT":
-                handleGainContact(gameState, objective, scenario);
+                handleGainContact(gameState, objective, vesselsState);
                 break;
             case "MAINTAIN_CONTACT":
-                handleMaintainContact(gameState, objective, scenario);
+                handleMaintainContact(gameState, objective, vesselsState);
                 break;
         }
     };
 
-    var handleMaintainContact = function (gameState, maintainContact, scenario) {
+    var handleMaintainContact = function (gameState, maintainContact, vesselsState) {
+
+        var ownShip = vesselsState.ownShip;
 
         // ok, have we gained contact on someone other than us
-        var ownship = scenario;
-        var detections = ownship.newDetections;
+        var detections = ownShip.newDetections;
 
         var inContact;
 
@@ -108,7 +109,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             for (var i = 0; i < detections.length; i++) {
                 var thisD = detections[i];
 
-                if (thisD.source != ownship.name) {
+                if (thisD.source != ownShip.name) {
 
                     inContact = true;
 
@@ -135,7 +136,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             maintainContact.complete = true;
 
             // and store any achievements
-            processAchievements(proximity, gameState);
+            processAchievements(maintainContact, gameState);
 
         }
 
@@ -154,21 +155,23 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         }
     };
 
-    var handleGainContact = function (gameState, gainContact, scenario) {
+    var handleGainContact = function (gameState, gainContact, vesselsState) {
+
+        var ownShip = vesselsState.ownShip;
+
         if (!gainContact.stopTime) {
             gainContact.stopTime = gameState.simulationTime + gainContact.elapsed * 1000;
         }
 
         // ok, have we gained contact on someone other than us
-        var ownship = scenario;
-        var detections = ownship.newDetections;
+        var detections = ownShip.newDetections;
 
         if (detections && detections.length > 0) {
             // ok, are any from a target?
             for (var i = 0; i < detections.length; i++) {
                 var thisD = detections[i];
 
-                if (thisD.source != ownship.name) {
+                if (thisD.source != ownShip.name) {
                     gainContact.complete = true;
                     // great - we're done.
                     break;
@@ -182,7 +185,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             gameState.state = "DO_STOP";
 
             // and store any achievements
-            processAchievements(proximity, gameState);
+            processAchievements(gainContact, gameState);
 
         }
 
@@ -198,7 +201,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
     };
 
-    var handleProximity = function (gameState, proximity, scenario) {
+    var handleProximity = function (gameState, proximity, vesselsState) {
+        var ownShip = vesselsState.ownShip;
+
         // right, do we have an elapsed time limit
         if (proximity.elapsed) {
             // ok. do we know when this objective started?
@@ -211,7 +216,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         var dest = proximity.location;
 
         // where is v1
-        var current = scenario.state.location;
+        var current = ownShip.state.location;
 
         // what's the range?
         var range = geoMath.rhumbDistanceFromTo(dest, current);
@@ -223,7 +228,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             // do we have anything else to check?
             if (proximity.hasOwnProperty('course')) {
                 // what is o/s course?
-                var osCourse = scenario.state.course;
+                var osCourse = ownShip.state.course;
 
                 var courseError = osCourse - proximity.course;
 
@@ -237,7 +242,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
             // ok, have we failed?
             if (proximity.maxSpeed) {
-                var osSpeed = scenario.state.speed;
+                var osSpeed = ownShip.state.speed;
 
                 if (osSpeed > proximity.maxSpeed) {
                     failed = true;
@@ -285,13 +290,13 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
          *
          * @param gameState the current game state
          * @param objectives the array of objectives
-         * @param scenario the current scenario state
+         * @param vesselsState the current vessel states (ownship and others)
          */
-        doObjectives: function (gameState, objectives, scenario) {
+        doObjectives: function (gameState, objectives, vesselsState) {
 
             // ok, loop through the objectives
             _.each(objectives, function (item) {
-                handleThis(gameState, item, scenario)
+                handleThis(gameState, item, vesselsState)
             });
         }
     }
