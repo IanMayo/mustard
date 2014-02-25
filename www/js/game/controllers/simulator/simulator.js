@@ -54,6 +54,15 @@ angular.module('mustard.game.simulator', [
     $scope.mapFeatures = scenario.features;
 
     /**
+     * what the user wishes the ownship vessel to do
+     * @type {{course: number, speed: number}}
+     */
+    $scope.demandedState = {
+        course: 0.00,
+        speed: 1
+    };
+
+    /**
      * Current state of game
      * @type {Object}
      */
@@ -62,10 +71,6 @@ angular.module('mustard.game.simulator', [
         accelRate: 0,
         simulationTime: 0,
         simulationTimeStep: 2000,
-        ownShip: {
-            course: 0.00,
-            speed: 1
-        },
         patrolArea: scenario.patrolArea
     };
 }])
@@ -81,7 +86,7 @@ angular.module('mustard.game.simulator', [
 
     /**
      * Create config object for a vessel marker
-     * @param {String} layer Layer name
+     * @param {String} layerName Layer name
      * @param {Object} vessel
      * @returns {Object}
      */
@@ -183,7 +188,7 @@ angular.module('mustard.game.simulator', [
             {
                 var showIt = function(element){
                     alert("New achievement:" + element.name +" message:" + element.message);
-                }
+                };
                 _.each($scope.gameState.achievements, showIt);
             }
 
@@ -248,8 +253,8 @@ angular.module('mustard.game.simulator', [
     };
 
     var doStep = function () {
-        $scope.vesselsState.ownShip.state.demCourse = parseInt($scope.gameState.ownShip.course);
-        $scope.vesselsState.ownShip.state.demSpeed = parseInt($scope.gameState.ownShip.speed);
+        $scope.vesselsState.ownShip.state.demCourse = parseInt($scope.demandedState.course);
+        $scope.vesselsState.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
 
         /////////////////////////
         // GAME LOOP STARTS HERE
@@ -295,8 +300,8 @@ angular.module('mustard.game.simulator', [
     initializeTargetShips().then(function () {
         configureMap();
 
-        $scope.gameState.ownShip.course = parseInt($scope.vesselsState.ownShip.state.demCourse);
-        $scope.gameState.ownShip.speed = parseInt($scope.vesselsState.ownShip.state.demSpeed);
+        $scope.demandedState.course = parseInt($scope.vesselsState.ownShip.state.demCourse);
+        $scope.demandedState.speed = parseInt($scope.vesselsState.ownShip.state.demSpeed);
     });
 
     $scope.$watch('gameState.accelRate', function (newVal) {
