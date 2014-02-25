@@ -114,7 +114,7 @@
                     "name": "Gain contact",
                     "type": "GAIN_CONTACT",
                     "elapsed": 900,
-                    "success": "Well done, you've gained contact within the 15 minute limit",
+                    "success": "Well done, you've gained contact within the 15 minute limit. Try to resolve the bearing, then hold it for another hour",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
