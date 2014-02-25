@@ -178,6 +178,15 @@ angular.module('mustard.game.simulator', [
                 delete $scope.gameState.failureMessage;
             }
 
+            // are there any achievements?
+            if($scope.gameState.achievements)
+            {
+                var showIt = function(element){
+                    alert("New achievement:" + element.name +" message:" + element.message);
+                }
+                _.each($scope.gameState.achievements, showIt);
+            }
+
             if ($scope.gameState.state === 'DO_PAUSE') {
 
                 // ok, resume

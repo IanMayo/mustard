@@ -67,7 +67,8 @@
                     "courseError": 10,
                     "maxSpeed": 3,
                     "success": "Well done, you made it. Let's get the array fitted and move on",
-                    "failure": "Sorry, you didn't make it in time. You'll have to restart this mission"
+                    "failure": "Sorry, you didn't make it in time. You'll have to restart this mission",
+                    "achievement" : {"name" : "Noobie", "message" : "You're now a Mustard Newbie. Good luck"}
                 }
             ]
         }

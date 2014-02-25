@@ -12,9 +12,27 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
 .service('objectives', ['geoMath', function (geoMath) {
 
+
+    /** on the presumption that the objective was successful, insert the
+     * relevant achievement
+     *
+     * @param objective the objective that contains the achievements
+     * @param gameState the game state where successful achievements are stored.
+     */
+    var processAchievements = function(objective, gameState)
+    {
+        if(objective.achievement)
+        {
+            if(!gameState.achievements)
+            {
+                gameState.achievements = [];
+            }
+            gameState.achievements.push(objective.achievement);
+        }
+    };
+
     var handleThis = function (gameState, objective, scenario) {
         var thisType = objective.type;
-        var res;
 
         switch (thisType) {
             case "SEQUENCE":
@@ -60,7 +78,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     // move to the next child
                     thisId++;
                 }
-                while ((thisId < objective.children.length) && (!STOP_CHECKING))
+                while ((thisId < objective.children.length) && (!STOP_CHECKING));
 
                 // Blah
                 break;
@@ -73,8 +91,6 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             case "MAINTAIN_CONTACT":
                 handleMaintainContact(gameState, objective, scenario);
                 break;
-
-
         }
     };
 
@@ -117,6 +133,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             gameState.successMessage = maintainContact.success;
             gameState.state = "DO_STOP";
             maintainContact.complete = true;
+
+            // and store any achievements
+            processAchievements(proximity, gameState);
+
         }
 
         if (!maintainContact.complete && ((maintainContact.stopTime && !inContact) || (gameState.simulationTime > maintainContact.stopTime))) {
@@ -160,6 +180,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             // cool,handle the success
             gameState.successMessage = gainContact.success;
             gameState.state = "DO_STOP";
+
+            // and store any achievements
+            processAchievements(proximity, gameState);
+
         }
 
         if (!gainContact.complete) {
@@ -225,6 +249,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 proximity.complete = true;
                 gameState.successMessage = proximity.success;
                 gameState.state = "DO_STOP";
+
+                // and store any achievements
+                processAchievements(proximity, gameState);
             }
         }
 
@@ -241,6 +268,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     proximity.complete = true;
                     gameState.failureMessage = proximity.failure;
                     gameState.state = "DO_STOP";
+
+                    // and store any achievements
+                    processAchievements(proximity, gameState);
+
                 }
             }
         }
@@ -252,7 +283,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     return {
         /**
          *
-         * @param tNow the current time
+         * @param gameState the current game state
          * @param objectives the array of objectives
          * @param scenario the current scenario state
          */
