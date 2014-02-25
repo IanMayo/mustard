@@ -172,6 +172,10 @@ angular.module('mustard.game.simulator', [
     var missionStatus = function () {
         // do we need to pause/stop?
         if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
+
+            // take copy of game state
+            var timeState = $scope.gameState.state;
+
             // scenario complete?
             if ($scope.gameState.successMessage) {
                 $scope.gameState.state = 'SUCCESS';
@@ -187,17 +191,42 @@ angular.module('mustard.game.simulator', [
             if($scope.gameState.achievements)
             {
                 var showIt = function(element){
-                    alert("New achievement:" + element.name +" message:" + element.message);
+                    alert("New achievement, element:" + element.name +" message:" + element.message);
                 };
                 _.each($scope.gameState.achievements, showIt);
             }
 
-            if ($scope.gameState.state === 'DO_PAUSE') {
+            console.log("IN LOOP END:" + $scope.gameState.state);
+
+            if (timeState === 'DO_PAUSE') {
 
                 // ok, resume
                 $scope.gameState.state = 'RUNNING';
 
-            } else if (($scope.gameState.state === 'DO_STOP') || ($scope.gameState.state === 'FAILED')) {
+            } else if ((timeState === 'DO_STOP') || (timeState === 'FAILED')) {
+
+                // ok, stop the scenario
+                $scope.gameState.accelRate = 0;
+
+                // for diagnostics, show any narrative entries
+                if($scope.gameState.narratives)
+                {
+                    var showOnConsole = function(element)
+                    {
+                        if(element)
+                        {
+                            console.log("narrative. time:" + element.dateTime + " location:" + element.location + " msg:" + element.message);
+                        }
+                        else
+                        {
+                            console.log("EMPTY NARRATIVE ELEMENT!");
+                        }
+                    };
+                    console.log("== NARRATIVE ENTRIES FOR THIS MISSION ===");
+                    _.each($scope.gameState.narratives, showOnConsole);
+                    console.log("== ================================== ===");
+                }
+
                 // ok, move on to the review stage
                 var r = confirm("Ready for the debriefing?");
                 if (r == true) {

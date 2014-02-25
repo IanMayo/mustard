@@ -31,56 +31,34 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         }
     };
 
+    /** insert the supplied information into the game state narratives
+     *
+     * @param gameState
+     * @param dateTime
+     * @param location
+     * @param message
+     */
+    var insertNarrative = function(gameState, dateTime, location, message)
+    {
+        if(!gameState.narratives)
+        {
+            gameState.narratives = [];
+        }
+        gameState.narratives.push({ "dateTime" : dateTime, "location" : location, "message" : message});
+    };
+
+    /** switchboard method that calls relevant observer handler
+     *
+     * @param gameState
+     * @param objective
+     * @param vesselsState
+     */
     var handleThis = function (gameState, objective, vesselsState) {
         var thisType = objective.type;
 
         switch (thisType) {
             case "SEQUENCE":
-
-                var thisId = 0;
-                var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
-
-                // loop through all, or until we don't get a result object
-                do
-                {
-                    // get the next child
-                    var child = objective.children[thisId];
-
-                    // is this one complete?
-                    if (!(child.complete)) {
-                        // ok, run it
-                        handleThis(gameState, child, vesselsState);
-
-                        // did it finish?
-                        if (child.complete) {
-                            // OK. For a sequence we have to override the game state setting.
-                            // this is because a STOP is actually a PAUSE if we're not at the last one yet.
-
-                            // is this the last one?  If it's not we  will switch
-                            // a stop instruction to a pause one
-                            if (((thisId + 1) == objective.children.length) || (gameState.failureMessage)) {
-                                // ok, this is the last one. we can do an actual stop
-                                gameState.state = "DO_STOP";
-                            }
-                            else {
-                                gameState.state = "DO_PAUSE";
-                            }
-                        }
-                        else {
-                            // that one isn't ready. move on
-                            STOP_CHECKING = true;
-                        }
-                    }
-                    else {
-                        // don't worry - move on the next one
-                    }
-
-                    // move to the next child
-                    thisId++;
-                }
-                while ((thisId < objective.children.length) && (!STOP_CHECKING));
-
-                // Blah
+                handleSequence(gameState, objective, vesselsState);
                 break;
             case "PROXIMITY":
                 handleProximity(gameState, objective, vesselsState);
@@ -92,6 +70,51 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 handleMaintainContact(gameState, objective, vesselsState);
                 break;
         }
+    };
+
+    var handleSequence = function (gameState, sequence, vesselsState) {
+        var thisId = 0;
+        var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
+
+        // loop through all, or until we don't get a result object
+        do
+        {
+            // get the next child
+            var child = sequence.children[thisId];
+
+            // is this one complete?
+            if (!(child.complete)) {
+                // ok, run it
+                handleThis(gameState, child, vesselsState);
+
+                // did it finish?
+                if (child.complete) {
+                    // OK. For a sequence we have to override the game state setting.
+                    // this is because a STOP is actually a PAUSE if we're not at the last one yet.
+
+                    // is this the last one?  If it's not we  will switch
+                    // a stop instruction to a pause one
+                    if (((thisId + 1) == sequence.children.length) || (gameState.failureMessage)) {
+                        // ok, this is the last one. we can do an actual stop
+                        gameState.state = "DO_STOP";
+                    }
+                    else {
+                        gameState.state = "DO_PAUSE";
+                    }
+                }
+                else {
+                    // that one isn't ready. move on
+                    STOP_CHECKING = true;
+                }
+            }
+            else {
+                // don't worry - move on the next one
+            }
+
+            // move to the next child
+            thisId++;
+        }
+        while ((thisId < sequence.children.length) && (!STOP_CHECKING));
     };
 
     var handleMaintainContact = function (gameState, maintainContact, vesselsState) {
@@ -116,6 +139,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     // is this our first one?
                     if (!maintainContact.stopTime) {
                         maintainContact.stopTime = gameState.simulationTime + (maintainContact.elapsed * 1000);
+
+                        insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Gained contact with target, now maintaining");
                     }
 
                     // have we held contact for long enough
@@ -152,6 +177,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             failMessage = failMessage.replace("[time]", "" + Math.floor(elapsedMins));
             gameState.failureMessage = failMessage;
             gameState.state = "DO_STOP";
+            insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Lost contact with target");
         }
     };
 
@@ -187,6 +213,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             // and store any achievements
             processAchievements(gainContact, gameState);
 
+            insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Gained contact with target");
         }
 
         if (!gainContact.complete) {
@@ -196,6 +223,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 gainContact.complete = true;
                 gameState.failureMessage = gainContact.failure;
                 gameState.state = "DO_STOP";
+                insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to gain contact with target");
+
             }
         }
 
@@ -257,6 +286,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
                 // and store any achievements
                 processAchievements(proximity, gameState);
+
+                insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Reached proximity threshold");
             }
         }
 
@@ -276,6 +307,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
                     // and store any achievements
                     processAchievements(proximity, gameState);
+
+                    insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to pass proximity threshold in time");
+
 
                 }
             }
