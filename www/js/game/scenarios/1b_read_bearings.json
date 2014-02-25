@@ -112,6 +112,7 @@
             "children": [
                 {
                     "name": "Gain contact",
+                    "description" : "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
                     "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
@@ -119,6 +120,7 @@
                 },
                 {
                     "name": "Maintain contact",
+                    "description" : "Maintain contact on the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 3600,
                     "success": "Well done, you've held contact for one hour",

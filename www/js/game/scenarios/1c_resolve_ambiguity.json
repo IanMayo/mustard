@@ -112,6 +112,7 @@
             "children": [
                 {
                     "name": "Gain contact",
+                    "description" : "Gain contact on the training target within 15 minutes",
                     "type": "GAIN_CONTACT",
                     "elapsed": 900,
                     "success": "Well done, you've gained contact within the 15 minute limit. Try to resolve the bearing, then hold it for another hour",
@@ -119,6 +120,7 @@
                 },
                 {
                     "name": "Maintain contact",
+                    "description" : "Maintain contact with the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 3600,
                     "success": "Well done, you've held contact for one hour",

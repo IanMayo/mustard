@@ -51,6 +51,7 @@
                 },
                 {
                     "name": "Point A",
+                    "description" : "Travel to rendez-vous point A for noise checks",
                     "type": "PROXIMITY",
                     "location": {
                         "lat": 50,
@@ -61,6 +62,7 @@
                 },
                 {
                     "name": "Point B",
+                    "description" : "Travel to Sonar Fitting barge",
                     "type": "PROXIMITY",
                     "location": {
                         "lat": 50.2,
