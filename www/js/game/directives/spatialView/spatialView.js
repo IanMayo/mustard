@@ -1,4 +1,8 @@
-angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath'])
+/**
+ * @module mustard.game.spatialViewDirective
+ */
+
+angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath', 'mustard.game.panToVesselDirective'])
 
 .constant('spatialViewConfig', {
     ownShipVisiblePointsTime: 1000 * 60 * 10, // 10 min
@@ -20,21 +24,21 @@ angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath'])
              * @param {Object }newState
              */
             var ownShipTraveling = function (newState) {
-                var ownShipState = angular.copy(newState);
+                var currentOwnShipState = angular.copy(newState);
                 var travelingPoints = [];
                 var visiblePoints = [];
 
-                ownShipState.time = _.now();
+                currentOwnShipState.time = angular.copy(scope.gameState.simulationTime);
 
                 // split traveling points array into two arrays: expired and visible
                 travelingPoints = _.partition(localVesselsState.ownShip.history, function (item) {
-                    return item.time < (ownShipState.time - spatialViewConfig.ownShipVisiblePointsTime);
+                    return item.time < (currentOwnShipState.time - spatialViewConfig.ownShipVisiblePointsTime);
                 });
 
                 // keep only visible traveling points
                 localVesselsState.ownShip.history = travelingPoints.pop();
                 // add current state to history
-                localVesselsState.ownShip.history.push(ownShipState);
+                localVesselsState.ownShip.history.push(currentOwnShipState);
 
                 // create array of points
                 visiblePoints = _.map(localVesselsState.ownShip.history, function (item) {
@@ -43,9 +47,8 @@ angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath'])
 
                 scope.paths['ownShipTravelling'].latlngs = visiblePoints;
 
-                // update center coordinates of the map
-                scope.mapCenter.lat = ownShipState.lat;
-                scope.mapCenter.lng = ownShipState.lng;
+                // adjust the center coordinates of the map if it's needed
+                scope.$broadcast('ownShipMoved', currentOwnShipState);
             };
 
             /**
@@ -62,8 +65,9 @@ angular.module('mustard.game.spatialViewDirective', ['mustard.game.geoMath'])
                         // a new detection in object
                         localVesselsState[index] = {history: []}
                     }
-                    destination.time = _.now();
-                    //
+
+                    destination.time = angular.copy(scope.gameState.simulationTime);
+
                     destination.endPoint = geoMath.rhumbDestinationPoint(
                         destination.origin,
                         geoMath.toRads(destination.bearing),

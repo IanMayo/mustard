@@ -14,8 +14,6 @@ angular.module('mustard', [
             scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
                 var deferred = $q.defer();
                 var scenario = $route.current.params.scenario + '.json';
-                console.log('scenario', scenario);
-
 
                 $http({
                     method: "GET",
