@@ -305,12 +305,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     gameState.failureMessage = proximity.failure;
                     gameState.state = "DO_STOP";
 
-                    // and store any achievements
-                    processAchievements(proximity, gameState);
-
                     insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to pass proximity threshold in time");
-
-
                 }
             }
         }
