@@ -13,11 +13,13 @@ angular.module('mustard', [
         resolve: {
             scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
                 var deferred = $q.defer();
-                var scenario = $route.current.params.scenario.replace(/^\/?/,'') + '.json';
+                var scenario = $route.current.params.scenario + '.json';
+                console.log('scenario', scenario);
+
 
                 $http({
                     method: "GET",
-                    url: '/mustard/www/js/game/scenarios/' + scenario
+                    url: 'js/game/scenarios/' + scenario
                 }).success(function (response) {
                     deferred.resolve(response);
                 });
@@ -33,7 +35,7 @@ angular.module('mustard', [
                 var deferred = $q.defer();
                 $http({
                     method: "GET",
-                    url: "/mustard/www/js/game/scenarios/PracticeScenario.json"
+                    url: "js/game/scenarios/PracticeScenario.json"
                 }).success(function (response) {
                     deferred.resolve(response);
                 });
