@@ -190,8 +190,6 @@ angular.module('mustard.game.simulator', [
                 _.each($scope.gameState.achievements, showIt);
             }
 
-            console.log("IN LOOP END:" + $scope.gameState.state);
-
             if (timeState === 'DO_PAUSE') {
 
                 // ok, resume
@@ -207,14 +205,7 @@ angular.module('mustard.game.simulator', [
                 {
                     var showOnConsole = function(element)
                     {
-                        if(element)
-                        {
-                            console.log("narrative. time:" + element.dateTime + " location:" + element.location + " msg:" + element.message);
-                        }
-                        else
-                        {
-                            console.log("EMPTY NARRATIVE ELEMENT!");
-                        }
+                        console.log("narrative. time:" + element.dateTime + " location:" + element.location + " msg:" + element.message);
                     };
                     console.log("== NARRATIVE ENTRIES FOR THIS MISSION ===");
                     _.each($scope.gameState.narratives, showOnConsole);
