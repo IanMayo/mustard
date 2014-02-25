@@ -15,13 +15,7 @@ angular.module('mustard.game.simulator', [
  * @module Game
  * @class GameCtrl (controller)
  */
-.controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario, movement) {
-
-    _.mixin({
-        targetShips: function(vessels) {
-            return _.omit(vessels, 'ownShip');
-        }
-    });
+.controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario) {
 
     /**
      * Target vessels state.
