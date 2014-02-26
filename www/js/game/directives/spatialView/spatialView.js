@@ -141,6 +141,10 @@ angular.module('mustard.game.spatialViewDirective', [
                 if (newVal) {
                     // geoJson directive requires features config with "data" key
                     scope.features.data = newVal.features;
+                    // disable default click handler and make the map change zoom on double click
+                    scope.features.style = {
+                        "clickable": false
+                    };
                 }
             });
 
