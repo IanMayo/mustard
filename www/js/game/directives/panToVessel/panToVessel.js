@@ -7,7 +7,7 @@ angular.module('mustard.game.panToVesselDirective', [])
 .directive('panToVesselPosition', [function () {
     return {
         restrict: 'A',
-        require: ['leaflet'],
+        require: 'leaflet',
         link: function (scope, element, attrs, controller) {
             controller.getMap().then(function(map) {
                 map.whenReady(function () {
