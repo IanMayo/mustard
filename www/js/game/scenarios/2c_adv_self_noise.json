@@ -9,7 +9,7 @@
                     "name": "BASIC_TOWED",
                     "categories": ["HAS_BOW_NULL"],
                     "offset": -1000,
-                    "ArrayGain": 20,
+                    "ArrayGain": 18,
                     "DT": -8
                 }
             ],
@@ -21,8 +21,8 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50,
-                    "lng": -8.2
+                    "lat": 50.1,
+                    "lng": -8.1
                 },
                 "height": 0,
                 "course": 130,
@@ -57,13 +57,6 @@
                         "lng": -7.75
                     },
                     "height": -30
-                },
-                {
-                    "name": "Basic snort",
-                    "type": "SNORT",
-                    "height": -10,
-                    "startLevel": 20,
-                    "stopLevel": 90
                 }
             ],
             "sonars": [
@@ -76,14 +69,22 @@
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 104,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
+                "location": {
+                    "lat": 50.04,
+                    "lng": -7.92
+                },
+                "height": 0,
+                "course": 240,
+                "speed": 13,
+                "demCourse": 240,
+                "demSpeed": 13,
+                "demHeight": 0.0,
                 "batteryLevel": 60
             },
             "perf": {
@@ -104,8 +105,32 @@
         [49.85, -7.75]
     ],
     "environment": {},
-    "objectives": {},
-    "welcome": "No objectives set for this one yet. But, have a play and see the self-noise displayed",
+    "objectives": [
+        {
+            "name": "Gain & maintain contact",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact",
+                    "description" : "Gain contact on the training target",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 900,
+                    "success": "Ok, you may not realise it, but he's now marking in your beams. Now trail him continuously for the next hour.",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading South-East!"
+                },
+                {
+                    "name": "Maintain contact",
+                    "description" : "Maintain continuous contact on the training target for one hour",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 3600,
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null."
+                }
+            ]
+        }
+
+    ],
+    "welcome": "Ok, you've got the hang of self-noise side-lobes. In this scenario the target is travelling more quickly, you'll have to as well - about 15 knots.  Again, locate the target to the South-East of you, within 15 minutes",
     "features": {
         "type": "FeatureCollection",
         "features": [
