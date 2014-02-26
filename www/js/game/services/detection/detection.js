@@ -10,210 +10,252 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
  * @description Detection service
  */
 
-.service('detection', ['geoMath', function (geoMath) {
+    .service('detection', ['geoMath', function (geoMath) {
 
-    const ABSORPTION_COEFFICIENT = 0.000073152;
-    /* db / metre */
+        const ABSORPTION_COEFFICIENT = 0.000073152;
+        /* db / metre */
 
-    var getOrigin = function (location, offset, heading) {
-        return geoMath.rhumbDestinationPoint(location, geoMath.toRads(heading), offset);
-    };
+        var getOrigin = function (location, offset, heading) {
+            return geoMath.rhumbDestinationPoint(location, geoMath.toRads(heading), offset);
+        };
 
-    var lossFor = function (range) {
-        var loss;
-        // idiot check
-        if (range <= 0) {
-            loss = 0;
-        }
-        else {
-            var absorption = ABSORPTION_COEFFICIENT * range;
-            var spreading = 20 * Math.log(range) / Math.log(10);
-            loss = absorption + spreading;
-        }
-        return loss;
-    };
-
-    var getRadiatedNoiseFor= function (speed, baseLevel, state) {
-        var res = 0.0000252 * Math.pow(speed, 5) -
-            0.001456 * Math.pow(speed, 4) +
-            0.02165 * Math.pow(speed, 3) +
-            0.06 * Math.pow(speed, 2) -
-            0.66 * speed + baseLevel;
-
-        if (state.categories) {
-            if (geoMath.hasCategory("SNORT", state.categories)) {
-                res += 10;
+        var lossFor = function (range) {
+            var loss;
+            // idiot check
+            if (range <= 0) {
+                loss = 0;
             }
-        }
-        return res;
-    };
+            else {
+                var absorption = ABSORPTION_COEFFICIENT * range;
+                var spreading = 20 * Math.log(range) / Math.log(10);
+                loss = absorption + spreading;
+            }
+            return loss;
+        };
 
-    var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source, doAmbiguous, errorRange, SE) {
-        // ok, what's the relative angle?
-        var relBearing = bearing - osCourse;
+        var getRadiatedNoiseFor = function (speed, baseLevel, state) {
+            var res = 0.0000252 * Math.pow(speed, 5) -
+                0.001456 * Math.pow(speed, 4) +
+                0.02165 * Math.pow(speed, 3) +
+                0.06 * Math.pow(speed, 2) -
+                0.66 * speed + baseLevel;
 
-        // do the port angle
-        var thisError = relBearing - errorRange + 2 * Math.random() * errorRange;
-        var thisValue = osCourse + thisError;
-        if (thisValue < 0) {
-            thisValue += 360;
-        }
-        thisValue = thisValue % 360;
-        detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
+            if (state.categories) {
+                if (geoMath.hasCategory("SNORT", state.categories)) {
+                    res += 10;
+                }
+            }
+            return res;
+        };
 
-        // ambiguous?
-        if (doAmbiguous) {
-            thisError = -(relBearing - errorRange + 2 * Math.random() * errorRange);
-            thisValue = osCourse + thisError;
+        var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source, doAmbiguous, errorRange, SE) {
+            // ok, what's the relative angle?
+            var relBearing = bearing - osCourse;
+
+            // do the port angle
+            var thisError = relBearing - errorRange + 2 * Math.random() * errorRange;
+            var thisValue = osCourse + thisError;
             if (thisValue < 0) {
                 thisValue += 360;
             }
             thisValue = thisValue % 360;
-            detectionList.push({"time": tNow, "bearing": thisValue, "source": source,"ambiguous" : true, "origin": {"lat": origin.lat, "lng": origin.lng}});
-        }
-    };
+            detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
+
+            // ambiguous?
+            if (doAmbiguous) {
+                thisError = -(relBearing - errorRange + 2 * Math.random() * errorRange);
+                thisValue = osCourse + thisError;
+                if (thisValue < 0) {
+                    thisValue += 360;
+                }
+                thisValue = thisValue % 360;
+                detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}});
+            }
+        };
 
 
-    var processThisVessel = function(tNow, myVessel, allVessels)
-    {
-        var name = myVessel.name;
+        var processThisVessel = function (tNow, myVessel, allVessels) {
+            var name = myVessel.name;
 
-        const SENSOR_ERROR = 2;
+            // how much random error to apply to sensor cuts
+            const SENSOR_ERROR = 2;
+            /* degs */
 
-        // ok, sort out my own noise levels
-        var speed = myVessel.state.speed;
-        var baseLevel = myVessel.radiatedNoise.baseLevel;
+            // how much turn rate leads to array unsteady
+            const TURN_THRESHOLD = 0.1;
+            /* degs / sec */
 
-        // we half ownship noise, to get required detection ranges
-        var LN = getRadiatedNoiseFor(speed, baseLevel, myVessel.state) / 2;
+            // ok, sort out my own noise levels
+            var speed = myVessel.state.speed;
+            var baseLevel = myVessel.radiatedNoise.baseLevel;
 
-        // store the detections
-        var newDetections = [];
+            // we half ownship noise, to get required detection ranges
+            var LN = getRadiatedNoiseFor(speed, baseLevel, myVessel.state) / 2;
 
-        // sort out the size of the bow null
-        var bowNull;
-        if(speed >= 15) {
-            bowNull = 35;
-        } else {
-            bowNull = 18;
-        }
+            // store the detections
+            var newDetections = [];
 
-        // ok, store it, in case we want to analyse it
-        myVessel.state.osNoise = LN;
+            // sort out the size of the bow null
+            var bowNull;
+            if (speed >= 15) {
+                bowNull = 35;
+            } else {
+                bowNull = 18;
+            }
 
-        // first, loop through my sonars
-        for (var j = 0; j < myVessel.sonars.length; j++) {
+            // ok, store it, in case we want to analyse it
+            myVessel.state.osNoise = LN;
 
-            // get the sonar
-            var sonar = myVessel.sonars[j];
+            // first, loop through my sonars
+            for (var j = 0; j < myVessel.sonars.length; j++) {
 
-            // get the origin of the sonar  TODO: worm in hole, not directly behind.
-            var origin = getOrigin(myVessel.state.location, sonar.offset, myVessel.state.course);
+                // get the sonar
+                var sonar = myVessel.sonars[j];
 
-            sonar.location = origin;
+                // get the origin of the sonar  TODO: worm in hole, not directly behind.
+                var origin = getOrigin(myVessel.state.location, sonar.offset, myVessel.state.course);
 
-            // now loop through the vessels
-            for (var k=0;k<allVessels.length;k++) {
+                sonar.location = origin;
 
-                var thisV = allVessels[k];
+                // is the array already unsteady?
+                if (sonar.isUnsteady) {
 
-                // is this me?
-                if (thisV == myVessel) {
-                    // yes, sort out self-noise
-
-                    // sort out the angle to ownship
-                    var theSelfBrg = geoMath.rhumbBearingFromTo(origin, myVessel.state.location);
-
-                    // does this sonar have simple self-noise?
-                    if (!geoMath.hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
-                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, false, SENSOR_ERROR);
+                    // ok, are we still turning?
+                    if (myVessel.state.turnRate > TURN_THRESHOLD) {
+                        // yes = we'll have to stay unsteady then
                     }
-
-                    // does this sonar have simple self-noise?
-                    if (!geoMath.hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
-                        var offsetBearing = theSelfBrg + 15;
-                        insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, true, SENSOR_ERROR);
-
-                        // hey, just check if we're "roaring" along.
-                        if(speed >= 15)
-                        {
-                            var offsetBearing = theSelfBrg + 25;
-                            insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, true, SENSOR_ERROR);
+                    else {
+                        // ok, we've straightened up
+                        // do we have a steady time?
+                        if (sonar.steadyTime) {
+                            // hey, have we reached it?
+                            if (tNow >= sonar.steadyTime) {
+                                // yes - clear the unsteady flag :-)
+                                sonar.isUnsteady = false;
+                            }
+                        }
+                        else {
+                            // ok, set the steady time
+                            sonar.steadyTime = tNow + 20000;
                         }
                     }
-                } else {
-                    // no, sort out proper detections
+                }
+                else {
+                    // hmm, see if the array suffers from unsteady time
+                    if (!geoMath.hasCategory("NO_STEADY_TIME", sonar.categories)) {
+                        // ok - are we turning?
+                        if (myVessel.state.turnRate) {
+                            if (myVessel.state.turnRate >= TURN_THRESHOLD) {
+                                // ok - the array is still unsteady - mark it
+                                sonar.isUnsteady = true;
+                            }
+                        }
+                    }
+                }
 
-                    // sort out the angle to target
-                    var theBrg = geoMath.rhumbBearingFromTo(origin, thisV.state.location);
+                // oh dear, are twe unsteady?
+                if (!sonar.isUnsteady) {
+                    // now loop through the vessels
+                    for (var k = 0; k < allVessels.length; k++) {
 
-                    var relBrg = Math.abs(theBrg - myVessel.state.course);
-                    relBrg = relBrg % 360;
+                        var thisV = allVessels[k];
 
-                    var hasBowNull = !geoMath.hasCategory("NO_BOW_NULL", sonar.categories);
+                        // is this me?
+                        if (thisV == myVessel) {
+                            // yes, sort out self-noise
 
-                    // are we without a bow null, or would this be outside the null anyway?
-                    if ((!hasBowNull) || relBrg > bowNull) {
+                            // sort out the angle to ownship
+                            var theSelfBrg = geoMath.rhumbBearingFromTo(origin, myVessel.state.location);
 
-                        // his radiated noise:
-                        var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel, thisV.state);
+                            // does this sonar have simple self-noise?
+                            if (!geoMath.hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, false, SENSOR_ERROR);
+                            }
 
-                        // what's the loss?
-                        //  - start with the range
-                        var range = geoMath.rhumbDistanceFromTo(origin, thisV.state.location);
+                            // does this sonar have simple self-noise?
+                            if (!geoMath.hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
+                                var offsetBearing = theSelfBrg + 15;
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, true, SENSOR_ERROR);
 
-                        // and now the loss itself
-                        var NW = lossFor(range);
+                                // hey, just check if we're "roaring" along.
+                                if (speed >= 15) {
+                                    var offsetBearing = theSelfBrg + 25;
+                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, true, SENSOR_ERROR);
+                                }
+                            }
+                        } else {
+                            // no, sort out proper detections
 
-                        var DT = sonar.DT;
-                        var AG = sonar.ArrayGain;
+                            // sort out the angle to target
+                            var theBrg = geoMath.rhumbBearingFromTo(origin, thisV.state.location);
 
-                        var SE = LS - NW - (LN - AG) - DT;
+                            var relBrg = Math.abs(theBrg - myVessel.state.course);
+                            relBrg = relBrg % 360;
 
-                        // DEBUG - put the SE in the state
-                        myVessel.state.SE = SE;
-                        //       myVessel.state.loss = NW;
+                            var hasBowNull = !geoMath.hasCategory("NO_BOW_NULL", sonar.categories);
+
+                            // are we without a bow null, or would this be outside the null anyway?
+                            if ((!hasBowNull) || relBrg > bowNull) {
+
+                                // his radiated noise:
+                                var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel, thisV.state);
+
+                                // what's the loss?
+                                //  - start with the range
+                                var range = geoMath.rhumbDistanceFromTo(origin, thisV.state.location);
+
+                                // and now the loss itself
+                                var NW = lossFor(range);
+
+                                var DT = sonar.DT;
+                                var AG = sonar.ArrayGain;
+
+                                var SE = LS - NW - (LN - AG) - DT;
+
+                                // DEBUG - put the SE in the state
+                                myVessel.state.SE = SE;
+                                //       myVessel.state.loss = NW;
 
 //                console.log("" + myVessel.name +" == SE:" + SE + " range:" + Math.floor(range) + " LS:" + Math.floor(LS) + " NW:" +Math.floor( NW) + " LN:" + Math.floor(LN) + " AG:" + AG + " DT:" + DT);
 
-                        // +ve?
-                        if (SE > 0) {
-                            // do 10 log SE, to make it smoother
-                            SE = 10 * Math.log(SE);
+                                // +ve?
+                                if (SE > 0) {
+                                    // do 10 log SE, to make it smoother
+                                    SE = 10 * Math.log(SE);
 
-                            var doAmbiguous = !geoMath.hasCategory("NO_AMBIGUOUS", sonar.categories);
-                            insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, thisV.name, doAmbiguous, SENSOR_ERROR, SE);
+                                    var doAmbiguous = !geoMath.hasCategory("NO_AMBIGUOUS", sonar.categories);
+                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, thisV.name, doAmbiguous, SENSOR_ERROR, SE);
 
-                            // TODO: hey, if he's snorting, why not show extra lobes
-                            // TODO: no, do it if there's a really high SE.
+                                    // TODO: hey, if he's snorting, why not show extra lobes
+                                    // TODO: no, do it if there's a really high SE.
+                                }
+                            } else {
+                                myVessel.state.SE = 0;
+                            }
                         }
-                    } else {
-                        myVessel.state.SE = 0;
                     }
                 }
             }
+
+            // and store the new detections
+            myVessel.newDetections = newDetections;
         }
 
-        // and store the new detections
-        myVessel.newDetections = newDetections;
-    }
-
-    /**
-     * Module API
-     */
-    return {
-        doDetections: function (tNow, myVessel, targets) {
+        /**
+         * Module API
+         */
+        return {
+            doDetections: function (tNow, myVessel, targets) {
 
 
-            var allVessels = _.union([myVessel], _.values(targets));
+                var allVessels = _.union([myVessel], _.values(targets));
 
 
-            for(var i=0;i<allVessels.length;i++)
-            {
-                var thisV = allVessels[i];
-                processThisVessel(tNow, thisV, allVessels);
+                for (var i = 0; i < allVessels.length; i++) {
+                    var thisV = allVessels[i];
+                    processThisVessel(tNow, thisV, allVessels);
+                }
+
             }
-
-        }
-    };
-}]);
+        };
+    }]);

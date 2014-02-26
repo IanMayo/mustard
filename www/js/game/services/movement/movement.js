@@ -260,14 +260,26 @@ angular.module('mustard.game.movement', ['mustard.game.geoMath'])
             var rangeM = Math.sqrt(movement.deltaLong*movement.deltaLong + movement.deltaLat*movement.deltaLat);
             curState.location = geoMath.rhumbDestinationPoint(curState.location, bearingRads, rangeM);
 
+            // hey, don't forget the turn rate
+            var curCourseDegs = geoMath.toDegs(curCourseRads);
+            var courseDelta = Math.abs(curCourseDegs - curState.course);
+            if(courseDelta < -180)
+                courseDelta += 360;
+            if(courseDelta > 180)
+                courseDelta -= 360;
+            courseDelta = Math.abs(courseDelta);
+            var turnRate = courseDelta/ ((newTime - curState.time)/1000);
+
+            // ok put the new values back into the state object
 
             curState.time = newTime;
             curState.height = curHeight;
-            curState.course = geoMath.toDegs(curCourseRads);
+            curState.course = curCourseDegs;
             curState.speed = curSpeed;
             curState.demCourse = geoMath.toDegs(demCourseRads);
             curState.demSpeed = demSpeed;
             curState.demHeight = demHeight;
+            curState.turnRate = turnRate;
         }
     };
 }]);
