@@ -150,7 +150,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                     var relBrg = Math.abs(theBrg - myVessel.state.course);
                     relBrg = relBrg % 360;
 
-                    var hasBowNull = geoMath.hasCategory("HAS_BOW_NULL", sonar.categories);
+                    var hasBowNull = !geoMath.hasCategory("NO_BOW_NULL", sonar.categories);
 
                     // are we without a bow null, or would this be outside the null anyway?
                     if ((!hasBowNull) || relBrg > bowNull) {

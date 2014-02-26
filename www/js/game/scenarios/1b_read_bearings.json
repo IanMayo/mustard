@@ -7,7 +7,7 @@
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS", "NO_STEADY_TIME", "NO_BOW_NULL"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
