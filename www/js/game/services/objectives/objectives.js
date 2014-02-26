@@ -16,18 +16,18 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     /** on the presumption that the objective was successful, insert the
      * relevant achievement
      *
-     * @param objective the objective that contains the achievements
+     * @param achievement the achievement to insert, if present
      * @param gameState the game state where successful achievements are stored.
      */
-    var processAchievements = function(objective, gameState)
+    var processAchievements = function(achievement, gameState)
     {
-        if(objective.achievement)
+        if(achievement)
         {
             if(!gameState.achievements)
             {
                 gameState.achievements = [];
             }
-            gameState.achievements.push(objective.achievement);
+            gameState.achievements.push(achievement);
         }
     };
 
@@ -164,7 +164,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             maintainContact.complete = true;
 
             // and store any achievements
-            processAchievements(maintainContact, gameState);
+            processAchievements(maintainContact.achievement, gameState);
 
         }
 
@@ -214,7 +214,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             gameState.state = "DO_STOP";
 
             // and store any achievements
-            processAchievements(gainContact, gameState);
+            processAchievements(gainContact.achievement, gameState);
 
             insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Gained contact with target");
         }
@@ -237,7 +237,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     var handleStartMission = function (gameState, startMission, vesselsState) {
 
         // and store any achievements
-        processAchievements(startMission, gameState);
+        processAchievements(startMission.achievement, gameState);
 
         startMission.complete = true;
     };
@@ -252,6 +252,17 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // no, better store it
                 proximity.stopTime = gameState.simulationTime + (proximity.elapsed * 1000);
             }
+
+            // hey, is there a bonus for time?
+            if(proximity.bonusAchievementTime)
+            {
+                if(!proximity.bonusStopTime)
+                {
+                    // no, better store it
+                    proximity.bonusStopTime = gameState.simulationTime + (proximity.bonusAchievementTime * 1000);
+                }
+            }
+
         }
         // ok, where has he got to get to?
         var dest = proximity.location;
@@ -297,9 +308,20 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 gameState.state = "DO_STOP";
 
                 // and store any achievements
-                processAchievements(proximity, gameState);
+                processAchievements(proximity.achievement, gameState);
+
+                // hey, is there a bonus time?
+                if(proximity.bonusStopTime)
+                {
+                    // note: we're relying on the
+                    if(gameState.simulationTime < proximity.bonusStopTime)
+                    {
+                        processAchievements(proximity.bonusAchievement, gameState);
+                    }
+                }
 
                 insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Reached proximity threshold");
+
             }
         }
 

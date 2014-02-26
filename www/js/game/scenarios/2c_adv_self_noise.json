@@ -123,6 +123,7 @@
                     "description" : "Maintain continuous contact on the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 3600,
+                    "achievement" : {"name" : "Passive King", "message" : "There's not much more to teach you about handling self-noise"},
                     "success": "Well done, you've held contact for one hour",
                     "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null."
                 }

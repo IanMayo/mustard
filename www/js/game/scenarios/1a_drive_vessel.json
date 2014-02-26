@@ -28,7 +28,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 0,
-                "maxSpeed": 40,
+                "maxSpeed": 21,
                 "climbRate": 1,
                 "diveRate": 2
             }
@@ -58,7 +58,7 @@
                         "lng": -8.06
                     },
                     "range": 2000,
-                    "success": "Ok checks done. Sorry they took so long. Let's get that array fitted. We're running a bit late, so you need to within 1km of the barge (about 20 miles North of here) carrying your array within 30 mins. You must be doing approx North course at under 3 knots for the transfer to happen. There's quite a rush, you'll probably need to travel at about 20 knots"
+                    "success": "Ok checks done. Sorry they took so long. Let's get that array fitted. We're running a bit late, so you need to within 1km of the barge (about 20 miles North of here) carrying your array within 30 mins. You must be doing approx North course at under 3 knots for the transfer to happen. There's quite a rush, you'll probably need to travel at about 20 knots. Hey, you there's a unit citation on offer if you can do it under 25 minutes"
                 },
                 {
                     "name": "Point B",
@@ -72,6 +72,8 @@
                     "elapsed": 1800,
                     "course": 0,
                     "courseError": 10,
+                    "bonusAchievementTime" : 1500,
+                    "bonusAchievement":{"name" : "Speed Demon", "message" : "Hey, you beat 25 minutes, speed freak!"},
                     "maxSpeed": 3,
                     "success": "Well done, you made it. Let's get the array fitted and move on",
                     "failure": "Sorry, you didn't make it in time. You'll have to restart this mission",

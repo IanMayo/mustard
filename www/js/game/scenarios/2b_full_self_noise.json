@@ -116,6 +116,7 @@
                     "description" : "Maintain contact on the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 3600,
+                    "achievement" : {"name" : "Passive Operator", "message" : "Ok, you're ready to track more challenging targets"},
                     "success": "Well done, you've held contact for one hour",
                     "failure": "More practice needed, you only held contact for [time] minutes."
                 }
