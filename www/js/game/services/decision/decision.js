@@ -31,7 +31,59 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
                 case "PATH":
                     res = handlePath(tNow, myState, myDetections, thisB);
                     break;
+                case "EVADE":
+                    res = handleEvade(tNow, myState, myDetections, thisB);
+                    break;
             }
+
+            return res;
+        };
+
+
+        var handleEvade = function (tNow, myState, myDetections, evade) {
+            var res;
+
+            // are we currently fleeing
+            if (evade.stopTime) {
+                // ok, have we passed that time?
+                if (tNow >= evade.stopTime) {
+                    console.log("finished fleeing");
+                    // ok, done fleeing
+                    delete evade.stopTime;
+                    delete evade.counterBrg;
+                }
+                else {
+                    console.log("still fleeing");
+                    // carry on along the counter bearing
+                    res = {};
+                    res.description = "Still evading target";
+                    res.demCourse = evade.counterBrg;
+                }
+            } else {
+                // ok, do we have any detections?
+                if (myDetections) {
+                    // ok, are any from a target?
+                    for (var i = 0; i < myDetections.length; i++) {
+                        var thisD = myDetections[i];
+                        if (thisD.source == evade.target) {
+                            // ok, start fleeing
+
+                            var counterBrg = thisD.bearing + 180;
+                            counterBrg = counterBrg % 360;
+
+                            evade.counterBrg = counterBrg;
+                            console.log("starting to flee, on:" + evade, counterBrg);
+
+                            res = {};
+                            res.description = "Turning to evade target";
+                            res.demCourse = counterBrg;
+
+                            evade.stopTime = tNow + (evade.fleeTime * 1000);
+                        }
+                    }
+                }
+            }
+
 
             return res;
         };
@@ -58,7 +110,7 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
             var loc = myState.location;
 
             // are we near enough to pass the current destination?
-            if (dest &&  geoMath.rhumbDistanceFromTo(dest, loc) > DISTANCE_THRESHOLD) {
+            if (dest && geoMath.rhumbDistanceFromTo(dest, loc) > DISTANCE_THRESHOLD) {
 
                 // nope, plot a new bearing to it
                 res = {};
@@ -146,6 +198,12 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
 
                     res = {};
                     res.demCourse = bearing;
+
+                    // do we have a speed?
+                    if (thisB.speed) {
+                        console.log("WANDER: changing speed to:" + thisB.speed);
+                        res.demSpeed = thisB.speed;
+                    }
 
                     // do we have a demanded height?
                     if (thisB.height) {
@@ -260,4 +318,6 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
                 }
             }
         }
-    }]);
+    }
+    ])
+;
