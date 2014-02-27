@@ -112,11 +112,19 @@
             "children": [
                 {
                     "name": "Gain contact",
-                    "description" : "Gain contact on the training target",
+                    "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 900,
                     "success": "Ok, you may not realise it, but he's now marking in your beams. Now trail him continuously for the next hour.",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading South-East!"
+                },
+                {
+                    "name": "Locate it",
+                    "description": "Get within 500m of Target vessel",
+                    "type": "PROXIMITY",
+                    "target": "Target",
+                    "range": 500,
+                    "success": "Well done, that was tricky. "
                 }
             ]
         }
