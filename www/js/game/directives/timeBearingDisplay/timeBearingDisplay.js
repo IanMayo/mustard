@@ -8,8 +8,8 @@ angular.module('mustard.game.timeBearingDisplayDirective', [])
         link: function (scope) {
             var graphInitializer = [
                 'Sonar',
-                [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13'],
+                [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16'],
                 'Bearing',
                 [-180, 180]
             ];
@@ -52,7 +52,7 @@ angular.module('mustard.game.timeBearingDisplayDirective', [])
 
                 // get the chart to redraw
                 graph.updateOptions({
-                    'colors': ["#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0"],
+                    'colors': ["#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0"],
                     'strokePattern': [0, 4], showLabelsOnHighlight: false,
                     axes: {
                         x: {axisLabelColor: "#0f0"},
