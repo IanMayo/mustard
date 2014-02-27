@@ -123,6 +123,12 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 // get the sonar
                 var sonar = myVessel.sonars[j];
 
+                // is this sonar active?
+                if(sonar.disabled)
+                {
+                    continue;
+                }
+
                 // get the origin of the sonar  TODO: worm in hole, not directly behind.
                 var origin = getOrigin(myVessel.state.location, sonar.offset, myVessel.state.course);
 
@@ -190,7 +196,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
 
                                 // hey, just check if we're "roaring" along.
                                 if (speed >= 15) {
-                                    var offsetBearing = theSelfBrg + 25;
+                                    offsetBearing = theSelfBrg + 25;
                                     insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name,  thisV.name + "_side2",true, SENSOR_ERROR, LN);
                                 }
                             }
@@ -260,7 +266,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
 
             // and store the new detections
             myVessel.newDetections = newDetections;
-        }
+        };
 
         /**
          * Module API
