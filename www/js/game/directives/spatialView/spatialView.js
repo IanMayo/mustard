@@ -20,8 +20,29 @@ angular.module('mustard.game.spatialViewDirective', [
         templateUrl: 'js/game/directives/spatialView/spatialView.tpl.html',
         link: function (scope) {
 
+            /**
+             * Visibility sonar bearing lines on the map
+             * @type {Boolean}
+             */
+            scope.showSonarDetections = false;
+
             // Interim vessels states
             var localVesselsState = {ownShip: {history: []}};
+            var defaultDetectionLinesCoordinates = [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]];
+
+            /**
+             * Add sonar bearing lines to the map
+             */
+            var addSonarDetections = function () {
+                var detectionLinesCoordinates = [];
+
+                // create line coordinates array
+                _.each(localVesselsState[index].history, function (item) {
+                    detectionLinesCoordinates.push([item.origin, item.endPoint]);
+                });
+
+                scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
+            };
 
             /**
              * Show own ship traveling points on the map
@@ -62,7 +83,6 @@ angular.module('mustard.game.spatialViewDirective', [
              */
             var sonarDetections = function (ownShip, destinations) {
                 var detectionPoints = [];
-                var detectionLinesCoordinates = [];
 
                 _.each(destinations, function (destination, index) {
                     if (!localVesselsState[index]) {
@@ -87,14 +107,11 @@ angular.module('mustard.game.spatialViewDirective', [
                     localVesselsState[index].history = detectionPoints.pop();
                     // add new detection to history
                     localVesselsState[index].history.push(destination);
-
-                    // create line coordinates array
-                    _.each(localVesselsState[index].history, function (item) {
-                        detectionLinesCoordinates.push([item.origin, item.endPoint]);
-                    });
                 });
 
-                scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
+                if (scope.showSonarDetections) {
+                    addSonarDetections();
+                }
             };
 
             /**
@@ -112,7 +129,7 @@ angular.module('mustard.game.spatialViewDirective', [
                     type: 'multiPolyline',
                     color: '#A9A9A9',
                     weight: 2,
-                    latlngs: [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]]
+                    latlngs: defaultDetectionLinesCoordinates
                 },
                 ownShipTravelling: {
                     type: 'polyline',
@@ -154,6 +171,17 @@ angular.module('mustard.game.spatialViewDirective', [
             scope.toggleTargets = function () {
                 scope.layers.overlays.targets.visible = !scope.layers.overlays.targets.visible;
             };
+
+            /**
+             * Visibility handler for sonar bearing lines
+             */
+            scope.$watch('showSonarDetections', function (newVal) {
+                if (newVal) {
+                    addSonarDetections();
+                } else {
+                    scope.paths['sonarDetections'].latlngs = defaultDetectionLinesCoordinates;
+                }
+            });
         }
     };
 }]);
