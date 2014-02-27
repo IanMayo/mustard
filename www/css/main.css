@@ -1,0 +1,13 @@
+.main {
+  height: 100%;
+  padding-top: 40px;
+}
+
+.container-scroll {
+  height: 80%;
+  overflow: auto;
+}
+
+.mission-list > .mission {
+  cursor: pointer;
+}
