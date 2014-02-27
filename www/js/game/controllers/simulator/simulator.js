@@ -37,6 +37,12 @@ angular.module('mustard.game.simulator', [
     $scope.objectives = scenario.objectives;
 
     /**
+     * Welcome message
+     * @type {String}
+     */
+    $scope.welcome = scenario.welcome;
+
+    /**
      * Initial properties properties for vessels
      * @type {Array}
      */
@@ -316,8 +322,19 @@ angular.module('mustard.game.simulator', [
         $scope.vesselsState.targets[vessel.name] = vesselMarker('targets', vessel);
     });
 
+    var showWelcome = function()
+    {
+        // show the welcome message
+        if($scope.welcome)
+        {
+            alert($scope.welcome);
+        }
+    };
+
     initializeTargetShips().then(function () {
         configureMap();
+
+        showWelcome();
 
         $scope.demandedState.course = parseInt($scope.vesselsState.ownShip.state.demCourse);
         $scope.demandedState.speed = parseInt($scope.vesselsState.ownShip.state.demSpeed);
