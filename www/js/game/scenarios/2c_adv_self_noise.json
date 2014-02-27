@@ -60,13 +60,6 @@
                 }
             ],
             "sonars": [
-                {
-                    "name": "BASIC_HULL",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "offset": 0,
-                    "ArrayGain": 28,
-                    "DT": -8
-                }
             ],
             "radiatedNoise": {
                 "baseLevel": 104,
