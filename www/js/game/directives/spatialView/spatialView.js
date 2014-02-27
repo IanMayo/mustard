@@ -37,8 +37,12 @@ angular.module('mustard.game.spatialViewDirective', [
                 var detectionLinesCoordinates = [];
 
                 // create line coordinates array
-                _.each(localVesselsState[index].history, function (item) {
-                    detectionLinesCoordinates.push([item.origin, item.endPoint]);
+                _.each(localVesselsState, function (vesselsState) {
+                    _.each(vesselsState.history, function (item) {
+                        if (item.origin) {
+                            detectionLinesCoordinates.push([item.origin, item.endPoint]);
+                        }
+                    });
                 });
 
                 scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
