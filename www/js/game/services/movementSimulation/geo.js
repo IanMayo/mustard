@@ -78,7 +78,7 @@ function rhumbDestinationPoint(location, brng, dist) {
 
 
 /**
- * Returns the distance from this point to the supplied point, in km, travelling along a rhumb line
+ * Returns the distance from this point to the supplied point, in m, travelling along a rhumb line
  *
  *   see http://williams.best.vwh.net/avform.htm#Rhumb
  *
@@ -155,7 +155,7 @@ function toDMS(deg, format, dp) {
 
     switch (format) {
         case 'd':
-            d = deg.toFixed(dp);     // round degrees
+            var d = deg.toFixed(dp);     // round degrees
             if (d<100) d = '0' + d;  // pad with leading zeros
             if (d<10) d = '0' + d;
             dms = d + '\u00B0';      // add º symbol
