@@ -34,8 +34,10 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
                 case "EVADE":
                     res = handleEvade(tNow, myState, myDetections, thisB);
                     break;
+                case "ATTACK":
+                    res = handleAttack(tNow, myState, myDetections, thisB);
+                    break;
             }
-
             return res;
         };
 
@@ -65,7 +67,7 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
                     // ok, are any from a target?
                     for (var i = 0; i < myDetections.length; i++) {
                         var thisD = myDetections[i];
-                        if (thisD.source == evade.target) {
+                        if (!(evade.target) || (thisD.source == evade.target)) {
                             // ok, start fleeing
 
                             var counterBrg = thisD.bearing + 180;
@@ -83,8 +85,25 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
                     }
                 }
             }
+            return res;
+        };
 
+        var handleAttack = function (tNow, myState, myDetections, attack) {
+            var res;
 
+            // ok, do we have any detections?
+            if (myDetections) {
+                // ok, are any from a target?
+                for (var i = 0; i < myDetections.length; i++) {
+                    var thisD = myDetections[i];
+                    if (!(attack.target) || (thisD.source == attack.target)) {
+                        // ok, start fleeing
+                        res = {};
+                        res.description = "Turning to attack target";
+                        res.demCourse = thisD.bearing;
+                    }
+                }
+            }
             return res;
         };
 
@@ -201,7 +220,6 @@ angular.module('mustard.game.decision', ['mustard.game.geoMath'])
 
                     // do we have a speed?
                     if (thisB.speed) {
-                        console.log("WANDER: changing speed to:" + thisB.speed);
                         res.demSpeed = thisB.speed;
                     }
 
