@@ -61,7 +61,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
          * @param errorRange the error to apply to the bearing value
          * @param SE the signal excess (strenght) of this acoustic measurement
          */
-        var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source,trackId, doAmbiguous, errorRange, SE) {
+        var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source, trackId, doAmbiguous, errorRange, SE) {
             // ok, what's the relative angle?
             var relBearing = bearing - osCourse;
 
@@ -72,7 +72,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 thisValue += 360;
             }
             thisValue = thisValue % 360;
-            detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId:" : trackId, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
+            detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId:": trackId, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
 
             // ambiguous?
             if (doAmbiguous) {
@@ -82,7 +82,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                     thisValue += 360;
                 }
                 thisValue = thisValue % 360;
-                detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId:" : trackId, "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}});
+                detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId:": trackId, "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}});
             }
         };
 
@@ -124,8 +124,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 var sonar = myVessel.sonars[j];
 
                 // is this sonar active?
-                if(sonar.disabled)
-                {
+                if (sonar.disabled) {
                     continue;
                 }
 
@@ -186,18 +185,18 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
 
                             // does this sonar have simple self-noise?
                             if (!geoMath.hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
-                                insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, thisV.name,false, SENSOR_ERROR, LN);
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, thisV.name, false, SENSOR_ERROR, LN);
                             }
 
                             // does this sonar have complex self-noise?
                             if (!geoMath.hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
                                 var offsetBearing = theSelfBrg + 15;
-                                insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side1",true, SENSOR_ERROR, LN);
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR, LN);
 
                                 // hey, just check if we're "roaring" along.
                                 if (speed >= 15) {
                                     offsetBearing = theSelfBrg + 25;
-                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name,  thisV.name + "_side2",true, SENSOR_ERROR, LN);
+                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side2", true, SENSOR_ERROR, LN);
                                 }
                             }
                         } else {
@@ -209,10 +208,25 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                             var relBrg = Math.abs(theBrg - myVessel.state.course);
                             relBrg = relBrg % 360;
 
-                            var hasBowNull = !geoMath.hasCategory("NO_BOW_NULL", sonar.categories);
+                            // ok, does this sonar have arcs of coverage?
+                            var inCoverage = true;
+                            if (sonar.coverage) {
+                                if (Math.abs(relBrg) >= sonar.coverage) {
+                                    // ok - we're not going to get a detection here, move on to the next target
+                                    inCoverage = false;
+                                }
+                            }
 
-                            // are we without a bow null, or would this be outside the null anyway?
-                            if ((!hasBowNull) || relBrg > bowNull) {
+                            // is there a bow null (ownship noise)?
+                            var hasBowNull = !geoMath.hasCategory("NO_BOW_NULL", sonar.categories);
+                            var outsideBowNull = true;
+                            if(hasBowNull)
+                            {
+                                outsideBowNull = relBrg > bowNull;
+                            }
+
+                            // is it worth checking the signal excess?
+                            if (inCoverage && outsideBowNull) {
 
                                 // his radiated noise:
                                 var LS = getRadiatedNoiseFor(thisV.state.speed, thisV.radiatedNoise.baseLevel, thisV.state);
@@ -247,13 +261,12 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                                     insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, thisV.name, thisV.name, doAmbiguous, SENSOR_ERROR, SE);
 
                                     // show extra side lobes if he's really noisy
-                                    if(SE > 25)
-                                    {
+                                    if (SE > 25) {
                                         // first the right-hand side lobe
                                         insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg + 15, thisV.name, thisV.name + "_side1", doAmbiguous, SENSOR_ERROR, SE);
 
                                         // and now the left-hand side lobe
-                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg - 15, thisV.name, thisV.name + "_side2",doAmbiguous, SENSOR_ERROR, SE);
+                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg - 15, thisV.name, thisV.name + "_side2", doAmbiguous, SENSOR_ERROR, SE);
                                     }
                                 }
                             } else {
