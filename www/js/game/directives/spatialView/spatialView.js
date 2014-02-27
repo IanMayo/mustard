@@ -29,6 +29,8 @@ angular.module('mustard.game.spatialViewDirective', [
             // Interim vessels states
             var localVesselsState = {ownShip: {history: []}};
             var defaultDetectionLinesCoordinates = [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]];
+            // trackId filter for detection lines
+            var detectionTrackId;
 
             /**
              * Add sonar bearing lines to the map
@@ -39,7 +41,8 @@ angular.module('mustard.game.spatialViewDirective', [
                 // create line coordinates array
                 _.each(localVesselsState, function (vesselsState) {
                     _.each(vesselsState.history, function (item) {
-                        if (item.origin) {
+                        if (item.origin && item.trackId === detectionTrackId) {
+                            // only values which have coordinates and belong to selected track on sonar view
                             detectionLinesCoordinates.push([item.origin, item.endPoint]);
                         }
                     });
@@ -185,6 +188,14 @@ angular.module('mustard.game.spatialViewDirective', [
                 } else {
                     scope.paths['sonarDetections'].latlngs = defaultDetectionLinesCoordinates;
                 }
+            });
+
+            /**
+             * Change sonar bearing lines for a selected track only
+             */
+            scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
+                detectionTrackId = trackId;
+                addSonarDetections();
             });
         }
     };

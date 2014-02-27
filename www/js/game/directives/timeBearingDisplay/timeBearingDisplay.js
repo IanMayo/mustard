@@ -1,15 +1,17 @@
-angular.module('mustard.game.timeBearingDisplayDirective', [])
+angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatialViewDirective'])
 
-.directive('timeBearingDisplay', function () {
+.directive('timeBearingDisplay', ['$timeout', function ($timeout) {
     return {
         restrict: 'E',
-        scope: {},
+        scope: {
+            series: '='
+        },
         templateUrl: 'js/game/directives/timeBearingDisplay/timeBearingDisplay.tpl.html',
         link: function (scope) {
             var graphInitializer = [
                 'Sonar',
-                [new Date(0), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['Time', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16'],
+                [new Date(0)],
+                ['Time'],
                 'Bearing',
                 [-180, 180]
             ];
@@ -32,6 +34,12 @@ angular.module('mustard.game.timeBearingDisplayDirective', [])
                         axes: {
                             x: {axisLabelFontSize: 10},
                             y: {axisLabelFontSize: 10}
+                        },
+                        pointClickCallback: function (event, point) {
+                            // 'Safe' $apply
+                            $timeout(function () {
+                                scope.$emit('sonarTrackSelected', point.name);
+                            });
                         }
                     }
                 );
@@ -45,6 +53,16 @@ angular.module('mustard.game.timeBearingDisplayDirective', [])
             scope.$on('addDetections', function (event, dataValues) {
                 var data = dataSeries["Sonar"];
                 var graph = graphs["Sonar"];
+                var tracks = _.pluck(scope.series, 'trackId');
+
+                // add options for new sonar tracks
+                if (tracks.length !== graph.getLabels().length) {
+                    _.each(tracks, function (name) {
+                        graphInitializer[1].push(0);
+                        graphInitializer[2].push(name);
+                    });
+                }
+
                 data.push(dataValues);
                 // calculate the 5 minute window
                 var time = dataValues[0];
@@ -63,4 +81,4 @@ angular.module('mustard.game.timeBearingDisplayDirective', [])
             });
         }
     };
-});
+}]);
