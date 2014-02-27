@@ -278,6 +278,7 @@ angular.module('mustard.game.simulator', [
     };
 
     var doStep = function () {
+
         $scope.vesselsState.ownShip.state.demCourse = parseInt($scope.demandedState.course);
         $scope.vesselsState.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
 
@@ -319,7 +320,8 @@ angular.module('mustard.game.simulator', [
 
     // Target vessels marker
     _.each(_.rest($scope.vesselsScenario), function (vessel) {
-        $scope.vesselsState.targets[vessel.name] = vesselMarker('targets', vessel);
+        var shortName = vessel.name.replace(/\s+/g, '');
+        $scope.vesselsState.targets[shortName] = vesselMarker('targets', vessel);
     });
 
     var showWelcome = function()
