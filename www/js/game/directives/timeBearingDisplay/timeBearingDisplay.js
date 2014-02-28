@@ -8,10 +8,16 @@ angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatia
         },
         templateUrl: 'js/game/directives/timeBearingDisplay/timeBearingDisplay.tpl.html',
         link: function (scope) {
+            // create default values for Dygraph config
+            var seriesNum = _.range(16);
+            var labels = ['Time'].concat(_.map(seriesNum, function (num) {return 'S' + (num + 1).toString();}));
+            var data = [new Date(0)].concat(_.map(seriesNum, function () {return 0;}));
+            var colors = _.map(seriesNum, function () {return '#0f0'});
+
             var graphInitializer = [
                 'Sonar',
-                [new Date(0)],
-                ['Time'],
+                data,
+                labels,
                 'Bearing',
                 [-180, 180]
             ];
@@ -53,15 +59,13 @@ angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatia
             scope.$on('addDetections', function (event, dataValues) {
                 var data = dataSeries["Sonar"];
                 var graph = graphs["Sonar"];
-                var tracks = _.pluck(scope.series, 'trackId');
 
-                // add options for new sonar tracks
-                if (tracks.length !== graph.getLabels().length) {
-                    _.each(tracks, function (name) {
-                        graphInitializer[1].push(0);
-                        graphInitializer[2].push(name);
-                    });
-                }
+                // extract track names from detections
+                var tracks = [labels[0]].concat(_.pluck(scope.series, 'trackId'));
+                // replace default label names by track names
+                labels = _.map(labels, function (label, index) {
+                    return tracks[index] || label;
+                });
 
                 data.push(dataValues);
                 // calculate the 5 minute window
@@ -70,14 +74,18 @@ angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatia
 
                 // get the chart to redraw
                 graph.updateOptions({
-                    'colors': ["#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0", "#0f0"],
-                    'strokePattern': [0, 4], showLabelsOnHighlight: false,
+                    labels: labels,
+                    file: data,
+                    colors: colors,
+                    strokePattern: [0, 4],
+                    showLabelsOnHighlight: false,
                     axes: {
                         x: {axisLabelColor: "#0f0"},
                         y: {axisLabelColor: "#0f0"}
                     },
-                    'pointSize': 4, 'file': data,
-                    dateWindow: [newStart, new Date(time)] });
+                    pointSize: 4,
+                    dateWindow: [newStart, new Date(time)]
+                });
             });
         }
     };
