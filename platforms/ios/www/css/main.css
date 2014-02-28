@@ -1,7 +1,7 @@
 .wrapper-mobile {
   height: 100%;
-  margin: -50px 0;
-  padding: 50px 0;
+  margin: -25px 0 -50px 0;
+  padding: 25px 0 50px 0;
   overflow: hidden;
 }
 
@@ -15,8 +15,17 @@
   overflow: auto;
 }
 
-.navbar-mobile-top, .navbar-mobile-bottom {
+.navbar-mobile-top {
+  height: 25px;
+  min-height: 25px;
+}
+
+.navbar-mobile-bottom {
   height: 50px;
+  min-height: 50px;
+}
+
+.navbar-mobile-top, .navbar-mobile-bottom {
   margin: 0;
   overflow: hidden;
 }
