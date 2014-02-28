@@ -80,8 +80,8 @@ angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatia
                     strokePattern: [0, 4],
                     showLabelsOnHighlight: false,
                     axes: {
-                        x: {axisLabelColor: "#0f0"},
-                        y: {axisLabelColor: "#0f0"}
+                        x: {axisLabelColor: colors[0]},
+                        y: {axisLabelColor: colors[0]}
                     },
                     pointSize: 4,
                     dateWindow: [newStart, new Date(time)]
