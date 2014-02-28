@@ -74,7 +74,8 @@
                     "coverage" : 120,
                     "offset": 0,
                     "ArrayGain": 28,
-                    "DT": -8
+                    "DT": -8,
+                    "disabled" : false
                 }
             ],
             "radiatedNoise": {
@@ -124,7 +125,7 @@
                     "description" : "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 300,
-                    "success": "Ok, you've gained contact. Now you'll have to avoid him getting within 500m of you for one hour. You may need to sprint and drift for him to lose you ",
+                    "success": "Good news, we've got in contact. Bad news, we've got a Weapons Failure. Engineers estimate an hour to fix it - so you've got to prevent it getting within 500m of us for the next hour.  He's got a stern null, so you may be able to hide behind him.",
                     "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
                 },
                 {
@@ -133,16 +134,16 @@
                     "type": "DISTANCE",
                     "target" : "Ownship",
                     "subject" : "Target",
-                    "elapsed": 300,
+                    "elapsed": 3600,
                     "achievement" : {"name" : "Chicken", "message" : "You can now choose to chase or evade a target, discretion is the better part of valour..."},
                     "range": 500,
                     "success": "Well done, that was tricky.",
-                    "failure": "Aah, h"
+                    "failure": "Incoming Torpedo!  It looks like he got us.  Did you try using Sprint and Drift to get further away from him?"
                 }
             ]
         }
     ],
-    "welcome": "You're now ready for a reacting target. This target has a relatively poor bow mounted sonar, but will flee away from you if it detects you/",
+    "welcome": "Ok, there's an aggressive looking submarine out there. Let's locate it, and get rid of it.",
     "features": {
         "type": "FeatureCollection",
         "features": [

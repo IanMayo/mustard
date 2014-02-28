@@ -58,6 +58,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 case "PROXIMITY":
                     handleProximity(gameState, objective, vesselsState);
                     break;
+                case "DISTANCE":
+                    handleDistance(gameState, objective, vesselsState);
+                    break;
                 case "GAIN_CONTACT":
                     handleGainContact(gameState, objective, vesselsState);
                     break;
@@ -257,9 +260,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         proximity.bonusStopTime = gameState.simulationTime + (proximity.bonusAchievementTime * 1000);
                     }
                 }
-
             }
-
 
             var dest = null;
             // ok, are we checking proximity to a location
@@ -344,6 +345,103 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         gameState.state = "DO_STOP";
 
                         insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to pass proximity threshold in time");
+                    }
+                }
+            }
+        };
+
+        var handleDistance = function (gameState, distance, vesselsState) {
+
+            var subject = null;
+
+            // right, is ownship actually ownShp?
+            if(distance.subject == "Ownship")
+            {
+                subject = vesselsState.ownShip;
+            }
+            else
+            {
+                subject = vesselsState.targets[distance.subject];
+            }
+
+            // right, do we have an elapsed time limit
+            if (distance.elapsed) {
+                // ok. do we know when this objective started?
+                if (!distance.stopTime) {
+                    // no, better store it
+                    distance.stopTime = gameState.simulationTime + (distance.elapsed * 1000);
+                }
+
+                // hey, is there a bonus for time?
+                if (distance.bonusAchievementTime) {
+                    if (!distance.bonusStopTime) {
+                        // no, better store it
+                        distance.bonusStopTime = gameState.simulationTime + (distance.bonusAchievementTime * 1000);
+                    }
+                }
+            }
+
+            var dest = null;
+            // ok, are we checking distance to a location
+            if (distance.location) {
+                dest = distance.location;
+            } else if (distance.target) {
+
+                // aah, is the target ownship?
+                var tgtVessel;
+                if (distance.target == "Ownship") {
+                    tgtVessel = vesselsState.ownShip;
+                }
+                else {
+                    tgtVessel = vesselsState.targets[distance.target];
+                }
+
+                if (!tgtVessel) {
+                    console.log("TROUBLE - Don't have the target vessel in the scenario!");
+                }
+                dest = tgtVessel.state.location;
+            }
+
+            // where is v1
+            var current = subject.state.location;
+
+            // what's the range?
+            var range = geoMath.rhumbDistanceFromTo(dest, current);
+
+            if (range < distance.range) {
+                // ok, the target has encroached on the distance. failed.
+                distance.complete = true;
+                gameState.failureMessage = distance.failure;
+                gameState.state = "DO_STOP";
+                insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to stay outside the necessary range");
+
+            }
+
+            // right, just check if we have failed to reach our distance in time
+            if (distance.stopTime) {
+                if (gameState.simulationTime > distance.stopTime) {
+                    // did we succeed on this step
+                    if (distance.complete) {
+                        // ok, let's allow the failure to continue
+                    }
+                    else {
+                        // ok - the user has managed to stay outside the necessary range
+                        distance.complete = true;
+                        gameState.successMessage = distance.success;
+                        gameState.state = "DO_STOP";
+
+                        insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Managed to stay outside the necessary range");
+
+                        // and store any achievements
+                        processAchievements(distance.achievement, gameState);
+
+                        // hey, is there a bonus time?
+                        if (distance.bonusStopTime) {
+                            // note: we're relying on the
+                            if (gameState.simulationTime < distance.bonusStopTime) {
+                                processAchievements(distance.bonusAchievement, gameState);
+                            }
+                        }
                     }
                 }
             }
