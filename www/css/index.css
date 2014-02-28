@@ -66,3 +66,9 @@ body {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+/** give the leaflet map a plain, sea-colored background */
+spatial-view .leaflet-container
+{
+    background-color:#b5d0d0;
+}
