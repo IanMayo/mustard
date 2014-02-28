@@ -195,7 +195,7 @@ angular.module('mustard.game.spatialViewDirective', [
              */
             scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
                 detectionTrackId = trackId;
-                addSonarDetections();
+                scope.showSonarDetections = true;
             });
         }
     };
