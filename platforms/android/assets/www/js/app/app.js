@@ -1,9 +1,11 @@
 angular.module('mustard', [
     'ngRoute',
+    'ngTouch',
     'mustard.services',
     'mustard.app.login',
     'mustard.app.registration',
     'mustard.app.main',
+    'mustard.app.mission',
     'mustard.game.simulator',
     'leaflet-directive'
 ])
@@ -24,6 +26,11 @@ angular.module('mustard', [
     .when('/main', {
         controller: 'MainCtrl',
         templateUrl: 'js/app/controllers/main/main.tpl.html'
+    })
+
+    .when('/mission/:id', {
+        controller: 'MissionCtrl',
+        templateUrl: 'js/app/controllers/mission/mission.tpl.html'
     })
 
     .when('/game/mission', {

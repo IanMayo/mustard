@@ -1,13 +1,30 @@
-.main {
+.wrapper-mobile {
   height: 100%;
-  padding-top: 40px;
+  margin: -50px 0;
+  padding: 50px 0;
+  overflow: hidden;
 }
 
-.container-scroll {
-  height: 80%;
+.wrapper-mobile.without-top-nav {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.container-with-scroll-mobile {
+  height: 100%;
   overflow: auto;
+}
+
+.navbar-mobile-top, .navbar-mobile-bottom {
+  height: 50px;
+  margin: 0;
+  overflow: hidden;
 }
 
 .mission-list > .mission {
   cursor: pointer;
+}
+
+.mission-list > .mission .ng-click-active {
+  color: dimgrey;
 }

@@ -1,75 +1,78 @@
-<div class="container-fluid main">
-  <nav class="navbar navbar-fixed-top">
-    <div class="container-fluid text-right">
-      <span>%username%</span>
-    </div>
-  </nav>
-
-  <div class="container-fluid container-scroll">
-    <ul class="mission-list list-unstyled text-center">
-      <li class="mission">
-        <h1>Training</h1>
-        <p>Learn how to play</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #1</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #2</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #3</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #4</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #5</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #6</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #7</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #8</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #9</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #10</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #11</h1>
-        <p>Play me</p>
-      </li>
-      <li class="mission">
-        <h1>Mission #12</h1>
-        <p>Play me</p>
-      </li>
-    </ul>
+<nav class="navbar navbar-mobile-top">
+  <div class="container-fluid text-right">
+    <span>%username%</span>
   </div>
+</nav>
 
-  <nav class="navbar navbar-fixed-bottom">
+<!-- This is just the stub list of missions to test ngTouch -> ngClick directive -->
+<div class="wrapper-mobile">
+  <div class="container-with-scroll-mobile">
     <div class="container-fluid">
-      <a href="#" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-user"></span>
-      </a>
-      <a href="#" class="btn btn-default btn-lg pull-right">
-        <span class="glyphicon glyphicon-cog"></span>
-      </a>
+      <ul class="mission-list list-unstyled text-center">
+        <li class="mission">
+          <h1 ng-click="moveToMission(0)">Training</h1>
+          <p>Learn how to play</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(1)">Mission #1</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(2)">Mission #2</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(3)">Mission #3</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(4)">Mission #4</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(5)">Mission #5</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(6)">Mission #6</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(7)">Mission #7</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(8)">Mission #8</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(9)">Mission #9</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(10)">Mission #10</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(11)">Mission #11</h1>
+          <p>Play me</p>
+        </li>
+        <li class="mission">
+          <h1 ng-click="moveToMission(12)">Mission #12</h1>
+          <p>Play me</p>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
 </div>
+
+<nav class="navbar navbar-mobile-bottom">
+  <div class="container-fluid">
+    <a href="#" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-user"></span>
+    </a>
+    <a href="#" class="btn btn-default btn-lg pull-right">
+      <span class="glyphicon glyphicon-cog"></span>
+    </a>
+  </div>
+</nav>
