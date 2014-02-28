@@ -98,7 +98,10 @@ angular.module('mustard.game.simulator', [
             focus: false,
             message: vessel.name,
             layer: layerName,
-            iconAngle: vessel.state.course
+            iconAngle: vessel.state.course,
+            icon: {
+                iconAnchor: [12, 20.5] // change default coordinates of center
+            }
         });
     };
 
