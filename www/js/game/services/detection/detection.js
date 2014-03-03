@@ -65,6 +65,18 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
             // ok, what's the relative angle?
             var relBearing = bearing - osCourse;
 
+            // is it ambiguous? If so, we have to hide the true bearing
+            var firstId;
+            if(doAmbiguous)
+            {
+                firstId = trackId + "_a";
+            }
+            else
+            {
+                // no ambiguous bearing, just use the direct name
+                firstId = trackId;
+            }
+
             // do the port angle
             var thisError = relBearing - errorRange + 2 * Math.random() * errorRange;
             var thisValue = osCourse + thisError;
@@ -72,7 +84,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 thisValue += 360;
             }
             thisValue = thisValue % 360;
-            detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId" : trackId, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
+            detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId" : firstId, "origin": {"lat": origin.lat, "lng": origin.lng, "strength": SE}});
 
             // ambiguous?
             if (doAmbiguous) {
@@ -81,8 +93,9 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 if (thisValue < 0) {
                     thisValue += 360;
                 }
+
                 thisValue = thisValue % 360;
-                detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId" : trackId, "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}});
+                detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId" : trackId + "_b", "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}});
             }
         };
 
