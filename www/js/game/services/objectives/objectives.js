@@ -72,12 +72,18 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     break;
             }
 
-            // just do a check for time remaining
-            if(objective.stopTime)
-            {
-                // ok, how long is remaiing?
-                var remaining = objective.stopTime - gameState.simulationTime;
-                gameState.remaining = geoMath.formatMillis(remaining);
+
+            // if the objective type isn't an "organisational" one, set the remaining time, if present
+            if (objective.type != "SEQUENCE") {
+                // just do a check for time remaining
+                if (objective.stopTime) {
+                    // ok, how long is remaiing?
+                    var remaining = objective.stopTime - gameState.simulationTime;
+                    gameState.remaining = geoMath.formatMillis(remaining);
+                }
+                else {
+                    delete gameState.remaining;
+                }
             }
 
         };
@@ -392,12 +398,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             var subject = null;
 
             // right, is ownship actually ownShp?
-            if(distance.subject == "Ownship")
-            {
+            if (distance.subject == "Ownship") {
                 subject = vesselsState.ownShip;
             }
-            else
-            {
+            else {
                 subject = vesselsState.targets[distance.subject];
             }
 
