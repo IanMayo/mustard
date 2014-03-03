@@ -1,15 +1,6 @@
 angular.module('mustard.game.shipStateDirective', [])
 
-.constant('shipStateConfig', {
-    courseRate: 5.00,
-    speed: {
-        min: 0,
-        max: 40,
-        rate: 1
-    }
-})
-
-.directive('shipState', ['shipStateConfig', function (shipStateConfig) {
+.directive('shipState', function () {
     return {
         restrict: 'EA',
         scope: {
@@ -21,4 +12,4 @@ angular.module('mustard.game.shipStateDirective', [])
 
         }
     };
-}]);
+});

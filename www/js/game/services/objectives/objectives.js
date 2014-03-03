@@ -71,6 +71,15 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     handleStartMission(gameState, objective, vesselsState);
                     break;
             }
+
+            // just do a check for time remaining
+            if(objective.stopTime)
+            {
+                // ok, how long is remaiing?
+                var remaining = objective.stopTime - gameState.simulationTime;
+                gameState.remaining = geoMath.formatMillis(remaining);
+            }
+
         };
 
         var handleSequence = function (gameState, sequence, vesselsState) {
@@ -148,6 +157,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         if (gameState.simulationTime >= maintainContact.stopTime) {
                             // great - we're done.
                             maintainContact.complete = true;
+
+                            // clear the flag
+                            delete maintainContact.stopTime;
+
                             break;
                         }
                     }
@@ -160,6 +173,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 gameState.successMessage = maintainContact.success;
                 gameState.state = "DO_STOP";
                 maintainContact.complete = true;
+
+                // clear the flag
+                delete maintainContact.stopTime;
 
                 // and store any achievements
                 processAchievements(maintainContact.achievement, gameState);
@@ -178,6 +194,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 failMessage = failMessage.replace("[time]", "" + Math.floor(elapsedMins));
                 gameState.failureMessage = failMessage;
                 gameState.state = "DO_STOP";
+
+                // clear the flag
+                delete maintainContact.stopTime;
+
                 insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Lost contact with target");
             }
         };
@@ -203,6 +223,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         // do we have a target name?
                         if (!gainContact.target || (gainContact.target && (gainContact.target === thisD.source))) {
                             gainContact.complete = true;
+
+                            // clear the flag
+                            delete gainContact.stopTime;
+
                             // great - we're done.
                             break;
                         }
@@ -214,6 +238,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // cool,handle the success
                 gameState.successMessage = gainContact.success;
                 gameState.state = "DO_STOP";
+
+                // clear the flag
+                delete gainContact.stopTime;
 
                 // and store any achievements
                 processAchievements(gainContact.achievement, gameState);
@@ -228,6 +255,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     gainContact.complete = true;
                     gameState.failureMessage = gainContact.failure;
                     gameState.state = "DO_STOP";
+
+                    // clear the flag
+                    delete gainContact.stopTime;
+
                     insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to gain contact with target");
                 }
             }
@@ -314,6 +345,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     gameState.successMessage = proximity.success;
                     gameState.state = "DO_STOP";
 
+                    // clear the flag
+                    delete proximity.stopTime;
+
                     // and store any achievements
                     processAchievements(proximity.achievement, gameState);
 
@@ -343,6 +377,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         proximity.complete = true;
                         gameState.failureMessage = proximity.failure;
                         gameState.state = "DO_STOP";
+
+                        // clear the flag
+                        delete proximity.stopTime;
 
                         insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to pass proximity threshold in time");
                     }
