@@ -100,7 +100,14 @@ angular.module('mustard.game.simulator', [
             layer: layerName,
             iconAngle: vessel.state.course,
             icon: {
-                iconAnchor: [12, 20.5] // change default coordinates of center
+                iconUrl: 'img/airplane.png',
+                iconSize: [46, 39],
+                iconAnchor: [23, 19.5] // change default coordinates of center
+//                iconRetinaUrl: '',
+//                shadowUrl: '',
+//                shadowRetinaUrl: ''
+//                shadowSize: '',
+//                shadowAnchor: ''
             }
         });
     };
