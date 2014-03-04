@@ -115,7 +115,23 @@ angular.module('mustard.game.geoMath', [])
         return radVal * 180.0 / Math.PI;
     };
 
+        /** CONVERT MILLISECONDS TO DIGITAL CLOCK FORMAT
+         *
+         * @param milliseconds
+         * @returns {String} value
+         */
+    var formatMillis =    function(duration) {
+            var milliseconds = parseInt((duration%1000)/100)
+                , seconds = parseInt((duration/1000)%60)
+                , minutes = parseInt((duration/(1000*60))%60)
+                , hours = parseInt((duration/(1000*60*60))%24);
 
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            return hours + ":" + minutes + ":" + seconds;
+        }
 
         /**
      * Module API
@@ -124,6 +140,8 @@ angular.module('mustard.game.geoMath', [])
         toRads: toRads,
 
         toDegs: toDegs,
+
+        formatMillis : formatMillis,
 
         /**
          *

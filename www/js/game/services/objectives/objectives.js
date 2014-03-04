@@ -67,11 +67,89 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 case "MAINTAIN_CONTACT":
                     handleMaintainContact(gameState, objective, vesselsState);
                     break;
-                case "START_MISSION":
-                    handleStartMission(gameState, objective, vesselsState);
+                case "ELAPSED":
+                    handleElapsed(gameState, objective, vesselsState);
                     break;
             }
+
+
+            // if the objective type isn't an "organisational" one, set the remaining time, if present
+            if (objective.type != "SEQUENCE") {
+                // just do a check for time remaining
+                if (objective.stopTime) {
+                    // ok, how long is remaiing?
+                    var remaining = objective.stopTime - gameState.simulationTime;
+                    gameState.remaining = geoMath.formatMillis(remaining);
+                }
+                else {
+                    delete gameState.remaining;
+                }
+            }
+
+            // was the action successful?
+            // if the objective type isn't an "organisational" one, set the remaining time, if present
+            if (objective.type != "SEQUENCE") {
+                if (gameState.successMessage && objective.complete) {
+                    // ok, is there a success action?
+                    if (objective.successAction) {
+                        console.log("doing action!!" + objective.name);
+                        handleAction(gameState, vesselsState, objective.successAction);
+                    }
+                }
+            }
+
         };
+
+        /** switchboard method that calls relevant observer handler
+         *
+         * @param gameState
+         * @param objective
+         * @param vesselsState
+         */
+        var handleAction = function (gameState, vesselsState, action) {
+            var thisType = action.type;
+
+            switch (thisType) {
+                case "ACTIVATE_SONAR":
+                    // get the vessel
+                    var vessel;
+
+                    if (action.subject == "Ownship") {
+                        vessel = vesselsState.ownShip;
+                    }
+                    else {
+                        vessel = vesselsState.targets[action.subject];
+                    }
+
+                    if (!vessel) {
+                        Console.log("|| handleAction - failed to find vessel:" + action.subject);
+                    }
+
+                    // find the sonar
+                    var sonar = _.find(vessel.sonars, function (sonar) {
+                        return sonar.name = action.sonar
+                    });
+
+                    if (!sonar) {
+                        Console.log("|| handleAction - failed to find sonar:" + action.sonar);
+                    }
+
+                    // activate?
+                    if (action.disabled) {
+                        // nope, mark it as disabled
+                        sonar.disabled = true;
+                    }
+                    else {
+                        // enabled, delete any disabled status
+                        delete sonar.disabled;
+                    }
+
+                    // de-activate
+                    break;
+            }
+
+        };
+
 
         var handleSequence = function (gameState, sequence, vesselsState) {
             var thisId = 0;
@@ -148,6 +226,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         if (gameState.simulationTime >= maintainContact.stopTime) {
                             // great - we're done.
                             maintainContact.complete = true;
+
+                            // clear the flag
+                            delete maintainContact.stopTime;
+
                             break;
                         }
                     }
@@ -160,6 +242,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 gameState.successMessage = maintainContact.success;
                 gameState.state = "DO_STOP";
                 maintainContact.complete = true;
+
+                // clear the flag
+                delete maintainContact.stopTime;
 
                 // and store any achievements
                 processAchievements(maintainContact.achievement, gameState);
@@ -178,6 +263,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 failMessage = failMessage.replace("[time]", "" + Math.floor(elapsedMins));
                 gameState.failureMessage = failMessage;
                 gameState.state = "DO_STOP";
+
+                // clear the flag
+                delete maintainContact.stopTime;
+
                 insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Lost contact with target");
             }
         };
@@ -203,6 +292,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         // do we have a target name?
                         if (!gainContact.target || (gainContact.target && (gainContact.target === thisD.source))) {
                             gainContact.complete = true;
+
+                            // clear the flag
+                            delete gainContact.stopTime;
+
                             // great - we're done.
                             break;
                         }
@@ -214,6 +307,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // cool,handle the success
                 gameState.successMessage = gainContact.success;
                 gameState.state = "DO_STOP";
+
+                // clear the flag
+                delete gainContact.stopTime;
 
                 // and store any achievements
                 processAchievements(gainContact.achievement, gameState);
@@ -228,18 +324,32 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     gainContact.complete = true;
                     gameState.failureMessage = gainContact.failure;
                     gameState.state = "DO_STOP";
+
+                    // clear the flag
+                    delete gainContact.stopTime;
+
                     insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to gain contact with target");
                 }
             }
         };
 
+        var handleElapsed = function (gameState, elapsed, vesselsState) {
+            // ok. do we know when this objective started?
+            // NOTE: we use "silentStopTime" to it isn't caught by the "Time Remaining" handling.
+            if (!elapsed.silentStopTime) {
+                // no, better store it
+                elapsed.silentStopTime = (gameState.simulationTime + (elapsed.time * 1000));
+            }
 
-        var handleStartMission = function (gameState, startMission, vesselsState) {
+            // right, just check if we have failed to reach our proximity in time
+            if (gameState.simulationTime > elapsed.silentStopTime) {
+                elapsed.complete = true;
+                gameState.successMessage = elapsed.success;
+                gameState.state = "DO_STOP";
 
-            // and store any achievements
-            processAchievements(startMission.achievement, gameState);
-
-            startMission.complete = true;
+                // and store any achievements
+                processAchievements(elapsed.achievement, gameState);
+            }
         };
 
         var handleProximity = function (gameState, proximity, vesselsState) {
@@ -314,6 +424,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     gameState.successMessage = proximity.success;
                     gameState.state = "DO_STOP";
 
+                    // clear the flag
+                    delete proximity.stopTime;
+
                     // and store any achievements
                     processAchievements(proximity.achievement, gameState);
 
@@ -344,6 +457,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                         gameState.failureMessage = proximity.failure;
                         gameState.state = "DO_STOP";
 
+                        // clear the flag
+                        delete proximity.stopTime;
+
                         insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to pass proximity threshold in time");
                     }
                 }
@@ -355,12 +471,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             var subject = null;
 
             // right, is ownship actually ownShp?
-            if(distance.subject == "Ownship")
-            {
+            if (distance.subject == "Ownship") {
                 subject = vesselsState.ownShip;
             }
-            else
-            {
+            else {
                 subject = vesselsState.targets[distance.subject];
             }
 
