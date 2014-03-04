@@ -1,30 +1,36 @@
 <nav class="navbar navbar-mobile-top">
-  <div class="container-fluid text-right">
-    <span>%username%</span>
-  </div>
+    <div class="container-fluid text-right">
+        <span>%username%</span>
+    </div>
 </nav>
 
 <!-- This is just the stub list of missions to test ngTouch -> ngClick directive -->
 <div class="wrapper-mobile">
-  <div class="container-with-scroll-mobile">
-    <div class="container-fluid">
-      <ul class="mission-list list-unstyled text-center">
-        <li ng-repeat="mission in missions" class="mission">
-          <h1 ng-click="moveToMission([mission.url])">{{ mission.name }}</h1>
-          <p>{{ mission.description  }}</p>
-        </li>
-      </ul>
+    <div class="container-with-scroll-mobile">
+        <div class="container-fluid">
+            <div class="panel  panel-info " ng-repeat="level in levels">
+                <div class="panel-heading panel-title text-center">
+                    <h2>{{ level.name }}</h2>
+                </div>
+                <div style="padding:0px" class="panel-body list-group">
+                    <a ng-repeat="mission in level.missions" ng-click="moveToMission([mission.url])"
+                       class="text-center list-group-item">
+                        <h4>{{ mission.name }}</h4>
+                        <p>{{ mission.description }}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <nav class="navbar navbar-mobile-bottom">
-  <div class="container-fluid">
-    <a href="#/profile" class="btn btn-default btn-lg">
-      <span class="glyphicon glyphicon-user"></span>
-    </a>
-    <a href="#/settings" class="btn btn-default btn-lg pull-right">
-      <span class="glyphicon glyphicon-cog"></span>
-    </a>
-  </div>
+    <div class="container-fluid">
+        <a href="#/profile" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-user"></span>
+        </a>
+        <a href="#/settings" class="btn btn-default btn-lg pull-right">
+            <span class="glyphicon glyphicon-cog"></span>
+        </a>
+    </div>
 </nav>
