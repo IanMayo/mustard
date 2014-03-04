@@ -1,260 +1,276 @@
 {
-    "vessels": [
+  "vessels": [
+    {
+      "name": "Ownship",
+      "categories": {
+        "force": "BLUE",
+        "environment": "SURFACE",
+        "type": "WARSHIP"
+      },
+      "behaviours": [],
+      "sonars": [
         {
-            "name": "Ownship",
-            "categories": ["BLUE", "SURFACE", "WARSHIP"],
-            "behaviours": [],
-            "sonars": [
-                {
-                    "name": "BASIC_TOWED",
-                    "categories": ["NO_STEADY_TIME"],
-                    "offset": -1000,
-                    "ArrayGain": 18,
-                    "DT": -8,
-                    "disabled": false
-                }
-            ],
-            "radiatedNoise": {
-                "baseLevel": 90,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "time": 0,
-                "categories": [],
-                "location": {
-                    "lat": 49.88,
-                    "lng": -8.12
-                },
-                "course": 90,
-                "demCourse": 90,
-                "demSpeed": 10,
-                "speed": 10,
-                "height": 0,
-                "demHeight": -10.0
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 40,
-                "climbRate": 1,
-                "diveRate": 2
-            }
-        },
-        {
-            "name": "Target",
-            "categories": ["RED", "SUBSURFACE", "SUBMARINE"],
-            "behaviours": [
-                {
-                    "name": "Patrol area",
-                    "type": "RECTANGLE_WANDER",
-                    "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
-                    },
-                    "br": {
-                        "lat": 49.85,
-                        "lng": -7.75
-                    },
-                    "height": -30
-                }
-            ],
-            "sonars": [
-            ],
-            "radiatedNoise": {
-                "baseLevel": 97,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "categories": [],
-                "location": {
-                    "lat": 49.98,
-                    "lng": -7.75
-                },
-                "course": 280,
-                "demCourse": 280,
-                "demSpeed": 12,
-                "speed": 12,
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
-            }
-        },
-        {
-            "name": "Merchant",
-            "categories": ["WHITE", "SURFACE", "MERCHANT"],
-            "behaviours": [
-                {
-                    "name": "Shipping Route 1",
-                    "type": "PATH",
-                    "path": [
-                        {
-                            "lat": 49.96,
-                            "lng": -8.00
-                        }
-                        ,
-                        {
-                            "lat": 49.94,
-                            "lng": -8.75
-                        }
-                    ],
-                    "height": 0,
-                    "repeat": true,
-                    "forever": true
-                }
-            ],
-            "sonars": [
-            ],
-            "radiatedNoise": {
-                "baseLevel": 120,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "categories": [],
-                "location": {
-                    "lat": 49.95,
-                    "lng": -7.82
-                },
-                "course": 300,
-                "demCourse": 300,
-                "demSpeed": 10,
-                "speed": 10,
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
-            }
-        },
-        {
-            "name": "Fisherman",
-            "categories": ["WHITE", "SURFACE", "FISHERMAN"],
-            "behaviours": [
-                {
-                    "name": "Fish in area",
-                    "type": "RECTANGLE_WANDER",
-                    "tl": {
-                        "lat": 50.05,
-                        "lng": -8.1
-                    },
-                    "br": {
-                        "lat": 49.95,
-                        "lng": -7.9
-                    },
-                    "height": 0
-                }
-            ],
-            "sonars": [
-            ],
-            "radiatedNoise": {
-                "baseLevel": 120,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "categories": [],
-                "location": {
-                    "lat": 50.08,
-                    "lng": -8.2
-                },
-                "course": 120,
-                "demCourse": 120,
-                "demSpeed": 10,
-                "speed": 10,
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
-            }
+          "name": "BASIC_TOWED",
+          "categories": ["NO_STEADY_TIME"],
+          "offset": -1000,
+          "ArrayGain": 18,
+          "DT": -8,
+          "disabled": false
         }
-    ],
-    "patrolArea": [
-        [50.15, -8.25],
-        [49.85, -7.75]
-    ],
-    "environment": {},
-    "objectives": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 90,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "time": 0,
+        "categories": [],
+        "location": {
+          "lat": 49.88,
+          "lng": -8.12
+        },
+        "course": 90,
+        "demCourse": 90,
+        "demSpeed": 10,
+        "speed": 10,
+        "height": 0,
+        "demHeight": -10.0
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 40,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    },
+    {
+      "name": "Target",
+      "categories": {
+        "force": "RED",
+        "environment": "SUBSURFACE",
+        "type": "SUBMARINE"
+      },
+      "behaviours": [
         {
-            "name": "Find submarine",
-            "type": "SEQUENCE",
-            "children": [
-                {
-                    "name": "Gain contact",
-                    "description" : "Gain contact on the target submarine",
-                    "type": "GAIN_CONTACT",
-                    "target" : "Target",
-                    "elapsed": 600,
-                    "success": "Ok, we've got a feint trace on the target submarine. You now have to get within 500m of it for us use the underwater death ray",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
-                },
-                {
-                    "name": "Locate it",
-                    "description" : "Get within 500m of Target vessel",
-                    "type": "PROXIMITY",
-                    "target" : "Target",
-                    "range": 500,
-                    "success": "Well done, that was tricky. "
-                }
-            ]
+          "name": "Patrol area",
+          "type": "RECTANGLE_WANDER",
+          "tl": {
+            "lat": 50.15,
+            "lng": -8.25
+          },
+          "br": {
+            "lat": 49.85,
+            "lng": -7.75
+          },
+          "height": -30
         }
-    ],
-    "welcome": "Right, the complexity is stepping up here. It appears that we now have a fishing vessel wandering around the area. See if you can still get close to the target submarine.",
-    "features": {
-        "type": "FeatureCollection",
-        "features": [
+      ],
+      "sonars": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 97,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "categories": [],
+        "location": {
+          "lat": 49.98,
+          "lng": -7.75
+        },
+        "course": 280,
+        "demCourse": 280,
+        "demSpeed": 12,
+        "speed": 12,
+        "time": 0,
+        "height": -40,
+        "demHeight": -40.0,
+        "batteryLevel": 60
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 20,
+        "batteryUsage": 0.00035,
+        "chargeRate": 0.013,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    },
+    {
+      "name": "Merchant",
+      "categories": {
+        "force": "WHITE",
+        "environment": "SURFACE",
+        "type": "MERCHANT"
+      },
+      "behaviours": [
+        {
+          "name": "Shipping Route 1",
+          "type": "PATH",
+          "path": [
             {
-                "type": "Feature",
-                "properties": {
-                    "name": "Ops Area"
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [-8.25, 50.15],
-                            [-8.25, 49.85],
-                            [-7.75, 49.85],
-                            [-7.75, 50.15],
-                            [-8.25, 50.15 ]
-                        ]
-
-                    ]
-                },
-                "id": "OpsArea"
+              "lat": 49.96,
+              "lng": -8.00
             }
-        ]
+            ,
+            {
+              "lat": 49.94,
+              "lng": -8.75
+            }
+          ],
+          "height": 0,
+          "repeat": true,
+          "forever": true
+        }
+      ],
+      "sonars": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 120,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "categories": [],
+        "location": {
+          "lat": 49.95,
+          "lng": -7.82
+        },
+        "course": 300,
+        "demCourse": 300,
+        "demSpeed": 10,
+        "speed": 10,
+        "time": 0,
+        "height": -40,
+        "demHeight": -40.0,
+        "batteryLevel": 60
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 20,
+        "batteryUsage": 0.00035,
+        "chargeRate": 0.013,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    },
+    {
+      "name": "Fisherman",
+      "categories": {
+        "force": "WHITE",
+        "environment": "SURFACE",
+        "type": "FISHERMAN"
+      },
+      "behaviours": [
+        {
+          "name": "Fish in area",
+          "type": "RECTANGLE_WANDER",
+          "tl": {
+            "lat": 50.05,
+            "lng": -8.1
+          },
+          "br": {
+            "lat": 49.95,
+            "lng": -7.9
+          },
+          "height": 0
+        }
+      ],
+      "sonars": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 120,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "categories": [],
+        "location": {
+          "lat": 50.08,
+          "lng": -8.2
+        },
+        "course": 120,
+        "demCourse": 120,
+        "demSpeed": 10,
+        "speed": 10,
+        "time": 0,
+        "height": -40,
+        "demHeight": -40.0,
+        "batteryLevel": 60
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 20,
+        "batteryUsage": 0.00035,
+        "chargeRate": 0.013,
+        "climbRate": 1,
+        "diveRate": 2
+      }
     }
+  ],
+  "patrolArea": [
+    [50.15, -8.25],
+    [49.85, -7.75]
+  ],
+  "environment": {},
+  "objectives": [
+    {
+      "name": "Find submarine",
+      "type": "SEQUENCE",
+      "children": [
+        {
+          "name": "Gain contact",
+          "description": "Gain contact on the target submarine",
+          "type": "GAIN_CONTACT",
+          "target": "Target",
+          "elapsed": 600,
+          "success": "Ok, we've got a feint trace on the target submarine. You now have to get within 500m of it for us use the underwater death ray",
+          "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+        },
+        {
+          "name": "Locate it",
+          "description": "Get within 500m of Target vessel",
+          "type": "PROXIMITY",
+          "target": "Target",
+          "range": 500,
+          "success": "Well done, that was tricky. "
+        }
+      ]
+    }
+  ],
+  "welcome": "Right, the complexity is stepping up here. It appears that we now have a fishing vessel wandering around the area. See if you can still get close to the target submarine.",
+  "features": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Ops Area"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-8.25, 50.15],
+              [-8.25, 49.85],
+              [-7.75, 49.85],
+              [-7.75, 50.15],
+              [-8.25, 50.15 ]
+            ]
+
+          ]
+        },
+        "id": "OpsArea"
+      }
+    ]
+  }
 }
