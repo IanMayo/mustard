@@ -67,8 +67,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 case "MAINTAIN_CONTACT":
                     handleMaintainContact(gameState, objective, vesselsState);
                     break;
-                case "START_MISSION":
-                    handleStartMission(gameState, objective, vesselsState);
+                case "ELAPSED":
+                    handleElapsed(gameState, objective, vesselsState);
                     break;
             }
 
@@ -86,7 +86,70 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 }
             }
 
+            // was the action successful?
+            // if the objective type isn't an "organisational" one, set the remaining time, if present
+            if (objective.type != "SEQUENCE") {
+                if (gameState.successMessage && objective.complete) {
+                    // ok, is there a success action?
+                    if (objective.successAction) {
+                        console.log("doing action!!" + objective.name);
+                        handleAction(gameState, vesselsState, objective.successAction);
+                    }
+                }
+            }
+
         };
+
+        /** switchboard method that calls relevant observer handler
+         *
+         * @param gameState
+         * @param objective
+         * @param vesselsState
+         */
+        var handleAction = function (gameState, vesselsState, action) {
+            var thisType = action.type;
+
+            switch (thisType) {
+                case "ACTIVATE_SONAR":
+                    // get the vessel
+                    var vessel;
+
+                    if (action.subject == "Ownship") {
+                        vessel = vesselsState.ownShip;
+                    }
+                    else {
+                        vessel = vesselsState.targets[action.subject];
+                    }
+
+                    if (!vessel) {
+                        Console.log("|| handleAction - failed to find vessel:" + action.subject);
+                    }
+
+                    // find the sonar
+                    var sonar = _.find(vessel.sonars, function (sonar) {
+                        return sonar.name = action.sonar
+                    });
+
+                    if (!sonar) {
+                        Console.log("|| handleAction - failed to find sonar:" + action.sonar);
+                    }
+
+                    // activate?
+                    if (action.disabled) {
+                        // nope, mark it as disabled
+                        sonar.disabled = true;
+                    }
+                    else {
+                        // enabled, delete any disabled status
+                        delete sonar.disabled;
+                    }
+
+                    // de-activate
+                    break;
+            }
+
+        };
+
 
         var handleSequence = function (gameState, sequence, vesselsState) {
             var thisId = 0;
@@ -270,13 +333,23 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             }
         };
 
+        var handleElapsed = function (gameState, elapsed, vesselsState) {
+            // ok. do we know when this objective started?
+            // NOTE: we use "silentStopTime" to it isn't caught by the "Time Remaining" handling.
+            if (!elapsed.silentStopTime) {
+                // no, better store it
+                elapsed.silentStopTime = (gameState.simulationTime + (elapsed.time * 1000));
+            }
 
-        var handleStartMission = function (gameState, startMission, vesselsState) {
+            // right, just check if we have failed to reach our proximity in time
+            if (gameState.simulationTime > elapsed.silentStopTime) {
+                elapsed.complete = true;
+                gameState.successMessage = elapsed.success;
+                gameState.state = "DO_STOP";
 
-            // and store any achievements
-            processAchievements(startMission.achievement, gameState);
-
-            startMission.complete = true;
+                // and store any achievements
+                processAchievements(elapsed.achievement, gameState);
+            }
         };
 
         var handleProximity = function (gameState, proximity, vesselsState) {
