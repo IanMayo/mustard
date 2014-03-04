@@ -95,7 +95,7 @@ angular.module('mustard.game.simulator', [
       var vesselMarker = function (layerName, vessel) {
 
         // produce the icon for this vessel type
-        var vType = vessel.categories[2].toLowerCase();
+        var vType = vessel.categories.type.toLowerCase();
 
         return _.extend(vessel, {
           lat: vessel.state.location ? vessel.state.location.lat : 0,
