@@ -18,90 +18,71 @@
     under the License.
 -->
 <html ng-app="mustard">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
-          width=device-width" />
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link rel="stylesheet" href="css/leaflet.css">
-        <title>Angular PhoneGap Seed</title>
-    </head>
-    <body>
-        <div class="app-body">
-            <h1>mustard</h1>
-            
-            <a href="#/game/mission/1a_drive_vessel">1a_drive_vessel</a>
-            <a href="#/game/mission/1b_read_bearings">1b_read_bearings</a>
-            <a href="#/game/mission/1c_resolve_ambiguity">1c_resolve_ambiguity</a>
-            <a href="#/game/mission/1d_resolve_ambiguity_2">1d_resolve_ambiguity (difficult)</a>
-            <br/>
-            <a href="#/game/mission/2a_intro_self_noise">2a_Self Noise</a>
-            <a href="#/game/mission/2b_full_self_noise">2b full self noise</a>
-            <a href="#/game/mission/2c_adv_self_noise">2c Advanced self noise</a>
-            <a href="#/game/mission/2d_more_self_noise">2d More self noise</a>
-            <br/>
-            <a href="#/game/mission/3a_fleeing_target">3a fleeing target</a>
-            <a href="#/game/mission/3b_attacking_target">3b attacking target</a>
-            ||
-            <a href="#/game/mission/6a_merchant">6a Merchant</a>
-            <a href="#/game/mission/6b_merchant_and_fisherman">6b Merchant and fisherman</a>
-            <a href="#/game/mission/7a_array_unsteady">7a Array Steady Time</a>
-            ||
-            <a href="#/game/training">Training Game View</a>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+          width=device-width"/>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css"/>
+  <link rel="stylesheet" type="text/css" href="css/main.css"/>
+  <link rel="stylesheet" href="css/leaflet.css">
+  <title>Angular PhoneGap Seed</title>
+</head>
+<body>
+<div class="app-body">
+  <h1>mustard</h1>
 
-            <div ng-view></div>
-        </div>
+  <div ng-view></div>
+</div>
 
-        <!-- Libs -->
-        <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
-        <script type="text/javascript" src="lib/Marker.Rotate.js"></script>
+<!-- Libs -->
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="lib/Marker.Rotate.js"></script>
 
-        <script type="text/javascript" src="lib/underscore-min.js"></script>
-        <script type="text/javascript" src="lib/angular/angular.js"></script>
-        <script type="text/javascript" src="lib/angular-leaflet/dist/angular-leaflet-directive.js"></script>
-        <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
+<script type="text/javascript" src="lib/underscore-min.js"></script>
+<script type="text/javascript" src="lib/angular/angular.js"></script>
+<script type="text/javascript" src="lib/angular-leaflet/dist/angular-leaflet-directive.js"></script>
+<script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
 
-        <script type="text/javascript" src="lib/angular/angular-route.js"></script>
-        <script type="text/javascript" src="lib/angular/angular-touch.js"></script>
+<script type="text/javascript" src="lib/angular/angular-route.js"></script>
+<script type="text/javascript" src="lib/angular/angular-touch.js"></script>
 
-        <!-- App -->
-        <script type="text/javascript" src="js/app/index.js"></script>
-        <script type="text/javascript" src="js/app/app.js"></script>
-        <script type="text/javascript" src="js/app/controllers/login/login.js"></script>
-        <script type="text/javascript" src="js/app/controllers/registration/registration.js"></script>
-        <script type="text/javascript" src="js/app/controllers/main/main.js"></script>
-        <script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
-        <script type="text/javascript" src="js/app/controllers/user-profile/profile.js"></script>
-        <script type="text/javascript" src="js/app/controllers/settings/settings.js"></script>
-        <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
+<!-- App -->
+<script type="text/javascript" src="js/app/index.js"></script>
+<script type="text/javascript" src="js/app/app.js"></script>
+<script type="text/javascript" src="js/app/controllers/login/login.js"></script>
+<script type="text/javascript" src="js/app/controllers/registration/registration.js"></script>
+<script type="text/javascript" src="js/app/controllers/main/main.js"></script>
+<script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
+<script type="text/javascript" src="js/app/controllers/user-profile/profile.js"></script>
+<script type="text/javascript" src="js/app/controllers/settings/settings.js"></script>
+<script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 
-        <!-- Game controllers -->
-        <script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
+<!-- Game controllers -->
+<script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
 
-        <!-- Game directives -->
-        <script type="text/javascript" src="js/game/directives/spatialView/spatialView.js"></script>
-        <script type="text/javascript" src="js/game/directives/shipControls/shipControls.js"></script>
-        <script type="text/javascript" src="js/game/directives/shipState/shipState.js"></script>
-        <script type="text/javascript" src="js/game/directives/timeBearingDisplay/timeBearingDisplay.js"></script>
-        <script type="text/javascript" src="js/game/directives/timeDisplay/timeDisplay.js"></script>
-        <script type="text/javascript" src="js/game/directives/timeRemaining/timeRemaining.js"></script>
-        <script type="text/javascript" src="js/game/directives/panToVessel/panToVessel.js"></script>
-        <script type="text/javascript" src="js/game/directives/mapScale/mapScale.js"></script>
+<!-- Game directives -->
+<script type="text/javascript" src="js/game/directives/spatialView/spatialView.js"></script>
+<script type="text/javascript" src="js/game/directives/shipControls/shipControls.js"></script>
+<script type="text/javascript" src="js/game/directives/shipState/shipState.js"></script>
+<script type="text/javascript" src="js/game/directives/timeBearingDisplay/timeBearingDisplay.js"></script>
+<script type="text/javascript" src="js/game/directives/timeDisplay/timeDisplay.js"></script>
+<script type="text/javascript" src="js/game/directives/timeRemaining/timeRemaining.js"></script>
+<script type="text/javascript" src="js/game/directives/panToVessel/panToVessel.js"></script>
+<script type="text/javascript" src="js/game/directives/mapScale/mapScale.js"></script>
 
-        <!-- Game services -->
-        <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
-        <script type="text/javascript" src="js/game/services/decision/decision.js"></script>
-        <script type="text/javascript" src="js/game/services/detection/detection.js"></script>
-        <script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
-        <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
-        <script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
+<!-- Game services -->
+<script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
+<script type="text/javascript" src="js/game/services/decision/decision.js"></script>
+<script type="text/javascript" src="js/game/services/detection/detection.js"></script>
+<script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
+<script type="text/javascript" src="js/game/services/movement/movement.js"></script>
+<script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
 
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+<script type="text/javascript">
+  app.initialize();
+</script>
+</body>
 </html>
