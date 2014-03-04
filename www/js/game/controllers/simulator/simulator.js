@@ -266,7 +266,7 @@ angular.module('mustard.game.simulator', [
                     map: {
                         name: 'map',
                         type: 'xyz',
-                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                        url: 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg'
                     }
                 },
                 overlays: {
