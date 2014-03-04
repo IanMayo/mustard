@@ -7,13 +7,14 @@
           <h4>Prove you're able!</h4>
           In this mission there will be stationary targets, very slow targets and
           some fast targets!
+          <div class="alert alert-danger">We probably need to extract the above text from the scenario - or the mission index</div>
         </div>
       </div>
     </div>
     <div class="container-fluid text-center">
       <button type="button" class="btn btn-primary btn-lg">Training</button>
-      <button type="button" class="btn btn-danger btn-lg">Play</button>
-      <button type="button" class="btn btn-default btn-lg">Review</button>
+      <button ng-click="moveToMission([missionNumber])" type="button" class="btn btn-danger btn-lg">Play</button>
+      <button type="button" disabled class="btn btn-default btn-lg btn-disabled">Review</button>
     </div>
   </div>
 </div>
