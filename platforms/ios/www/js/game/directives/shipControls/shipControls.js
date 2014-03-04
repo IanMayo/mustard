@@ -4,7 +4,7 @@ angular.module('mustard.game.shipControlsDirective', [])
     courseRate: 5.00,
     speed: {
         min: 0,
-        max: 10,
+        max: 40,
         rate: 1
     }
 })
@@ -33,9 +33,9 @@ angular.module('mustard.game.shipControlsDirective', [])
                 } else if (newCourse < 0) {
                     newCourse += 360;
                 }
-                
+
                 scope.course = parseFloat(newCourse.toFixed(2));
-            }
+            };
 
             /**
              * Change own ship speed
@@ -49,7 +49,7 @@ angular.module('mustard.game.shipControlsDirective', [])
                 }
 
                 scope.speed = parseFloat((newSpeed).toFixed(2));
-            }
+            };
         }
     };
 }]);

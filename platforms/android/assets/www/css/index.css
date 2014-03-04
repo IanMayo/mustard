@@ -32,3 +32,9 @@ body {
   margin: 0;
   overflow: hidden;
 }
+
+/** give the leaflet map a plain, sea-colored background */
+spatial-view .leaflet-container
+{
+    background-color:#b5d0d0;
+}

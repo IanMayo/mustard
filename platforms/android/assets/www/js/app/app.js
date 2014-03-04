@@ -11,9 +11,7 @@ angular.module('mustard', [
     'mustard.game.simulator',
     'leaflet-directive'
 ])
-
 .config(function ($routeProvider) {
-
     $routeProvider
     .when('/login', {
         controller: 'LoginCtrl',
@@ -45,18 +43,20 @@ angular.module('mustard', [
         templateUrl: 'js/app/controllers/settings/settings.tpl.html'
     })
 
-    .when('/game/mission', {
+    .when('/game/mission/:scenario', {
         controller: 'SimulatorCtrl',
         templateUrl: 'js/game/controllers/simulator/mission.tpl.html',
         resolve: {
-            scenario: ['$http', '$q', function ($http, $q) {
+            scenario: ['$http', '$q', '$route', function ($http, $q, $route) {
                 var deferred = $q.defer();
+                var scenario = $route.current.params.scenario + '.json';
+
                 $http({
                     method: "GET",
-                    url: "js/game/scenarios/PracticeScenario.json"
+                    url: 'js/game/scenarios/' + scenario
                 }).success(function (response) {
-                    deferred.resolve(response);
-                });
+                        deferred.resolve(response);
+                    });
                 return deferred.promise;
             }]
         }
@@ -78,6 +78,5 @@ angular.module('mustard', [
             }]
         }
     })
-
-    .otherwise({redirectTo: '/login'});
+    .otherwise({redirectTo: '/'});
 });

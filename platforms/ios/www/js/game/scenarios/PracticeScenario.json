@@ -7,7 +7,7 @@
                 "SURFACE",
                 "WARSHIP"
             ],
-            "initialState": {
+            "state": {
                 "time": 0,
                 "location": {
                     "lat": 12.2,
