@@ -1,3 +1,5 @@
 <div data-ng-controller="MissionSimulatorCtrl">
   <spatial-view></spatial-view>
+  <time-display data-speed="gameState.speed" data-timer="gameState.simulationTime"></time-display>
+  <ship-controls data-course="gameState.ownShip.course" data-speed="gameState.ownShip.speed"></ship-controls>
 </div>
