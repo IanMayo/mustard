@@ -8,60 +8,19 @@
 <div class="wrapper-mobile">
   <div class="container-with-scroll-mobile">
     <div class="container-fluid">
-      <ul class="mission-list list-unstyled text-center">
-        <li class="mission">
-          <h1 ng-click="moveToMission(0)">Training</h1>
-          <p>Learn how to play</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(1)">Mission #1</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(2)">Mission #2</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(3)">Mission #3</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(4)">Mission #4</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(5)">Mission #5</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(6)">Mission #6</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(7)">Mission #7</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(8)">Mission #8</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(9)">Mission #9</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(10)">Mission #10</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(11)">Mission #11</h1>
-          <p>Play me</p>
-        </li>
-        <li class="mission">
-          <h1 ng-click="moveToMission(12)">Mission #12</h1>
-          <p>Play me</p>
-        </li>
-      </ul>
+      <div class="panel  panel-info " ng-repeat="level in levels">
+        <div class="panel-heading panel-title text-center">
+          <h2>{{ level.name }}</h2>
+        </div>
+        <div style="padding:0px" class="panel-body list-group">
+          <a ng-repeat="mission in level.missions" ng-click="moveToMission([mission.url])"
+             class="text-center list-group-item">
+            <h4>{{ mission.name }}</h4>
+
+            <p>{{ mission.description }}</p>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
