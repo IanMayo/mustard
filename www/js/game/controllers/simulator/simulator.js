@@ -6,6 +6,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.shipControlsDirective',
     'mustard.game.shipStateDirective',
     'mustard.game.timeBearingDisplayDirective',
+    'mustard.game.objectiveListDirective',
     'mustard.game.decision',
     'mustard.game.detection',
     'mustard.game.geoMath',
