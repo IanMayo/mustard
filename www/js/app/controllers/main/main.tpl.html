@@ -10,13 +10,15 @@
     <div class="container-fluid">
       <div class="panel  panel-info " ng-repeat="level in levels">
         <div class="panel-heading panel-title text-center">
-          <h2>{{ level.name }}</h2>
+          <h2>{{ level.id }} - {{ level.name }}</h2>
         </div>
         <div style="padding:0px" class="panel-body list-group">
-          <a ng-repeat="mission in level.missions" ng-click="moveToMission([mission.url])"
+          <a ng-repeat="mission in level.missions" ng-click="moveToMission([mission.id], [mission.url])"
              class="text-center list-group-item">
-            <h4>{{ mission.name }}</h4>
-
+            <div style="float:right">
+              <span style="font-size:24px" ng-class="glyphFor([mission.id])"></span>
+            </div>
+            <h4>{{ mission.id }} - {{ mission.name }}</h4>
             <p>{{ mission.description }}</p>
           </a>
         </div>
