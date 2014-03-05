@@ -9,7 +9,8 @@ angular.module('mustard', [
     'mustard.app.profile',
     'mustard.app.settings',
     'mustard.game.simulator',
-    'leaflet-directive'
+    'leaflet-directive',
+    'ui.bootstrap'
 ])
 .config(function ($routeProvider) {
     $routeProvider
@@ -78,5 +79,5 @@ angular.module('mustard', [
             }]
         }
     })
-    .otherwise({redirectTo: '/'});
+    .otherwise({redirectTo: '/main'});
 });
