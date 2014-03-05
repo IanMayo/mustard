@@ -1,150 +1,158 @@
 {
-    "vessels": [
+  "vessels": [
+    {
+      "name": "Ownship",
+      "categories": {
+        "force": "BLUE",
+        "environment": "SURFACE",
+        "type": "WARSHIP"
+      },
+      "behaviours": [],
+      "sonars": [
         {
-            "name": "Ownship",
-            "categories": ["BLUE", "SURFACE", "WARSHIP"],
-            "behaviours": [],
-            "sonars": [
-                {
-                    "name": "BASIC_TOWED",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
-                    "offset": -1000,
-                    "ArrayGain": 18,
-                    "DT": -8
-                }
-            ],
-            "radiatedNoise": {
-                "baseLevel": 90,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "time": 0,
-                "categories": [],
-                "location": {
-                    "lat": 50,
-                    "lng": -8.18
-                },
-                "course": 90,
-                "demCourse": 90,
-                "demSpeed": 12,
-                "speed": 12,
-                "height": 0,
-                "demHeight": -10.0
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 40,
-                "climbRate": 1,
-                "diveRate": 2
-            }
+          "name": "BASIC_TOWED",
+          "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+          "offset": -1000,
+          "ArrayGain": 18,
+          "DT": -8
+        }
+      ],
+      "radiatedNoise": {
+        "baseLevel": 90,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "time": 0,
+        "categories": [],
+        "location": {
+          "lat": 50,
+          "lng": -8.18
+        },
+        "course": 90,
+        "demCourse": 90,
+        "demSpeed": 12,
+        "speed": 12,
+        "height": 0,
+        "demHeight": -10.0
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 40,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    },
+    {
+      "name": "Quiet Target",
+      "categories": {
+        "force": "RED",
+        "environment": "SUBSURFACE",
+        "type": "SUBMARINE"
+      },
+      "behaviours": [
+        {
+          "name": "Reduced Patrol area",
+          "type": "RECTANGLE_WANDER",
+          "tl": {
+            "lat": 50.08,
+            "lng": -8.13
+          },
+          "br": {
+            "lat": 49.92,
+            "lng": -7.87
+          },
+          "height": -30
+        }
+      ],
+      "sonars": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 86,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "categories": [],
+        "location": {
+          "lat": 49.96,
+          "lng": -7.82
+        },
+        "course": 300,
+        "demCourse": 300,
+        "demSpeed": 13,
+        "speed": 13,
+        "time": 0,
+        "height": -40,
+        "demHeight": -40.0,
+        "batteryLevel": 60
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 20,
+        "batteryUsage": 0.00035,
+        "chargeRate": 0.013,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    }
+  ],
+  "patrolArea": [
+    [50.15, -8.25],
+    [49.85, -7.75]
+  ],
+  "environment": {},
+  "objectives": [
+    {
+      "name": "Gain & keep contact",
+      "type": "SEQUENCE",
+      "children": [
+        {
+          "name": "Gain contact",
+          "description": "Gain contact on the quiet training target within 15 minutes",
+          "type": "GAIN_CONTACT",
+          "elapsed": 900,
+          "success": "Well done, you've gained contact within the 15 minute limit. Try to resolve the bearing, then hold it for another hour",
+          "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
         },
         {
-            "name": "Quiet Target",
-            "categories": ["RED", "SUBSURFACE", "SUBMARINE"],
-            "behaviours": [
-                {
-                    "name": "Reduced Patrol area",
-                    "type": "RECTANGLE_WANDER",
-                    "tl": {
-                        "lat": 50.08,
-                        "lng": -8.13
-                    },
-                    "br": {
-                        "lat": 49.92,
-                        "lng": -7.87
-                    },
-                    "height": -30
-                }
-            ],
-            "sonars": [
-            ],
-            "radiatedNoise": {
-                "baseLevel": 86,
-                "speedPattern": "Uniform"
-            },
-            "state": {
-                "categories": [],
-                "location": {
-                    "lat": 49.96,
-                    "lng": -7.82
-                },
-                "course": 300,
-                "demCourse": 300,
-                "demSpeed": 13,
-                "speed": 13,
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
-            },
-            "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
-            }
+          "name": "Maintain contact",
+          "description": "Maintain contact with the quiet training target for one hour",
+          "type": "MAINTAIN_CONTACT",
+          "elapsed": 3600,
+          "success": "Well done, you've held contact for one hour",
+          "failure": "More practice needed, you only held contact for [time] minutes."
         }
-    ],
-    "patrolArea": [
-        [50.15, -8.25],
-        [49.85, -7.75]
-    ],
-    "environment": {},
-    "objectives": [
-        {
-            "name": "Gain & keep contact",
-            "type": "SEQUENCE",
-            "children": [
-                {
-                    "name": "Gain contact",
-                    "description" : "Gain contact on the quiet training target within 15 minutes",
-                    "type": "GAIN_CONTACT",
-                    "elapsed": 900,
-                    "success": "Well done, you've gained contact within the 15 minute limit. Try to resolve the bearing, then hold it for another hour",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
-                },
-                {
-                    "name": "Maintain contact",
-                    "description" : "Maintain contact with the quiet training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
-                }
-            ]
-        }
-    ],
-    "welcome": "Ok, you've mastered the simple tracking target. Now for a quieter target that is manoeuvring more.  As before, it's to the East of you, and you've got 15 minutes to make contact.",
-    "features": {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {
-                    "name": "Ops Area"
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [-8.25, 50.15],
-                            [-8.25, 49.85],
-                            [-7.75, 49.85],
-                            [-7.75, 50.15],
-                            [-8.25, 50.15 ]
-                        ]
-                    ]
-                },
-                "id": "OpsArea"
-            }
-        ]
+      ]
     }
+  ],
+  "welcome": "Ok, you've mastered the simple tracking target. Now for a quieter target that is manoeuvring more.  As before, it's to the East of you, and you've got 15 minutes to make contact.",
+  "features": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Ops Area"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-8.25, 50.15],
+              [-8.25, 49.85],
+              [-7.75, 49.85],
+              [-7.75, 50.15],
+              [-8.25, 50.15 ]
+            ]
+          ]
+        },
+        "id": "OpsArea"
+      }
+    ]
+  }
 }

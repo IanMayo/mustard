@@ -30,10 +30,18 @@
   overflow: hidden;
 }
 
+.mission-list {
+  padding: 0;
+}
+
 .mission-list > .mission {
   cursor: pointer;
 }
 
-.mission-list > .mission .ng-click-active {
-  color: dimgrey;
+.mission-list > .mission.ng-click-active {
+  background: #E4E4E4;
+}
+
+.mission .mission-status {
+  font-size: 24px;
 }

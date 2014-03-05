@@ -1,17 +1,34 @@
 <div data-ng-controller="MissionSimulatorCtrl">
-  <table>
+  <table width="100%">
     <tr>
-      <td style="padding: 10px">
+      <td width="40%" style="padding: 10px">
         <time-bearing-display data-series="vesselsState.ownShip.newDetections"></time-bearing-display>
       </td>
-      <td style="padding: 10px">
+      <td width="60%" style="padding: 10px">
         <spatial-view></spatial-view>
       </td>
-      <td>
-        <time-display data-speed="gameState.accelRate" data-timer="gameState.simulationTime"></time-display>
-        <ship-state data-course="vesselsState.ownShip.state.course" data-speed="vesselsState.ownShip.state.speed"></ship-state>
-        <ship-controls data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
-        <time-remaining data-remaining="gameState.remaining"></time-remaining>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <ul class="list-inline mission-controls">
+          <li>
+            <time-display class="form-group" data-speed="gameState.accelRate"
+                          data-timer="gameState.simulationTime"></time-display>
+          </li>
+          <li>
+            <ship-state data-course="vesselsState.ownShip.state.course"
+                        data-speed="vesselsState.ownShip.state.speed"></ship-state>
+          </li>
+          <li>
+            <ship-controls data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
+          </li>
+          <li>
+            <time-remaining data-remaining="gameState.remaining"></time-remaining>
+          </li>
+          <li>
+            <objective-list data-objectives="objectives"></objective-list>
+          </li>
+        </ul>
       </td>
     </tr>
   </table>

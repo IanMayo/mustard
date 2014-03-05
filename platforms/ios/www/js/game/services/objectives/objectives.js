@@ -342,7 +342,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             }
 
             // right, just check if we have failed to reach our proximity in time
-            if (gameState.simulationTime > elapsed.silentStopTime) {
+            if (gameState.simulationTime >= elapsed.silentStopTime) {
                 elapsed.complete = true;
                 gameState.successMessage = elapsed.success;
                 gameState.state = "DO_STOP";
