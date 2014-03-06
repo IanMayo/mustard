@@ -106,7 +106,7 @@ angular.module('mustard.game.simulator', [
           layer: layerName,
           iconAngle: vessel.state.course,
           icon: {
-            iconUrl: 'img/vessels/48/'+vType+'.png',
+            iconUrl: 'img/vessels/48/' + vType + '.png',
             iconSize: [46, 39],
             iconAnchor: [23, 19.5] // change default coordinates of center
 //                iconRetinaUrl: '',
@@ -294,21 +294,17 @@ angular.module('mustard.game.simulator', [
        * @param vessel the vessel who's date wa are archiving
        * @param timeIndex used to index the state data
        */
-      var storeState = function(vessel, timeIndex)
-      {
+      var storeState = function (vessel, timeIndex) {
         // capture the state
-        if(!vessel.stateHistory)
-        {
+        if (!vessel.stateHistory) {
           vessel.stateHistory = {};
         }
         vessel.stateHistory[timeIndex] = angular.copy(vessel.state);
 
         // does the vessel have any detections? If so, archive them
-        if(vessel.newDetections && vessel.newDetections.length > 0)
-        {
+        if (vessel.newDetections && vessel.newDetections.length > 0) {
           // does it have a history?
-          if(!vessel.detectionHistory)
-          {
+          if (!vessel.detectionHistory) {
             vessel.detectionHistory = {};
           }
           vessel.detectionHistory[timeIndex] = vessel.newDetections;
@@ -321,10 +317,11 @@ angular.module('mustard.game.simulator', [
       var doStep = function () {
 
         // capture any existing data
-        storeState($scope.vesselsState.ownShip, $scope.gameState.simulationTime);
-        _.each($scope.vesselsState.targets, function (vessel) {
-          storeState(vessel, $scope.gameState.simulationTime);
-        });
+        // DEFER IMPLEMENTATION - GROSS NEGATIVE EFFECT ON PERFORMANCE
+        //        storeState($scope.vesselsState.ownShip, $scope.gameState.simulationTime);
+        //        _.each($scope.vesselsState.targets, function (vessel) {
+        //          storeState(vessel, $scope.gameState.simulationTime);
+        //        });
 
 
         $scope.vesselsState.ownShip.state.demCourse = parseInt($scope.demandedState.course);
