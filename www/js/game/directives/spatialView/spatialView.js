@@ -28,7 +28,7 @@ angular.module('mustard.game.spatialViewDirective', [
             scope.showSonarDetections = false;
 
             // Interim vessels states
-            var localVesselsState = {ownShip: {lastMoveTime: 0}};
+            var localVesselsState = {ownShip: {nextMoveTime: 0}};
             var defaultDetectionLinesCoordinates = [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]];
             // trackId filter for detection lines
             var detectionTrackId;
@@ -93,12 +93,11 @@ angular.module('mustard.game.spatialViewDirective', [
                 var currentOwnShipState = angular.copy(newState);
                 var currentTime = angular.copy(scope.gameState.simulationTime);
 
-                if (currentTime - localVesselsState.ownShip.lastMoveTime > spatialViewConfig.ownShipPointsInterval ||
-                    !localVesselsState.ownShip.lastMoveTime) {
+                if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
                     // add point for a next time interval or first
                     updateOwnShipTravellingPoint();
                     addOwnShipTravellingPoint(_.pick(currentOwnShipState, 'lat', 'lng'));
-                    localVesselsState.ownShip.lastMoveTime = currentTime;
+                    localVesselsState.ownShip.nextMoveTime = currentTime + spatialViewConfig.ownShipPointsInterval;
                 }
 
                 // adjust the center coordinates of the map if it's needed
