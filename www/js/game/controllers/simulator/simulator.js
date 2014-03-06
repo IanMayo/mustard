@@ -4,6 +4,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.timeDisplayDirective',
     'mustard.game.timeRemainingDirective',
     'mustard.game.shipControlsDirective',
+    'mustard.game.fireWeaponDirective',
     'mustard.game.shipStateDirective',
     'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
