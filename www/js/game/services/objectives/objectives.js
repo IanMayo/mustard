@@ -582,7 +582,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
       // ok, drop any expired vessels
       _.each(toDrop, function (vessel) {
-        delete vesselsState.targets[vessel.name];
+        destroyVessel(vesselsState.targets, vessel.name);
       });
     };
 
@@ -593,7 +593,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         if (vessel.categories.type == "TORPEDO") {
           // got one - when is it's expiry tme
 
-          var myForce = vessel.force;
+          var myForce = vessel.categories.force;
 
           // now, loop through for opposing vessels
           _.each(vesselsState.targets, function (target) {
@@ -603,10 +603,17 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
               var range = geoMath.rhumbDistanceFromTo(target.state.location, vessel.state.location);
 
               // in range?
-              if(range < vessel.radius)
-              {
-                console.log("kaboom from" + vessel.name);
-//                alert("KaBoom");
+              if (range < vessel.effectiveRadius) {
+                gameState.successMessage = "You have destroyed " + target.name;
+                gameState.state = "DO_PAUSE";
+
+                if (!gameState.destroyed) {
+                  gameState.destroyed = [];
+                }
+
+                gameState.destroyed.push(vessel);
+                gameState.destroyed.push(target);
+
               }
             }
           });
@@ -614,6 +621,21 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         }
       });
 
+    };
+
+    var handleTargetsDestroyed = function (gameState, vesselsState) {
+      _.each(gameState.destroyed, function (vessel) {
+        destroyVessel(vesselsState.targets, vessel.name);
+      });
+    }
+
+    /** handle vessel destruction
+     *
+     * @param vessels the list of vessels
+     * @param name name of the vessel to delete
+     */
+    var destroyVessel = function (vessels, name) {
+      delete vessels[name];
     };
 
     /** handle the request to fire a weapon
@@ -625,8 +647,6 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     var handleFireWeapon = function (action, vessel, vesselsState) {
       // right, where is it starting from?
       var location = angular.copy(vessel.state.location);
-
-      console.log("firing from:" + location.lat  + ", " + location.lng);
 
       // and what is the bearing to go down?
       var course = action.course;
@@ -646,7 +666,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
           "speedPattern": "Uniform"
         },
         "state": {
-          "time": 0,
+          "time": vessel.state.time,
           "categories": [],
           "location": location,
           "height": -10,
@@ -669,13 +689,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
       // calculate the weapon dead time
       weapon.expiresAt = vessel.state.time + (action.duration * 1000);
-
-      console.log("targets size: " + _.size(vesselsState.targets) + " weapon name:" + weapon.name);
+      weapon.effectiveRadius = action.radius;
 
       // and store it
       vesselsState.targets[weapon.name] = weapon;
-
-      console.log("targets size: " + _.size(vesselsState.targets));
 
     };
 
@@ -728,10 +745,13 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         });
 
         // also any "other" handlers that keep things tidy
+        handleTargetsDestroyed(gameState, vesselsState);
         handleExpiredWeapon(gameState, vesselsState);
         handleWeaponDetonation(gameState, vesselsState);
 
 
       }
     }
-  }]);
+  }
+  ])
+;
