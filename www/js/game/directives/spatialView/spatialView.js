@@ -5,8 +5,9 @@
 angular.module('mustard.game.spatialViewDirective', [
     'mustard.game.geoMath',
     'mustard.game.panToVesselDirective',
-    'mustard.game.mapScale'
-])
+    'mustard.game.mapScale',
+    'mustard.game.mouseLocation'
+  ])
 
 .constant('spatialViewConfig', {
     ownShipVisiblePointsTime: 1000 * 60 * 10, // 10 min
