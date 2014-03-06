@@ -9,8 +9,10 @@ angular.module('mustard.game.fireWeaponDirective', [])
       templateUrl: 'js/game/directives/fireWeapon/fireWeapon.tpl.html',
       link: function (scope) {
 
-        var fireSonar = function(state, course)
-        {
+        scope.enableSonarFire = false;
+        var detectionTrackId = null;
+
+        var fireSonar = function (state, course) {
 
           // check ownship has actions array
           if (!state.actions) {
@@ -20,7 +22,7 @@ angular.module('mustard.game.fireWeaponDirective', [])
           // register request to fire
           var name = _.uniqueId("W_");
           state.actions.push({"type": "FIRE_WEAPON", "name": name,
-            "course": course, "duration": 120, "radius":1000});
+            "course": course, "duration": 120, "radius": 1000});
 
         };
 
@@ -37,10 +39,32 @@ angular.module('mustard.game.fireWeaponDirective', [])
           $timeout(function () {
             // 'Safe' $apply
             $timeout(function () {
-              fireSonar(scope.ownship.state, scope.ownship.state.course);
+
+              // ok, find the last bearing on the relevant track
+              var dets = scope.ownship.newDetections;
+
+              // find the one for the releveant track
+              var thisD = _.find(dets, function (det) {
+                return det.trackId == detectionTrackId
+              });
+
+              if (thisD) {
+                fireSonar(scope.ownship.state, thisD.bearing);
+              }
+              else {
+                scope.enableSonarFire = false;
+              }
             });
           });
         }
+
+        /**
+         * Change sonar bearing lines for a selected track only
+         */
+        scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
+          detectionTrackId = trackId;
+          scope.enableSonarFire = true;
+        });
 
       }
     };
