@@ -21,11 +21,19 @@ angular.module('mustard.game.simulator', [
  */
   .controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario) {
 
+
+
     /**
-     * Target vessels state.
+     *  vessels state.
      * @type {Array}
      */
     $scope.vesselsState = {ownShip: {}, targets: {}};
+
+    /**
+     * Convenience pointer to ownship
+     * @type {Array}
+     */
+    $scope.ownShip = scenario.vessels[0];
 
     /**
      * Environment state
@@ -164,7 +172,7 @@ angular.module('mustard.game.simulator', [
         var detections;
         var thisB;
 
-        _.each($scope.vesselsState.ownShip.newDetections, function (detection) {
+        _.each($scope.ownShip.newDetections, function (detection) {
           // is this the first item?
           if (!detections) {
             detections = [new Date(detection.time)];
@@ -332,26 +340,29 @@ angular.module('mustard.game.simulator', [
         // GAME LOOP STARTS HERE
         /////////////////////////
 
+        // put all of the vessels into a named collection
+        var vessels = $scope.vesselsState.targets;
+        vessels.ownShip = $scope.vesselsState.ownShip;
+
+
         // move the scenario forward
         $scope.gameState.simulationTime += $scope.gameState.simulationTimeStep;
 
         // loop through the vessels
-        movement.doMove($scope.gameState.simulationTime, $scope.vesselsState.ownShip.state, $scope.vesselsState.ownShip.perf);
-        _.each($scope.vesselsState.targets, function (vessel) {
-          vessel.state.name = vessel.name;
+        _.each(vessels, function (vessel) {
           movement.doMove($scope.gameState.simulationTime, vessel.state, vessel.perf);
         });
 
         // now that everyone is in their new location, do the detections
-        detection.doDetections($scope.gameState.simulationTime, $scope.vesselsState.ownShip, $scope.vesselsState.targets);
+        detection.doDetections($scope.gameState.simulationTime, vessels);
 
         // and now the decisions
-        _.each($scope.vesselsState.targets, function (vessel) {
+        _.each(vessels, function (vessel) {
           decision.doDecisions($scope.gameState.simulationTime, vessel.state, vessel.newDetections, vessel.behaviours);
         });
 
         // let the referees run
-        objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vesselsState);
+        objectives.doObjectives($scope.gameState, $scope.objectives, vessels);
 
         // update the UI
         shareSonarDetections();
