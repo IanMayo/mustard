@@ -89,11 +89,11 @@ angular.module('mustard.game.simulator', [
       var gameAccelRateIntervalId;
 
       /**
-       * Create config object for a vessel marker
+       * Create (and update) config object for a vessel marker
        * @param {Object} vessel
        * @returns {Object}
        */
-      var vesselMarker = function (vessel) {
+      var updateMarker = function (vessel) {
 
         // does the object have the magic leaflet goodness inserted?
         if (!vessel.layer) {
@@ -288,10 +288,7 @@ angular.module('mustard.game.simulator', [
 
       var updateMapMarkers = function () {
         _.each($scope.vessels, function (vessel) {
-          // update the essential marker fields
-          vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
-          vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
-          vessel.iconAngle = vessel.state.course;
+          updateMarker(vessel);
         });
 
         $scope.vesselsMarker = $scope.vessels;
@@ -409,14 +406,13 @@ angular.module('mustard.game.simulator', [
       // Target vessels marker
       _.each($scope.vesselsScenario, function (vessel) {
         var shortName = vessel.name.replace(/\s+/g, '');
-        $scope.vessels[shortName] = vesselMarker(vessel);
+        $scope.vessels[shortName] = updateMarker(vessel);
       });
 
       // and share the markers
       $scope.vesselsMarker = $scope.vessels;
 
-
-      // also give us a reliable instance of ownship
+      // also give us a reliable instance of ownship (since the ownship name 'may' change)
       $scope.vessels.ownShip = $scope.vessels.Ownship;
 
       var showWelcome = function () {
