@@ -90,7 +90,6 @@ angular.module('mustard.game.simulator', [
 
       /**
        * Create config object for a vessel marker
-       * @param {String} layerName Layer name
        * @param {Object} vessel
        * @returns {Object}
        */
@@ -289,7 +288,10 @@ angular.module('mustard.game.simulator', [
 
       var updateMapMarkers = function () {
         _.each($scope.vessels, function (vessel) {
-          return vesselMarker(vessel)
+          // update the essential marker fields
+          vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
+          vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
+          vessel.iconAngle = vessel.state.course;
         });
 
         $scope.vesselsMarker = $scope.vessels;
@@ -409,6 +411,10 @@ angular.module('mustard.game.simulator', [
         var shortName = vessel.name.replace(/\s+/g, '');
         $scope.vessels[shortName] = vesselMarker(vessel);
       });
+
+      // and share the markers
+      $scope.vesselsMarker = $scope.vessels;
+
 
       // also give us a reliable instance of ownship
       $scope.vessels.ownShip = $scope.vessels.Ownship;
