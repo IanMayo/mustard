@@ -96,37 +96,67 @@ angular.module('mustard.game.simulator', [
        */
       var vesselMarker = function (vessel) {
 
+        // does the object have the magic leaflet goodness inserted?
         if (!vessel.layer) {
+          // nope, in that case, make it suitable to be shown in leaflet
+
+          // ok, is it a friendly vessel?
           if (vessel.categories.force == "RED") {
+            // nope, hide it by default
             vessel.layer = "targets";
           }
           else {
+            // ok, show it.
             vessel.layer = "ownShip";
           }
+
+          // produce the icon for this vessel type
+          var vType = vessel.categories.type.toLowerCase();
+
+          // ok, and the icon initialisation bits
+          var iconSize;
+          switch (vessel.categories.type) {
+            case "WARSHIP":
+              iconSize = 64;
+              break;
+            case "TORPEDO":
+              iconSize = 32;
+              break;
+            case "SUBMARINE":
+              iconSize = 48;
+              break;
+            case "MERCHANT":
+              iconSize = 64;
+              break;
+            case "FISHERMAN":
+              iconSize = 32;
+              break;
+            case "HELICOPTER":
+              iconSize = 32;
+              break;
+            default:
+              console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
+              break;
+          }
+
+          vessel = _.extend(vessel, {
+            focus: false,
+            message: vessel.name,
+            icon: {
+              iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
+              iconSize: [iconSize, iconSize],
+              iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
+              shadowSize: [0, 0]
+            }
+          });
         }
 
+        // update the lat/long
+        vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
+        vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
+        vessel.iconAngle = vessel.state.course;
 
-        // produce the icon for this vessel type
-        var vType = vessel.categories.type.toLowerCase();
-
-        return _.extend(vessel, {
-          lat: vessel.state.location ? vessel.state.location.lat : 0,
-          lng: vessel.state.location ? vessel.state.location.lng : 0,
-          focus: false,
-          message: vessel.name,
-//          layer: layerName,
-          iconAngle: vessel.state.course,
-          icon: {
-            iconUrl: 'img/vessels/48/' + vType + '.png',
-            iconSize: [46, 39],
-            iconAnchor: [23, 19.5] // change default coordinates of center
-//                iconRetinaUrl: '',
-//                shadowUrl: '',
-//                shadowRetinaUrl: ''
-//                shadowSize: '',
-//                shadowAnchor: ''
-          }
-        });
+        return vessel;
       };
 
       var initializeTargetShips = function () {
