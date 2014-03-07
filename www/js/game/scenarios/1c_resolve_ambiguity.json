@@ -17,6 +17,88 @@
           "DT": -8
         }
       ],
+      "weapons": [
+        {
+          "type": "OWNSHIP_HEADING",
+          "count": 5,
+          "template": {
+            "name": "UNSET",
+            "duration" : 240,
+            "effectiveRadius" : 300,
+            "categories": {
+              "force": "BLUE",
+              "environment": "SUBSURFACE",
+              "type": "TORPEDO"
+            },
+            "behaviours": [],
+            "sonars": [],
+            "radiatedNoise": {
+              "baseLevel": 110,
+              "speedPattern": "Uniform"
+            },
+            "state": {
+              "time": "UNSET",
+              "categories": [],
+              "location": "UNSET",
+              "height": -10,
+              "course": "UNSET",
+              "speed": 40,
+              "demCourse": "UNSET",
+              "demSpeed": 40,
+              "demHeight": -10.0
+            },
+            "perf": {
+              "turnRadius": 1200.0,
+              "accelerationRate": 0.3,
+              "decelerationRate": 0.8,
+              "minSpeed": 0,
+              "maxSpeed": 40,
+              "climbRate": 1,
+              "diveRate": 2
+            }
+          }
+        },
+        {
+          "type": "SONAR_CONTACT",
+          "count": 2,
+          "template": {
+            "name": "UNSET",
+            "duration" : 240,
+            "effectiveRadius" : 300,
+            "categories": {
+              "force": "BLUE",
+              "environment": "SUBSURFACE",
+              "type": "TORPEDO"
+            },
+            "behaviours": [],
+            "sonars": [],
+            "radiatedNoise": {
+              "baseLevel": 110,
+              "speedPattern": "Uniform"
+            },
+            "state": {
+              "time": "UNSET",
+              "categories": [],
+              "location": "UNSET",
+              "height": -10,
+              "course": "UNSET",
+              "speed": 40,
+              "demCourse": "UNSET",
+              "demSpeed": 40,
+              "demHeight": -10.0
+            },
+            "perf": {
+              "turnRadius": 1200.0,
+              "accelerationRate": 0.3,
+              "decelerationRate": 0.8,
+              "minSpeed": 0,
+              "maxSpeed": 40,
+              "climbRate": 1,
+              "diveRate": 2
+            }
+          }
+        }
+      ],
       "radiatedNoise": {
         "baseLevel": 90,
         "speedPattern": "Uniform"
@@ -85,7 +167,7 @@
         "categories": [],
         "location": {
           "lat": 49.99,
-          "lng": -7.82
+          "lng": -7.93
         },
         "course": 345,
         "demCourse": 345,

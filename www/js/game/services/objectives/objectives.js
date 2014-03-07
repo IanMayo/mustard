@@ -652,48 +652,20 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
       var course = action.course;
 
       // create the weapon
-      var weapon = {
-        "name": action.name,
-        "categories": {
-          "force": "BLUE",
-          "environment": "SUBSURFACE",
-          "type": "TORPEDO"
-        },
-        "behaviours": [],
-        "sonars": [],
-        "radiatedNoise": {
-          "baseLevel": 110,
-          "speedPattern": "Uniform"
-        },
-        "state": {
-          "time": vessel.state.time,
-          "categories": [],
-          "location": location,
-          "height": -10,
-          "course": course,
-          "speed": 40,
-          "demCourse": course,
-          "demSpeed": 40,
-          "demHeight": -10.0
-        },
-        "perf": {
-          "turnRadius": 1200.0,
-          "accelerationRate": 0.3,
-          "decelerationRate": 0.8,
-          "minSpeed": 0,
-          "maxSpeed": 40,
-          "climbRate": 1,
-          "diveRate": 2
-        }
-      };
+      var weapon = action.template;
+
+      // fill in the missing bits
+      weapon.name = action.name;
+      weapon.state.time = vessel.state.time;
+      weapon.state.location = location;
+      weapon.state.course = course;
+      weapon.state.demCourse = course;
 
       // calculate the weapon dead time
-      weapon.expiresAt = vessel.state.time + (action.duration * 1000);
-      weapon.effectiveRadius = action.radius;
+      weapon.expiresAt = vessel.state.time + (weapon.duration * 1000);
 
       // and store it
       vesselsState.targets[weapon.name] = weapon;
-
     };
 
     /** loop through the set of actions
