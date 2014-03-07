@@ -45,6 +45,9 @@ angular.module('mustard.game.fireWeaponDirective', [])
           state.actions.push({"type": "FIRE_WEAPON", "name": name,
             "course": course, "template": weaponTemplate});
 
+          // hey, play that sound!
+          document.getElementById("fireSound").play();
+
         };
 
         scope.doFireStraight = function () {
@@ -67,7 +70,7 @@ angular.module('mustard.game.fireWeaponDirective', [])
 
               // find the one for the releveant track
               var thisD = _.find(dets, function (det) {
-                return det.trackId == detectionTrackId
+                return det.trackId == scope.detectionTrackId
               });
 
               if (thisD) {
