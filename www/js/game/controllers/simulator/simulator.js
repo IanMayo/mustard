@@ -22,10 +22,16 @@ angular.module('mustard.game.simulator', [
   .controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario) {
 
     /**
-     * Name indexed list of vessels in scenario
+     *  indexed list of vessels in scenario
      * @type {Array}
      */
     $scope.vessels = {};
+
+    /** indexed list of dead vessels
+     *
+     * @type {{}}
+     */
+    $scope.deadVessels = {};
 
     /**
      * Environment state
@@ -370,28 +376,24 @@ angular.module('mustard.game.simulator', [
         // GAME LOOP STARTS HERE
         /////////////////////////
 
-        // put all of the vessels into a named collection
-        var vessels = $scope.vessels;
-
-
         // move the scenario forward
         $scope.gameState.simulationTime += $scope.gameState.simulationTimeStep;
 
         // loop through the vessels
-        _.each(vessels, function (vessel) {
+        _.each($scope.vessels, function (vessel) {
           movement.doMove($scope.gameState.simulationTime, vessel.state, vessel.perf);
         });
 
         // now that everyone is in their new location, do the detections
-        detection.doDetections($scope.gameState.simulationTime, vessels);
+        detection.doDetections($scope.gameState.simulationTime, $scope.vessels);
 
         // and now the decisions
-        _.each(vessels, function (vessel) {
+        _.each($scope.vessels, function (vessel) {
           decision.doDecisions($scope.gameState.simulationTime, vessel.state, vessel.newDetections, vessel.behaviours);
         });
 
         // let the referees run
-        objectives.doObjectives($scope.gameState, $scope.objectives, vessels);
+        objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
         // update the UI
         shareSonarDetections();
