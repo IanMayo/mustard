@@ -79,5 +79,14 @@ angular.module('mustard', [
             }]
         }
     })
-    .otherwise({redirectTo: '/login'});
+
+    .otherwise({redirectTo: '/main'});
+
+}).run(function ($rootScope, $location, user) {
+
+    $rootScope.$on("$locationChangeStart", function() {
+        user.restoreFromLocal(function (isRestored) {
+            !isRestored && $location.path('/login');
+        });
+    });
 });
