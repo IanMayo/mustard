@@ -2,6 +2,10 @@
 <button ng-click="doFireStraight()" type="button" class="btn btn-default">
   <span class="glyphicon glyphicon-record">Straight</span>
 </button>
+<span popover="Fire a weapon along ownship heading" popover-trigger="mouseenter"
+               class="glyphicon glyphicon-question-sign"></span>
 <button ng-disabled="!enableSonarFire" ng-click="doFireSonar()" type="button" class="btn btn-default">
   <span class="glyphicon glyphicon-record">Sonar</span>
 </button>
+<span popover="Fire a weapon along the bearing to the selected sonar contact" popover-trigger="mouseenter"
+      class="glyphicon glyphicon-question-sign"></span>
