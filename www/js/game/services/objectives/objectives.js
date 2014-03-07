@@ -542,7 +542,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
 
     // also any "other" handlers that keep things tidy
-    var handleExpiredWeapon = function (gameState, vessels) {
+    var handleExpiredWeapon = function (gameState, vessels, deadVessels) {
 
       var toDrop = [];
 
@@ -561,7 +561,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
       // ok, drop any expired vessels
       _.each(toDrop, function (vessel) {
-        destroyVessel(vessels, vessel.name);
+        destroyVessel(vessels, vessel.name, deadVessels);
       });
     };
 
@@ -602,10 +602,12 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
     };
 
-    var handleTargetsDestroyed = function (gameState, vessels) {
+    var handleTargetsDestroyed = function (gameState, vessels, deadVessels) {
       _.each(gameState.destroyed, function (vessel) {
-        destroyVessel(vessels, vessel.name);
+        destroyVessel(vessels, vessel.name, deadVessels);
       });
+      // and empty out that array
+      gameState.destroyed = [];
     }
 
     /** handle vessel destruction
@@ -613,7 +615,11 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
      * @param vessels the list of vessels
      * @param name name of the vessel to delete
      */
-    var destroyVessel = function (vessels, name) {
+    var destroyVessel = function (vessels, name, deadVessels) {
+      // put it into our dead list
+      deadVessels[name] = vessels[name];
+
+      // and remove it from the live list
       delete vessels[name];
     };
 
@@ -683,7 +689,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
        * @param objectives the array of objectives
        * @param vessels the current vessel states (ownship and others)
        */
-      doObjectives: function (gameState, objectives, vessels) {
+      doObjectives: function (gameState, objectives, vessels, deadVessels) {
 
         // handle any pending actions first
         _.each(vessels, function (vessel) {
@@ -696,8 +702,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         });
 
         // also any "other" handlers that keep things tidy
-        handleTargetsDestroyed(gameState, vessels);
-        handleExpiredWeapon(gameState, vessels);
+        handleTargetsDestroyed(gameState, vessels, deadVessels);
+        handleExpiredWeapon(gameState, vessels, deadVessels);
         handleWeaponDetonation(gameState, vessels);
 
 
