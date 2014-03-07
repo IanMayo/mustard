@@ -1,0 +1,19 @@
+<h4>Weapon:</h4>
+<div ng-show="!showStraight && !showSonar">No weapons loaded.</div>
+<div ng-show="showStraight">
+  <button ng-disabled="straightCount == 0" ng-click="doFireStraight()" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-record">Straight</span>
+  </button>
+<span popover="Fire a weapon along ownship heading" popover-trigger="mouseenter"
+      class="glyphicon glyphicon-question-sign"></span>
+  [<span>{{ straightCount }}</span>]
+</div>
+<div ng-show="showSonar">
+  <button ng-disabled="!detectionTrackId || (sonarCount == 0)" ng-click="doFireSonar()" type="button"
+          class="btn btn-default">
+    <span class="glyphicon glyphicon-record">Sonar</span>
+  </button>
+<span popover="Fire a weapon along the bearing to the selected sonar contact" popover-trigger="mouseenter"
+      class="glyphicon glyphicon-question-sign"></span>
+  [<span>{{ sonarCount }}</span>]
+</div>

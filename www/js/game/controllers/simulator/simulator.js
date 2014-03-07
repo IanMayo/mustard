@@ -4,6 +4,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.timeDisplayDirective',
     'mustard.game.timeRemainingDirective',
     'mustard.game.shipControlsDirective',
+    'mustard.game.fireWeaponDirective',
     'mustard.game.shipStateDirective',
     'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
@@ -337,6 +338,7 @@ angular.module('mustard.game.simulator', [
         // loop through the vessels
         movement.doMove($scope.gameState.simulationTime, $scope.vesselsState.ownShip.state, $scope.vesselsState.ownShip.perf);
         _.each($scope.vesselsState.targets, function (vessel) {
+          vessel.state.name = vessel.name;
           movement.doMove($scope.gameState.simulationTime, vessel.state, vessel.perf);
         });
 
