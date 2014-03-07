@@ -1,7 +1,7 @@
 angular.module('mustard', [
     'ngRoute',
     'ngTouch',
-    'mustard.services',
+    'mustard.cordova',
     'mustard.app.login',
     'mustard.app.registration',
     'mustard.app.main',
@@ -79,5 +79,5 @@ angular.module('mustard', [
             }]
         }
     })
-    .otherwise({redirectTo: '/main'});
+    .otherwise({redirectTo: '/login'});
 });
