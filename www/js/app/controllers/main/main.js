@@ -1,41 +1,17 @@
-angular.module('mustard.app.main', [])
+angular.module('mustard.app.main', ['mustard.app.user'])
 
 /**
  * @module Main
  * @class MainCtrl (controller)
  */
-.controller('MainCtrl', function ($scope, $location) {
+.controller('MainCtrl', function ($scope, $location, user) {
 
 
     /** prototype version of the player state object
      *
      * @type {{name: string, achievements: *[], missions: *[]}}
      */
-    $scope.player =
-    {
-        "name": "PLAYER_A",
-        "achievements": [
-            {"name": "Newbie"},
-            {"name": "Speed Demon"},
-            {"name": "Driver"},
-            {"name": "Ram Raider"}
-        ],
-        "missions": [
-            {"id": "1a", "status": "SUCCESS"},
-            {"id": "1b", "status": "SUCCESS"},
-            {"id": "1c", "status": "UNLOCKED"},
-            {"id": "1d", "status": "UNLOCKED"},
-            {"id": "2a", "status": "UNLOCKED"},
-            {"id": "2b", "status": "UNLOCKED"},
-            {"id": "2c", "status": "UNLOCKED"},
-            {"id": "2d", "status": "LOCKED"},   // just to give us a sample locked level
-            {"id": "3a", "status": "UNLOCKED"},
-            {"id": "3b", "status": "UNLOCKED"},
-            {"id": "6a", "status": "UNLOCKED"},
-            {"id": "6b", "status": "UNLOCKED"},
-            {"id": "7a", "status": "UNLOCKED"},
-        ]
-    };
+    $scope.player = user;
 
     /** prototype version of the mission index. Hopefully we will be able to automatically extract this
      * from the scenarios folder in some node/grunt script
