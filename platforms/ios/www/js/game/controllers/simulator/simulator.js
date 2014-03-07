@@ -106,7 +106,7 @@ angular.module('mustard.game.simulator', [
           layer: layerName,
           iconAngle: vessel.state.course,
           icon: {
-            iconUrl: 'img/vessels/48/'+vType+'.png',
+            iconUrl: 'img/vessels/48/' + vType + '.png',
             iconSize: [46, 39],
             iconAnchor: [23, 19.5] // change default coordinates of center
 //                iconRetinaUrl: '',
@@ -289,7 +289,40 @@ angular.module('mustard.game.simulator', [
         });
       };
 
+      /** capture (and store) the state of the vessel at this time
+       *
+       * @param vessel the vessel who's date wa are archiving
+       * @param timeIndex used to index the state data
+       */
+      var storeState = function (vessel, timeIndex) {
+        // capture the state
+        if (!vessel.stateHistory) {
+          vessel.stateHistory = {};
+        }
+        vessel.stateHistory[timeIndex] = angular.copy(vessel.state);
+
+        // does the vessel have any detections? If so, archive them
+        if (vessel.newDetections && vessel.newDetections.length > 0) {
+          // does it have a history?
+          if (!vessel.detectionHistory) {
+            vessel.detectionHistory = {};
+          }
+          vessel.detectionHistory[timeIndex] = vessel.newDetections;
+        }
+      }
+
+      /** move the scenario forwards one step - including all the simulated processes
+       *
+       */
       var doStep = function () {
+
+        // capture any existing data
+        // DEFER IMPLEMENTATION - GROSS NEGATIVE EFFECT ON PERFORMANCE
+        //        storeState($scope.vesselsState.ownShip, $scope.gameState.simulationTime);
+        //        _.each($scope.vesselsState.targets, function (vessel) {
+        //          storeState(vessel, $scope.gameState.simulationTime);
+        //        });
+
 
         $scope.vesselsState.ownShip.state.demCourse = parseInt($scope.demandedState.course);
         $scope.vesselsState.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
