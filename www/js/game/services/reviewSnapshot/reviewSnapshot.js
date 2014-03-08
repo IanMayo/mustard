@@ -12,7 +12,7 @@ angular.module('mustard.game.reviewSnapshot', [])
 
   .service('reviewSnapshot', function () {
 
-    var snapshot;
+    var snapshot = {};
 
     /**
      * Module API
