@@ -98,6 +98,8 @@ angular.module('mustard.game.simulator', [
 
       var trackHistory = {};
 
+      var startTime; // keep track of the start time, so we can pass the period to the history object.
+
       /**
        * Create (and update) config object for a vessel marker
        * @param {Object} vessel
@@ -309,20 +311,20 @@ angular.module('mustard.game.simulator', [
           }
         });
 
+
         // TODO : narratives, mission name
 
         // do we have a track history
         if (_.size(trackHistory)) {
           reviewSnapshot.put({
-              "period": [0, $scope.gameState.simulationTime],
-              "center": {'lat': 49, 'lng': -8},
+              "period": [startTime, $scope.gameState.simulationTime],
+              "stepTime": $scope.gameState.simulationTimeStep,
+              "center": {'lat': $scope.vessels.ownShip.state.location.lat, 'lng': $scope.vessels.ownShip.state.location.lng },
               "vessels": trackHistory
             }
           )
         }
         ;
-
-
       }
 
       var updateMapMarkers = function () {
@@ -388,8 +390,22 @@ angular.module('mustard.game.simulator', [
       var doStep = function () {
 
         // capture any existing data
+        var ownShipDone = false;
         _.each($scope.vessels, function (vessel) {
-          storeState(vessel, $scope.gameState.simulationTime);
+
+          // TODO: once we've overcome the requirement for the artificial ownship, remove this name test
+
+          if (vessel.name == "Ownship") {
+            if (!ownShipDone) {
+              storeState(vessel, $scope.gameState.simulationTime);
+              ownShipDone = true;
+            }
+          }
+          else {
+            storeState(vessel, $scope.gameState.simulationTime);
+
+          }
+
         });
 
         $scope.vessels.ownShip.state.demCourse = parseInt($scope.demandedState.course);
@@ -422,7 +438,6 @@ angular.module('mustard.game.simulator', [
         shareSonarDetections();
         missionStatus();
         updateMapMarkers();
-
         /////////////////////////
         // GAME LOOP ENDS HERE
         /////////////////////////
@@ -454,6 +469,9 @@ angular.module('mustard.game.simulator', [
 
         $scope.demandedState.course = parseInt($scope.vessels.ownShip.state.demCourse);
         $scope.demandedState.speed = parseInt($scope.vessels.ownShip.state.demSpeed);
+
+        // initialiee the start time
+        startTime = $scope.gameState.simulationTime;
       });
 
       $scope.$watch('gameState.accelRate', function (newVal) {

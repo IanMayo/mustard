@@ -14,6 +14,8 @@ angular.module('mustard.game.reviewSnapshot', [])
 
     var snapshot = {
       'center': {'lat': 49, 'lng': -9},
+      "period": [0, 8000],
+      "stepTime" : 2000,
       'objectives' :  [
         {
           "name": "Driving Exam",
@@ -91,7 +93,7 @@ angular.module('mustard.game.reviewSnapshot', [])
           ]}
           ],
       'vessels': {
-        'ownShip': {"categories": {
+        'Ownship': {"categories": {
           "force": "BLUE",
           "environment": "SURFACE",
           "type": "WARSHIP"

@@ -102,15 +102,6 @@ angular.module('mustard.game.review', [
         return vessel;
       };
 
-      var updateMapMarkers = function () {
-        _.each($scope.vessels, function (vessel) {
-          $scope.vessels[vessel.name] = updateMarker(vessel);
-        });
-
-        $scope.vesselsMarker = $scope.vessels;
-        $scope.$broadcast('vesselsStateUpdated');
-      };
-
       var configureMap = function () {
         angular.extend($scope, {
           mapCenter: {
@@ -166,24 +157,37 @@ angular.module('mustard.game.review', [
         // shortcut to the time
         var tNow = $scope.reviewState.reviewTime;
 
-        // ok, display the current status
-        // ok, display the current status
+        // ok, retrieve the state, to update teh marker
         _.each($scope.history.vessels, function (vessel, name) {
-          // ok, get the point nearest to this time
-          var nearest = _.find(vessel.track, function (fix) {
-            return fix.time >= tNow
-          });
 
-          if (nearest) {
-            var shortName = name.replace(/\s+/g, '');
-            // copy the status update into the vessel marker
-            _.extend($scope.vessels[shortName], nearest);
-            $scope.vessels[shortName].iconAngle = nearest.course;
+          // what's the time of the first element in this array
+          var firstTime = vessel.track[0].time;
+
+          var delta = tNow - firstTime;
+
+          var index = delta / $scope.history.stepTime;
+
+          // is this less than the length?
+          if (index < vessel.track.length) {
+            var nearest = vessel.track[index];
+            if (nearest) {
+              var shortName = name.replace(/\s+/g, '');
+              // copy the status update into the vessel marker
+              _.extend($scope.vessels[shortName], nearest);
+              $scope.vessels[shortName].iconAngle = nearest.course;
+            }
           }
+
+
         });
 
-        updateMapMarkers();
+        if (!markersDone) {
+          $scope.vesselsMarker = $scope.vessels;
+          markersDone = true;
+        }
       };
+
+      var markersDone = false;
 
 
       $scope.$watch('reviewState.accelRate', function (newVal) {
@@ -196,7 +200,6 @@ angular.module('mustard.game.review', [
       });
 
       $scope.goBack = function () {
-        console.log("in call");
         window.history.back();
       }
     }])
