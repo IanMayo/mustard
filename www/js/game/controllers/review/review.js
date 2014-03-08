@@ -21,6 +21,15 @@ angular.module('mustard.game.review', [
      */
     $scope.history = reviewSnapshot.get();
 
+    /**
+     * Current state of review
+     * @type {Object}
+     */
+    $scope.reviewState = {
+      accelRate: 0,
+      reviewTime: 0,
+      reviewTimeStep: 2000
+    };
   }])
 
 /**
@@ -37,8 +46,8 @@ angular.module('mustard.game.review', [
       var configureMap = function () {
         angular.extend($scope, {
           mapCenter: {
-//            lat: $scope.vessels.ownShip.lat,
-//            lng: $scope.vessels.ownShip.lng,
+            lat: $scope.history.center.lat,
+            lng: $scope.history.center.lng,
             zoom: 9
           },
           layers: {
@@ -79,12 +88,27 @@ angular.module('mustard.game.review', [
 
       configureMap();
 
-      $scope.$watch('gameState.accelRate', function (newVal) {
+      var doStep = function()
+      {
+        // get the time
+        var tNow = $scope.reviewState;
+        // loop thorough the data, to get the time
+
+        // move the scenario forward
+        $scope.reviewState.reviewTime += $scope.reviewState.reviewTimeStep;
+
+        // ok, get the positions
+        console.log("time is:" + $scope.reviewState.reviewTime);
+
+      };
+
+
+      $scope.$watch('reviewState.accelRate', function (newVal) {
         $interval.cancel(gameAccelRateIntervalId);
 
         if (newVal) {
           // do play
-          gameAccelRateIntervalId = $interval(doStep, 1000 / $scope.gameState.accelRate);
+          gameAccelRateIntervalId = $interval(doStep, 1000 / $scope.reviewState.accelRate);
         }
       });
 

@@ -284,7 +284,11 @@ angular.module('mustard.game.simulator', [
             }
 
             // ok, store the snapshot
-            reviewSnapshot.put({"period":[0, $scope.gameState.simulationTime]});
+            reviewSnapshot.put({
+                "period":[0, $scope.gameState.simulationTime],
+                "center": {'lat':49,'lng':-8}
+              }
+            );
 
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");

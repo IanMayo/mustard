@@ -12,7 +12,9 @@ angular.module('mustard.game.reviewSnapshot', [])
 
   .service('reviewSnapshot', function () {
 
-    var snapshot = {};
+    var snapshot = {
+      'center':{'lat':49,'lng':-9}
+    };
 
     /**
      * Module API
