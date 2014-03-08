@@ -102,7 +102,7 @@ angular.module('mustard.game.spatialViewDirective', [
          */
         var addOwnshipUpdate = function (newState) {
           var currentOwnShipState = angular.copy(newState);
-          var currentTime = angular.copy(scope.gameState.simulationTime);
+          var currentTime = angular.copy(newState.time);
 
           if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
             // add point for a next time interval or first
