@@ -286,18 +286,7 @@ angular.module('mustard.game.simulator', [
             }
 
             // ok, store the snapshot
-
-            // extend the history
-            _.each($scope.vessels, function (vessel) {
-              trackHistory[vessel.name].categories = angular.copy(vessel.categories);
-            });
-
-            reviewSnapshot.put({
-                "period": [0, $scope.gameState.simulationTime],
-                "center": {'lat': 49, 'lng': -8},
-                "vessels": trackHistory
-              }
-            );
+            storeHistory();
 
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");
@@ -309,6 +298,32 @@ angular.module('mustard.game.simulator', [
           }
         }
       };
+
+      var storeHistory = function () {
+        // extend the history
+        _.each($scope.vessels, function (vessel) {
+          // get history
+          var history = trackHistory[vessel.name]
+          if (history) {
+            history.categories = angular.copy(vessel.categories);
+          }
+        });
+
+        // TODO : narratives, mission name
+
+        // do we have a track history
+        if (_.size(trackHistory)) {
+          reviewSnapshot.put({
+              "period": [0, $scope.gameState.simulationTime],
+              "center": {'lat': 49, 'lng': -8},
+              "vessels": trackHistory
+            }
+          )
+        }
+        ;
+
+
+      }
 
       var updateMapMarkers = function () {
         _.each($scope.vessels, function (vessel) {
@@ -449,6 +464,11 @@ angular.module('mustard.game.simulator', [
           gameAccelRateIntervalId = $interval(doStep, 1000 / $scope.gameState.accelRate);
         }
       });
+
+      $scope.goBack = function () {
+        storeHistory();
+        window.history.back();
+      }
     }])
 
 /**
