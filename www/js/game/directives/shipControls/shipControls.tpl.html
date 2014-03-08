@@ -1,16 +1,20 @@
 <h4>Demanded:</h4>
-<div>Course: {{course}}</div>
-<button data-ng-click="changeCourse(-courseRate)" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-chevron-left"></span>
-</button>
-<button data-ng-click="changeCourse(courseRate)" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-chevron-right"></span>
-</button>
+<div style="margin:0px" class="well well-sm">
+  <div>Course: <span class="label label-default">{{course}}</span></div>
+  <button data-ng-click="changeCourse(-courseRate)" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+  </button>
+  <button data-ng-click="changeCourse(courseRate)" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </button>
 
-<div>Speed: {{speed}}</div>
-<button data-ng-click="changeSpeed(-speedRate)" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-chevron-down"></span>
-</button>
-<button data-ng-click="changeSpeed(speedRate)" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-chevron-up"></span>
-</button>
+</div>
+<div class="well well-sm">
+  <div>Speed: <span class="label label-default">{{speed}}</span></div>
+  <button data-ng-click="changeSpeed(-speedRate)" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-chevron-down"></span>
+  </button>
+  <button data-ng-click="changeSpeed(speedRate)" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </button>
+</div>
