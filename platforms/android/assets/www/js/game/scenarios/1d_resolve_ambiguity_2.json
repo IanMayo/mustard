@@ -70,14 +70,14 @@
       "sonars": [
       ],
       "radiatedNoise": {
-        "baseLevel": 86,
+        "baseLevel": 87,
         "speedPattern": "Uniform"
       },
       "state": {
         "categories": [],
         "location": {
           "lat": 49.96,
-          "lng": -7.82
+          "lng": -7.96
         },
         "course": 300,
         "demCourse": 300,

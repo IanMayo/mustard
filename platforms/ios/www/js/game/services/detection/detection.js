@@ -183,11 +183,8 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
 
         // oh dear, are twe unsteady?
         if (!sonar.isUnsteady) {
-          // now loop through the vessels
-          for (var k = 0; k < allVessels.length; k++) {
-
-            var thisV = allVessels[k];
-
+          _.each(allVessels, function(thisV)
+          {
             // is this me?
             if (thisV == myVessel) {
               // yes, sort out self-noise
@@ -283,8 +280,8 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
               } else {
                 myVessel.state.SE = 0;
               }
-            }
-          }
+            };
+          });
         }
       }
 
@@ -296,17 +293,10 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
      * Module API
      */
     return {
-      doDetections: function (tNow, myVessel, targets) {
-
-
-        var allVessels = _.union([myVessel], _.values(targets));
-
-
-        for (var i = 0; i < allVessels.length; i++) {
-          var thisV = allVessels[i];
-          processThisVessel(tNow, thisV, allVessels);
-        }
-
+      doDetections: function (tNow, vessels) {
+        _.each(vessels, function (thisV) {
+          processThisVessel(tNow, thisV, vessels);
+        });
       }
     };
   }]);
