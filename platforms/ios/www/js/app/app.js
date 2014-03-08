@@ -1,7 +1,7 @@
 angular.module('mustard', [
     'ngRoute',
     'ngTouch',
-    'mustard.services',
+    'mustard.cordova',
     'mustard.app.login',
     'mustard.app.registration',
     'mustard.app.main',
@@ -79,5 +79,12 @@ angular.module('mustard', [
             }]
         }
     })
+
     .otherwise({redirectTo: '/main'});
+
+}).run(function ($rootScope, $location, user) {
+
+    $rootScope.$on("$locationChangeStart", function() {
+        !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');
+    });
 });

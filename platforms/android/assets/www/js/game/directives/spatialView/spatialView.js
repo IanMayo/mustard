@@ -5,11 +5,13 @@
 angular.module('mustard.game.spatialViewDirective', [
     'mustard.game.geoMath',
     'mustard.game.panToVesselDirective',
-    'mustard.game.mapScale'
-])
+    'mustard.game.mapScale',
+    'mustard.game.mouseLocation'
+  ])
 
 .constant('spatialViewConfig', {
     ownShipVisiblePointsTime: 1000 * 60 * 10, // 10 min
+    ownShipPointsInterval: 1000 * 60 , // each minute
     detectionFanLineLength: 40000 // in m
 })
 
@@ -27,10 +29,43 @@ angular.module('mustard.game.spatialViewDirective', [
             scope.showSonarDetections = false;
 
             // Interim vessels states
-            var localVesselsState = {ownShip: {history: []}};
+            var localVesselsState = {ownShip: {nextMoveTime: 0}};
             var defaultDetectionLinesCoordinates = [[{lat:0,lng:0}, {lat:0,lng:0}], [{lat:0,lng:0}, {lat:0,lng:0}]];
             // trackId filter for detection lines
             var detectionTrackId;
+
+            /**
+             * Add ownship traveling point to the map
+             * @param {Object} latlngs
+             */
+            var addOwnShipTravellingPoint = function (latlngs) {
+                var key = _.uniqueId('ownShipPoint_');
+                var point = {
+                    type: 'circleMarker',
+                    radius: 1,
+                    latlngs: latlngs,
+                    opacity: 1
+                };
+
+                scope.paths[key] = point;
+            };
+
+            /**
+             * Update ownship traveling points on the map
+             */
+            var updateOwnShipTravellingPoint = function () {
+                var opacityStep = spatialViewConfig.ownShipPointsInterval / spatialViewConfig.ownShipVisiblePointsTime;
+                _.map(scope.paths, function (item, key) {
+                    if (item.type === 'circleMarker') {
+                        item.opacity -= opacityStep;
+
+                        if (item.opacity <= 0) {
+                            // delete a point if it becomes invisible
+                            delete scope.paths[key];
+                        }
+                    }
+                });
+            };
 
             /**
              * Add sonar bearing lines to the map
@@ -53,31 +88,18 @@ angular.module('mustard.game.spatialViewDirective', [
 
             /**
              * Show own ship traveling points on the map
-             * @param {Object }newState
+             * @param {Object} newState
              */
             var ownShipTraveling = function (newState) {
                 var currentOwnShipState = angular.copy(newState);
-                var travelingPoints = [];
-                var visiblePoints = [];
+                var currentTime = angular.copy(scope.gameState.simulationTime);
 
-                currentOwnShipState.time = angular.copy(scope.gameState.simulationTime);
-
-                // split traveling points array into two arrays: expired and visible
-                travelingPoints = _.partition(localVesselsState.ownShip.history, function (item) {
-                    return item.time < (currentOwnShipState.time - spatialViewConfig.ownShipVisiblePointsTime);
-                });
-
-                // keep only visible traveling points
-                localVesselsState.ownShip.history = travelingPoints.pop();
-                // add current state to history
-                localVesselsState.ownShip.history.push(currentOwnShipState);
-
-                // create array of points
-                visiblePoints = _.map(localVesselsState.ownShip.history, function (item) {
-                    return _.pick(item, 'lat', 'lng');
-                });
-
-                scope.paths['ownShipTravelling'].latlngs = visiblePoints;
+                if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
+                    // add point for a next time interval or first
+                    updateOwnShipTravellingPoint();
+                    addOwnShipTravellingPoint(_.pick(currentOwnShipState, 'lat', 'lng'));
+                    localVesselsState.ownShip.nextMoveTime = currentTime + spatialViewConfig.ownShipPointsInterval;
+                }
 
                 // adjust the center coordinates of the map if it's needed
                 scope.$broadcast('ownShipMoved', currentOwnShipState);
@@ -137,11 +159,6 @@ angular.module('mustard.game.spatialViewDirective', [
                     color: '#A9A9A9',
                     weight: 2,
                     latlngs: defaultDetectionLinesCoordinates
-                },
-                ownShipTravelling: {
-                    type: 'polyline',
-                    weight: 4,
-                    latlngs: []
                 }
             };
 

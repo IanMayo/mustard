@@ -1,4 +1,4 @@
-angular.module('mustard.services', [])
+angular.module('mustard.cordova', [])
 
 .factory('cordovaReady', [function () {
     return function (fn) {
