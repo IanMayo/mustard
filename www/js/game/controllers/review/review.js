@@ -104,7 +104,7 @@ angular.module('mustard.game.review', [
 
       var updateMapMarkers = function () {
         _.each($scope.vessels, function (vessel) {
-          updateMarker(vessel);
+          $scope.vessels[vessel.name] = updateMarker(vessel);
         });
 
         $scope.vesselsMarker = $scope.vessels;
@@ -168,15 +168,17 @@ angular.module('mustard.game.review', [
 
         // ok, display the current status
         // ok, display the current status
-        _.each($scope.vessels, function (vessel, name) {
+        _.each($scope.history.vessels, function (vessel, name) {
           // ok, get the point nearest to this time
           var nearest = _.find(vessel.track, function (fix) {
             return fix.time >= tNow
           });
+
           if (nearest) {
             var shortName = name.replace(/\s+/g, '');
             // copy the status update into the vessel marker
             _.extend($scope.vessels[shortName], nearest);
+            $scope.vessels[shortName].iconAngle = nearest.course;
           }
         });
 

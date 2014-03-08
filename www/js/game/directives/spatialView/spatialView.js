@@ -180,8 +180,13 @@ angular.module('mustard.game.spatialViewDirective', [
         scope.$on('vesselsStateUpdated', function () {
           var vessels = angular.copy(scope.vesselsMarker);
           var ownShip = vessels.ownShip;
-          addOwnshipUpdate(ownShip);
-          sonarDetections(ownShip, ownShip.newDetections);
+
+          // TODO: the following is a workaround, to be resolved once we resume
+          // the presumption that there is a vessel named ownShip
+          if (ownShip) {
+            addOwnshipUpdate(ownShip);
+            sonarDetections(ownShip, ownShip.newDetections);
+          }
         });
 
         /**

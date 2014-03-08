@@ -96,6 +96,8 @@ angular.module('mustard.game.simulator', [
 
       var gameAccelRateIntervalId;
 
+      var trackHistory = {};
+
       /**
        * Create (and update) config object for a vessel marker
        * @param {Object} vessel
@@ -284,9 +286,16 @@ angular.module('mustard.game.simulator', [
             }
 
             // ok, store the snapshot
+
+            // extend the history
+            _.each($scope.vessels, function (vessel) {
+              trackHistory[vessel.name].categories = angular.copy(vessel.categories);
+            });
+
             reviewSnapshot.put({
-                "period":[0, $scope.gameState.simulationTime],
-                "center": {'lat':49,'lng':-8}
+                "period": [0, $scope.gameState.simulationTime],
+                "center": {'lat': 49, 'lng': -8},
+                "vessels": trackHistory
               }
             );
 
@@ -349,20 +358,13 @@ angular.module('mustard.game.simulator', [
        * @param timeIndex used to index the state data
        */
       var storeState = function (vessel, timeIndex) {
-        // capture the state
-        if (!vessel.stateHistory) {
-          vessel.stateHistory = {};
+        if (!trackHistory[vessel.name]) {
+          trackHistory[vessel.name] = {};
+          trackHistory[vessel.name].track = [];
         }
-        vessel.stateHistory[timeIndex] = angular.copy(vessel.state);
 
-        // does the vessel have any detections? If so, archive them
-        if (vessel.newDetections && vessel.newDetections.length > 0) {
-          // does it have a history?
-          if (!vessel.detectionHistory) {
-            vessel.detectionHistory = {};
-          }
-          vessel.detectionHistory[timeIndex] = vessel.newDetections;
-        }
+        trackHistory[vessel.name].track.push({'time': timeIndex, 'lat': vessel.state.location.lat, 'lng': vessel.state.location.lng,
+          'course': vessel.state.course, 'speed': vessel.state.speed})
       };
 
       /** move the scenario forwards one step - including all the simulated processes
@@ -371,12 +373,9 @@ angular.module('mustard.game.simulator', [
       var doStep = function () {
 
         // capture any existing data
-        // DEFER IMPLEMENTATION - GROSS NEGATIVE EFFECT ON PERFORMANCE
-        //        storeState($scope.vesselsState.ownShip, $scope.gameState.simulationTime);
-        //        _.each($scope.vesselsState.targets, function (vessel) {
-        //          storeState(vessel, $scope.gameState.simulationTime);
-        //        });
-
+        _.each($scope.vessels, function (vessel) {
+          storeState(vessel, $scope.gameState.simulationTime);
+        });
 
         $scope.vessels.ownShip.state.demCourse = parseInt($scope.demandedState.course);
         $scope.vessels.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
