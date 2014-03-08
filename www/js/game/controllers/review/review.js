@@ -88,6 +88,9 @@ angular.module('mustard.game.review', [
           vessel = _.extend(vessel, {
             focus: false,
             message: vessel.name,
+            lat:0,
+            lng:0,
+            time:0,
             icon: {
               iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
               iconSize: [iconSize, iconSize],
@@ -96,8 +99,6 @@ angular.module('mustard.game.review', [
             }
           });
         }
-
-        vessel.time = 0;
 
         return vessel;
       };
@@ -147,12 +148,19 @@ angular.module('mustard.game.review', [
 
       configureMap();
 
-      var doStep = function () {
+      var doStep = function()
+      {
         // get the time
         var tNow = $scope.reviewState.reviewTime;
 
         // move the scenario forward
         $scope.reviewState.reviewTime += $scope.reviewState.reviewTimeStep;
+
+        // and update the plot
+        doUpdate();
+      }
+
+      var doUpdate = function () {
 
         // shortcut to the time
         var tNow = $scope.reviewState.reviewTime;
@@ -163,8 +171,10 @@ angular.module('mustard.game.review', [
           // what's the time of the first element in this array
           var firstTime = vessel.track[0].time;
 
+          // how much further along are we?
           var delta = tNow - firstTime;
 
+          // what's the index of the relevant array item
           var index = delta / $scope.history.stepTime;
 
           // is this less than the length?
@@ -172,13 +182,14 @@ angular.module('mustard.game.review', [
             var nearest = vessel.track[index];
             if (nearest) {
               var shortName = name.replace(/\s+/g, '');
+              var thisV = $scope.vessels[shortName];
+
               // copy the status update into the vessel marker
-              _.extend($scope.vessels[shortName], nearest);
-              $scope.vessels[shortName].iconAngle = nearest.course;
+              thisV.lat = nearest.lat;
+              thisV.lng = nearest.lng;
+              thisV.iconAngle = nearest.course;
             }
           }
-
-
         });
 
         if (!markersDone) {
