@@ -10,6 +10,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.objectiveListDirective',
     'mustard.game.decision',
     'mustard.game.detection',
+    'mustard.game.reviewSnapshot',
     'mustard.game.geoMath',
     'mustard.game.movement',
     'mustard.game.objectives'
@@ -19,7 +20,7 @@ angular.module('mustard.game.simulator', [
  * @module Game
  * @class GameCtrl (controller)
  */
-  .controller('SimulatorCtrl', ['$scope', 'scenario', 'movement', function ($scope, scenario) {
+  .controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
 
     /**
      *  indexed list of vessels in scenario
@@ -89,8 +90,9 @@ angular.module('mustard.game.simulator', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-  .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives', 'detection',
-    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection) {
+  .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath',
+    'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot',
+    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot) {
 
       var gameAccelRateIntervalId;
 
@@ -280,6 +282,9 @@ angular.module('mustard.game.simulator', [
               _.each($scope.gameState.narratives, showOnConsole);
               console.log("== ================================== ===");
             }
+
+            // ok, store the snapshot
+            reviewSnapshot.put({"period":[0, $scope.gameState.simulationTime]});
 
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");
