@@ -85,8 +85,6 @@ angular.module('mustard', [
 }).run(function ($rootScope, $location, user) {
 
     $rootScope.$on("$locationChangeStart", function() {
-        user.restoreFromLocal(function (isRestored) {
-            !isRestored && $location.path('/login');
-        });
+        !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');
     });
 });
