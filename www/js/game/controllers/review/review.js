@@ -31,6 +31,10 @@ angular.module('mustard.game.review', [
       reviewTimeStep: 2000
     };
 
+    /** the markers that we're going to show on the map
+     *
+     * @type {{}}
+     */
     $scope.vesselsMarker = {};
   }])
 
@@ -38,9 +42,8 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-  .controller('MissionReviewCtrl', ['$scope', '$interval', '$q', 'geoMath',
-    'reviewSnapshot',
-    function ($scope, $interval, $q, geoMath, reviewSnapshot) {
+  .controller('MissionReviewCtrl', ['$scope', '$interval',
+    function ($scope, $interval) {
 
       var gameAccelRateIntervalId;
 
@@ -105,7 +108,7 @@ angular.module('mustard.game.review', [
           mapCenter: {
             lat: $scope.history.center.lat,
             lng: $scope.history.center.lng,
-            zoom: 7
+            zoom: 8
           },
           layers: {
             baselayers: {
@@ -137,15 +140,12 @@ angular.module('mustard.game.review', [
        *
        */
       var doStep = function () {
-        // get the time
-        var tNow = $scope.reviewState.reviewTime;
-
         // move the scenario forward
         $scope.reviewState.reviewTime += $scope.reviewState.reviewTimeStep;
 
         // and update the plot
         doUpdate();
-      }
+      };
 
       /** update the UI to the current review time
        *
@@ -178,11 +178,16 @@ angular.module('mustard.game.review', [
               thisV.lat = nearest.lat;
               thisV.lng = nearest.lng;
               thisV.iconAngle = nearest.course;
+              thisV.course = nearest.course;
+              thisV.speed = nearest.speed;
             }
           }
         });
       };
 
+      /** show the vessel markers, plus their routes
+       *
+       */
       /** show the vessel markers, plus their routes
        *
        */
@@ -208,17 +213,19 @@ angular.module('mustard.game.review', [
           weight: 2,
           latlngs: routes
         }
-      }
+      };
 
-      showNarrativeMarkers = function () {
-        // ok, lastly run the intro tour
+      var showNarrativeMarkers = function () {
+        // loop through the narratives
         _.each($scope.history.narratives, function (item, index) {
 
           var narrMessage = "Time:" + item.time + "<br/>" + item.message;
           $scope.vesselsMarker['narrative_' + index] = {'lat': item.location.lat, 'lng': item.location.lng,
             'message': narrMessage};
+
+          // TODO: we should also create tour "stops" for each narrative entry
         });
-      }
+      };
 
       /** ok, handle the time rate change
        *
@@ -237,8 +244,7 @@ angular.module('mustard.game.review', [
        */
       $scope.goBack = function () {
         window.history.back();
-      }
-
+      };
 
       // sort out the map layers
       configureMap();
@@ -249,18 +255,15 @@ angular.module('mustard.game.review', [
       // show markers for the narrative entires
       showNarrativeMarkers();
 
+      // put the markers on the map in their initial locations
+      doUpdate();
+
       // Note: the narrative "tour" should not require a button press to start, it should just run.
-      var narrIndex = 0;
+      // but, we may provide UI control to restart tour.
       $scope.showNarrative = function () {
 
-        var narrMarker;
-        var item = $scope.history.narratives[narrIndex++];
-
-        // ok, try to highlight the specified item.
-
-
+        // start the tour
       }
-
 
     }
   ])
