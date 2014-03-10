@@ -302,7 +302,7 @@ angular.module('mustard.game.simulator', [
       };
 
       var storeHistory = function () {
-        // extend the history
+        // put in the categories
         _.each($scope.vessels, function (vessel) {
           // get history
           var history = trackHistory[vessel.name]
@@ -311,6 +311,8 @@ angular.module('mustard.game.simulator', [
           }
         });
 
+        // now insert the narratives
+        history.narratives = $scope.gameState.narratives;
 
         // TODO : narratives, mission name
 

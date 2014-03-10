@@ -15,8 +15,38 @@ angular.module('mustard.game.reviewSnapshot', [])
     var snapshot = {
       'center': {'lat': 49, 'lng': -9},
       "period": [0, 8000],
-      "stepTime" : 2000,
-      'objectives' :  [
+      "stepTime": 2000,
+      'vessels': {
+        'Ownship': {"categories": {
+          "force": "BLUE",
+          "environment": "SURFACE",
+          "type": "WARSHIP"
+        }, "track": [
+          {'time': 0, 'lat': 48.8, 'lng': -9, 'course': 120, 'speed': 6},
+          {'time': 2000, 'lat': 48.8, 'lng': -9.6, 'course': 120, 'speed': 5},
+          {'time': 4000, 'lat': 48.7, 'lng': -9.4, 'course': 130, 'speed': 4},
+          {'time': 6000, 'lat': 48.4, 'lng': -9.6, 'course': 160, 'speed': 3},
+          {'time': 8000, 'lat': 48.5, 'lng': -9.2, 'course': 180, 'speed': 2}
+        ]
+        },
+        'Target': {"categories": {
+          "force": "RED",
+          "environment": "SUBSURFACE",
+          "type": "SUBMARINE"
+        }, "track": [
+          {'time': 0, 'lat': 48.8, 'lng': -9, 'course': 234, 'speed': 4},
+          {'time': 2000, 'lat': 48.3, 'lng': -9.1, 'course': 123, 'speed': 6},
+          {'time': 4000, 'lat': 48.7, 'lng': -9.2, 'course': 114, 'speed': 4},
+          {'time': 6000, 'lat': 48.2, 'lng': -9.2, 'course': 121, 'speed': 2},
+          {'time': 8000, 'lat': 48.9, 'lng': -9.5, 'course': 155, 'speed': 1}
+        ]}
+      },
+      'narratives': [
+        {"dateTime": 174000, "location": {"lat": 50, "lng": -8.150786874468986}, "message": "Gained contact with target"},
+        {"dateTime": 374000, "location": {"lat": 50.01, "lng": -8.100786874468986}, "message": "Some other event"},
+        {"dateTime": 1106000, "location": {"lat": 50.033531725296776, "lng": -8.131101827320393}, "message": "Lost contact with target"}
+      ],
+      'objectives': [
         {
           "name": "Driving Exam",
           "type": "SEQUENCE",
@@ -91,32 +121,7 @@ angular.module('mustard.game.reviewSnapshot', [])
               }
             }
           ]}
-          ],
-      'vessels': {
-        'Ownship': {"categories": {
-          "force": "BLUE",
-          "environment": "SURFACE",
-          "type": "WARSHIP"
-        }, "track": [
-          {'time': 0, 'lat': 48.8, 'lng': -9, 'course': 120, 'speed':6},
-          {'time': 2000, 'lat': 48.8, 'lng': -9.6, 'course': 120, 'speed':5},
-          {'time': 4000, 'lat': 48.7, 'lng': -9.4, 'course': 130, 'speed':4},
-          {'time': 6000, 'lat': 48.4, 'lng': -9.6, 'course': 160, 'speed':3},
-          {'time': 8000, 'lat': 48.5, 'lng': -9.2, 'course': 180, 'speed':2}
-        ]
-        },
-        'Target': {"categories": {
-          "force": "RED",
-          "environment": "SUBSURFACE",
-          "type": "SUBMARINE"
-        }, "track": [
-          {'time': 0, 'lat': 48.8, 'lng': -9, 'course': 234, 'speed':4},
-          {'time': 2000, 'lat': 48.3, 'lng': -9.1, 'course': 123, 'speed':6},
-          {'time': 4000, 'lat': 48.7, 'lng': -9.2, 'course': 114, 'speed':4},
-          {'time': 6000, 'lat': 48.2, 'lng': -9.2, 'course': 121, 'speed':2},
-          {'time': 8000, 'lat': 48.9, 'lng': -9.5, 'course': 155, 'speed':1}
-        ]}
-      }
+      ]
     };
 
     /**
