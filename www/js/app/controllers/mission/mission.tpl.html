@@ -74,7 +74,7 @@
     </div>
     <div class="container-fluid text-center">
       <button ng-click="moveToMission([missionNumber])" type="button" class="btn btn-danger btn-lg">Play</button>
-      <button type="button" disabled class="btn btn-default btn-lg btn-disabled">Review</button>
+      <button ng-click="doReview([missionNumber])" type="button" ng-disabled="!reviewEnabled()" class="btn btn-default btn-lg btn-disabled">Review</button>
       <code>(disabled until mission complete)</code>
     </div>
   </div>

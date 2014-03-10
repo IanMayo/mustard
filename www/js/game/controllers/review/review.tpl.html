@@ -1,0 +1,40 @@
+<div data-ng-controller="MissionReviewCtrl">
+  <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
+    <span class="glyphicon glyphicon-star"></span> Back
+  </button>
+  <table width="100%">
+    <tr>
+      <td width="40%" style="padding: 10px">
+        <time-bearing-display data-series="vessels.ownShip.newDetections"></time-bearing-display>
+      </td>
+      <td width="60%" style="padding: 10px">
+        <spatial-view></spatial-view>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <ul class="list-inline mission-controls">
+          <li>
+            <time-display class="form-group" data-speed="reviewState.accelRate"
+                          data-timer="reviewState.reviewTime"></time-display>
+          </li>
+          <li>
+            <ship-state data-course="vesselsMarker.Ownship.course"
+                        data-speed="vesselsMarker.Ownship.speed"></ship-state>
+            <ship-state data-course="vesselsMarker.Target.course"
+                        data-speed="vesselsMarker.Target.speed"></ship-state>
+          </li>
+          <li>
+            <objective-list data-objectives="history.objectives"></objective-list>
+          </li>
+          <li>
+            <h3>Narrative</h3>
+            <button data-ng-click="showNarrative()" type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-film"> Replay</span>
+            </button>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>

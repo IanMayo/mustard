@@ -102,7 +102,7 @@ angular.module('mustard.game.spatialViewDirective', [
          */
         var addOwnshipUpdate = function (newState) {
           var currentOwnShipState = angular.copy(newState);
-          var currentTime = angular.copy(scope.gameState.simulationTime);
+          var currentTime = angular.copy(newState.time);
 
           if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
             // add point for a next time interval or first
@@ -178,8 +178,13 @@ angular.module('mustard.game.spatialViewDirective', [
         scope.$on('vesselsStateUpdated', function () {
           var vessels = angular.copy(scope.vesselsMarker);
           var ownShip = vessels.ownShip;
-          addOwnshipUpdate(ownShip);
-          sonarDetections(ownShip, ownShip.newDetections);
+
+          // TODO: the following is a workaround, to be resolved once we resume
+          // the presumption that there is a vessel named ownShip
+          if (ownShip) {
+            addOwnshipUpdate(ownShip);
+            sonarDetections(ownShip, ownShip.newDetections);
+          }
         });
 
         /**
