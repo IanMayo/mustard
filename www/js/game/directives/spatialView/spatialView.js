@@ -162,13 +162,11 @@ angular.module('mustard.game.spatialViewDirective', [
          * Available path types on the map
          * @type {Object}
          */
-        scope.paths = {
-          sonarDetections: {
+        scope.paths.sonarDetections = {
             type: 'multiPolyline',
             color: '#A9A9A9',
             weight: 2,
             latlngs: defaultDetectionLinesCoordinates
-          }
         };
 
         /**
