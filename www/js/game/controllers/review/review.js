@@ -136,21 +136,6 @@ angular.module('mustard.game.review', [
         });
       };
 
-
-      configureMap();
-
-      // Target vessels marker
-      _.each($scope.history.vessels, function (track, name) {
-        var shortName = name.replace(/\s+/g, '');
-        $scope.vesselsMarker[shortName] = updateMarker(track);
-      });
-      // insert the vessel paths
-//      $scope.paths["Ownship"] = {
-//        color: '#008000',
-//        weight: 8,
-//        latlngs: $scope.history.vessels.Ownship.track
-//      }
-
       var doStep = function () {
         // get the time
         var tNow = $scope.reviewState.reviewTime;
@@ -193,14 +178,32 @@ angular.module('mustard.game.review', [
             }
           }
         });
-
-        if (!markersDone) {
-          markersDone = true;
-        }
       };
 
-      var markersDone = false;
+      var showVesselRoutes = function()
+      {
+        // store the vessel routes
+        var routes = [];
 
+        // start out with the markes
+        _.each($scope.history.vessels, function (vessel, name) {
+
+          // store this route
+          routes.push(vessel.track);
+
+          // declare this marker
+          var shortName = name.replace(/\s+/g, '');
+          $scope.vesselsMarker[shortName] = updateMarker(vessel);
+        });
+
+        // put the routes into the scope
+        $scope.paths.routes = {
+          type: 'multiPolyline',
+          color: '#A9A9A9',
+          weight: 2,
+          latlngs: routes
+        }
+      }
 
       $scope.$watch('reviewState.accelRate', function (newVal) {
         $interval.cancel(gameAccelRateIntervalId);
@@ -215,18 +218,12 @@ angular.module('mustard.game.review', [
         window.history.back();
       }
 
-      var routes = [];
-      _.each($scope.history.vessels, function(vessel){
-        routes.push(vessel.track);
-      });
+
+      // sort out the map layers
+      configureMap();
 
 
-      $scope.paths.routes = {
-        type: 'multiPolyline',
-        color: '#A9A9A9',
-        weight: 2,
-        latlngs: routes
-      }
+      showVesselRoutes();
 
       // Note: the narrative "tour" should not require a button press to start, it should just run.
       $scope.showNarrative = function () {
