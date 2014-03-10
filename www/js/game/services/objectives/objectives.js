@@ -522,7 +522,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         distance.complete = true;
         gameState.failureMessage = distance.failure;
         gameState.state = "DO_STOP";
-        insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Failed to stay outside the necessary range");
+        insertNarrative(gameState, gameState.simulationTime, subject.state.location, "Failed to stay outside the necessary range");
 
       }
 
@@ -539,7 +539,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             gameState.successMessage = distance.success;
             gameState.state = "DO_STOP";
 
-            insertNarrative(gameState, gameState.simulationTime, ownShip.state.location, "Managed to stay outside the necessary range");
+            insertNarrative(gameState, gameState.simulationTime, subject.state.location, "Managed to stay outside the necessary range");
 
             // and store any achievements
             processAchievements(distance.achievement, gameState);
