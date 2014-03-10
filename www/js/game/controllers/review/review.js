@@ -45,70 +45,67 @@ angular.module('mustard.game.review', [
       var gameAccelRateIntervalId;
 
       /**
-       * Create (and update) config object for a vessel marker
+       * Create a marker object for the vessel
        * @param {Object} vessel
        * @returns {Object}
        */
-      var updateMarker = function (vessel) {
+      var createMarker = function (vessel) {
 
-        // does the object have the magic leaflet goodness inserted?
-        if (!vessel.layer) {
-          // ok, show it.
-          vessel.layer = "ownShip";
+        // produce the icon for this vessel type
+        var vType = vessel.categories.type.toLowerCase();
 
-          // produce the icon for this vessel type
-          var vType = vessel.categories.type.toLowerCase();
-
-          // ok, and the icon initialisation bits
-          var iconSize;
-          switch (vessel.categories.type) {
-            case "WARSHIP":
-              iconSize = 64;
-              break;
-            case "TORPEDO":
-              iconSize = 32;
-              break;
-            case "SUBMARINE":
-              iconSize = 48;
-              break;
-            case "MERCHANT":
-              iconSize = 64;
-              break;
-            case "FISHERMAN":
-              iconSize = 32;
-              break;
-            case "HELICOPTER":
-              iconSize = 32;
-              break;
-            default:
-              console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
-              break;
-          }
-
-          vessel = _.extend(vessel, {
-            focus: false,
-            message: vessel.name,
-            lat: 0,
-            lng: 0,
-            time: 0,
-            icon: {
-              iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-              iconSize: [iconSize, iconSize],
-              iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
-              shadowSize: [0, 0]
-            }
-          });
+        // ok, and the icon initialisation bits
+        var iconSize;
+        switch (vessel.categories.type) {
+          case "WARSHIP":
+            iconSize = 64;
+            break;
+          case "TORPEDO":
+            iconSize = 32;
+            break;
+          case "SUBMARINE":
+            iconSize = 48;
+            break;
+          case "MERCHANT":
+            iconSize = 64;
+            break;
+          case "FISHERMAN":
+            iconSize = 32;
+            break;
+          case "HELICOPTER":
+            iconSize = 32;
+            break;
+          default:
+            console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
+            break;
         }
 
-        return vessel;
+        // ok, now create the object
+        return {
+          focus: false,
+          message: vessel.name,
+          layer: 'ownShip',
+          lat: 0,
+          lng: 0,
+          time: 0,
+          icon: {
+            iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
+            iconSize: [iconSize, iconSize],
+            iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
+            shadowSize: [0, 0]
+          }
+        };
       };
 
+      /** pre-initialise the layers for the map
+       *
+       */
       var configureMap = function () {
         angular.extend($scope, {
           mapCenter: {
             lat: $scope.history.center.lat,
             lng: $scope.history.center.lng,
-            zoom: 9
+            zoom: 7
           },
           layers: {
             baselayers: {
@@ -136,6 +133,9 @@ angular.module('mustard.game.review', [
         });
       };
 
+      /** move forward a time step
+       *
+       */
       var doStep = function () {
         // get the time
         var tNow = $scope.reviewState.reviewTime;
@@ -147,6 +147,9 @@ angular.module('mustard.game.review', [
         doUpdate();
       }
 
+      /** update the UI to the current review time
+       *
+       */
       var doUpdate = function () {
 
         // shortcut to the time
@@ -180,8 +183,10 @@ angular.module('mustard.game.review', [
         });
       };
 
-      var showVesselRoutes = function()
-      {
+      /** show the vessel markers, plus their routes
+       *
+       */
+      var showVesselRoutes = function () {
         // store the vessel routes
         var routes = [];
 
@@ -193,7 +198,7 @@ angular.module('mustard.game.review', [
 
           // declare this marker
           var shortName = name.replace(/\s+/g, '');
-          $scope.vesselsMarker[shortName] = updateMarker(vessel);
+          $scope.vesselsMarker[shortName] = createMarker(vessel);
         });
 
         // put the routes into the scope
@@ -205,6 +210,19 @@ angular.module('mustard.game.review', [
         }
       }
 
+      showNarrativeMarkers = function () {
+        // ok, lastly run the intro tour
+        _.each($scope.history.narratives, function (item, index) {
+
+          var narrMessage = "Time:" + item.time + "<br/>" + item.message;
+          $scope.vesselsMarker['narrative_' + index] = {'lat': item.location.lat, 'lng': item.location.lng,
+            'message': narrMessage};
+        });
+      }
+
+      /** ok, handle the time rate change
+       *
+       */
       $scope.$watch('reviewState.accelRate', function (newVal) {
         $interval.cancel(gameAccelRateIntervalId);
 
@@ -214,6 +232,9 @@ angular.module('mustard.game.review', [
         }
       });
 
+      /** provide back button support
+       *
+       */
       $scope.goBack = function () {
         window.history.back();
       }
@@ -222,20 +243,25 @@ angular.module('mustard.game.review', [
       // sort out the map layers
       configureMap();
 
-
+      // show the markers, plus their routes
       showVesselRoutes();
 
+      // show markers for the narrative entires
+      showNarrativeMarkers();
+
       // Note: the narrative "tour" should not require a button press to start, it should just run.
+      var narrIndex = 0;
       $scope.showNarrative = function () {
 
-        // ok, lastly run the intro tour
-            _.each($scope.history.narratives, function (item) {
-            $scope.reviewState.reviewTime = item.time;
-             alert("time:" + item.time + "\nmessage:" + item.message);
-          });
+        var narrMarker;
+        var item = $scope.history.narratives[narrIndex++];
+
+        // ok, try to highlight the specified item.
+
 
       }
 
 
-    }])
+    }
+  ])
 ;
