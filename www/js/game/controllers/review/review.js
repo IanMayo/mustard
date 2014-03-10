@@ -31,7 +31,7 @@ angular.module('mustard.game.review', [
       reviewTimeStep: 2000
     };
 
-    $scope.vessels = {};
+    $scope.vesselsMarker = {};
   }])
 
 /**
@@ -137,16 +137,13 @@ angular.module('mustard.game.review', [
       };
 
 
+      configureMap();
+
       // Target vessels marker
       _.each($scope.history.vessels, function (track, name) {
         var shortName = name.replace(/\s+/g, '');
-        $scope.vessels[shortName] = updateMarker(track);
+        $scope.vesselsMarker[shortName] = updateMarker(track);
       });
-
-      // and share the markers
-      $scope.vesselsMarker = $scope.vessels;
-
-      configureMap();
 
       var doStep = function()
       {
@@ -182,7 +179,7 @@ angular.module('mustard.game.review', [
             var nearest = vessel.track[index];
             if (nearest) {
               var shortName = name.replace(/\s+/g, '');
-              var thisV = $scope.vessels[shortName];
+              var thisV = $scope.vesselsMarker[shortName];
 
               // copy the status update into the vessel marker
               thisV.lat = nearest.lat;
@@ -193,7 +190,6 @@ angular.module('mustard.game.review', [
         });
 
         if (!markersDone) {
-          $scope.vesselsMarker = $scope.vessels;
           markersDone = true;
         }
       };
