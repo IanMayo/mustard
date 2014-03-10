@@ -28,12 +28,16 @@ angular.module('mustard.game.simulator', [
      */
     $scope.vesselsScenario = scenario.vessels;
 
-
     /**
      *  indexed list of vessels in scenario
      * @type {Array}
      */
     $scope.vessels = {};
+
+    /** convenience pointer, to ownship
+     *
+     */
+    $scope.ownShip = {};
 
     /** indexed list of dead vessels
      *
@@ -114,7 +118,7 @@ angular.module('mustard.game.simulator', [
         marker.lat = state.location ? state.location.lat : 0;
         marker.lng = state.location ? state.location.lng : 0;
         marker.iconAngle = state.course;
-      }
+      };
 
       /**
        * Create (and update) config object for a vessel marker
@@ -203,7 +207,7 @@ angular.module('mustard.game.simulator', [
               targetShip.state.location = geoMath.rhumbDestinationPoint(pBounds.getCenter(),
                 geoMath.toRads(direction), range);
             } else {
-              targetShip.state.location = geoMath.rhumbDestinationPoint($scope.vessels.ownShip.state.location,
+              targetShip.state.location = geoMath.rhumbDestinationPoint($scope.ownShip.state.location,
                 geoMath.toRads(direction), range);
             }
           }
@@ -232,7 +236,7 @@ angular.module('mustard.game.simulator', [
         var detections = null;
         var thisB;
 
-        _.each($scope.vessels.ownShip.newDetections, function (detection) {
+        _.each($scope.ownShip.newDetections, function (detection) {
           // is this the first item?
           if (!detections) {
             detections = [new Date(detection.time)];
@@ -322,7 +326,7 @@ angular.module('mustard.game.simulator', [
         // put in the categories
         _.each($scope.vessels, function (vessel) {
           // get history
-          var history = trackHistory[vessel.name]
+          var history = trackHistory[vessel.name];
           if (history) {
             history.categories = angular.copy(vessel.categories);
           }
@@ -338,13 +342,12 @@ angular.module('mustard.game.simulator', [
           reviewSnapshot.put({
               "period": [startTime, $scope.gameState.simulationTime],
               "stepTime": $scope.gameState.simulationTimeStep,
-              "center": {'lat': $scope.vessels.ownShip.state.location.lat, 'lng': $scope.vessels.ownShip.state.location.lng },
+              "center": {'lat': $scope.ownShip.state.location.lat, 'lng': $scope.ownShip.state.location.lng },
               "vessels": trackHistory
             }
           )
         }
-        ;
-      }
+      };
 
       var updateMapMarkers = function () {
         _.each($scope.vessels, function (vessel) {
@@ -425,8 +428,8 @@ angular.module('mustard.game.simulator', [
 
         });
 
-        $scope.vessels.ownShip.state.demCourse = parseInt($scope.demandedState.course);
-        $scope.vessels.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
+        $scope.ownShip.state.demCourse = parseInt($scope.demandedState.course);
+        $scope.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
 
         /////////////////////////
         // GAME LOOP STARTS HERE
@@ -478,14 +481,14 @@ angular.module('mustard.game.simulator', [
         });
 
         // also give us a reliable instance of ownship (since the ownship name 'may' change)
-        $scope.vessels.ownShip = $scope.vesselsScenario[0];
+        $scope.ownShip = $scope.vesselsScenario[0];
 
         initializeTargetShips();
 
-        configureMap($scope.vessels.ownShip.state.location);
+        configureMap($scope.ownShip.state.location);
 
-        $scope.demandedState.course = parseInt($scope.vessels.ownShip.state.demCourse);
-        $scope.demandedState.speed = parseInt($scope.vessels.ownShip.state.demSpeed);
+        $scope.demandedState.course = parseInt($scope.ownShip.state.demCourse);
+        $scope.demandedState.speed = parseInt($scope.ownShip.state.demSpeed);
 
         // initialiee the start time
         startTime = $scope.gameState.simulationTime;
