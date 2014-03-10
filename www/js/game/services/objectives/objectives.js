@@ -39,7 +39,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
       if (!gameState.narratives) {
         gameState.narratives = [];
       }
-      gameState.narratives.push({ "dateTime": dateTime, "location": location, "message": message});
+      gameState.narratives.push({ "time": dateTime, "location": location, "message": message});
     };
 
     /** switchboard method that calls relevant observer handler
