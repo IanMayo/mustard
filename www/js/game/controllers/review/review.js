@@ -88,9 +88,9 @@ angular.module('mustard.game.review', [
           vessel = _.extend(vessel, {
             focus: false,
             message: vessel.name,
-            lat:0,
-            lng:0,
-            time:0,
+            lat: 0,
+            lng: 0,
+            time: 0,
             icon: {
               iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
               iconSize: [iconSize, iconSize],
@@ -144,9 +144,14 @@ angular.module('mustard.game.review', [
         var shortName = name.replace(/\s+/g, '');
         $scope.vesselsMarker[shortName] = updateMarker(track);
       });
+      // insert the vessel paths
+//      $scope.paths["Ownship"] = {
+//        color: '#008000',
+//        weight: 8,
+//        latlngs: $scope.history.vessels.Ownship.track
+//      }
 
-      var doStep = function()
-      {
+      var doStep = function () {
         // get the time
         var tNow = $scope.reviewState.reviewTime;
 
@@ -209,5 +214,29 @@ angular.module('mustard.game.review', [
       $scope.goBack = function () {
         window.history.back();
       }
+
+      var routes = [];
+      _.each($scope.history.vessels, function(vessel){
+        routes.push(vessel.track);
+      });
+      $scope.paths.routes = {
+        type: 'multiPolyline',
+        color: '#A9A9A9',
+        weight: 2,
+        latlngs: routes
+      }
+
+      // Note: the narrative "tour" should not require a button press to start, it should just run.
+      $scope.showNarrative = function () {
+
+        // ok, lastly run the intro tour
+            _.each($scope.history.narratives, function (item) {
+            $scope.reviewState.reviewTime = item.time;
+             alert("time:" + item.time + "\nmessage:" + item.message);
+          });
+
+      }
+
+
     }])
 ;
