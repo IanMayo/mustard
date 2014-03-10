@@ -219,6 +219,8 @@ angular.module('mustard.game.review', [
       _.each($scope.history.vessels, function(vessel){
         routes.push(vessel.track);
       });
+
+
       $scope.paths.routes = {
         type: 'multiPolyline',
         color: '#A9A9A9',
