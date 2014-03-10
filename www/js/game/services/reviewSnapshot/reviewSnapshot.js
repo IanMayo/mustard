@@ -42,9 +42,9 @@ angular.module('mustard.game.reviewSnapshot', [])
         ]}
       },
       'narratives': [
-        {"time": 2000, "location": {"lat": 50, "lng": -8.150786874468986}, "message": "Gained contact with target"},
-        {"time": 6000, "location": {"lat": 50.01, "lng": -8.100786874468986}, "message": "Lost contact with target"},
-        {"time": 8000, "location": {"lat": 50.033531725296776, "lng": -8.131101827320393}, "message": "Gained contact with target"}
+        {"time": 2000, "location": {'lat': 49.8, 'lng': -9.6}, "message": "Gained contact with target"},
+        {"time": 6000, "location": {'lat': 49.7, 'lng': -9.2}, "message": "Lost contact with target"},
+        {"time": 8000, "location": {'lat': 49.5, 'lng': -9.2, "lng": -8.131101827320393}, "message": "Gained contact with target"}
       ],
       'objectives': [
         {
