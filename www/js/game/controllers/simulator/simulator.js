@@ -26,7 +26,7 @@ angular.module('mustard.game.simulator', [
      *  indexed list of vessels in scenario
      * @type {Array}
      */
-    $scope.vessels = {};
+    $scope.vessels = scenario.vessels;
 
     /** indexed list of dead vessels
      *
@@ -53,16 +53,16 @@ angular.module('mustard.game.simulator', [
     $scope.welcome = scenario.welcome;
 
     /**
-     * Initial properties properties for vessels
-     * @type {Array}
-     */
-    $scope.vesselsScenario = scenario.vessels;
-
-    /**
      * GeoJson map features
      * @type {Object}
      */
     $scope.mapFeatures = scenario.features;
+
+    /** the vessel markers that we show on the map
+     *
+     * @type {{}}
+     */
+    $scope.vesselsMarker = {};
 
     /**
      * what the user wishes the ownship vessel to do
@@ -100,74 +100,84 @@ angular.module('mustard.game.simulator', [
 
       var startTime; // keep track of the start time, so we can pass the period to the history object.
 
+      var updateMarker = function (vessel) {
+        var marker = $scope.vesselsMarker[vessel.name];
+        var state = vessel.state;
+
+        marker.lat = state.location ? state.location.lat : 0;
+        marker.lng = state.location ? state.location.lng : 0;
+        marker.iconAngle = state.course;
+      }
+
       /**
        * Create (and update) config object for a vessel marker
        * @param {Object} vessel
        * @returns {Object}
        */
-      var updateMarker = function (vessel) {
+      var createMarker = function (vessel) {
 
-        // does the object have the magic leaflet goodness inserted?
-        if (!vessel.layer) {
-          // nope, in that case, make it suitable to be shown in leaflet
-
-          // ok, is it a friendly vessel?
-          if (vessel.categories.force == "RED") {
-            // nope, hide it by default
-            vessel.layer = "targets";
-          }
-          else {
-            // ok, show it.
-            vessel.layer = "ownShip";
-          }
-
-          // produce the icon for this vessel type
-          var vType = vessel.categories.type.toLowerCase();
-
-          // ok, and the icon initialisation bits
-          var iconSize;
-          switch (vessel.categories.type) {
-            case "WARSHIP":
-              iconSize = 64;
-              break;
-            case "TORPEDO":
-              iconSize = 32;
-              break;
-            case "SUBMARINE":
-              iconSize = 48;
-              break;
-            case "MERCHANT":
-              iconSize = 64;
-              break;
-            case "FISHERMAN":
-              iconSize = 32;
-              break;
-            case "HELICOPTER":
-              iconSize = 32;
-              break;
-            default:
-              console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
-              break;
-          }
-
-          vessel = _.extend(vessel, {
-            focus: false,
-            message: vessel.name,
-            icon: {
-              iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-              iconSize: [iconSize, iconSize],
-              iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
-              shadowSize: [0, 0]
-            }
-          });
+        // ok, is it a friendly vessel?
+        var layerName;
+        if (vessel.categories.force == "RED") {
+          // nope, hide it by default
+          layerName = "targets";
+        }
+        else {
+          // ok, show it.
+          layerName = "ownShip";
         }
 
-        // update the lat/long
-        vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
-        vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
-        vessel.iconAngle = vessel.state.course;
+        // produce the icon for this vessel type
+        var vType = vessel.categories.type.toLowerCase();
 
-        return vessel;
+        // ok, and the icon initialisation bits
+        var iconSize;
+        switch (vessel.categories.type) {
+          case "WARSHIP":
+            iconSize = 64;
+            break;
+          case "TORPEDO":
+            iconSize = 32;
+            break;
+          case "SUBMARINE":
+            iconSize = 48;
+            break;
+          case "MERCHANT":
+            iconSize = 64;
+            break;
+          case "FISHERMAN":
+            iconSize = 32;
+            break;
+          case "HELICOPTER":
+            iconSize = 32;
+            break;
+          default:
+            console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
+            break;
+        }
+
+        return {
+          focus: false,
+          lat: 0,
+          lng: 0,
+          message: vessel.name,
+          layer: layerName,
+          icon: {
+            iconAngle: 0,
+            iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
+            iconSize: [iconSize, iconSize],
+            iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
+            shadowSize: [0, 0]
+          }
+        };
+
+
+        // update the lat/long
+//        vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
+//        vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
+//        vessel.iconAngle = vessel.state.course;
+//
+//        return vessel;
       };
 
       var initializeTargetShips = function () {
@@ -334,15 +344,14 @@ angular.module('mustard.game.simulator', [
           updateMarker(vessel);
         });
 
-        $scope.vesselsMarker = $scope.vessels;
         $scope.$broadcast('vesselsStateUpdated');
       };
 
-      var configureMap = function () {
+      var configureMap = function (center) {
         angular.extend($scope, {
           mapCenter: {
-            lat: $scope.vessels.ownShip.lat,
-            lng: $scope.vessels.ownShip.lng,
+            lat: center.lat,
+            lng: center.lng,
             zoom: 9
           },
           layers: {
@@ -366,7 +375,6 @@ angular.module('mustard.game.simulator', [
               }
             }
           },
-          vesselsMarker: {},
           paths: {}
         });
       };
@@ -445,17 +453,6 @@ angular.module('mustard.game.simulator', [
         /////////////////////////
       };
 
-      // Target vessels marker
-      _.each($scope.vesselsScenario, function (vessel) {
-        var shortName = vessel.name.replace(/\s+/g, '');
-        $scope.vessels[shortName] = updateMarker(vessel);
-      });
-
-      // and share the markers
-      $scope.vesselsMarker = $scope.vessels;
-
-      // also give us a reliable instance of ownship (since the ownship name 'may' change)
-      $scope.vessels.ownShip = $scope.vessels.Ownship;
 
       var showWelcome = function () {
         // show the welcome message
@@ -464,17 +461,29 @@ angular.module('mustard.game.simulator', [
         }
       };
 
-      initializeTargetShips().then(function () {
-        configureMap();
 
-        showWelcome();
+      var doInit = function () {
+
+        // Target vessels marker
+        _.each($scope.vessels, function (vessel) {
+          $scope.vesselsMarker[vessel.name] = createMarker(vessel);
+        });
+
+        // also give us a reliable instance of ownship (since the ownship name 'may' change)
+        $scope.vessels.ownShip = $scope.vessels[0];
+
+        initializeTargetShips();
+
+        configureMap($scope.vessels.ownShip.state.location);
 
         $scope.demandedState.course = parseInt($scope.vessels.ownShip.state.demCourse);
         $scope.demandedState.speed = parseInt($scope.vessels.ownShip.state.demSpeed);
 
         // initialiee the start time
         startTime = $scope.gameState.simulationTime;
-      });
+
+        showWelcome();
+      };
 
       $scope.$watch('gameState.accelRate', function (newVal) {
         $interval.cancel(gameAccelRateIntervalId);
@@ -488,7 +497,10 @@ angular.module('mustard.game.simulator', [
       $scope.goBack = function () {
         storeHistory();
         window.history.back();
-      }
+      };
+
+      // ok, do the init
+      doInit();
     }])
 
 /**
