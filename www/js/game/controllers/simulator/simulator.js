@@ -26,7 +26,14 @@ angular.module('mustard.game.simulator', [
      *  indexed list of vessels in scenario
      * @type {Array}
      */
-    $scope.vessels = scenario.vessels;
+    $scope.vesselsScenario = scenario.vessels;
+
+
+    /**
+     *  indexed list of vessels in scenario
+     * @type {Array}
+     */
+    $scope.vessels = {};
 
     /** indexed list of dead vessels
      *
@@ -465,12 +472,13 @@ angular.module('mustard.game.simulator', [
       var doInit = function () {
 
         // Target vessels marker
-        _.each($scope.vessels, function (vessel) {
+        _.each($scope.vesselsScenario, function (vessel) {
+          $scope.vessels[vessel.name] = vessel;
           $scope.vesselsMarker[vessel.name] = createMarker(vessel);
         });
 
         // also give us a reliable instance of ownship (since the ownship name 'may' change)
-        $scope.vessels.ownShip = $scope.vessels[0];
+        $scope.vessels.ownShip = $scope.vesselsScenario[0];
 
         initializeTargetShips();
 
