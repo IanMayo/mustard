@@ -1,158 +1,165 @@
 {
-  "vessels": [
-    {
-      "name": "Ownship",
-      "categories": {"force":"BLUE", "environment": "SURFACE", "type": "WARSHIP"},
-      "behaviours": [],
-      "sonars": [
+    "id": "2d",
+    "name": "Self Noise Extra",
+    "description": "More challenging self noise",
+    "welcome": "Ok, let's work more on that bow null. As before, locate the target to start the mission. He's to the North-East of you, and you need to gain him within 5 minutes",
+    "vessels": [
         {
-          "name": "BASIC_TOWED",
-          "categories": ["NO_STEADY_TIME"],
-          "offset": -1000,
-          "ArrayGain": 18,
-          "DT": -8
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50.0,
+                    "lng": -8.1
+                },
+                "height": 0,
+                "course": 45,
+                "speed": 10,
+                "demCourse": 45,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 50.15,
+                        "lng": -8.25
+                    },
+                    "br": {
+                        "lat": 49.85,
+                        "lng": -7.75
+                    },
+                    "height": -30
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 104,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "time": 0,
+                "location": {
+                    "lat": 50.09,
+                    "lng": -7.99
+                },
+                "height": 0,
+                "course": 60,
+                "speed": 13,
+                "demCourse": 80,
+                "demSpeed": 13,
+                "demHeight": 0.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
         }
-      ],
-      "radiatedNoise": {
-        "baseLevel": 90,
-        "speedPattern": "Uniform"
-      },
-      "state": {
-        "time": 0,
-        "categories": [],
-        "location": {
-          "lat": 50.0,
-          "lng": -8.1
-        },
-        "height": 0,
-        "course": 45,
-        "speed": 10,
-        "demCourse": 45,
-        "demSpeed": 10,
-        "demHeight": -10.0
-      },
-      "perf": {
-        "turnRadius": 1200.0,
-        "accelerationRate": 0.3,
-        "decelerationRate": 0.8,
-        "minSpeed": 4,
-        "maxSpeed": 40,
-        "climbRate": 1,
-        "diveRate": 2
-      }
-    },
-    {
-      "name": "Target",
-      "categories": {
-        "force": "RED",
-        "environment": "SUBSURFACE",
-        "type": "SUBMARINE"
-      },
-      "behaviours": [
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
         {
-          "name": "Patrol area",
-          "type": "RECTANGLE_WANDER",
-          "tl": {
-            "lat": 50.15,
-            "lng": -8.25
-          },
-          "br": {
-            "lat": 49.85,
-            "lng": -7.75
-          },
-          "height": -30
-        }
-      ],
-      "sonars": [
-      ],
-      "radiatedNoise": {
-        "baseLevel": 104,
-        "speedPattern": "Uniform"
-      },
-      "state": {
-        "categories": [],
-        "time": 0,
-        "location": {
-          "lat": 50.09,
-          "lng": -7.99
-        },
-        "height": 0,
-        "course": 60,
-        "speed": 13,
-        "demCourse": 80,
-        "demSpeed": 13,
-        "demHeight": 0.0,
-        "batteryLevel": 60
-      },
-      "perf": {
-        "turnRadius": 1200.0,
-        "accelerationRate": 0.3,
-        "decelerationRate": 0.8,
-        "minSpeed": 4,
-        "maxSpeed": 20,
-        "batteryUsage": 0.00035,
-        "chargeRate": 0.013,
-        "climbRate": 1,
-        "diveRate": 2
-      }
-    }
-  ],
-  "patrolArea": [
-    [50.15, -8.25],
-    [49.85, -7.75]
-  ],
-  "environment": {},
-  "objectives": [
-    {
-      "name": "Gain & maintain contact",
-      "type": "SEQUENCE",
-      "children": [
-        {
-          "name": "Gain contact",
-          "description": "Gain contact on the training target",
-          "type": "GAIN_CONTACT",
-          "elapsed": 300,
-          "success": "Ok, you've gained contact. Now trail him continuously for the next hour.",
-          "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
-        },
-        {
-          "name": "Maintain contact",
-          "description": "Maintain continuous contact on the training target for one hour",
-          "type": "MAINTAIN_CONTACT",
-          "elapsed": 3600,
-          "achievement": {
-            "name": "Passive King",
-            "message": "There's not much more to teach you about handling self-noise"
-          },
-          "success": "Well done, you've held contact for one hour",
-          "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null?"
-        }
-      ]
-    }
-  ],
-  "welcome": "Ok, let's work more on that bow null. As before, locate the target to start the mission. He's to the North-East of you, and you need to gain him within 5 minutes",
-  "features": {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Ops Area"
-        },
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [-8.25, 50.15],
-              [-8.25, 49.85],
-              [-7.75, 49.85],
-              [-7.75, 50.15],
-              [-8.25, 50.15 ]
+            "name": "Gain & maintain contact",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact",
+                    "description": "Gain contact on the training target",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 300,
+                    "success": "Ok, you've gained contact. Now trail him continuously for the next hour.",
+                    "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
+                },
+                {
+                    "name": "Maintain contact",
+                    "description": "Maintain continuous contact on the training target for one hour",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 3600,
+                    "achievement": {
+                        "name": "Passive King",
+                        "message": "There's not much more to teach you about handling self-noise"
+                    },
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null?"
+                }
             ]
-          ]
-        },
-        "id": "OpsArea"
-      }
-    ]
-  }
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
 }
