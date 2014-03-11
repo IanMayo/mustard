@@ -143,7 +143,7 @@ angular.module('mustard.app.user', [
          * @returns {boolean}
          */
         missionCompleted: function (missionId) {
-            return changeMissionStatus(user, missionId, 'COMPLETED');
+            return changeMissionStatus(user, missionId, 'SUCCESS');
         },
 
         /**
