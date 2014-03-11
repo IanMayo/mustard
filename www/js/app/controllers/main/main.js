@@ -64,11 +64,16 @@ angular.module('mustard.app.main', ['mustard.app.user'])
 
             // has this level been tried?
             if (found) {
-                if (found.status == "SUCCESS") {
-                    res = false;
-                }
-                else if (found.status == "UNLOCKED") {
-                    res = false;
+                switch (found.status)
+                {
+                    case "SUCCESS":
+                    case "FAILURE":
+                    case "UNLOCKED":
+                        res = false;
+                        break;
+                    case "LOCKED":
+                        res = true;
+                        break;
                 }
             }
 
