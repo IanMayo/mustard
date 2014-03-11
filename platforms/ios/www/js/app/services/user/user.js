@@ -108,7 +108,7 @@ angular.module('mustard.app.user', [
                 authorized = true;
             }
 
-            return authorized;
+            return !!restoredUser;
         },
 
         /**
@@ -168,7 +168,7 @@ angular.module('mustard.app.user', [
         /**
          * Deauthorize current user and remove it from local storage
          *
-         * @returns {*}
+         * @returns {boolean}
          */
         deauthorizeUser: function () {
             authorized = false;
