@@ -179,7 +179,7 @@ angular.module('mustard.game.spatialViewDirective', [
         scope.features = {};
 
         scope.$on('vesselsStateUpdated', function () {
-          var ownShip = scope.ownShip;
+          var ownShip = scope.ownShip.vessel();
 
           // TODO: the following is a workaround, to be resolved once we resume
           // the presumption that there is a vessel named ownShip
