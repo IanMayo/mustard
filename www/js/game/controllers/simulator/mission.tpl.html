@@ -5,7 +5,7 @@
   <table width="100%">
     <tr>
       <td width="40%" style="padding: 10px">
-        <time-bearing-display data-series="ownShip.newDetections"></time-bearing-display>
+        <time-bearing-display data-series="ownShip.detections()"></time-bearing-display>
       </td>
       <td width="60%" style="padding: 10px">
         <spatial-view></spatial-view>
@@ -19,8 +19,8 @@
                           data-timer="gameState.simulationTime"></time-display>
           </li>
           <li>
-            <ship-state data-course="ownShip.state.course"
-                        data-speed="ownShip.state.speed"></ship-state>
+            <ship-state data-course="ownShip.state().course"
+                        data-speed="ownShip.state().speed"></ship-state>
           </li>
           <li>
             <ship-controls data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
@@ -32,7 +32,7 @@
             <objective-list data-objectives="objectives"></objective-list>
           </li>
           <li>
-            <fire-weapon data-ownship="ownShip"></fire-weapon>
+            <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
           </li>
         </ul>
       </td>

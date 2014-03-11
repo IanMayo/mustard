@@ -24,19 +24,19 @@ angular.module('mustard.game.simulator', [
   .controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
 
     /**
-     *  indexed list of vessels in scenario
+     * Indexed list of vessels in scenario
      * @type {Array}
      */
     $scope.vesselsScenario = scenario.vessels;
 
     /**
-     *  indexed list of vessels in scenario
+     * Indexed list of vessels in scenario
      * @type {Array}
      */
     $scope.vessels = {};
 
-    /** convenience pointer, to ownship
-     *
+    /**
+     * OwnShip vessel API
      */
     $scope.ownShip = {};
 
@@ -119,6 +119,36 @@ angular.module('mustard.game.simulator', [
         marker.lat = state.location ? state.location.lat : 0;
         marker.lng = state.location ? state.location.lng : 0;
         marker.iconAngle = state.course;
+      };
+
+      /**
+       * Ownship vessel API helper (since the ownship name 'may' change)
+       * @returns {Object}
+       */
+      var ownShipApi = function () {
+          var ownShipName = _.first(_.toArray($scope.vessels)).name;
+          var vessel = $scope.vessels[ownShipName];
+
+          return {
+              name: function () {
+                  return ownShipName;
+              },
+              vessel: function () {
+                return vessel;
+              },
+              location: function () {
+                  return vessel.state.location;
+              },
+              state: function () {
+                  return vessel.state;
+              },
+              detections: function () {
+                  return vessel.newDetections;
+              },
+              updateState: function (data) {
+                  _.extend(vessel.state, data);
+              }
+          }
       };
 
       /**
@@ -208,7 +238,7 @@ angular.module('mustard.game.simulator', [
               targetShip.state.location = geoMath.rhumbDestinationPoint(pBounds.getCenter(),
                 geoMath.toRads(direction), range);
             } else {
-              targetShip.state.location = geoMath.rhumbDestinationPoint($scope.ownShip.state.location,
+              targetShip.state.location = geoMath.rhumbDestinationPoint($scope.ownShip.vessel().state.location,
                 geoMath.toRads(direction), range);
             }
           }
@@ -237,7 +267,7 @@ angular.module('mustard.game.simulator', [
         var detections = null;
         var thisB;
 
-        _.each($scope.ownShip.newDetections, function (detection) {
+        _.each($scope.ownShip.detections(), function (detection) {
           // is this the first item?
           if (!detections) {
             detections = [new Date(detection.time)];
@@ -352,7 +382,7 @@ angular.module('mustard.game.simulator', [
           reviewSnapshot.put({
               "period": [startTime, $scope.gameState.simulationTime],
               "stepTime": $scope.gameState.simulationTimeStep,
-              "center": {'lat': $scope.ownShip.state.location.lat, 'lng': $scope.ownShip.state.location.lng },
+              "center": $scope.ownShip.location(),
               "vessels": trackHistory
             }
           )
@@ -425,7 +455,7 @@ angular.module('mustard.game.simulator', [
 
           // TODO: once we've overcome the requirement for the artificial ownship, remove this name test
 
-          if (vessel.name == "Ownship") {
+          if (vessel.name == $scope.ownShip.name()) {
             if (!ownShipDone) {
               storeState(vessel, $scope.gameState.simulationTime);
               ownShipDone = true;
@@ -438,8 +468,10 @@ angular.module('mustard.game.simulator', [
 
         });
 
-        $scope.ownShip.state.demCourse = parseInt($scope.demandedState.course);
-        $scope.ownShip.state.demSpeed = parseInt($scope.demandedState.speed);
+        $scope.ownShip.updateState({
+            demCourse: parseInt($scope.demandedState.course),
+            demSpeed: parseInt($scope.demandedState.speed)
+        });
 
         /////////////////////////
         // GAME LOOP STARTS HERE
@@ -490,15 +522,14 @@ angular.module('mustard.game.simulator', [
           $scope.vesselsMarker[vessel.name] = createMarker(vessel);
         });
 
-        // also give us a reliable instance of ownship (since the ownship name 'may' change)
-        $scope.ownShip = $scope.vesselsScenario[0];
+        $scope.ownShip = ownShipApi();
 
         initializeTargetShips();
 
-        configureMap($scope.ownShip.state.location);
+        configureMap($scope.ownShip.location());
 
-        $scope.demandedState.course = parseInt($scope.ownShip.state.demCourse);
-        $scope.demandedState.speed = parseInt($scope.ownShip.state.demSpeed);
+        $scope.demandedState.course = parseInt($scope.ownShip.state().demCourse);
+        $scope.demandedState.speed = parseInt($scope.ownShip.state().demSpeed);
 
         // initialiee the start time
         startTime = $scope.gameState.simulationTime;
