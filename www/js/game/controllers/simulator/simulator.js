@@ -281,13 +281,19 @@ angular.module('mustard.game.simulator', [
           // are there any achievements?
           if ($scope.gameState.achievements) {
             _.each($scope.gameState.achievements, function (element) {
-              // has the user already earned it?
-              if (!user.isAchievementPresent(element.name)) {
-                // ok, display it
-                user.addAchievement(element.name);
 
-                // and display the alert
-                alert("Well done, you've been awarded a new achievement:\n'" + element.name + "'\n\n" + element.message);
+              // has this achievement already been processed?
+              if (!element.processed) {
+                element.processed = true;
+
+                // has the user already earned it?
+                if (!user.isAchievementPresent(element.name)) {
+                  // ok, display it
+                  user.addAchievement(element.name);
+
+                  // and display the alert
+                  alert("Well done, you've been awarded a new achievement:\n'" + element.name + "'\n\n" + element.message);
+                }
               }
             });
           }
