@@ -13,7 +13,8 @@ angular.module('mustard.game.simulator', [
     'mustard.game.reviewSnapshot',
     'mustard.game.geoMath',
     'mustard.game.movement',
-    'mustard.game.objectives'
+    'mustard.game.objectives',
+    'mustard.app.user'
   ])
 
 /**
@@ -102,8 +103,8 @@ angular.module('mustard.game.simulator', [
  * @class MissionCtrl (controller)
  */
   .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath',
-    'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot',
-    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot) {
+    'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
+    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot, user) {
 
       var gameAccelRateIntervalId;
 
@@ -279,13 +280,16 @@ angular.module('mustard.game.simulator', [
 
           // are there any achievements?
           if ($scope.gameState.achievements) {
-            var showIt = function (element) {
-              if (!element.hasDisplayed) {
+            _.each($scope.gameState.achievements, function (element) {
+              // has the user already earned it?
+              if (!user.isAchievementPresent(element.name)) {
+                // ok, display it
+                user.addAchievement(element.name);
+
+                // and display the alert
                 alert("Well done, you've been awarded a new achievement:\n'" + element.name + "'\n\n" + element.message);
-                element.hasDisplayed = true;
               }
-            };
-            _.each($scope.gameState.achievements, showIt);
+            });
           }
 
           if (timeState === 'DO_PAUSE') {
