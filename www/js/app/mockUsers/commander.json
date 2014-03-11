@@ -7,8 +7,8 @@
         {"name": "Ram Raider"}
     ],
     "missions": [
-        {"id": "1a", "status": "SUCCESS"},
-        {"id": "1b", "status": "SUCCESS"},
+        {"id": "1a", "status": "UNLOCKED"},
+        {"id": "1b", "status": "UNLOCKED"},
         {"id": "1c", "status": "UNLOCKED"},
         {"id": "1d", "status": "UNLOCKED"},
         {"id": "2a", "status": "UNLOCKED"},
@@ -17,6 +17,7 @@
         {"id": "2d", "status": "UNLOCKED"},
         {"id": "3a", "status": "UNLOCKED"},
         {"id": "3b", "status": "UNLOCKED"},
+        {"id": "4a", "status": "UNLOCKED"},
         {"id": "6a", "status": "UNLOCKED"},
         {"id": "6b", "status": "UNLOCKED"},
         {"id": "7a", "status": "UNLOCKED"}
