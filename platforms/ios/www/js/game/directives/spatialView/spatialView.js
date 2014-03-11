@@ -50,14 +50,12 @@ angular.module('mustard.game.spatialViewDirective', [
          */
         var addOwnShipTravellingPoint = function (latlngs) {
           var key = _.uniqueId('ownShipPoint_');
-          var point = {
+          scope.paths[key] = {
             type: 'circleMarker',
             radius: 1,
             latlngs: latlngs,
             opacity: 1
           };
-
-          scope.paths[key] = point;
         };
 
         /**
@@ -101,26 +99,31 @@ angular.module('mustard.game.spatialViewDirective', [
          * @param {Object} newState
          */
         var addOwnshipUpdate = function (newState) {
-          var currentOwnShipState = angular.copy(newState);
-          var currentTime = angular.copy(scope.gameState.simulationTime);
+
+          // create a wrapped location
+          var newLocation = {'lat':newState.location.lat, 'lng':newState.location.lng};
+
+          // capture the time
+          var currentTime = newState.time;
 
           if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
             // add point for a next time interval or first
             updateOwnShipTravellingPoint();
-            addOwnShipTravellingPoint(_.pick(currentOwnShipState, 'lat', 'lng'));
+            addOwnShipTravellingPoint(newLocation);
+
+            // ok, when do we drop the next marker?
             localVesselsState.ownShip.nextMoveTime = currentTime + spatialViewConfig.ownShipPointsInterval;
           }
 
           // adjust the center coordinates of the map if it's needed
-          scope.$broadcast('ownShipMoved', currentOwnShipState);
+          scope.$broadcast('ownShipMoved', newLocation);
         };
 
         /**
          * Show sonar detections lines on the map
-         * @param {Object} ownShip
          * @param {Object} detections
          */
-        var sonarDetections = function (ownShip, detections) {
+        var sonarDetections = function (detections) {
           var detectionPoints = [];
 
           _.each(detections, function (detection, index) {
@@ -162,13 +165,11 @@ angular.module('mustard.game.spatialViewDirective', [
          * Available path types on the map
          * @type {Object}
          */
-        scope.paths = {
-          sonarDetections: {
+        scope.paths.sonarDetections = {
             type: 'multiPolyline',
             color: '#A9A9A9',
             weight: 2,
             latlngs: defaultDetectionLinesCoordinates
-          }
         };
 
         /**
@@ -178,10 +179,14 @@ angular.module('mustard.game.spatialViewDirective', [
         scope.features = {};
 
         scope.$on('vesselsStateUpdated', function () {
-          var vessels = angular.copy(scope.vesselsMarker);
-          var ownShip = vessels.ownShip;
-          addOwnshipUpdate(ownShip);
-          sonarDetections(ownShip, ownShip.newDetections);
+          var ownShip = scope.ownShip;
+
+          // TODO: the following is a workaround, to be resolved once we resume
+          // the presumption that there is a vessel named ownShip
+          if (ownShip) {
+            addOwnshipUpdate(ownShip.state);
+            sonarDetections(ownShip.newDetections);
+          }
         });
 
         /**
