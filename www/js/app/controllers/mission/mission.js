@@ -9,7 +9,6 @@ angular.module('mustard.app.mission', [])
 
       /** make the id available to the scope
        *
-       * @type {mission.id|*|$scope.levels.id|dom.reporter.id|dom.details.id|jasmine.TrivialReporter.outerDiv.id}
        */
       $scope.missionNumber = $routeParams.id;
 
@@ -19,7 +18,7 @@ angular.module('mustard.app.mission', [])
        * or this
        * http://stackoverflow.com/questions/20836374/how-to-catch-angular-ng-include-error
        */
-      $scope.guidanceUrl = 'guidance/scenarios/' + $routeParams.id + '/index.html';
+      $scope.guidanceUrl = 'guidance/' + $routeParams.id + '/index.html';
 
       $scope.moveToMission = function (id) {
         $location.path('/game/mission/' + id);
