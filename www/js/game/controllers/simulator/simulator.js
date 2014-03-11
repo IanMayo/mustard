@@ -302,7 +302,7 @@ angular.module('mustard.game.simulator', [
                     alert($scope.gameState.successMessage);
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
-                    $scope.gameState.state = 'FAILED';
+                    $scope.gameState.state = 'FAILURE';
                     alert($scope.gameState.failureMessage);
                     delete $scope.gameState.failureMessage;
                 }
@@ -332,23 +332,23 @@ angular.module('mustard.game.simulator', [
                     // ok, resume
                     $scope.gameState.state = 'RUNNING';
 
-                } else if ((timeState === 'DO_STOP') || (timeState === 'FAILED')) {
+                } else if ((timeState === 'DO_STOP') || (timeState === 'FAILURE')) {
 
                     // ok, stop the scenario
                     $scope.gameState.accelRate = 0;
 
                     // hey was it success or failure?
-                    if ($scope.gameState.successMessage) {
+                    if ($scope.gameState.state=="SUCCESS") {
                         user.missionCompleted($scope.missionID);
                     }
-                    else if ($scope.gameState.failureMessage) {
+                    else if ($scope.gameState.state=="FAILURE") {
                         user.missionFailed($scope.missionID);
                     }
 
                     // for diagnostics, show any narrative entries
                     if ($scope.gameState.narratives) {
                         var showOnConsole = function (element) {
-                            console.log("narrative. time:" + element.dateTime + " location:" + element.location + " msg:" + element.message);
+                            console.log("narrative. time:" + element.time + " location:" + element.location + " msg:" + element.message);
                         };
                         console.log("== NARRATIVE ENTRIES FOR THIS MISSION ===");
                         _.each($scope.gameState.narratives, showOnConsole);
