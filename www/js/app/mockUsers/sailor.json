@@ -7,10 +7,20 @@
     "missions": [
         {"id": "1a", "status": "SUCCESS"},
         {"id": "1b", "status": "SUCCESS"},
-        {"id": "1c", "status": "UNLOCKED"},
-        {"id": "1d", "status": "LOCKED"},
-        {"id": "2a", "status": "LOCKED"},
-        {"id": "2b", "status": "LOCKED"},
-        {"id": "2c", "status": "LOCKED"}
+        {"id": "1c", "status": "SUCCESS"},
+        {"id": "1d", "status": "SUCCESS"},
+        {"id": "2a", "status": "SUCCESS"},
+        {"id": "2b", "status": "SUCCESS"},
+        {"id": "2c", "status": "UNLOCKED"},
+        {"id": "2d", "status": "LOCKED"},
+        {"id": "3a", "status": "LOCKED"},
+        {"id": "3b", "status": "LOCKED"},
+        {"id": "4a", "status": "LOCKED"},
+        {"id": "6a", "status": "LOCKED"},
+        {"id": "6b", "status": "LOCKED"},
+        {"id": "7a", "status": "LOCKED"}
+
+
+
     ]
 }
