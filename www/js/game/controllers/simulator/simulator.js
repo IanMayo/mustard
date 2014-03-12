@@ -530,6 +530,10 @@ angular.module('mustard.game.simulator', [
             _.each($scope.vesselsScenario, function (vessel) {
 
                 // create a collection of vessels, indexed by name
+                // NOTE: we're not using the short version of the name here.
+                // in some scenarios Objectives objects specify which target
+                // they relate to, by target name. So, we can't mangle the
+                // indexed name value.
                 $scope.vessels[vessel.name] = vessel;
 
                 // and initialise the vessel marker (used in the spatial view)
