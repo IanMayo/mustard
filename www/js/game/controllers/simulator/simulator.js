@@ -115,8 +115,20 @@ angular.module('mustard.game.simulator', [
         var startTime; // keep track of the start time, so we can pass the period to the history object.
 
         var updateMarker = function (vessel) {
+
+            // the markers are indexed by vessel name, but that can't handle spaces,
+            // so tidy the vessel name
             var shortName = vessel.name.replace(/\s+/g, '');
+
+            // retrieve the marker
             var marker = $scope.vesselsMarker[shortName];
+
+            // did we find a marker?
+            if (!marker) {
+                // nope, better create one
+                marker = $scope.vesselsMarker[shortName] = createMarker(vessel);
+            }
+
             var state = vessel.state;
 
             marker.lat = state.location ? state.location.lat : 0;
@@ -214,14 +226,6 @@ angular.module('mustard.game.simulator', [
                     shadowSize: [0, 0]
                 }
             };
-
-
-            // update the lat/long
-            //        vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
-            //        vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
-            //        vessel.iconAngle = vessel.state.course;
-            //
-            //        return vessel;
         };
 
         var initializeTargetShips = function () {
@@ -339,10 +343,10 @@ angular.module('mustard.game.simulator', [
                     $scope.gameState.accelRate = 0;
 
                     // hey was it success or failure?
-                    if ($scope.gameState.state=="SUCCESS") {
+                    if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
                     }
-                    else if ($scope.gameState.state=="FAILURE") {
+                    else if ($scope.gameState.state == "FAILURE") {
                         user.missionFailed($scope.missionID);
                     }
 
@@ -522,13 +526,17 @@ angular.module('mustard.game.simulator', [
 
         var doInit = function () {
 
-            // Target vessels marker
+            // loop through the scenario vessels, to do initialization
             _.each($scope.vesselsScenario, function (vessel) {
+
+                // create a collection of vessels, indexed by name
                 $scope.vessels[vessel.name] = vessel;
-                var shortName = vessel.name.replace(/\s+/g, '');
-                $scope.vesselsMarker[shortName] = createMarker(vessel);
+
+                // and initialise the vessel marker (used in the spatial view)
+                updateMarker(vessel);
             });
 
+            // create a wrapped ownship instance, for convenience
             $scope.ownShip = ownShipApi();
 
             initializeTargetShips();
