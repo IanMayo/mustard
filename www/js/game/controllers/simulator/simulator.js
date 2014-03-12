@@ -115,7 +115,8 @@ angular.module('mustard.game.simulator', [
         var startTime; // keep track of the start time, so we can pass the period to the history object.
 
         var updateMarker = function (vessel) {
-            var marker = $scope.vesselsMarker[vessel.name];
+            var shortName = vessel.name.replace(/\s+/g, '');
+            var marker = $scope.vesselsMarker[shortName];
             var state = vessel.state;
 
             marker.lat = state.location ? state.location.lat : 0;
@@ -524,7 +525,8 @@ angular.module('mustard.game.simulator', [
             // Target vessels marker
             _.each($scope.vesselsScenario, function (vessel) {
                 $scope.vessels[vessel.name] = vessel;
-                $scope.vesselsMarker[vessel.name] = createMarker(vessel);
+                var shortName = vessel.name.replace(/\s+/g, '');
+                $scope.vesselsMarker[shortName] = createMarker(vessel);
             });
 
             $scope.ownShip = ownShipApi();
