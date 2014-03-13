@@ -18,6 +18,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                 var legOneOSA;
                 var legTwoOSA;
                 var markerDropped;
+                var rangeOrigin;
 
                 var previousDetection;
 
@@ -65,6 +66,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                         legOneOSA = null;
                         legTwoOSA = null;
                         markerDropped = null;
+                        rangeOrigin = null;
                     }
                 });
 
@@ -91,6 +93,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                     var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
                     var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
+                    console.log("osa:" + deltaOSA + " bdot:" + deltaBdot);
                     return 1936 * deltaOSA / deltaBdot;
                 };
 
@@ -102,7 +105,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                     else {
                         res = Math.abs(legOne) + Math.abs(legTwo);
                     }
-                    return res;
+                    return Math.abs(res);
                 };
 
                 scope.$on('addDetections', function (event, dataValues) {
@@ -126,6 +129,12 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                     if (!legTwoBdot) {
                                         legTwoBdot = new RunningAverage();
                                         legTwoOSA = new RunningAverage();
+                                    }
+
+                                    // have we just started turn?
+                                    if(!rangeOrigin)
+                                    {
+                                        rangeOrigin = angular.copy(scope.state.location);
                                     }
                                 }
                             }
@@ -153,8 +162,13 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
 
                                         if (!markerDropped) {
+
+                                            console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
+
                                             // ok, create the marker location
-                                            var location = geoMath.rhumbDestinationPoint(scope.state.location, geoMath.toRads(contact.bearing), range);
+                                            var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
+
+                                            console.log(location);
 
                                             markerDropped = true;
                                             scope.vesselsmarker["marker" + _.uniqueId()] = {
@@ -163,6 +177,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                                 "layer": "ownShip"
                                             }
                                         }
+
+                                        scope.isRunning = false;
 
                                         // and remember the next detection
                                         previousDetection = contact;
