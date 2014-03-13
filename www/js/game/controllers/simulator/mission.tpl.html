@@ -2,12 +2,12 @@
   <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-star"></span> Back
   </button>
-  <table width="100%">
+  <table  style="width:100%">
     <tr>
-      <td width="40%" style="padding: 10px">
+      <td style="width:50%;padding: 10px">
         <time-bearing-display data-series="ownShip.detections()"></time-bearing-display>
       </td>
-      <td width="60%" style="padding: 10px">
+      <td style="width:50%;padding: 10px">
         <spatial-view></spatial-view>
       </td>
     </tr>
@@ -35,7 +35,7 @@
             <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
           </li>
           <li>
-            <range-calculator></range-calculator>
+            <range-calculator data-vesselsmarker="vesselsMarker" data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
           </li>
         </ul>
       </td>
