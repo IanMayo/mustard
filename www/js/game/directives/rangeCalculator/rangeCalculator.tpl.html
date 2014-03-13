@@ -1,5 +1,14 @@
 <h4>Range Calculator:</h4>
-<button ng-disabled="straightCount == 0" ng-click="doFireStraight()"
-        type="button" class="btn btn-default">
-  <span class="glyphicon glyphicon-record">Leg One</span>
-</button>
+<div data-ng-show="hasTrack()">
+  <h5>Has track:{{ trackName() }}</h5>
+  <div  class="checkbox">
+    <label>
+      <input data-ng-model="isRunning" type="checkbox">Running
+    </label>
+  </div>
+  <button ng-click="doClearTrack()"
+          type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-record">Clear</span>
+  </button>
+  <span>{{ status }}</span>
+</div>
