@@ -1,25 +1,27 @@
-angular.module('mustard.game.rangeCalculatorDirective', [])
+angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath', 'mustard.game.panToVesselDirective', 'leaflet-directive'])
 
     .directive('rangeCalculator', ['geoMath', function (geoMath) {
         return {
             restrict: 'EA',
             scope: {
                 state: '=',
-                detections: '='
+                detections: '=',
+                vesselsmarker: '='
             },
             templateUrl: 'js/game/directives/rangeCalculator/rangeCalculator.tpl.html',
             link: function (scope) {
 
-                var trackName = "Target";
+                var trackName;
 
                 var legOneBdot;
                 var legTwoBdot;
                 var legOneOSA;
                 var legTwoOSA;
+                var markerDropped;
 
                 var previousDetection;
 
-                scope.isRunning = true;
+                scope.isRunning = false;
 
                 scope.status = "Inactive";
 
@@ -55,14 +57,14 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                     scope.status = status;
                 }
 
-                scope.$watch('isRunning', function(){
-                    if(!scope.isRunning)
-                    {
-                        // ok, stopping
-                        delete legOneBdot;
-                        delete legTwoBdot;
-                        delete legOneOSA;
-                        delete legTwoOSA;
+                scope.$watch('isRunning', function () {
+                    if (!scope.isRunning) {
+                        // finished running, clear the working variables, ready for the next run
+                        legOneBdot = null;
+                        legTwoBdot = null;
+                        legOneOSA = null;
+                        legTwoOSA = null;
+                        markerDropped = null;
                     }
                 });
 
@@ -89,7 +91,7 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
 
                     var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
                     var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
-                    return 2 * deltaOSA / deltaBdot;
+                    return 1936 * deltaOSA / deltaBdot;
                 };
 
                 var calcDelta = function (legOne, legTwo) {
@@ -148,7 +150,19 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                                         var range = calcRange(legOneOSA.average(), legTwoOSA.average(), legOneBdot.average(),
                                             legTwoBdot.average());
 
-                                        setStatus("Range:" + Math.floor(range*1000) +  "m");
+                                        setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
+
+                                        if (!markerDropped) {
+                                            // ok, create the marker location
+                                            var location = geoMath.rhumbDestinationPoint(scope.state.location, geoMath.toRads(contact.bearing), range);
+
+                                            markerDropped = true;
+                                            scope.vesselsmarker["marker" + _.uniqueId()] = {
+                                                "lat": location.lat,
+                                                "lng": location.lng,
+                                                "layer": "ownShip"
+                                            }
+                                        }
 
                                         // and remember the next detection
                                         previousDetection = contact;
@@ -180,9 +194,6 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                                     }
                                 }
                                 else {
-
-                                    console.log("calc:" + calcRange(3, -6.6, 0.3, 1.3));
-
                                     // ok - starting to run: find the first matching item
                                     var contact = _.find(scope.detections, function (det) {
                                         return det.trackId == trackName;
@@ -199,10 +210,6 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                                 }
 
                             }
-                        }
-                        else {
-                            // we're in a turn - nothing to process
-                            setStatus("Inactive");
                         }
                     }
                     else {
