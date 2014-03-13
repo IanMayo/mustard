@@ -3,6 +3,7 @@ angular.module('mustard.game.simulator', [
         'mustard.game.spatialViewDirective',
         'mustard.game.timeDisplayDirective',
         'mustard.game.timeRemainingDirective',
+        'mustard.game.rangeCalculatorDirective',
         'mustard.game.shipControlsDirective',
         'mustard.game.fireWeaponDirective',
         'mustard.game.shipStateDirective',
