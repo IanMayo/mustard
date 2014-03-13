@@ -1,6 +1,6 @@
 angular.module('mustard.game.rangeCalculatorDirective', [])
 
-    .directive('rangeCalculator', ['$timeout', function ($timeout) {
+    .directive('rangeCalculator', ['geoMath', function (geoMath) {
         return {
             restrict: 'EA',
             scope: {
@@ -41,8 +41,7 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                         _count++;
                     }
 
-                    function hasData()
-                    {
+                    function hasData() {
                         return _count;
                     }
 
@@ -56,26 +55,53 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                     scope.status = status;
                 }
 
+                scope.$watch('isRunning', function(){
+                    if(!scope.isRunning)
+                    {
+                        // ok, stopping
+                        delete legOneBdot;
+                        delete legTwoBdot;
+                        delete legOneOSA;
+                        delete legTwoOSA;
+                    }
+                });
+
                 scope.hasTrack = function () {
                     return !!trackName;
                 };
 
                 scope.trackName = function () {
                     return trackName;
-                }
+                };
 
                 var calcBearingRate = function (lastDetection, newDetection) {
                     var timeDelta = newDetection.time - lastDetection.time;
                     var bearingDelta = newDetection.trueBearing - lastDetection.trueBearing;
                     return bearingDelta / (timeDelta / (60000));
-                }
+                };
 
-                var calcOSA = function(state, newDetection){
+                var calcOSA = function (state, newDetection) {
                     var relBearing = newDetection.trueBearing - state.course;
-                    return state.speed * Math.sin(relBearing);
-                }
+                    return (state.speed * Math.sin(geoMath.toRads(relBearing)));
+                };
 
+                var calcRange = function (legOneOSA, legTwoOSA, legOneBdot, legTwoBdot) {
 
+                    var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
+                    var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
+                    return 2 * deltaOSA / deltaBdot;
+                };
+
+                var calcDelta = function (legOne, legTwo) {
+                    var res;
+                    if (_.num.sign(legOne) == _.num.sign(legTwo)) {
+                        res = Math.abs(legTwo) - Math.abs(legOne);
+                    }
+                    else {
+                        res = Math.abs(legOne) + Math.abs(legTwo);
+                    }
+                    return res;
+                };
 
                 scope.$on('addDetections', function (event, dataValues) {
                     if (scope.hasTrack()) {
@@ -119,7 +145,10 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                                         legTwoBdot.add(bearingRate);
                                         legTwoOSA.add(osa);
 
-                                        console.log("2: bdot:" + legTwoBdot.average() + "OSA:" + legTwoOSA.average());
+                                        var range = calcRange(legOneOSA.average(), legTwoOSA.average(), legOneBdot.average(),
+                                            legTwoBdot.average());
+
+                                        setStatus("Range:" + Math.floor(range*1000) +  "m");
 
                                         // and remember the next detection
                                         previousDetection = contact;
@@ -146,14 +175,14 @@ angular.module('mustard.game.rangeCalculatorDirective', [])
                                         legOneBdot.add(bearingRate);
                                         legOneOSA.add(osa);
 
-                                        console.log("1: bdot:" + legOneBdot.average() + "OSA:" + legOneOSA.average());
-
-
                                         // and remember the next detection
                                         previousDetection = contact;
                                     }
                                 }
                                 else {
+
+                                    console.log("calc:" + calcRange(3, -6.6, 0.3, 1.3));
+
                                     // ok - starting to run: find the first matching item
                                     var contact = _.find(scope.detections, function (det) {
                                         return det.trackId == trackName;
