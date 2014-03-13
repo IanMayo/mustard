@@ -82,7 +82,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
         thisValue += 360;
       }
       thisValue = thisValue % 360;
-      detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId": firstId, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE});
+      detectionList.push({"time": tNow, "bearing": thisValue,"trueBearing": bearing, "source": source, "trackId": firstId, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE});
 
       // ambiguous?
       if (doAmbiguous) {
@@ -93,7 +93,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
         }
 
         thisValue = thisValue % 360;
-        detectionList.push({"time": tNow, "bearing": thisValue, "source": source, "trackId": trackId + "_b", "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE});
+        detectionList.push({"time": tNow, "bearing": thisValue,"trueBearing": bearing, "source": source, "trackId": trackId + "_b", "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE});
       }
     };
 
@@ -280,7 +280,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
               } else {
                 myVessel.state.SE = 0;
               }
-            };
+            }
           });
         }
       }
