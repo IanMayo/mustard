@@ -1,7 +1,7 @@
 <h4>Range Calculator:</h4>
 <div>
-  <div>
-    <h5>Target</h5>
+  <div class="well well-sm">
+    <div>Target:</div>
     <span ng-show="!trackName()"
           class="label label-default">Pending</span>
     <span ng-show="trackName()"
@@ -11,12 +11,12 @@
       <span class="glyphicon glyphicon-record">Clear</span>
     </button>
   </div>
-  <div ng-show="hasTrack()">
-    <h5>Ranging</h5>
-    <button ng-disabled="!hasTrack()" data-ng-click="doRun()"
+  <div class="well well-sm" ng-show="hasTrack()">
+    <div>Ranging:</div>
+    <button ng-disabled="!hasTrack() || isRunning" data-ng-click="doRun()"
             type="button" class="btn btn-default btn-sm">
       <span class="glyphicon glyphicon-tasks">Start</span>
     </button>
-    <div class="well well-sm">{{ status }}</div>
+    <div><span class="label label-warning">{{ status }}<span ng-show="badge" class="badge pull-right">{{ badge }}</span></span></div>
   </div>
 </div>
