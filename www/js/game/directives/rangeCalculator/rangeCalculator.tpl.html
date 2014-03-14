@@ -1,14 +1,22 @@
 <h4>Range Calculator:</h4>
-<div data-ng-show="hasTrack()">
-  <h5>Has track:{{ trackName() }}</h5>
-  <div  class="checkbox">
-    <label>
-      <input data-ng-model="isRunning" type="checkbox">Running
-    </label>
+<div>
+  <div>
+    <h5>Target</h5>
+    <span ng-show="!trackName()"
+          class="label label-default">Pending</span>
+    <span ng-show="trackName()"
+          class="label label-success">Acquired</span>
+    <button ng-disabled="!hasTrack()" ng-click="doClearTrack()"
+            type="button" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-record">Clear</span>
+    </button>
   </div>
-  <button ng-click="doClearTrack()"
-          type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-record">Clear</span>
-  </button>
-  <span>{{ status }}</span>
+  <div ng-show="hasTrack()">
+    <h5>Ranging</h5>
+    <button ng-disabled="!hasTrack()" data-ng-click="doRun()"
+            type="button" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-tasks">Start</span>
+    </button>
+    <div class="well well-sm">{{ status }}</div>
+  </div>
 </div>
