@@ -17,42 +17,21 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                 var legTwoBdot;
                 var legOneOSA;
                 var legTwoOSA;
+
                 var markerDropped;
                 var rangeOrigin;
 
-                var previousDetection;
+                var legOneEndTime;
+                var legTwoEndTime;
+                var LEG_LENGTH = 60000;
+
+                var turnStarted = false;
+
+                var firstDetection;
 
                 scope.isRunning = false;
 
                 scope.status = "Inactive";
-
-
-                /**
-                 * Ownship vessel API helper (since the ownship name 'may' change)
-                 * @returns {Object}
-                 */
-                var RunningAverage = function () {
-                    var _average = 0;
-                    var _total = 0;
-                    var _count = 0;
-                    this.add = add;
-                    this.average = average;
-                    this.hasData = hasData;
-
-                    function add(newVal) {
-                        _total += newVal;
-                        _count++;
-                    }
-
-                    function hasData() {
-                        return _count;
-                    }
-
-                    function average() {
-                        return _total / _count;
-                    }
-                };
-
 
                 var setStatus = function (status) {
                     scope.status = status;
@@ -74,7 +53,6 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                     rangeOrigin = null;
                 };
 
-
                 scope.hasTrack = function () {
                     return !!trackName;
                 };
@@ -85,12 +63,12 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                 var calcBearingRate = function (lastDetection, newDetection) {
                     var timeDelta = newDetection.time - lastDetection.time;
-                    var bearingDelta = newDetection.trueBearing - lastDetection.trueBearing;
+                    var bearingDelta = newDetection.bearing - lastDetection.bearing;
                     return bearingDelta / (timeDelta / (60000));
                 };
 
                 var calcOSA = function (state, newDetection) {
-                    var relBearing = newDetection.trueBearing - state.course;
+                    var relBearing = newDetection.bearing - state.course;
                     return (state.speed * Math.sin(geoMath.toRads(relBearing)));
                 };
 
@@ -113,145 +91,115 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                     return Math.abs(res);
                 };
 
-                scope.$on('addDetections', function (event, dataValues) {
-                    if (scope.hasTrack()) {
-                        // ok, is this thing switched on?
-                        if (scope.isRunning) {
+                scope.$on('addDetections', function () {
+                        if (scope.hasTrack()) {
+                            // ok, is this thing switched on?
+                            if (scope.isRunning) {
 
-                            // are we currently turning
-                            var turnRate = scope.state.turnRate;
-                            if (Math.abs(turnRate) > 0.001) {
-                                // we're in a turn - nothing to process
-                                setStatus("Waiting for turn to complete");
+                                // are we currently turning
+                                var turnRate = scope.state.turnRate;
+                                if (Math.abs(turnRate) > 0.001) {
+                                    // we're in a turn - nothing to process
+                                    setStatus("Waiting for turn to complete");
 
-                                // ok - are we in leg two?
-                                if (legTwoBdot && legTwoBdot.hasData()) {
-                                    // ok, stop calculating
-                                    setStatus("Terminating second leg");
-                                    scope.isRunning = false;
-                                }
-                                else if (legOneBdot) {
-                                    // ok, this is the turn at the end of leg one.
-
-                                    if (!legTwoBdot) {
-                                        // this is the first step whilst in the turn. do some init
-                                        legTwoBdot = new RunningAverage();
-                                        legTwoOSA = new RunningAverage();
-
-                                        // also take a copy of the location at this point
-                                        rangeOrigin = angular.copy(scope.state.location);
-
-                                        // and clear the previous location
-                                        previousDetection = null;
+                                    // ok - are we in leg two?
+                                    if (legTwoEndTime) {
+                                        // ok, stop calculating
+                                        setStatus("Terminating second leg");
+                                        scope.isRunning = false;
                                     }
-                                }
-                            }
-                            else {
-                                // ok, are we on second leg?
-                                if (legTwoBdot) {
-                                    // ok, carry on running
-                                    setStatus("Averaging Leg Two");
-
-                                    // ok, get the new detection
-                                    var contact = _.find(scope.detections, function (det) {
-                                        return det.trackId == trackName;
-                                    });
-
-                                    // are we still in contact?
-                                    if (contact) {
-
-                                        // have we stored any detections for this leg?
-                                        if (previousDetection) {
-                                            var bearingRate = calcBearingRate(contact, previousDetection)
-                                            var osa = calcOSA(scope.state, contact);
-
-                                            legTwoBdot.add(bearingRate);
-                                            legTwoOSA.add(osa);
-
-                                            var range = calcRange(legOneOSA.average(), legTwoOSA.average(), legOneBdot.average(),
-                                                legTwoBdot.average());
-
-                                            setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
-
-                                            if (!markerDropped) {
-
-                                                console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
-
-                                                // ok, create the marker location
-                                                rangeOrigin = angular.copy(scope.state.location);
-                                                var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
-
-                                                console.log(location);
-
-                                                markerDropped = true;
-                                                scope.vesselsmarker["marker" + _.uniqueId()] = {
-                                                    "lat": location.lat,
-                                                    "lng": location.lng,
-                                                    "layer": "ownShip"
-                                                }
-                                            }
-
-                                            //    scope.isRunning = false;
-
-                                        }
-
-                                        // and remember the next detection
-                                        previousDetection = contact;
-                                    }
-                                    else {
-                                        setStatus("Contact lost");
-                                        doReset();
-                                    }
-
-                                }
-                                else if (legOneBdot) {
-                                    setStatus("Averaging Leg One");
-
-                                    // ok, get the new detection
-                                    var contact = _.find(scope.detections, function (det) {
-                                        return det.trackId == trackName;
-                                    });
-
-                                    if (contact) {
-
-                                        var bearingRate = calcBearingRate(contact, previousDetection)
-                                        var osa = calcOSA(scope.state, contact);
-
-                                        legOneBdot.add(bearingRate);
-                                        legOneOSA.add(osa);
-
-                                        // and remember the next detection
-                                        previousDetection = contact;
-                                    }
-                                    else {
-                                        setStatus("Contact lost");
-                                        doReset();
+                                    else if (legOneBdot) {
+                                        // ok, this is the turn at the end of leg one.
+                                        turnStarted = true;
                                     }
                                 }
                                 else {
-                                    // ok - starting to run: find the first matching item
+
                                     var contact = _.find(scope.detections, function (det) {
                                         return det.trackId == trackName;
                                     });
-                                    if (!contact) {
+
+                                    // are we holding the contact?
+                                    if (contact) {
+                                        // ok, are we on second leg?
+                                        if (turnStarted) {
+                                            // ok, we've come out of the turn
+
+                                            if (!legTwoEndTime) {
+                                                legTwoEndTime = contact.time + LEG_LENGTH;
+                                                firstDetection = contact;
+                                            }
+                                            else {
+
+                                                if (contact.time >= legTwoEndTime) {
+                                                    // ok, we're ready to calc
+                                                    legTwoBdot = calcBearingRate(contact, firstDetection);
+                                                    legTwoOSA = calcOSA(scope.state, contact);
+
+                                                    var range = calcRange(legOneOSA, legTwoOSA, legOneBdot,
+                                                        legTwoBdot);
+
+                                                    setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
+
+                                                    console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
+
+                                                    // ok, create the marker location
+                                                    rangeOrigin = angular.copy(scope.state.location);
+                                                    var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
+
+                                                    console.log(location);
+
+                                                    markerDropped = true;
+                                                    scope.vesselsmarker["marker" + _.uniqueId()] = {
+                                                        "lat": location.lat,
+                                                        "lng": location.lng,
+                                                        "layer": "ownShip"
+                                                    };
+
+                                                    scope.isRunning = false;
+                                                }
+                                                else {
+                                                    // we're still doing hte average
+                                                    setStatus("Averaging Leg Two");
+                                                }
+
+                                            }
+                                        }
+                                        else if (legOneEndTime) {
+                                            // right - we must be processing the leg one average
+
+
+                                            // have we passed the end time
+                                            if (contact.time >= legOneEndTime) {
+                                                legOneBdot = calcBearingRate(contact, firstDetection);
+                                                legOneOSA = calcOSA(scope.state, contact);
+                                                setStatus("Leg One Complete, ready to turn");
+                                            }
+                                            else {
+                                                setStatus("Averaging Leg One");
+                                            }
+
+                                        }
+                                        else {
+                                            firstDetection = contact;
+                                            legOneEndTime = contact.time + LEG_LENGTH;
+
+                                            setStatus("Starting Ranging Calc");
+                                        }
+                                    }
+                                    else {
                                         setStatus("Contact lost");
                                         doReset();
                                     }
-                                    else {
-                                        legOneBdot = new RunningAverage();
-                                        legOneOSA = new RunningAverage();
-                                        previousDetection = contact;
-                                        setStatus("Starting Ranging Calc");
-                                    }
                                 }
-
                             }
                         }
+                        else {
+                            setStatus("Waiting for track");
+                        }
                     }
-                    else {
-                        setStatus("Waiting for track");
-                    }
-                });
+                )
+                ;
 
                 scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
                     trackName = theTrackName;
@@ -262,6 +210,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                     trackName = null;
                 }
             }
-        };
+        }
+            ;
 
-    }]);
+    }])
+;
