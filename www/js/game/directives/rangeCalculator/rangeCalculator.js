@@ -56,19 +56,24 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                 var setStatus = function (status) {
                     scope.status = status;
-                }
+                };
 
                 scope.$watch('isRunning', function () {
                     if (!scope.isRunning) {
                         // finished running, clear the working variables, ready for the next run
-                        legOneBdot = null;
-                        legTwoBdot = null;
-                        legOneOSA = null;
-                        legTwoOSA = null;
-                        markerDropped = null;
-                        rangeOrigin = null;
+                        doReset();
                     }
                 });
+
+                var doReset = function () {
+                    legOneBdot = null;
+                    legTwoBdot = null;
+                    legOneOSA = null;
+                    legTwoOSA = null;
+                    markerDropped = null;
+                    rangeOrigin = null;
+                };
+
 
                 scope.hasTrack = function () {
                     return !!trackName;
@@ -126,15 +131,18 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                     scope.isRunning = false;
                                 }
                                 else if (legOneBdot) {
+                                    // ok, this is the turn at the end of leg one.
+
                                     if (!legTwoBdot) {
+                                        // this is the first step whilst in the turn. do some init
                                         legTwoBdot = new RunningAverage();
                                         legTwoOSA = new RunningAverage();
-                                    }
 
-                                    // have we just started turn?
-                                    if(!rangeOrigin)
-                                    {
+                                        // also take a copy of the location at this point
                                         rangeOrigin = angular.copy(scope.state.location);
+
+                                        // and clear the previous location
+                                        previousDetection = null;
                                     }
                                 }
                             }
@@ -149,43 +157,50 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         return det.trackId == trackName;
                                     });
 
+                                    // are we still in contact?
                                     if (contact) {
-                                        var bearingRate = calcBearingRate(contact, previousDetection)
-                                        var osa = calcOSA(scope.state, contact);
 
-                                        legTwoBdot.add(bearingRate);
-                                        legTwoOSA.add(osa);
+                                        // have we stored any detections for this leg?
+                                        if (previousDetection) {
+                                            var bearingRate = calcBearingRate(contact, previousDetection)
+                                            var osa = calcOSA(scope.state, contact);
 
-                                        var range = calcRange(legOneOSA.average(), legTwoOSA.average(), legOneBdot.average(),
-                                            legTwoBdot.average());
+                                            legTwoBdot.add(bearingRate);
+                                            legTwoOSA.add(osa);
 
-                                        setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
+                                            var range = calcRange(legOneOSA.average(), legTwoOSA.average(), legOneBdot.average(),
+                                                legTwoBdot.average());
 
-                                        if (!markerDropped) {
+                                            setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
 
-                                            console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
+                                            if (!markerDropped) {
 
-                                            // ok, create the marker location
-                                            var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
+                                                console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
 
-                                            console.log(location);
+                                                // ok, create the marker location
+                                                rangeOrigin = angular.copy(scope.state.location);
+                                                var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
 
-                                            markerDropped = true;
-                                            scope.vesselsmarker["marker" + _.uniqueId()] = {
-                                                "lat": location.lat,
-                                                "lng": location.lng,
-                                                "layer": "ownShip"
+                                                console.log(location);
+
+                                                markerDropped = true;
+                                                scope.vesselsmarker["marker" + _.uniqueId()] = {
+                                                    "lat": location.lat,
+                                                    "lng": location.lng,
+                                                    "layer": "ownShip"
+                                                }
                                             }
-                                        }
 
-                                        scope.isRunning = false;
+                                            //    scope.isRunning = false;
+
+                                        }
 
                                         // and remember the next detection
                                         previousDetection = contact;
                                     }
                                     else {
-                                        console.log("lost contact");
-                                        console.log(scope.detections);
+                                        setStatus("Contact lost");
+                                        doReset();
                                     }
 
                                 }
@@ -208,6 +223,10 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         // and remember the next detection
                                         previousDetection = contact;
                                     }
+                                    else {
+                                        setStatus("Contact lost");
+                                        doReset();
+                                    }
                                 }
                                 else {
                                     // ok - starting to run: find the first matching item
@@ -215,7 +234,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         return det.trackId == trackName;
                                     });
                                     if (!contact) {
-                                        console.log("CANNOT FIND TARGET")
+                                        setStatus("Contact lost");
+                                        doReset();
                                     }
                                     else {
                                         legOneBdot = new RunningAverage();
