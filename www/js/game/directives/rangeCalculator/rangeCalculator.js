@@ -1,6 +1,8 @@
 angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath', 'mustard.game.panToVesselDirective', 'leaflet-directive'])
 
-    .directive('rangeCalculator', ['geoMath', function (geoMath) {
+    .constant('LEG_LENGTH', 60000)  // how long a leg must be averaged for
+
+    .directive('rangeCalculator', ['geoMath','LEG_LENGTH', function (geoMath, LEG_LENGTH) {
         return {
             restrict: 'EA',
             scope: {
@@ -12,41 +14,60 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
             templateUrl: 'js/game/directives/rangeCalculator/rangeCalculator.tpl.html',
             link: function (scope) {
 
-                var trackName;
+                var trackName;  // the track selected by the user
 
                 var legOneBdot;
                 var legTwoBdot;
                 var legOneOSA;
                 var legTwoOSA;
 
-                var markerDropped;
-                var rangeOrigin;
-
                 var legOneEndTime;
                 var legTwoEndTime;
-                var LEG_LENGTH = 60000;
 
                 var turnStarted = false;
 
-                var firstDetection;
+                var firstDetection;  // we need to remember the first detection in each leg, for averaging
 
-                scope.isRunning = false;
+                scope.isRunning = false;  // whether a ranging manoeuvre is active
 
                 scope.status = "Inactive";
 
+                /** output a message to the user
+                 *
+                 * @param status
+                 * @param badge
+                 */
                 var setStatus = function (status, badge) {
                     scope.status = status;
                     scope.badge = badge;
                 };
 
 
+                /** listen out for the user selecting a track from the sonar
+                 *
+                 */
+                scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+                    trackName = theTrackName;
+                });
+
+                /** let the user "drop" the selected track
+                 * 
+                 */
+                scope.doClearTrack = function () {
+                    trackName = null;
+                }
+                /** start doing a ranging calculation
+                 *
+                 */
                 scope.doRun = function () {
-                    console.log("STARTING RUNNING!");
                     // clear out
                     doReset();
                     scope.isRunning = true;
                 };
 
+                /** event cancelled - clear out
+                 *
+                 */
                 var doReset = function () {
                     legOneBdot = null;
                     legTwoBdot = null;
@@ -55,11 +76,13 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                     firstDetection = null;
                     legOneOSA = null;
                     legTwoOSA = null;
-                    markerDropped = null;
-                    rangeOrigin = null;
                     turnStarted = false;
                 };
 
+                /** has a track been defined?
+                 *
+                 * @returns {boolean}
+                 */
                 scope.hasTrack = function () {
                     return !!trackName;
                 };
@@ -83,7 +106,6 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                     var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
                     var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
-                    console.log("osa:" + deltaOSA + " bdot:" + deltaBdot);
                     return 1936 * deltaOSA / deltaBdot;
                 };
 
@@ -107,12 +129,12 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                             var turnRate = scope.state.turnRate;
                             if (Math.abs(turnRate) > 0.001) {
                                 // we're in a turn - nothing to process
-                                setStatus("Waiting for turn to complete");
+                                setStatus("Waiting for turn to complete", null);
 
                                 // ok - are we in leg two?
                                 if (legTwoEndTime) {
                                     // ok, stop calculating
-                                    setStatus("Calculation terminated");
+                                    setStatus("Calculation terminated", null);
                                     scope.isRunning = false;
                                 }
                                 else if (legOneBdot) {
@@ -122,6 +144,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                             }
                             else {
 
+                                // ok, retrieve the detection for our subject track
                                 var contact = _.find(scope.detections, function (det) {
                                     return det.trackId == trackName;
                                 });
@@ -139,45 +162,41 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         else {
 
                                             if (contact.time >= legTwoEndTime) {
+
+                                                // ok - we're done
+                                                scope.isRunning = false;
+
                                                 // ok, we're ready to calc
                                                 legTwoBdot = calcBearingRate(contact, firstDetection);
                                                 legTwoOSA = calcOSA(scope.state, contact);
 
+                                                // data ready, do the calculation
                                                 var range = calcRange(legOneOSA, legTwoOSA, legOneBdot,
                                                     legTwoBdot);
 
-                                                setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing));
-
-                                                console.log("Dropping marker at range:" + Math.floor(range) + " brg:" + Math.floor(contact.bearing));
+                                                // output the solution
+                                                setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing), null);
 
                                                 // ok, create the marker location
-                                                rangeOrigin = angular.copy(scope.state.location);
+                                                var rangeOrigin = angular.copy(scope.state.location);
                                                 var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
 
-                                                console.log(location);
-
-                                                if (!markerDropped) {
-                                                    markerDropped = true;
-                                                    scope.vesselsmarker["marker" + _.uniqueId()] = {
-                                                        "lat": location.lat,
-                                                        "lng": location.lng,
-                                                        "layer": "ownShip"
-                                                    };
-                                                }
+                                                // insert a new marker
+                                                scope.vesselsmarker["marker" + _.uniqueId()] = {
+                                                    "lat": location.lat,
+                                                    "lng": location.lng,
+                                                    "layer": "ownShip"
+                                                };
 
                                                 // and register the solution with the vessel
-                                                if(!scope.vessel.solutions)
-                                                {
+                                                if (!scope.vessel.solutions) {
                                                     scope.vessel.solutions = [];
                                                 }
-                                                scope.vessel.solutions.push({"time":contact.time, "location":location, "target":contact.target});
-
-
-                                                scope.isRunning = false;
+                                                scope.vessel.solutions.push({"time": contact.time, "location": location, "target": contact.target});
                                             }
                                             else {
                                                 // we're still doing hte average
-                                                setStatus("Averaging Leg Two", Math.floor((legTwoEndTime - contact.time) / 1000));
+                                                setStatus("Averaging Leg Two", Math.floor((legTwoEndTime - contact.time) / 1000) + "secs");
                                             }
 
                                         }
@@ -190,10 +209,10 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         if (contact.time >= legOneEndTime) {
                                             legOneBdot = calcBearingRate(contact, firstDetection);
                                             legOneOSA = calcOSA(scope.state, contact);
-                                            setStatus("Leg One Complete, ready to turn");
+                                            setStatus("Leg One Complete, ready to turn", null);
                                         }
                                         else {
-                                            setStatus("Averaging Leg One", Math.floor((legOneEndTime - contact.time) / 1000));
+                                            setStatus("Averaging Leg One", Math.floor((legOneEndTime - contact.time) / 1000) + "secs");
                                         }
 
                                     }
@@ -201,29 +220,21 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                         firstDetection = contact;
                                         legOneEndTime = contact.time + LEG_LENGTH;
 
-                                        setStatus("Starting Ranging Calc");
+                                        setStatus("Starting Ranging Calc", null);
                                     }
                                 }
                                 else {
-                                    setStatus("Contact lost");
+                                    setStatus("Contact lost", null);
                                     doReset();
                                 }
                             }
                         }
                     }
                     else {
-                        setStatus("Press [Run] to start");
+                        setStatus("Press [Run] to start", null);
                     }
                 });
 
-                scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
-                    trackName = theTrackName;
-                });
-
-                scope.doClearTrack = function () {
-                    console.log("clearing track!");
-                    trackName = null;
-                }
             }
         }
             ;
