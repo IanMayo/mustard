@@ -6,7 +6,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
             scope: {
                 state: '=',
                 detections: '=',
-                vesselsmarker: '='
+                vesselsmarker: '=',
+                vessel: '='
             },
             templateUrl: 'js/game/directives/rangeCalculator/rangeCalculator.tpl.html',
             link: function (scope) {
@@ -33,16 +34,11 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                 scope.status = "Inactive";
 
-                var setStatus = function (status) {
+                var setStatus = function (status, badge) {
                     scope.status = status;
+                    scope.badge = badge;
                 };
 
-                //                scope.$watch('isRunning', function () {
-                //                    if (!scope.isRunning) {
-                //                        // finished running, clear the working variables, ready for the next run
-                //                        doReset();
-                //                    }
-                //                });
 
                 scope.doRun = function () {
                     console.log("STARTING RUNNING!");
@@ -65,7 +61,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                 };
 
                 scope.hasTrack = function () {
-                   return !!trackName;
+                    return !!trackName;
                 };
 
                 scope.trackName = function () {
@@ -116,7 +112,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                 // ok - are we in leg two?
                                 if (legTwoEndTime) {
                                     // ok, stop calculating
-                                    setStatus("Terminating second leg");
+                                    setStatus("Calculation terminated");
                                     scope.isRunning = false;
                                 }
                                 else if (legOneBdot) {
@@ -169,11 +165,19 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                                     };
                                                 }
 
+                                                // and register the solution with the vessel
+                                                if(!scope.vessel.solutions)
+                                                {
+                                                    scope.vessel.solutions = [];
+                                                }
+                                                scope.vessel.solutions.push({"time":contact.time, "location":location, "target":contact.target});
+
+
                                                 scope.isRunning = false;
                                             }
                                             else {
                                                 // we're still doing hte average
-                                                setStatus("Averaging Leg Two");
+                                                setStatus("Averaging Leg Two", Math.floor((legTwoEndTime - contact.time) / 1000));
                                             }
 
                                         }
@@ -189,7 +193,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                                             setStatus("Leg One Complete, ready to turn");
                                         }
                                         else {
-                                            setStatus("Averaging Leg One");
+                                            setStatus("Averaging Leg One", Math.floor((legOneEndTime - contact.time) / 1000));
                                         }
 
                                     }
