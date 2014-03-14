@@ -3,6 +3,7 @@ angular.module('mustard.game.simulator', [
         'mustard.game.spatialViewDirective',
         'mustard.game.timeDisplayDirective',
         'mustard.game.timeRemainingDirective',
+        'mustard.game.rangeCalculatorDirective',
         'mustard.game.shipControlsDirective',
         'mustard.game.fireWeaponDirective',
         'mustard.game.shipStateDirective',
@@ -96,7 +97,7 @@ angular.module('mustard.game.simulator', [
          */
         $scope.gameState = {
             state: 'DO_STOP',
-            accelRate: 0,
+            accelRate: 16,
             simulationTime: 0,
             simulationTimeStep: 2000,
             patrolArea: scenario.patrolArea
@@ -384,15 +385,11 @@ angular.module('mustard.game.simulator', [
                 }
             });
 
-            // now insert the narratives
-            history.narratives = $scope.gameState.narratives;
-
-            // TODO : narratives, mission name
-
             // do we have a track history
             if (_.size(trackHistory)) {
                 reviewSnapshot.put({
                     "period": [startTime, $scope.gameState.simulationTime],
+                    "narratives": $scope.gameState.narratives,
                     "stepTime": $scope.gameState.simulationTimeStep,
                     "center": $scope.ownShip.location(),
                     "vessels": trackHistory
