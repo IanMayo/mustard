@@ -106,7 +106,9 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
 
                     var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
                     var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
-                    return 1936 * deltaOSA / deltaBdot;
+
+                    // note: yards value is 1936, this is 1770..28 in m
+                    return 1770.28 * deltaOSA / deltaBdot;
                 };
 
                 var calcDelta = function (legOne, legTwo) {
