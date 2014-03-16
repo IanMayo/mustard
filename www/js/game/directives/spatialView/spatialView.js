@@ -4,9 +4,7 @@
 
 angular.module('mustard.game.spatialViewDirective', [
     'mustard.game.geoMath',
-    'mustard.game.panToVesselDirective',
-    'mustard.game.mapScale',
-    'mustard.game.mouseLocation'
+    'mustard.game.leafletMapDirective'
   ])
 
   .constant('spatialViewConfig', {
@@ -17,9 +15,26 @@ angular.module('mustard.game.spatialViewDirective', [
   })
 
   .directive('spatialView', ['spatialViewConfig', 'geoMath', function (spatialViewConfig, geoMath) {
+    var opacityStep = spatialViewConfig.ownShipPointsInterval / spatialViewConfig.ownShipVisiblePointsTime;
     return {
       restrict: 'EA',
       scope: true,
+      controller: function ($scope) {
+        this.updateOwnshipTravelingPoints = function (circleMarkers) {
+          _.each(circleMarkers, function (item) {
+            item.setStyle({opacity: item.options.opacity - opacityStep});
+
+            if (item.options.opacity <= 0) {
+              // delete a point if it becomes invisible
+              $scope.$broadcast('deleteOwnshipTravelingPoint', item);
+            }
+          });
+        };
+
+        this.ownShipName = function () {
+          return $scope.ownShip.name();
+        };
+      },
       templateUrl: 'js/game/directives/spatialView/spatialView.tpl.html',
       link: function (scope) {
 
@@ -45,37 +60,6 @@ angular.module('mustard.game.spatialViewDirective', [
         var detectionTrackId;
 
         /**
-         * Add ownship traveling point to the map
-         * @param {Object} latlngs
-         */
-        var addOwnShipTravellingPoint = function (latlngs) {
-          var key = _.uniqueId('ownShipPoint_');
-          scope.paths[key] = {
-            type: 'circleMarker',
-            radius: 1,
-            latlngs: latlngs,
-            opacity: 1
-          };
-        };
-
-        /**
-         * Update ownship traveling points on the map
-         */
-        var updateOwnShipTravellingPoint = function () {
-          var opacityStep = spatialViewConfig.ownShipPointsInterval / spatialViewConfig.ownShipVisiblePointsTime;
-          _.map(scope.paths, function (item, key) {
-            if (item.type === 'circleMarker') {
-              item.opacity -= opacityStep;
-
-              if (item.opacity <= 0) {
-                // delete a point if it becomes invisible
-                delete scope.paths[key];
-              }
-            }
-          });
-        };
-
-        /**
          * Add sonar bearing lines to the map
          */
         var addSonarDetections = function () {
@@ -91,14 +75,14 @@ angular.module('mustard.game.spatialViewDirective', [
             });
           });
 
-          scope.paths['sonarDetections'].latlngs = detectionLinesCoordinates;
+          scope.$broadcast('addSonarDetection', detectionLinesCoordinates);
         };
 
         /**
          * Show own ship traveling points on the map
          * @param {Object} newState
          */
-        var addOwnshipUpdate = function (newState) {
+        var ownshipTraveling = function (newState) {
 
           // create a wrapped location
           var newLocation = {'lat':newState.location.lat, 'lng':newState.location.lng};
@@ -108,15 +92,11 @@ angular.module('mustard.game.spatialViewDirective', [
 
           if ((currentTime > localVesselsState.ownShip.nextMoveTime) || !localVesselsState.ownShip.nextMoveTime) {
             // add point for a next time interval or first
-            updateOwnShipTravellingPoint();
-            addOwnShipTravellingPoint(newLocation);
+            scope.$broadcast('addOwnshipTravelingPoint', newLocation);
 
             // ok, when do we drop the next marker?
             localVesselsState.ownShip.nextMoveTime = currentTime + spatialViewConfig.ownShipPointsInterval;
           }
-
-          // adjust the center coordinates of the map if it's needed
-          scope.$broadcast('ownShipMoved', newLocation);
         };
 
         /**
@@ -155,60 +135,16 @@ angular.module('mustard.game.spatialViewDirective', [
           }
         };
 
-        /**
-         * Show markers of target vessels on the map
-         * @type {Boolean}
-         */
-        scope.showTargets = false;
-
-        /**
-         * Available path types on the map
-         * @type {Object}
-         */
-        scope.paths.sonarDetections = {
-            type: 'multiPolyline',
-            color: '#A9A9A9',
-            weight: 2,
-            latlngs: defaultDetectionLinesCoordinates
-        };
-
-        /**
-         * GeoJson map features
-         * @type {Object}
-         */
-        scope.features = {};
-
         scope.$on('vesselsStateUpdated', function () {
           var ownShip = scope.ownShip.vessel();
 
           // TODO: the following is a workaround, to be resolved once we resume
           // the presumption that there is a vessel named ownShip
           if (ownShip) {
-            addOwnshipUpdate(ownShip.state);
+            ownshipTraveling(ownShip.state);
             sonarDetections(ownShip.newDetections);
           }
         });
-
-        /**
-         * Add geoJson to the map
-         */
-        scope.$watch('mapFeatures', function mapFeatures(newVal) {
-          if (newVal) {
-            // geoJson directive requires features config with "data" key
-            scope.features.data = newVal.features;
-            // disable default click handler and make the map change zoom on double click
-            scope.features.style = {
-              "clickable": false
-            };
-          }
-        });
-
-        /**
-         * Change  visibility of the layer with target markers
-         */
-        scope.toggleTargets = function () {
-          scope.layers.overlays.targets.visible = !scope.layers.overlays.targets.visible;
-        };
 
         /**
          * Visibility handler for sonar bearing lines
@@ -217,7 +153,7 @@ angular.module('mustard.game.spatialViewDirective', [
           if (newVal) {
             addSonarDetections();
           } else {
-            scope.paths['sonarDetections'].latlngs = defaultDetectionLinesCoordinates;
+            scope.$broadcast('addSonarDetection', defaultDetectionLinesCoordinates);
           }
         });
 

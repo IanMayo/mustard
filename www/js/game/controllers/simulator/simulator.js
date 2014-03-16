@@ -103,8 +103,8 @@ angular.module('mustard.game.simulator', [
  * @class MissionCtrl (controller)
  */
   .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath',
-    'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
-    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot, user) {
+    'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user', '$timeout',
+    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot, user, $timeout) {
 
       var gameAccelRateIntervalId;
 
@@ -149,77 +149,6 @@ angular.module('mustard.game.simulator', [
                   _.extend(vessel.state, data);
               }
           }
-      };
-
-      /**
-       * Create (and update) config object for a vessel marker
-       * @param {Object} vessel
-       * @returns {Object}
-       */
-      var createMarker = function (vessel) {
-
-        // ok, is it a friendly vessel?
-        var layerName;
-        if (vessel.categories.force == "RED") {
-          // nope, hide it by default
-          layerName = "targets";
-        }
-        else {
-          // ok, show it.
-          layerName = "ownShip";
-        }
-
-        // produce the icon for this vessel type
-        var vType = vessel.categories.type.toLowerCase();
-
-        // ok, and the icon initialisation bits
-        var iconSize;
-        switch (vessel.categories.type) {
-          case "WARSHIP":
-            iconSize = 64;
-            break;
-          case "TORPEDO":
-            iconSize = 32;
-            break;
-          case "SUBMARINE":
-            iconSize = 48;
-            break;
-          case "MERCHANT":
-            iconSize = 64;
-            break;
-          case "FISHERMAN":
-            iconSize = 32;
-            break;
-          case "HELICOPTER":
-            iconSize = 32;
-            break;
-          default:
-            console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
-            break;
-        }
-
-        return {
-          focus: false,
-          lat: 0,
-          lng: 0,
-          message: vessel.name,
-          layer: layerName,
-          icon: {
-            iconAngle: 0,
-            iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-            iconSize: [iconSize, iconSize],
-            iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
-            shadowSize: [0, 0]
-          }
-        };
-
-
-        // update the lat/long
-//        vessel.lat = vessel.state.location ? vessel.state.location.lat : 0;
-//        vessel.lng = vessel.state.location ? vessel.state.location.lng : 0;
-//        vessel.iconAngle = vessel.state.course;
-//
-//        return vessel;
       };
 
       var initializeTargetShips = function () {
@@ -389,44 +318,9 @@ angular.module('mustard.game.simulator', [
         }
       };
 
-      var updateMapMarkers = function () {
-        _.each($scope.vessels, function (vessel) {
-          updateMarker(vessel);
-        });
-
+      var updateMapObjects = function () {
+        $scope.$broadcast('changeMarkers', $scope.vessels);
         $scope.$broadcast('vesselsStateUpdated');
-      };
-
-      var configureMap = function (center) {
-        angular.extend($scope, {
-          mapCenter: {
-            lat: center.lat,
-            lng: center.lng,
-            zoom: 9
-          },
-          layers: {
-            baselayers: {
-              map: {
-                name: 'map',
-                type: 'xyz',
-                url: 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg'
-              }
-            },
-            overlays: {
-              ownShip: {
-                type: 'group',
-                name: 'ownShip',
-                visible: true
-              },
-              targets: {
-                type: 'group',
-                name: 'targets',
-                visible: false
-              }
-            }
-          },
-          paths: {}
-        });
       };
 
       /** capture (and store) the state of the vessel at this time
@@ -499,7 +393,7 @@ angular.module('mustard.game.simulator', [
         // update the UI
         shareSonarDetections();
         missionStatus();
-        updateMapMarkers();
+        updateMapObjects();
         /////////////////////////
         // GAME LOOP ENDS HERE
         /////////////////////////
@@ -516,17 +410,14 @@ angular.module('mustard.game.simulator', [
 
       var doInit = function () {
 
-        // Target vessels marker
+        // index vessels
         _.each($scope.vesselsScenario, function (vessel) {
           $scope.vessels[vessel.name] = vessel;
-          $scope.vesselsMarker[vessel.name] = createMarker(vessel);
         });
 
         $scope.ownShip = ownShipApi();
 
         initializeTargetShips();
-
-        configureMap($scope.ownShip.location());
 
         $scope.demandedState.course = parseInt($scope.ownShip.state().demCourse);
         $scope.demandedState.speed = parseInt($scope.ownShip.state().demSpeed);
@@ -535,6 +426,11 @@ angular.module('mustard.game.simulator', [
         startTime = $scope.gameState.simulationTime;
 
         showWelcome();
+
+        $timeout(function () {
+          $scope.$broadcast('changeMarkers', $scope.vessels);
+          $scope.$broadcast('showFeatures', $scope.mapFeatures);
+        }, 100);
       };
 
       $scope.$watch('gameState.accelRate', function (newVal) {

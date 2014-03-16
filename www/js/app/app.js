@@ -10,7 +10,6 @@ angular.module('mustard', [
     'mustard.app.settings',
     'mustard.game.simulator',
     'mustard.game.review',
-    'leaflet-directive',
     'ui.bootstrap'
 ])
 .config(function ($routeProvider) {
