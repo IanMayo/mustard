@@ -60,7 +60,7 @@ angular.module('mustard.game.leafletMapDirective', [])
           map.addLayer(layer);
         });
 
-        controlLayers = new  L.control.layers();
+        controlLayers = new L.control.layers();
         controlLayers.addBaseLayer(baseMap, 'baseMap');
         controlLayers.addOverlay(layerGroups.ownShip, 'ownShip');
         controlLayers.addOverlay(layerGroups.targets, 'targets');
@@ -166,7 +166,7 @@ angular.module('mustard.game.leafletMapDirective', [])
        * Create Leaflet map.
        */
       var createMap = function () {
-        map = new L.Map(element[0]);
+        map = new L.Map(element[0], {attributionControl: false});
 
         L.tileLayer(tileLayerUrl).addTo(map);
 
