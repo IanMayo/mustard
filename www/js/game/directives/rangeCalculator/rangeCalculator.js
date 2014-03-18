@@ -1,8 +1,8 @@
-angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath', 'mustard.game.panToVesselDirective', 'leaflet-directive'])
+angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath'])
 
     .constant('LEG_LENGTH', 60000)  // how long a leg must be averaged for
 
-    .directive('rangeCalculator', ['geoMath','LEG_LENGTH', function (geoMath, LEG_LENGTH) {
+    .directive('rangeCalculator', ['geoMath', 'LEG_LENGTH', function (geoMath, LEG_LENGTH) {
         return {
             restrict: 'EA',
             scope: {
@@ -51,7 +51,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                 });
 
                 /** let the user "drop" the selected track
-                 * 
+                 *
                  */
                 scope.doClearTrack = function () {
                     trackName = null;
@@ -236,10 +236,6 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath',
                         setStatus("Press [Run] to start", null);
                     }
                 });
-
             }
-        }
-            ;
-
-    }])
-;
+        };
+    }]);
