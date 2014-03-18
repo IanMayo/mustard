@@ -271,7 +271,7 @@ function doStep() {
             delete gameState.successMessage;
         }
         else if (gameState.failureMessage) {
-            gameState.state = "FAILED";
+            gameState.state = "FAILURE";
             alert(gameState.failureMessage);
             delete gameState.failureMessage;
         }
@@ -284,7 +284,7 @@ function doStep() {
 
             updateInterval();
         }
-        else if ((timeState == "DO_STOP") || (gameState.state == "FAILED")) {
+        else if ((timeState == "DO_STOP") || (gameState.state == "FAILURE")) {
             // ok, move on to the review stage
             var r = confirm("Ready for the debriefing?");
             if (r == true) {
