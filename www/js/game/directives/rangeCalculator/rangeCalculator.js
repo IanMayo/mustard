@@ -124,6 +124,18 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
 
                 scope.$on('addDetections', function () {
                     if (scope.hasTrack()) {
+
+
+                        // ok, retrieve the detection for our subject track
+                        var contact = _.find(scope.detections, function (det) {
+                            return det.trackId == trackName;
+                        });
+
+
+                        if (contact) {
+                            scope.signalexcess = Math.ceil(contact.strength);
+                        }
+
                         // ok, is this thing switched on?
                         if (scope.isRunning) {
 
@@ -145,11 +157,6 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                 }
                             }
                             else {
-
-                                // ok, retrieve the detection for our subject track
-                                var contact = _.find(scope.detections, function (det) {
-                                    return det.trackId == trackName;
-                                });
 
                                 // are we holding the contact?
                                 if (contact) {
