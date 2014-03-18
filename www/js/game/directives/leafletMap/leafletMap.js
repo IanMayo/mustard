@@ -2,9 +2,21 @@
  * @module mustard.game.leafletMapDirective
  */
 
-angular.module('mustard.game.leafletMapDirective', [
-])
-.directive('leafletMap', function () {
+angular.module('mustard.game.leafletMapDirective', [])
+
+.constant('leafletMapConfig', {
+  initialZoom: 13,
+  sonarBearingLines: {
+    color: '#A9A9A9',
+    weight: 2
+  },
+  ownshipPositionStyle: {
+    radius: 5,
+    opacity: 1
+  }
+})
+
+.directive('leafletMap', ['leafletMapConfig', function (leafletMapConfig) {
 
   return {
     restrict: 'EA',
@@ -66,6 +78,11 @@ angular.module('mustard.game.leafletMapDirective', [
           updateMarker(vessel);
         } else {
           createMarker(vessel);
+
+          // set map center according to ownship marker location and set proper initial zoom
+          if (vessel.name === spatialViewController.ownShipName()) {
+            map.setView(_.values(vessel.state.location), leafletMapConfig.initialZoom);
+          }
         }
       };
 
@@ -140,7 +157,6 @@ angular.module('mustard.game.leafletMapDirective', [
           // ok, show it.
           marker.setIcon(icon);
           layerGroups.ownShip.addLayer(marker);
-          map.setView(_.values(vessel.state.location), 9);
         }
 
         leafletMarkers[vessel.name] = marker;
@@ -151,6 +167,7 @@ angular.module('mustard.game.leafletMapDirective', [
        */
       var createMap = function () {
         map = new L.Map(element[0]);
+
         L.tileLayer(tileLayerUrl).addTo(map);
 
         configureLayers();
@@ -185,10 +202,7 @@ angular.module('mustard.game.leafletMapDirective', [
        */
       scope.$on('addOwnshipTravelingPoint', function (event, latlngs) {
         if (latlngs) {
-          var circleMarker = L.circleMarker(latlngs, {
-            radius: 5,
-            opacity: 1
-          });
+          var circleMarker = L.circleMarker(latlngs, leafletMapConfig.ownshipPositionStyle);
           layerGroups.ownshipTraveling.addLayer(circleMarker);
           spatialViewController.updateOwnshipTravelingPoints(layerGroups.ownshipTraveling.getLayers());
         }
@@ -208,10 +222,7 @@ angular.module('mustard.game.leafletMapDirective', [
         if (sonarMultiPolyline) {
           sonarMultiPolyline.setLatLngs(latlngs);
         } else {
-          sonarMultiPolyline = L.multiPolyline(latlngs, {
-            color: '#A9A9A9',
-            weight: 2
-          });
+          sonarMultiPolyline = L.multiPolyline(latlngs, leafletMapConfig.sonarBearingLines);
 
           layerGroups.sonarDetections.addLayer(sonarMultiPolyline);
         }
@@ -220,5 +231,5 @@ angular.module('mustard.game.leafletMapDirective', [
       createMap();
     }
   };
-});
+}]);
 
