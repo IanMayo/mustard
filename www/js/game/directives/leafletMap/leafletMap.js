@@ -81,7 +81,7 @@ angular.module('mustard.game.leafletMapDirective', [])
 
           // set map center according to ownship marker location and set proper initial zoom
           if (vessel.name === spatialViewController.ownShipName()) {
-            map.setView(_.values(vessel.state.location), leafletMapConfig.initialZoom);
+            map.setView([vessel.state.location.lat, vessel.state.location.lng], leafletMapConfig.initialZoom);
           }
         }
       };
@@ -105,7 +105,7 @@ angular.module('mustard.game.leafletMapDirective', [])
        */
       var updateMarker = function (vessel) {
         var marker = leafletMarkers[vessel.name];
-        marker.setLatLng(_.values(vessel.state.location));
+        marker.setLatLng([vessel.state.location.lat, vessel.state.location.lng]);
         marker.setIconAngle(vessel.state.course);
       };
 
@@ -147,7 +147,7 @@ angular.module('mustard.game.leafletMapDirective', [])
 
         var marker = new L.marker();
         marker.setIconAngle(vessel.state.course);
-        marker.setLatLng(_.values(vessel.state.location));
+        marker.setLatLng([vessel.state.location.lat, vessel.state.location.lng]);
 
         if ('RED' === vessel.categories.force) {
           // nope, hide it by default
