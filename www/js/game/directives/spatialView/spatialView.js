@@ -39,6 +39,12 @@ angular.module('mustard.game.spatialViewDirective', [
       link: function (scope) {
 
         /**
+         * Show markers of target vessels on the map
+         * @type {Boolean}
+         */
+        scope.targetsVisibility = false;
+
+        /**
          * Visibility sonar bearing lines on the map
          * @type {Boolean}
          */
@@ -164,6 +170,13 @@ angular.module('mustard.game.spatialViewDirective', [
           detectionTrackId = trackId;
           scope.showSonarDetections = true;
         });
+
+        /**
+         * Targets visibility mode
+         */
+        scope.toggleTargets = function () {
+          scope.$broadcast('changeTargetsVisibility', scope.targetsVisibility);
+        };
       }
     };
   }]);

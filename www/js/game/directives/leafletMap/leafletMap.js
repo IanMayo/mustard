@@ -56,17 +56,12 @@ angular.module('mustard.game.leafletMapDirective', [])
           sonarDetections: L.layerGroup()
         };
 
-        _.each(layerGroups, function (layer) {
-          map.addLayer(layer);
+        _.each(layerGroups, function (layer, index) {
+          // by default we don't show the layer with targets
+          if ('targets' !== index) {
+            map.addLayer(layer);
+          }
         });
-
-        controlLayers = new L.control.layers();
-        controlLayers.addBaseLayer(baseMap, 'baseMap');
-        controlLayers.addOverlay(layerGroups.ownShip, 'ownShip');
-        controlLayers.addOverlay(layerGroups.targets, 'targets');
-        controlLayers.addOverlay(layerGroups.ownshipTraveling, 'ownshipTraveling');
-        controlLayers.addOverlay(layerGroups.sonarDetections, 'sonarDetections');
-        controlLayers.addTo(map);
       };
 
       /**
@@ -225,6 +220,17 @@ angular.module('mustard.game.leafletMapDirective', [])
           sonarMultiPolyline = L.multiPolyline(latlngs, leafletMapConfig.sonarBearingLines);
 
           layerGroups.sonarDetections.addLayer(sonarMultiPolyline);
+        }
+      });
+
+      /**
+       * Change visibility of the layer with targets.
+       */
+      scope.$on('changeTargetsVisibility', function (event, visible) {
+        if (visible) {
+          map.addLayer(layerGroups.targets);
+        } else {
+          map.removeLayer(layerGroups.targets);
         }
       });
 
