@@ -555,9 +555,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
 
         // also any "other" handlers that keep things tidy
-        var handleExpiredWeapon = function (gameState, vessels, deadVessels) {
-
-            var toDrop = [];
+        var handleExpiredWeapon = function (gameState, vessels) {
 
             // check for any torpedoes
             _.each(vessels, function (vessel) {
@@ -566,15 +564,15 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     // got one - when is it's expiry tme
                     if (vessel.expiresAt) {
                         if (gameState.simulationTime >= vessel.expiresAt) {
-                            toDrop.push(vessel);
+
+                            // ok, add it to the destroyed list
+                            if (!gameState.destroyed) {
+                                gameState.destroyed = [];
+                            }
+                            gameState.destroyed.push(vessel);
                         }
                     }
                 }
-            });
-
-            // ok, drop any expired vessels
-            _.each(toDrop, function (vessel) {
-                destroyVessel(vessels, vessel.name, deadVessels);
             });
         };
 
@@ -731,7 +729,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // also any "other" handlers that keep things tidy
                 handleNewSolutions(gameState, vessels);
                 handleTargetsDestroyed(gameState, vessels, deadVessels);
-                handleExpiredWeapon(gameState, vessels, deadVessels);
+                handleExpiredWeapon(gameState, vessels);
                 handleWeaponDetonation(gameState, vessels);
 
 

@@ -445,28 +445,34 @@ angular.module('mustard.game.simulator', [
                 }
             });
 
-          /**
-           * Create reference location based on range maths location
-           * @type {Object} location
-           */
-          $scope.addReferenceLocation = function (location) {
-            var reference = {
-              name: ["reference" + _.uniqueId()],
-              state: {
-                course: 0,
-                location: location
-              },
-              categories: {
-                force: "BLUE",
-                environment: "SURFACE",
-                type: "REFERENCE"
-              }
+            /**
+             * Create reference location based on range maths location
+             * @type {Object} location
+             */
+            $scope.addReferenceLocation = function (location) {
+              var reference = {
+                name: ["reference" + _.uniqueId()],
+                state: {
+                  course: 0,
+                  location: location
+                },
+                categories: {
+                  force: "BLUE",
+                  environment: "SURFACE",
+                  type: "REFERENCE"
+                }
+              };
+  
+              $scope.$broadcast('addReferenceMarker', reference);
             };
 
-            $scope.$broadcast('addReferenceMarker', reference);
-          };
+            $scope.$watch('gameState.destroyed', function (vessels) {
+                if (vessels && vessels.length) {
+                    $scope.$broadcast('vesselsDestroyed', vessels);
+                }
+            }, true);
 
-          $scope.goBack = function () {
+            $scope.goBack = function () {
                 storeHistory();
                 window.history.back();
             };

@@ -158,6 +158,13 @@ angular.module('mustard.game.leafletMapDirective', [])
         leafletMarkers[vessel.name] = marker;
       };
 
+      var deleteMarker = function (vessel) {
+        if (map.hasLayer(leafletMarkers[vessel.name])) {
+          map.removeLayer(leafletMarkers[vessel.name]);
+        }
+        delete leafletMarkers[vessel.name];
+      };
+
       /**
        * Create Leaflet map.
        */
@@ -240,6 +247,12 @@ angular.module('mustard.game.leafletMapDirective', [])
        */
       scope.$on('addReferenceMarker', function (event, reference) {
         createMarker(reference);
+      });
+
+      scope.$on('vesselsDestroyed', function (event, vessels) {
+        _.each(vessels, function (vessel) {
+          deleteMarker(vessel);
+        });
       });
 
       createMap();
