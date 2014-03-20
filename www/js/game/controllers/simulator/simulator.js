@@ -451,6 +451,12 @@ angular.module('mustard.game.simulator', [
                 }
             });
 
+            $scope.$watch('gameState.destroyed', function (vessels) {
+                if (vessels && vessels.length) {
+                    $scope.$broadcast('vesselsDestroyed', vessels);
+                }
+            }, true);
+
             $scope.goBack = function () {
                 storeHistory();
                 window.history.back();
