@@ -8,7 +8,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
             scope: {
                 state: '=',
                 detections: '=',
-                vesselsmarker: '=',
+                markerLocation: '&',
                 vessel: '='
             },
             templateUrl: 'js/game/directives/rangeCalculator/rangeCalculator.tpl.html',
@@ -191,11 +191,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                                 var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
 
                                                 // insert a new marker
-                                                scope.vesselsmarker["marker" + _.uniqueId()] = {
-                                                    "lat": location.lat,
-                                                    "lng": location.lng,
-                                                    "layer": "ownShip"
-                                                };
+                                                scope.markerLocation({data:location});
 
                                                 // and register the solution with the vessel
                                                 if (!scope.vessel.solutions) {
