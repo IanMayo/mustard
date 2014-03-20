@@ -55,7 +55,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                  */
                 scope.doClearTrack = function () {
                     trackName = null;
-                }
+                };
+
                 /** start doing a ranging calculation
                  *
                  */
@@ -134,6 +135,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
 
                         if (contact) {
                             scope.signalexcess = Math.ceil(contact.strength);
+                            scope.bearingrate = Math.floor(contact.bDot);
                         }
 
                         // ok, is this thing switched on?
