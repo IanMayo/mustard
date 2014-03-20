@@ -77,12 +77,6 @@ angular.module('mustard.game.simulator', [
          */
         $scope.mapFeatures = scenario.features;
 
-        /** the vessel markers that we show on the map
-         *
-         * @type {{}}
-         */
-        $scope.vesselsMarker = {};
-
         /**
          * what the user wishes the ownship vessel to do
          * @type {{course: number, speed: number}}
@@ -451,7 +445,28 @@ angular.module('mustard.game.simulator', [
                 }
             });
 
-            $scope.goBack = function () {
+          /**
+           * Create reference location based on range maths location
+           * @type {Object} location
+           */
+          $scope.addReferenceLocation = function (location) {
+            var reference = {
+              name: ["reference" + _.uniqueId()],
+              state: {
+                course: 0,
+                location: location
+              },
+              categories: {
+                force: "BLUE",
+                environment: "SURFACE",
+                type: "REFERENCE"
+              }
+            };
+
+            $scope.$broadcast('addReferenceMarker', reference);
+          };
+
+          $scope.goBack = function () {
                 storeHistory();
                 window.history.back();
             };

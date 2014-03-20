@@ -122,6 +122,7 @@ angular.module('mustard.game.leafletMapDirective', [])
             iconSize = 32;
             break;
           case "SUBMARINE":
+          case "REFERENCE":
             iconSize = 48;
             break;
           case "MERCHANT":
@@ -232,6 +233,13 @@ angular.module('mustard.game.leafletMapDirective', [])
         } else {
           map.removeLayer(layerGroups.targets);
         }
+      });
+
+      /**
+       * Add marker to reference location.
+       */
+      scope.$on('addReferenceMarker', function (event, reference) {
+        createMarker(reference);
       });
 
       createMap();
