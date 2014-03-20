@@ -49,11 +49,11 @@ angular.module('mustard.game.leafletMapDirective', [])
         var controlLayers;
 
         layerGroups = {
-          ownShip: L.layerGroup(),
-          targets: L.layerGroup(),
-          ownshipTraveling: L.layerGroup(),
-          sonarDetections: L.layerGroup(),
-          destroyed: L.layerGroup()
+            sonarDetections: L.layerGroup(),
+            destroyed: L.layerGroup(),
+            ownShip: L.layerGroup(),
+            targets: L.layerGroup(),
+            ownshipTraveling: L.layerGroup()
         };
 
         _.each(layerGroups, function (layer, index) {
