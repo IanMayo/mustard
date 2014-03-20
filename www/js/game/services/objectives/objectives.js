@@ -601,6 +601,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                                     gameState.destroyed = [];
                                 }
 
+                                // add a new property (flag) to use it in "leafletMap" directive
+                                vessel.wasDestroyed = vessel.name;
+
                                 gameState.destroyed.push(vessel);
                                 gameState.destroyed.push(target);
 

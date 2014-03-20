@@ -25,7 +25,6 @@ angular.module('mustard.game.leafletMapDirective', [])
     link: function (scope, element, attrs, spatialViewController) {
       var layerGroups = {};
       var tileLayerUrl = 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg';
-      var baseMap = L.tileLayer(tileLayerUrl);
       var leafletMarkers = {};
       var sonarMultiPolyline;
       var map;
@@ -53,7 +52,8 @@ angular.module('mustard.game.leafletMapDirective', [])
           ownShip: L.layerGroup(),
           targets: L.layerGroup(),
           ownshipTraveling: L.layerGroup(),
-          sonarDetections: L.layerGroup()
+          sonarDetections: L.layerGroup(),
+          destroyed: L.layerGroup()
         };
 
         _.each(layerGroups, function (layer, index) {
@@ -158,10 +158,44 @@ angular.module('mustard.game.leafletMapDirective', [])
         leafletMarkers[vessel.name] = marker;
       };
 
+      /**
+       * Delete a marker from the map.
+       * @param {Object} vessel
+       */
       var deleteMarker = function (vessel) {
         if (map.hasLayer(leafletMarkers[vessel.name])) {
           map.removeLayer(leafletMarkers[vessel.name]);
         }
+        delete leafletMarkers[vessel.name];
+      };
+
+      /**
+       * Add new a marker where target was destroyed by weapon.
+       * @param {Object} vessel
+       */
+      var destroyedMarker = function (vessel) {
+        var marker = leafletMarkers[vessel.name];
+        var iconSize = 48;
+        var icon = L.icon({
+          iconAngle: 0,
+          iconUrl: 'img/vessels/' + iconSize + '/' + 'tombstone.png',
+          iconSize: [iconSize, iconSize],
+          iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+        });
+
+        if (map.hasLayer(marker)) {
+          // remove layer from 'targets' layer
+          map.removeLayer(marker);
+        }
+
+        // update marker
+        marker.setIcon(icon);
+        marker.setIconAngle(0);
+
+        // add the marker to new layer
+        layerGroups.destroyed.addLayer(marker)
+        ;
+        // we don't need to update the marker, remove it
         delete leafletMarkers[vessel.name];
       };
 
@@ -251,7 +285,11 @@ angular.module('mustard.game.leafletMapDirective', [])
 
       scope.$on('vesselsDestroyed', function (event, vessels) {
         _.each(vessels, function (vessel) {
-          deleteMarker(vessel);
+          if (vessel.wasDestroyed) {
+            destroyedMarker(vessel);
+          } else {
+            deleteMarker(vessel);
+          }
         });
       });
 
