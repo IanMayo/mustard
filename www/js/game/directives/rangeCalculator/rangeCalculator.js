@@ -78,6 +78,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                     legOneOSA = null;
                     legTwoOSA = null;
                     turnStarted = false;
+                    scope.isRunning = false;
                 };
 
                 /** has a track been defined?
