@@ -92,7 +92,6 @@ angular.module('mustard.game.simulator', [
          */
         $scope.gameState = {
             state: 'DO_STOP',
-            accelRate: 16,
             simulationTime: 0,
             simulationTimeStep: 2000,
             patrolArea: scenario.patrolArea
@@ -106,8 +105,6 @@ angular.module('mustard.game.simulator', [
     .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath',
         'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user', '$timeout',
         function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection, reviewSnapshot, user, $timeout) {
-
-            var gameAccelRateIntervalId;
 
             var trackHistory = {};
 
@@ -257,7 +254,7 @@ angular.module('mustard.game.simulator', [
                     } else if ((timeState === 'DO_STOP') || (timeState === 'FAILURE')) {
 
                         // ok, stop the scenario
-                        $scope.gameState.accelRate = 0;
+                        $scope.gameState.simulationTime = 0;
 
                         // hey was it success or failure?
                         if ($scope.gameState.state == "SUCCESS") {
@@ -366,9 +363,6 @@ angular.module('mustard.game.simulator', [
                 // GAME LOOP STARTS HERE
                 /////////////////////////
 
-                // move the scenario forward
-                $scope.gameState.simulationTime += $scope.gameState.simulationTimeStep;
-
                 // loop through the vessels
                 _.each($scope.vessels, function (vessel) {
                     movement.doMove($scope.gameState.simulationTime, vessel.state, vessel.perf);
@@ -436,12 +430,9 @@ angular.module('mustard.game.simulator', [
                 }, 100);
             };
 
-            $scope.$watch('gameState.accelRate', function (newVal) {
-                $interval.cancel(gameAccelRateIntervalId);
-
+            $scope.$watch('gameState.simulationTime', function (newVal) {
                 if (newVal) {
-                    // do play
-                    gameAccelRateIntervalId = $interval(doStep, 1000 / $scope.gameState.accelRate);
+                    doStep();
                 }
             });
 
