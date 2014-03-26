@@ -159,6 +159,7 @@ angular.module('mustard.game.review', [
         $timeout(function () {
             $scope.$broadcast('changeMarkers', $scope.vessels);
             $scope.$broadcast('vesselRoutes', routes);
+            $scope.$broadcast('changeTargetsVisibility', true);
         }, 100);
       };
 

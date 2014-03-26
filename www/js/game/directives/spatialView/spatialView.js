@@ -34,6 +34,10 @@ angular.module('mustard.game.spatialViewDirective', [
         this.ownShipName = function () {
           return $scope.ownShip.name();
         };
+
+        this.setTargetsVisibility = function (value) {
+          $scope.targetsVisibility = value;
+        };
       },
       templateUrl: 'js/game/directives/spatialView/spatialView.tpl.html',
       link: function (scope) {

@@ -301,6 +301,8 @@ angular.module('mustard.game.leafletMapDirective', [])
         } else {
           map.removeLayer(layerGroups.targets);
         }
+
+        spatialViewController.setTargetsVisibility(visible);
       });
 
       /**
