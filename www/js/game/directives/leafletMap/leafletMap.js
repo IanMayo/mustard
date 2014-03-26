@@ -46,7 +46,6 @@ angular.module('mustard.game.leafletMapDirective', [])
        * Map layers configurations.
        */
       var configureLayers = function () {
-        var controlLayers;
 
         layerGroups = {
             sonarDetections: L.layerGroup(),
@@ -107,7 +106,6 @@ angular.module('mustard.game.leafletMapDirective', [])
       /**
        * Create (and update) config object for a vessel marker.
        * @param {Object} vessel
-       * @returns {Object}
        */
       var createMarker = function (vessel) {
         // produce the icon for this vessel type
