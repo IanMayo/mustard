@@ -13,7 +13,7 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class GameCtrl (controller)
  */
-  .controller('ReviewCtrl', ['$scope', 'reviewSnapshot', function ($scope, reviewSnapshot) {
+.controller('ReviewCtrl', ['$scope', 'reviewSnapshot', function ($scope, reviewSnapshot) {
 
     /**
      *  indexed list of vessels in scenario
@@ -26,132 +26,71 @@ angular.module('mustard.game.review', [
      * @type {Object}
      */
     $scope.reviewState = {
-      accelRate: 0,
       reviewTime: 0,
       reviewTimeStep: 2000
     };
 
-    /** the markers that we're going to show on the map
-     *
-     * @type {{}}
+    /**
+     * Indexed list of vessels in scenario
+     * @type {Array}
      */
-    $scope.vesselsMarker = {};
-  }])
+    $scope.vessels = {};
+}])
 
 /**
  * @module Game
  * @class MissionCtrl (controller)
  */
-  .controller('MissionReviewCtrl', ['$scope', '$interval',
-    function ($scope, $interval) {
+.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', function ($scope, $interval, $timeout) {
 
-      var gameAccelRateIntervalId;
+    /**
+     * Apply filter to a vessel name.
+     * @param {String} name
+     * @returns {String}
+     */
+    var vesselShortName = function (name) {
+      return name.replace(/\s+/g, '');
+    };
+
+    /**
+     * Ownship vessel API helper (since the ownship name 'may' change)
+     * @returns {Object}
+     */
+    var ownShipApi = function () {
+        var ownShipName = vesselShortName(_.keys($scope.history.vessels).shift());
+
+        return {
+          name: function () {
+              return ownShipName;
+          }
+        }
+      };
+
+    /**
+     * Add necessary properties to create a map marker
+     * @param {Object} vessel
+     * @param {String} name
+     * @returns {Object}
+     */
+    var markerOptions = function (vessel, name) {
+      var stateData = {
+        name: name,
+        state: {
+          course: 0,
+          location: {
+            lat: 0,
+            lng: 0
+          }
+        }
+      };
+
+      return _.extend(vessel, stateData);
+    };
 
       /**
-       * Create a marker object for the vessel
-       * @param {Object} vessel
-       * @returns {Object}
-       */
-      var createMarker = function (vessel) {
-
-        // produce the icon for this vessel type
-        var vType = vessel.categories.type.toLowerCase();
-
-        // ok, and the icon initialisation bits
-        var iconSize;
-        switch (vessel.categories.type) {
-          case "WARSHIP":
-            iconSize = 64;
-            break;
-          case "TORPEDO":
-            iconSize = 32;
-            break;
-          case "SUBMARINE":
-            iconSize = 48;
-            break;
-          case "MERCHANT":
-            iconSize = 64;
-            break;
-          case "FISHERMAN":
-            iconSize = 32;
-            break;
-          case "HELICOPTER":
-            iconSize = 32;
-            break;
-          default:
-            console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
-            break;
-        }
-
-        // ok, now create the object
-        return {
-          focus: false,
-          message: vessel.name,
-          layer: 'ownShip',
-          lat: 0,
-          lng: 0,
-          time: 0,
-          icon: {
-            iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-            iconSize: [iconSize, iconSize],
-            iconAnchor: [iconSize / 2, iconSize - iconSize / 5],  // put it just at the back of the vessel
-            shadowSize: [0, 0]
-          }
-        };
-      };
-
-      /** pre-initialise the layers for the map
-       *
-       */
-      var configureMap = function () {
-        angular.extend($scope, {
-          mapCenter: {
-            lat: $scope.history.center.lat,
-            lng: $scope.history.center.lng,
-            zoom: 8
-          },
-          layers: {
-            baselayers: {
-              map: {
-                name: 'map',
-                type: 'xyz',
-                url: 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg'
-              }
-            },
-            overlays: {
-              ownShip: {
-                type: 'group',
-                name: 'ownShip',
-                visible: true
-              },
-              targets: {
-                type: 'group',
-                name: 'targets',
-                visible: false
-              }
-            }
-          },
-          vesselsMarker: {},
-          paths: {}
-        });
-      };
-
-      /** move forward a time step
-       *
-       */
-      var doStep = function () {
-        // move the scenario forward
-        $scope.reviewState.reviewTime += $scope.reviewState.reviewTimeStep;
-
-        // and update the plot
-        doUpdate();
-      };
-
-      /** update the UI to the current review time
-       *
+       * Update the UI to the current review time
        */
       var doUpdate = function () {
-
         // shortcut to the time
         var tNow = $scope.reviewState.reviewTime;
 
@@ -167,29 +106,40 @@ angular.module('mustard.game.review', [
           // what's the index of the relevant array item
           var index = delta / $scope.history.stepTime;
 
+            var nearest;
+            var shortName;
+            var thisV;
+
+
           // is this less than the length?
           if (index < vessel.track.length) {
-            var nearest = vessel.track[index];
-            if (nearest) {
-              var shortName = name.replace(/\s+/g, '');
-              var thisV = $scope.vesselsMarker[shortName];
+            nearest = vessel.track[index];
 
-              // copy the status update into the vessel marker
-              thisV.lat = nearest.lat;
-              thisV.lng = nearest.lng;
-              thisV.iconAngle = nearest.course;
-              thisV.course = nearest.course;
-              thisV.speed = nearest.speed;
+            if (nearest) {
+              shortName = vesselShortName(name);
+              thisV = $scope.vessels[shortName];
+
+              thisV.name = shortName
+              thisV.state = {
+                  speed: nearest.speed,
+                  location: {
+                      lat: nearest.lat,
+                      lng: nearest.lng
+                  },
+                  course: nearest.course
+              }
             }
+          } else {
+            // stop review process
+            $scope.reviewState.reviewTime = 0;
           }
         });
+
+        $scope.$broadcast('changeMarkers', $scope.vessels);
       };
 
-      /** show the vessel markers, plus their routes
-       *
-       */
-      /** show the vessel markers, plus their routes
-       *
+      /**
+       * Show the vessel markers, plus their routes.
        */
       var showVesselRoutes = function () {
         // store the vessel routes
@@ -202,52 +152,53 @@ angular.module('mustard.game.review', [
           routes.push(vessel.track);
 
           // declare this marker
-          var shortName = name.replace(/\s+/g, '');
-          $scope.vesselsMarker[shortName] = createMarker(vessel);
+          var shortName = vesselShortName(name);
+            $scope.vessels[shortName] = markerOptions(vessel, shortName);
         });
 
-        // put the routes into the scope
-        $scope.paths.routes = {
-          type: 'multiPolyline',
-          color: '#A9A9A9',
-          weight: 2,
-          latlngs: routes
-        }
+        $timeout(function () {
+            $scope.$broadcast('changeMarkers', $scope.vessels);
+            $scope.$broadcast('vesselRoutes', routes);
+        }, 100);
       };
 
       var showNarrativeMarkers = function () {
         // loop through the narratives
+          var narratives = {};
         _.each($scope.history.narratives, function (item, index) {
 
           var narrMessage = "Time:" + item.time + "<br/>" + item.message;
-          $scope.vesselsMarker['narrative_' + index] = {'lat': item.location.lat, 'lng': item.location.lng,
-            'message': narrMessage};
+            narratives['narrative_' + index] = {
+                location: {
+                    lat: item.location.lat,
+                    lng: item.location.lng
+                },
+                message: narrMessage
+            };
 
           // TODO: we should also create tour "stops" for each narrative entry
         });
+
+        $timeout(function () {
+          $scope.$broadcast('narrativeMarkers', narratives);
+        }, 100);
       };
 
-      /** ok, handle the time rate change
-       *
-       */
-      $scope.$watch('reviewState.accelRate', function (newVal) {
-        $interval.cancel(gameAccelRateIntervalId);
+      // create a wrapped ownship instance, for convenience
+      $scope.ownShip = ownShipApi();
 
-        if (newVal) {
-          // do play
-          gameAccelRateIntervalId = $interval(doStep, 1000 / $scope.reviewState.accelRate);
-        }
+      $scope.$watch('reviewState.reviewTime', function (newVal) {
+          if (newVal) {
+              doUpdate();
+          }
       });
 
-      /** provide back button support
-       *
+      /**
+       * Provide back button support
        */
       $scope.goBack = function () {
         window.history.back();
       };
-
-      // sort out the map layers
-      configureMap();
 
       // show the markers, plus their routes
       showVesselRoutes();
@@ -264,7 +215,5 @@ angular.module('mustard.game.review', [
 
         // start the tour
       }
-
     }
-  ])
-;
+]);
