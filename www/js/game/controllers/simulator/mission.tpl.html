@@ -35,7 +35,7 @@
             <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
           </li>
           <li>
-            <range-calculator data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
+            <range-calculator data-ng-hide="ownShip.vessel().unableToPerformRanging" data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                               data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
           </li>
         </ul>
