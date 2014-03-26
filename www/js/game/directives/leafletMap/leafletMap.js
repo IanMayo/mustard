@@ -68,7 +68,7 @@ angular.module('mustard.game.leafletMapDirective', [])
        * @param {Object} vessel
        */
       var vesselMarker = function (vessel) {
-        if (vessel.name && leafletMarkers[vessel.name]) {
+        if (leafletMarkers[vessel.name]) {
           updateMarker(vessel);
         } else {
           createMarker(vessel);
