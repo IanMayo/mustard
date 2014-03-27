@@ -54,6 +54,12 @@ angular.module('mustard.game.simulator', [
         $scope.deadVessels = {};
 
         /**
+         * Indexed list of references
+         * @type {Object}
+         */
+        $scope.referenceLocations = {};
+
+        /**
          * Environment state
          * @type {Object}
          */
@@ -290,10 +296,10 @@ angular.module('mustard.game.simulator', [
 
 
             var storeHistory = function () {
-                var allVessels = _.extend({}, $scope.vessels, $scope.deadVessels);
+                var allVessels = _.extend({}, $scope.vessels, $scope.deadVessels, $scope.referenceLocations);
 
                 // put in the categories
-                _.each(allVessels, function (vessel, name) {
+                _.each(allVessels, function (vessel) {
                     // get history
                     var history = trackHistory[vessel.name];
                     if (history) {
@@ -444,7 +450,7 @@ angular.module('mustard.game.simulator', [
              */
             $scope.addReferenceLocation = function (location) {
               var reference = {
-                name: ["reference" + _.uniqueId()],
+                name: _.uniqueId('reference'),
                 state: {
                   course: 0,
                   location: location
@@ -455,7 +461,9 @@ angular.module('mustard.game.simulator', [
                   type: "REFERENCE"
                 }
               };
-  
+
+              storeState(reference, $scope.gameState.simulationTime);
+              $scope.referenceLocations[reference.name] = reference;
               $scope.$broadcast('addReferenceMarker', reference);
             };
 
