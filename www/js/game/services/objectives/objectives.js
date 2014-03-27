@@ -70,6 +70,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 case "ELAPSED":
                     handleElapsed(gameState, objective, vessels);
                     break;
+                case "DESTROY_TARGET":
+                    handleDestroyTarget(gameState, objective, vessels);
+                    break;
             }
 
 
@@ -476,6 +479,10 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
             var subject = vessels[distance.subject];
 
+            if (!subject) {
+                return;
+            }
+
             // right, do we have an elapsed time limit
             if (distance.elapsed) {
                 // ok. do we know when this objective started?
@@ -554,6 +561,35 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         };
 
 
+        var handleDestroyTarget = function (gameState, destroy, vessels) {
+
+            if (!destroy.complete) {
+                var subject = vessels[destroy.subject];
+                var target = vessels[destroy.target];
+
+                if (!target) {
+                    // ok, must be dead. Win!
+                    destroy.complete = true;
+                    gameState.successMessage = destroy.success;
+                    gameState.state = "DO_STOP";
+
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location, "Managed to destroy target");
+
+                    // and store any achievements
+                    processAchievements(destroy.achievement, gameState);
+
+                    // hey, is there a bonus time?
+                    if (destroy.bonusStopTime) {
+                        // note: we're relying on the
+                        if (gameState.simulationTime < destroy.bonusStopTime) {
+                            processAchievements(destroy.bonusAchievement, gameState);
+                        }
+                    }
+                }
+            }
+        };
+
+
         // also any "other" handlers that keep things tidy
         var handleExpiredWeapon = function (gameState, vessels) {
 
@@ -619,9 +655,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
         var handleNewSolutions = function (gameState, vessels) {
             _.each(vessels, function (vessel) {
-                _.each(vessel.solutions, function(solution){
-                    if(!solution.recorded)
-                    {
+                _.each(vessel.solutions, function (solution) {
+                    if (!solution.recorded) {
                         solution.recorded = true;
                         insertNarrative(gameState, solution.time, solution.location, "New Solution from " + vessel.name);
                     }

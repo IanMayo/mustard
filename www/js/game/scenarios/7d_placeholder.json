@@ -1,8 +1,8 @@
 {
-    "id": "1b",
-    "name": "Reading Bearings",
-    "description": "Learn to trail a bearing",
-    "welcome": "Ok, we've got a training sonar fitted. Luckily it is able to fully screen out self-noise. Head East, and gain contact on the training target - you've got 8 minutes to do that.",
+    "id": "7d",
+    "name": "Test mission - Placeholder",
+    "description": "Plain mission - used to test onward flow from succeed/fail",
+    "welcome": "Ok, you've got the hang of self-noise side-lobes. In this scenario the target is travelling more quickly, so you'll have to as well - about 15 knots. Oh, and your sonar now has a bow-null - so you're blind ahead. Again, locate the target to the South-East of you, within 15 minutes",
     "vessels": [
         {
             "name": "Ownship",
@@ -11,12 +11,11 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
-            "unableToPerformRanging" : true,
             "behaviours": [],
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "categories": [],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
@@ -30,14 +29,14 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50,
-                    "lng": -8.18
+                    "lat": 50.1,
+                    "lng": -8.1
                 },
-                "course": 90,
-                "demCourse": 90,
-                "demSpeed": 10,
-                "speed": 10,
                 "height": 0,
+                "course": 130,
+                "speed": 10,
+                "demCourse": 130,
+                "demSpeed": 10,
                 "demHeight": -10.0
             },
             "perf": {
@@ -57,7 +56,6 @@
                 "environment": "SUBSURFACE",
                 "type": "SUBMARINE"
             },
-
             "behaviours": [
                 {
                     "name": "Patrol area",
@@ -71,34 +69,34 @@
                         "lng": -7.75
                     },
                     "height": -30
-                },
-                {
-                    "name": "Basic snort",
-                    "type": "SNORT",
-                    "height": -10,
-                    "startLevel": 20,
-                    "stopLevel": 90
                 }
             ],
             "sonars": [
+                {
+                    "name": "BASIC_HULL",
+                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+                    "offset": 0,
+                    "ArrayGain": 28,
+                    "DT": -8
+                }
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 104,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
-                "location": {
-                    "lat": 50.05,
-                    "lng": -7.9
-                },
-                "course": 180,
-                "demCourse": 180,
-                "demSpeed": 10,
-                "speed": 10,
                 "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
+                "location": {
+                    "lat": 50.04,
+                    "lng": -7.92
+                },
+                "height": 0,
+                "course": 240,
+                "speed": 13,
+                "demCourse": 240,
+                "demSpeed": 13,
+                "demHeight": 0.0,
                 "batteryLevel": 60
             },
             "perf": {
@@ -121,27 +119,28 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Gain & keep contact",
+            "name": "Gain & maintain contact",
             "type": "SEQUENCE",
             "children": [
                 {
                     "name": "Gain contact",
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
-                    "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+                    "elapsed": 900,
+                    "success": "Ok, you may not realise it, but he's now marking in your beams. Now trail him continuously for the next hour.",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading South-East!"
                 },
                 {
-                    "name": "Maintain contact",
-                    "description": "Maintain contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
+                    "name": "Locate it",
+                    "description": "Get within 500m of Target vessel",
+                    "type": "PROXIMITY",
+                    "target": "Target",
+                    "range": 500,
+                    "success": "Well done, that was tricky. "
                 }
             ]
         }
+
     ],
     "features": {
         "type": "FeatureCollection",

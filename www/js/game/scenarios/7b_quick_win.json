@@ -1,8 +1,7 @@
 {
-    "id": "1b",
-    "name": "Reading Bearings",
-    "description": "Learn to trail a bearing",
-    "welcome": "Ok, we've got a training sonar fitted. Luckily it is able to fully screen out self-noise. Head East, and gain contact on the training target - you've got 8 minutes to do that.",
+    "id": "7b",
+    "name": "Quick win",
+    "description": "Test mission - succeeds quickly",
     "vessels": [
         {
             "name": "Ownship",
@@ -11,12 +10,11 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
-            "unableToPerformRanging" : true,
             "behaviours": [],
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
@@ -34,7 +32,7 @@
                     "lng": -8.18
                 },
                 "course": 90,
-                "demCourse": 90,
+                "demCourse": 130,
                 "demSpeed": 10,
                 "speed": 10,
                 "height": 0,
@@ -57,7 +55,6 @@
                 "environment": "SUBSURFACE",
                 "type": "SUBMARINE"
             },
-
             "behaviours": [
                 {
                     "name": "Patrol area",
@@ -71,13 +68,6 @@
                         "lng": -7.75
                     },
                     "height": -30
-                },
-                {
-                    "name": "Basic snort",
-                    "type": "SNORT",
-                    "height": -10,
-                    "startLevel": 20,
-                    "stopLevel": 90
                 }
             ],
             "sonars": [
@@ -90,10 +80,10 @@
                 "categories": [],
                 "location": {
                     "lat": 50.05,
-                    "lng": -7.9
+                    "lng": -8.15
                 },
-                "course": 180,
-                "demCourse": 180,
+                "course": 300,
+                "demCourse": 260,
                 "demSpeed": 10,
                 "speed": 10,
                 "time": 0,
@@ -129,15 +119,15 @@
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
+                    "success": "First success achieved.",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
                     "name": "Maintain contact",
                     "description": "Maintain contact on the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
+                    "elapsed": 120,
+                    "success": "Second success achieved",
                     "failure": "More practice needed, you only held contact for [time] minutes."
                 }
             ]
