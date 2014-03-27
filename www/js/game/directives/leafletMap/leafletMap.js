@@ -46,7 +46,6 @@ angular.module('mustard.game.leafletMapDirective', [])
        * Map layers configurations.
        */
       var configureLayers = function () {
-        var controlLayers;
 
         layerGroups = {
             sonarDetections: L.layerGroup(),
@@ -107,7 +106,6 @@ angular.module('mustard.game.leafletMapDirective', [])
       /**
        * Create (and update) config object for a vessel marker.
        * @param {Object} vessel
-       * @returns {Object}
        */
       var createMarker = function (vessel) {
         // produce the icon for this vessel type
@@ -115,6 +113,9 @@ angular.module('mustard.game.leafletMapDirective', [])
 
         // ok, and the icon initialisation bits
         var iconSize;
+        var icon;
+        var marker;
+
         switch (vessel.categories.type) {
           case "TORPEDO":
           case "HELICOPTER":
@@ -134,26 +135,25 @@ angular.module('mustard.game.leafletMapDirective', [])
             break;
         }
 
-        var icon = L.icon({
-          iconAngle: 0,
-          iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-          iconSize: [iconSize, iconSize],
-          iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
-        });
-
-        var marker = new L.marker();
+        marker = new L.marker();
         marker.setIconAngle(vessel.state.course);
         marker.setLatLng([vessel.state.location.lat, vessel.state.location.lng]);
 
         if ('RED' === vessel.categories.force) {
           // nope, hide it by default
-          marker.setIcon(icon);
           layerGroups.targets.addLayer(marker);
         } else {
           // ok, show it.
-          marker.setIcon(icon);
           layerGroups.ownShip.addLayer(marker);
         }
+
+        icon = L.icon({
+          iconAngle: 0,
+            iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
+            iconSize: [iconSize, iconSize],
+            iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+        });
+        marker.setIcon(icon);
 
         leafletMarkers[vessel.name] = marker;
       };
@@ -222,6 +222,23 @@ angular.module('mustard.game.leafletMapDirective', [])
       });
 
       /**
+       * Add narrative markers.
+       */
+      scope.$on('narrativeMarkers', function (event, vessels) {
+          var marker;
+
+          layerGroups.narratives = L.layerGroup();
+
+          _.each(vessels, function (vessel) {
+              marker = new L.marker();
+              marker.setLatLng(vessel.location);
+              marker.bindPopup(vessel.message);
+              layerGroups.narratives.addLayer(marker);
+              map.addLayer(layerGroups.narratives);
+          });
+      });
+
+      /**
        * Show geoJSON map features.
        */
       scope.$on('showFeatures', function (event, features) {
@@ -266,6 +283,16 @@ angular.module('mustard.game.leafletMapDirective', [])
       });
 
       /**
+       * Show vessel routes.
+       */
+      scope.$on('vesselRoutes', function (event, latlngs) {
+        var vesselRoutesPolyline = L.multiPolyline(latlngs, leafletMapConfig.sonarBearingLines);
+          layerGroups.vesselRoutes = L.layerGroup();
+          layerGroups.vesselRoutes.addLayer(vesselRoutesPolyline);
+          map.addLayer(layerGroups.vesselRoutes);
+      });
+
+      /**
        * Change visibility of the layer with targets.
        */
       scope.$on('changeTargetsVisibility', function (event, visible) {
@@ -274,6 +301,8 @@ angular.module('mustard.game.leafletMapDirective', [])
         } else {
           map.removeLayer(layerGroups.targets);
         }
+
+        spatialViewController.setTargetsVisibility(visible);
       });
 
       /**
