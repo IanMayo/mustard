@@ -17,6 +17,9 @@
         {"id": "4a", "status": "LOCKED"},
         {"id": "6a", "status": "LOCKED"},
         {"id": "6b", "status": "LOCKED"},
-        {"id": "7a", "status": "LOCKED"}
+        {"id": "7a", "status": "LOCKED"},
+        {"id": "7b", "status": "UNLOCKED"},
+        {"id": "7c", "status": "UNLOCKED"},
+        {"id": "7d", "status": "UNLOCKED"}
     ]
 }

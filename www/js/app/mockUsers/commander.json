@@ -20,6 +20,9 @@
         {"id": "4a", "status": "UNLOCKED"},
         {"id": "6a", "status": "UNLOCKED"},
         {"id": "6b", "status": "UNLOCKED"},
-        {"id": "7a", "status": "UNLOCKED"}
+        {"id": "7a", "status": "UNLOCKED"},
+        {"id": "7b", "status": "UNLOCKED"},
+        {"id": "7c", "status": "UNLOCKED"},
+        {"id": "7d", "status": "UNLOCKED"}
     ]
 }
