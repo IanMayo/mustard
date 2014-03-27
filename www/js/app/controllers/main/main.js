@@ -32,12 +32,16 @@ angular.module('mustard.app.main', ['mustard.app.user'])
                     {"id": "2c", "name": "Advanced Self Noise", "description": "Advanced Self Noise", "url": "2c_adv_self_noise"},
                     {"id": "2d", "name": "Self Noise Extra", "description": "More challenging self noise", "url": "2d_more_self_noise"}
                 ]},
-                {"id": "3", "name": "Active Targets", "missions": [
-                    {"id": "3a", "name": "Fleeing Target", "description": "Trailing a fleeing target", "url": "3a_fleeing_target"},
-                    {"id": "3b", "name": "Attacking Target", "description": "Evading an attacking target", "url": "3b_attacking_target"}
+                {"id": "3", "name": "Ranging Manoeuvre", "missions": [
+                    {"id": "3a", "name": "Ranging Manoeuvres", "description": "How to perform ranging manoeuvres", "url": "3a_initial_ranging"},
+                    {"id": "3a", "name": "Successive Ranging", "description": "Connecting a series of ranging manoeuvres", "url": "3b_successive_ranging"},
+                    {"id": "3a", "name": "Subtle Turns", "description": "Conducting ranging using subtle turns", "url": "3c_subtle_turns"},
+                    {"id": "3b", "name": "Lay in wait", "description": "Predicting a target route", "url": "3d_lay_int_wait"}
                 ]},
-                {"id": "4", "name": "Weapons", "missions": [
-                    {"id": "4a", "name": "Weapons Intro", "description": "First use of weapons", "url": "4a_weapons_intro"}
+                {"id": "4", "name": "Advanced Targets & Weapons", "missions": [
+                    {"id": "4a", "name": "Fleeing Target", "description": "Trailing a fleeing target", "url": "4a_fleeing_target"},
+                    {"id": "4b", "name": "Attacking Target", "description": "Evading an attacking target", "url": "4b_attacking_target"},
+                    {"id": "4c", "name": "Weapons Intro", "description": "First use of weapons", "url": "4c_weapons_intro"}
                 ]},
                 {"id": "6", "name": "Complex Operating Areas", "missions": [
                     {"id": "6a", "name": "Merchant in area", "description": "Handling a cargo ship in the training area", "url": "6a_merchant"},
