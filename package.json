@@ -1,6 +1,28 @@
 {
-  "name": "mustard",
-  "version": "0.0.1",
-  "dependencies": {
-  }
+    "name": "mustard",
+    "version": "0.0.1",
+    "dependencies": {},
+    "description": "Open Source (MIT License) mobile app to gamify Sonar best practices.",
+    "main": "/www/index.html",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "test": "/tests/spec.html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/IanMayo/mustard.git"
+    },
+    "keywords": [
+        "sonar",
+        "game",
+        "phonegap",
+        "angularjs"
+    ],
+    "author": "Ian Mayo",
+    "license": "BSD",
+    "bugs": {
+        "url": "https://github.com/IanMayo/mustard/issues"
+    }
 }
