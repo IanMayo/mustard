@@ -1,161 +1,263 @@
 {
-    "id": "2a",
-    "name": "Elementary Self Noise",
-    "description": "An introduction to self-noise",
-    "welcome": "So, that's ambiguous contacts covered. Next you need to learn to differentiate self-noise. Head East, to gain contact with the training target within 8 minutes.",
-    "vessels": [
+  "id": "7c",
+  "name": "Quick fail",
+  "description": "Test mission - fails quickly",
+  "vessels": [
+    {
+      "name": "Ownship",
+      "categories": {
+        "force": "BLUE",
+        "environment": "SURFACE",
+        "type": "WARSHIP"
+      },
+      "behaviours": [],
+      "sonars": [
         {
-            "name": "Ownship",
+          "name": "BASIC_TOWED",
+          "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+          "offset": -1000,
+          "ArrayGain": 18,
+          "DT": -8
+        }
+      ],
+      "weapons": [
+        {
+          "type": "OWNSHIP_HEADING",
+          "count": 5,
+          "template": {
+            "name": "UNSET",
+            "duration": 240,
+            "effectiveRadius": 300,
             "categories": {
-                "force": "BLUE",
-                "environment": "SURFACE",
-                "type": "WARSHIP"
+              "force": "BLUE",
+              "environment": "SUBSURFACE",
+              "type": "TORPEDO"
             },
             "behaviours": [],
-            "sonars": [
-                {
-                    "name": "BASIC_TOWED",
-                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
-                    "offset": -1000,
-                    "ArrayGain": 18,
-                    "DT": -8
-                }
-            ],
+            "sonars": [],
             "radiatedNoise": {
-                "baseLevel": 90,
-                "speedPattern": "Uniform"
+              "baseLevel": 110,
+              "speedPattern": "Uniform"
             },
             "state": {
-                "time": 0,
-                "categories": [],
-                "location": {
-                    "lat": 50,
-                    "lng": -8.18
-                },
-                "course": 90,
-                "demCourse": 90,
-                "demSpeed": 10,
-                "speed": 10,
-                "height": 0,
-                "demHeight": -10.0
+              "time": "UNSET",
+              "categories": [],
+              "location": "UNSET",
+              "height": -10,
+              "course": "UNSET",
+              "speed": 40,
+              "demCourse": "UNSET",
+              "demSpeed": 40,
+              "demHeight": -10.0
             },
             "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 40,
-                "climbRate": 1,
-                "diveRate": 2
+              "turnRadius": 1200.0,
+              "accelerationRate": 0.3,
+              "decelerationRate": 0.8,
+              "minSpeed": 0,
+              "maxSpeed": 40,
+              "climbRate": 1,
+              "diveRate": 2
             }
+          }
         },
         {
-            "name": "Target",
+          "type": "SONAR_CONTACT",
+          "count": 2,
+          "template": {
+            "name": "UNSET",
+            "duration": 240,
+            "effectiveRadius": 300,
             "categories": {
-                "force": "RED",
-                "environment": "SUBSURFACE",
-                "type": "SUBMARINE"
+              "force": "BLUE",
+              "environment": "SUBSURFACE",
+              "type": "TORPEDO"
             },
-            "behaviours": [
-                {
-                    "name": "Patrol area",
-                    "type": "RECTANGLE_WANDER",
-                    "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
-                    },
-                    "br": {
-                        "lat": 49.85,
-                        "lng": -7.75
-                    },
-                    "height": -30
-                }
-            ],
-            "sonars": [
-            ],
+            "behaviours": [],
+            "sonars": [],
             "radiatedNoise": {
-                "baseLevel": 100,
-                "speedPattern": "Uniform"
+              "baseLevel": 110,
+              "speedPattern": "Uniform"
             },
             "state": {
-                "categories": [],
-                "location": {
-                    "lat": 50.05,
-                    "lng": -8.15
-                },
-                "course": 300,
-                "demCourse": 300,
-                "demSpeed": 10,
-                "speed": 10,
-                "time": 0,
-                "height": -40,
-                "demHeight": -40.0,
-                "batteryLevel": 60
+              "time": "UNSET",
+              "categories": [],
+              "location": "UNSET",
+              "height": -10,
+              "course": "UNSET",
+              "speed": 40,
+              "demCourse": "UNSET",
+              "demSpeed": 40,
+              "demHeight": -10.0
             },
             "perf": {
-                "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
-                "decelerationRate": 0.8,
-                "minSpeed": 4,
-                "maxSpeed": 20,
-                "batteryUsage": 0.00035,
-                "chargeRate": 0.013,
-                "climbRate": 1,
-                "diveRate": 2
+              "turnRadius": 1200.0,
+              "accelerationRate": 0.3,
+              "decelerationRate": 0.8,
+              "minSpeed": 0,
+              "maxSpeed": 40,
+              "climbRate": 1,
+              "diveRate": 2
             }
+          }
         }
-    ],
-    "patrolArea": [
-        [50.15, -8.25],
-        [49.85, -7.75]
-    ],
-    "environment": {},
-    "objectives": [
+      ],
+      "radiatedNoise": {
+        "baseLevel": 90,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "time": 0,
+        "categories": [],
+        "location": {
+          "lat": 50.01,
+          "lng": -8.18
+        },
+        "course": 90,
+        "demCourse": 90,
+        "demSpeed": 15,
+        "speed": 15,
+        "height": 0,
+        "demHeight": -10.0
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 40,
+        "climbRate": 1,
+        "diveRate": 2
+      }
+    },
+    {
+      "name": "Target",
+      "categories": {
+        "force": "RED",
+        "environment": "SUBSURFACE",
+        "type": "SUBMARINE"
+      },
+      "behaviours": [
         {
-            "name": "Gain & keep contact",
-            "type": "SEQUENCE",
-            "children": [
-                {
-                    "name": "Gain contact",
-                    "description": "Gain contact on the training target",
-                    "type": "GAIN_CONTACT",
-                    "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
-                },
-                {
-                    "name": "Maintain contact",
-                    "description": "Maintain contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 120,
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
-                }
-            ]
+          "name": "Patrol area",
+          "type": "RECTANGLE_WANDER",
+          "tl": {
+            "lat": 50.15,
+            "lng": -8.25
+          },
+          "br": {
+            "lat": 49.85,
+            "lng": -7.75
+          },
+          "height": -30
         }
-    ],
-    "features": {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {
-                    "name": "Ops Area"
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [-8.25, 50.15],
-                            [-8.25, 49.85],
-                            [-7.75, 49.85],
-                            [-7.75, 50.15],
-                            [-8.25, 50.15 ]
-                        ]
-                    ]
-                },
-                "id": "OpsArea"
-            }
-        ]
+      ],
+      "sonars": [
+        {
+          "name": "BASIC_HULL",
+          "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+          "coverage": 120,
+          "offset": 0,
+          "ArrayGain": 28,
+          "DT": -8
+        }
+      ],
+      "radiatedNoise": {
+        "baseLevel": 150,
+        "speedPattern": "Uniform"
+      },
+      "state": {
+        "categories": [],
+        "location": {
+          "lat": 50.01,
+          "lng": -8.10
+        },
+        "course": 90,
+        "demCourse": 90,
+        "demSpeed": 4,
+        "speed": 4,
+        "time": 0,
+        "height": -40,
+        "demHeight": -40.0,
+        "batteryLevel": 60
+      },
+      "perf": {
+        "turnRadius": 1200.0,
+        "accelerationRate": 0.3,
+        "decelerationRate": 0.8,
+        "minSpeed": 4,
+        "maxSpeed": 20,
+        "batteryUsage": 0.00035,
+        "chargeRate": 0.013,
+        "climbRate": 1,
+        "diveRate": 2
+      }
     }
+  ],
+  "patrolArea": [
+    [50.15, -8.25],
+    [49.85, -7.75]
+  ],
+  "environment": {},
+  "objectives": [
+    {
+      "name": "Gain & keep contact",
+      "type": "SEQUENCE",
+      "children": [
+        {
+          "name": "Deliberate success",
+          "description": "Gain contact on the training target",
+          "type": "GAIN_CONTACT",
+          "elapsed": 480,
+          "success": "Quick success - FIRE NOW TO SUCCEED",
+          "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+        },
+        {
+          "name": "Deliberate failure",
+          "description": "Target gets within 2.5km of Ownship",
+          "type": "DISTANCE",
+          "target": "Ownship",
+          "subject": "Target",
+          "elapsed": 3600,
+          "range": 2500,
+          "success": "Well done, that was tricky.",
+          "failure": "Quick failure"
+        }
+      ]
+    },
+    {
+      "name": "Destroy target",
+      "description": "Destroy the target, with torpedoes within one hour",
+      "type": "DESTROY_TARGET",
+      "target": "Target",
+      "subject":"Ownship",
+      "elapsed": 3600,
+      "success": "Well done, got the sucker",
+      "failure": "More practice needed, try again."
+    }
+  ],
+  "features": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Ops Area"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-8.25, 50.15],
+              [-8.25, 49.85],
+              [-7.75, 49.85],
+              [-7.75, 50.15],
+              [-8.25, 50.15 ]
+            ]
+          ]
+        },
+        "id": "OpsArea"
+      }
+    ]
+  }
 }

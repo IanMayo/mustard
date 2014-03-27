@@ -44,7 +44,10 @@ angular.module('mustard.app.main', ['mustard.app.user'])
                     {"id": "6b", "name": "White Shipping", "description": "Handling multiple ships in the training area", "url": "6b_merchant_and_fisherman"}
                 ]},
                 {"id": "7", "name": "Complex Sonar", "missions": [
-                    {"id": "7a", "name": "Unsteady Array", "description": "The effects of the array being unsteady", "url": "7a_array_unsteady"}
+                    {"id": "7a", "name": "Unsteady Array", "description": "The effects of the array being unsteady", "url": "7a_array_unsteady"},
+                    {"id": "7b", "name": "Quick Win", "description": "Test mission - wins quickly", "url": "7b_quick_win"},
+                    {"id": "7c", "name": "Quick Fail", "description": "Test mission - fails quickly", "url": "7c_quick_fail"},
+                    {"id": "7d", "name": "Placeholder", "description": "Test mission - does nothing", "url": "7d_placeholder"}
                 ]}
             ];
 
@@ -64,8 +67,7 @@ angular.module('mustard.app.main', ['mustard.app.user'])
 
             // has this level been tried?
             if (found) {
-                switch (found.status)
-                {
+                switch (found.status) {
                     case "SUCCESS":
                     case "FAILURE":
                     case "UNLOCKED":

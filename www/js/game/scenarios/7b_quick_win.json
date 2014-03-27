@@ -1,8 +1,7 @@
 {
-    "id": "2a",
-    "name": "Elementary Self Noise",
-    "description": "An introduction to self-noise",
-    "welcome": "So, that's ambiguous contacts covered. Next you need to learn to differentiate self-noise. Head East, to gain contact with the training target within 8 minutes.",
+    "id": "7b",
+    "name": "Quick win",
+    "description": "Test mission - succeeds quickly",
     "vessels": [
         {
             "name": "Ownship",
@@ -33,7 +32,7 @@
                     "lng": -8.18
                 },
                 "course": 90,
-                "demCourse": 90,
+                "demCourse": 130,
                 "demSpeed": 10,
                 "speed": 10,
                 "height": 0,
@@ -81,10 +80,10 @@
                 "categories": [],
                 "location": {
                     "lat": 50.05,
-                    "lng": -7.9
+                    "lng": -8.15
                 },
                 "course": 300,
-                "demCourse": 300,
+                "demCourse": 260,
                 "demSpeed": 10,
                 "speed": 10,
                 "time": 0,
@@ -120,15 +119,15 @@
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
+                    "success": "First success achieved.",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
                     "name": "Maintain contact",
                     "description": "Maintain contact on the training target for one hour",
                     "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
+                    "elapsed": 120,
+                    "success": "Second success achieved",
                     "failure": "More practice needed, you only held contact for [time] minutes."
                 }
             ]
