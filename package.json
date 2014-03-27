@@ -24,5 +24,8 @@
     "license": "BSD",
     "bugs": {
         "url": "https://github.com/IanMayo/mustard/issues"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.4"
     }
 }
