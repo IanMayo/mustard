@@ -290,8 +290,10 @@ angular.module('mustard.game.simulator', [
 
 
             var storeHistory = function () {
+                var allVessels = _.extend({}, $scope.vessels, $scope.deadVessels);
+
                 // put in the categories
-                _.each($scope.vessels, function (vessel) {
+                _.each(allVessels, function (vessel, name) {
                     // get history
                     var history = trackHistory[vessel.name];
                     if (history) {
