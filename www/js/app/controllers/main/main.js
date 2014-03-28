@@ -34,9 +34,9 @@ angular.module('mustard.app.main', ['mustard.app.user'])
                 ]},
                 {"id": "3", "name": "Ranging Manoeuvre", "missions": [
                     {"id": "3a", "name": "Ranging Manoeuvres", "description": "How to perform ranging manoeuvres", "url": "3a_initial_ranging"},
-                    {"id": "3a", "name": "Successive Ranging", "description": "Connecting a series of ranging manoeuvres", "url": "3b_successive_ranging"},
-                    {"id": "3a", "name": "Subtle Turns", "description": "Conducting ranging using subtle turns", "url": "3c_subtle_turns"},
-                    {"id": "3b", "name": "Lay in wait", "description": "Predicting a target route", "url": "3d_lay_int_wait"}
+                    {"id": "3b", "name": "Successive Ranging", "description": "Connecting a series of ranging manoeuvres", "url": "3b_successive_ranging"},
+                    {"id": "3c", "name": "Subtle Turns", "description": "Conducting ranging using subtle turns", "url": "3c_subtle_turns"},
+                    {"id": "3d", "name": "Lay in wait", "description": "Predicting a target route", "url": "3d_lay_int_wait"}
                 ]},
                 {"id": "4", "name": "Advanced Targets & Weapons", "missions": [
                     {"id": "4a", "name": "Fleeing Target", "description": "Trailing a fleeing target", "url": "4a_fleeing_target"},
