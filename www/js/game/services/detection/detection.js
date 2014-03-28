@@ -61,8 +61,9 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
          * @param errorRange the error to apply to the bearing value
          * @param SE the signal excess (strenght) of this acoustic measurement
          * @param bDot the current bearing rate
+         * @param tgtLocation the true location of the target
          */
-        var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source, trackId, doAmbiguous, errorRange, SE, bDot) {
+        var insertDetections = function (detectionList, tNow, origin, osCourse, bearing, source, trackId, doAmbiguous, errorRange, SE, bDot, tgtLocation) {
             // ok, what's the relative angle?
             var relBearing = bearing - osCourse;
 
@@ -83,7 +84,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 thisValue += 360;
             }
             thisValue = thisValue % 360;
-            detectionList.push({"time": tNow, "bearing": thisValue, "trueBearing": bearing, "source": source, "trackId": firstId, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE, "bDot" : bDot});
+            detectionList.push({"time": tNow, "bearing": thisValue, "trueBearing": bearing, "source": source, "trackId": firstId, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE, "bDot" : bDot, "tgtLoc" :tgtLocation});
 
             // ambiguous?
             if (doAmbiguous) {
@@ -94,7 +95,7 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                 }
 
                 thisValue = thisValue % 360;
-                detectionList.push({"time": tNow, "bearing": thisValue, "trueBearing": bearing, "source": source, "trackId": trackId + "_b", "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE, "bDot" : bDot});
+                detectionList.push({"time": tNow, "bearing": thisValue, "trueBearing": bearing, "source": source, "trackId": trackId + "_b", "ambiguous": true, "origin": {"lat": origin.lat, "lng": origin.lng}, "strength": SE, "bDot" : bDot, "tgtLoc" :tgtLocation});
             }
         };
 
@@ -194,18 +195,18 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
 
                             // does this sonar have simple self-noise?
                             if (!geoMath.hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
-                                insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, thisV.name, false, SENSOR_ERROR, LN, 0);
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, theSelfBrg, thisV.name, thisV.name, false, SENSOR_ERROR, LN, 0, thisV.state.location);
                             }
 
                             // does this sonar have complex self-noise?
                             if (!geoMath.hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
                                 var offsetBearing = theSelfBrg + 15;
-                                insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR, LN, 0);
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR, LN, 0, thisV.state.location);
 
                                 // hey, just check if we're "roaring" along.
                                 if (speed >= 15) {
                                     offsetBearing = theSelfBrg + 25;
-                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side2", true, SENSOR_ERROR, LN, 0);
+                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing, thisV.name, thisV.name + "_side2", true, SENSOR_ERROR, LN, 0, thisV.state.location);
                                 }
                             }
                         } else {
@@ -296,15 +297,15 @@ angular.module('mustard.game.detection', ['mustard.game.geoMath'])
                                     var doAmbiguous = !geoMath.hasCategory("NO_AMBIGUOUS", sonar.categories);
 
                                     // ok, insert the core detection
-                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, thisV.name, thisV.name, doAmbiguous, SENSOR_ERROR, SE, bDot);
+                                    insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg, thisV.name, thisV.name, doAmbiguous, SENSOR_ERROR, SE, bDot, thisV.state.location);
 
                                     // show extra side lobes if he's really noisy
                                     if (SE > 25) {
                                         // first the right-hand side lobe
-                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg + 15, thisV.name, thisV.name + "_side1", doAmbiguous, SENSOR_ERROR, SE, bDot);
+                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg + 15, thisV.name, thisV.name + "_side1", doAmbiguous, SENSOR_ERROR, SE, bDot, thisV.state.location);
 
                                         // and now the left-hand side lobe
-                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg - 15, thisV.name, thisV.name + "_side2", doAmbiguous, SENSOR_ERROR, SE, bDot);
+                                        insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg - 15, thisV.name, thisV.name + "_side2", doAmbiguous, SENSOR_ERROR, SE, bDot, thisV.state.location);
                                     }
                                 }
                             } else {
