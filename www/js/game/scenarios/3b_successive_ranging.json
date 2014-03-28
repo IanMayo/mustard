@@ -15,7 +15,7 @@
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "categories": [ "NO_STEADY_TIME"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
@@ -29,11 +29,11 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50,
+                    "lat": 49.9,
                     "lng": -8.18
                 },
-                "course": 90,
-                "demCourse": 90,
+                "course": 20,
+                "demCourse": 20,
                 "demSpeed": 10,
                 "speed": 10,
                 "height": 0,
@@ -61,8 +61,8 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
+                        "lat": 50.35,
+                        "lng": -8.20
                     },
                     "br": {
                         "lat": 49.85,
@@ -74,14 +74,14 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 105,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 50.05,
-                    "lng": -7.9
+                    "lat": 50.02,
+                    "lng": -7.93
                 },
                 "course": 300,
                 "demCourse": 300,
