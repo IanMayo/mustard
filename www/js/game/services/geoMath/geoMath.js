@@ -220,7 +220,7 @@ angular.module('mustard.game.geoMath', [])
       },
 
       /**
-       * Returns the distance from this point to the supplied point, in km, travelling along a rhumb line
+       * Returns the distance from this point to the supplied point, in m, travelling along a rhumb line
        *
        *   see http://williams.best.vwh.net/avform.htm#Rhumb
        *
