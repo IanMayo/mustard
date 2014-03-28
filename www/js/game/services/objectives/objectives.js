@@ -73,6 +73,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 case "DESTROY_TARGET":
                     handleDestroyTarget(gameState, objective, vessels);
                     break;
+                case "OBTAIN_SOLUTION":
+                    handleObtainSolution(gameState, objective, vessels);
+                    break;
             }
 
 
@@ -190,6 +193,45 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 thisId++;
             }
             while ((thisId < sequence.children.length) && (!STOP_CHECKING));
+        };
+
+
+        var handleObtainSolution = function (gameState, obtain, vessels) {
+          var subjectName = obtain.subject;
+          if (!subjectName) {
+            subjectName = "Ownship";
+          }
+          var subject = vessels[subjectName];
+
+          // does it have any solutions?
+          _.each(subject.solutions, function(solution){
+            // has this one been handled by us?
+            if(!solution.obtainHandled)
+            {
+              solution.obtainHandled = true;
+
+              if(!obtain.counter)
+              {
+                obtain.counter = 0;
+              }
+
+              obtain.counter ++;
+            }
+          });
+
+          // ok, have we reached our limit
+          if(obtain.counter >= obtain.count)
+          {
+            // ok, done.
+            obtain.complete = true;
+            gameState.successMessage = obtain.success;
+            gameState.state = "DO_STOP";
+
+            // and store any achievements
+            processAchievements(obtain.achievement, obtain);
+
+          }
+
         };
 
         var handleMaintainContact = function (gameState, maintainContact, vessels) {
@@ -761,7 +803,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
                 // ok, loop through the objectives
                 _.each(objectives, function (item) {
-                    handleThis(gameState, item, vessels)
+                    if (!item.complete) {
+                        handleThis(gameState, item, vessels)
+                    }
                 });
 
                 // also any "other" handlers that keep things tidy

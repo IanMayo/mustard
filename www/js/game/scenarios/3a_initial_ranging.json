@@ -2,7 +2,7 @@
     "id": "3a",
     "name": "Initial Ranging",
     "description": "An introduction to passive ranging",
-    "welcome": "So, that's ambiguous contacts covered. Next you need to learn to differentiate self-noise. Head East, to gain contact with the training target within 8 minutes.",
+    "welcome": "Your vessel now has a passive Range Calculator.  \n\nInitiate a ranging manoeuvre by selecting a sonar track.  Then, press the 'Start' button, let the caculator average the bearing rate for a minute, then make a turn, then wait another minute.\n\nThe solution will be shown on the map.",
     "vessels": [
         {
             "name": "Ownship",
@@ -15,7 +15,7 @@
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "categories": ["NO_STEADY_TIME"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
@@ -61,12 +61,12 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
+                        "lat": 49.9,
+                        "lng": -8.1
                     },
                     "br": {
-                        "lat": 49.85,
-                        "lng": -7.75
+                        "lat": 50.1,
+                        "lng": -7.8
                     },
                     "height": -30
                 }
@@ -120,16 +120,16 @@
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
+                    "success": "Well done, you've gained contact within the 8 minute limit. You now need to perform 3 ranging manoeuvres on him.",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
-                    "name": "Maintain contact",
-                    "description": "Maintain contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
+                    "name": "Range 3 times",
+                    "description": "Perform 3 ranging manoeuvres",
+                    "type": "OBTAIN_SOLUTION",
+                    "count" : 3,
+                    "subject" : "Ownship",
+                    "success": "Well done, 3 solutions obtained"
                 }
             ]
         }

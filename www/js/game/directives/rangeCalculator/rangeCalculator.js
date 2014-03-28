@@ -24,6 +24,10 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                 var legOneEndTime;
                 var legTwoEndTime;
 
+                var tgtTrueLoc;   // the actual target location at the point where we apply the solution
+                var tmpTargetLocation; // working copy of target location - we won't be holding it in the turn
+                var rangeOrigin;  // the ownship location that we will apply the solution to
+
                 var turnStarted = false;
 
                 var firstDetection;  // we need to remember the first detection in each leg, for averaging
@@ -77,7 +81,10 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                     firstDetection = null;
                     legOneOSA = null;
                     legTwoOSA = null;
+                    tgtTrueLoc = null;
+                    rangeOrigin = null;
                     turnStarted = false;
+                    tmpTargetLocation = null;
                     scope.isRunning = false;
                 };
 
@@ -157,6 +164,13 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                 else if (legOneBdot) {
                                     // ok, this is the turn at the end of leg one.
                                     turnStarted = true;
+
+                                    // store the location, since this is where we apply the solutions from
+                                    rangeOrigin = angular.copy(scope.state.location);
+
+                                    // and the target location, in case we want to measure the accuracy
+                                    // of the solution
+                                    tgtTrueLoc = angular.copy(tmpTargetLocation);
                                 }
                             }
                             else {
@@ -168,6 +182,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                         // ok, we've come out of the turn
 
                                         if (!legTwoEndTime) {
+                                            // ok, this is the first contact once out of the turn
                                             legTwoEndTime = contact.time + LEG_LENGTH;
                                             firstDetection = contact;
                                         }
@@ -200,7 +215,12 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                                 if (!scope.vessel.solutions) {
                                                     scope.vessel.solutions = [];
                                                 }
-                                                scope.vessel.solutions.push({"time": contact.time, "location": location, "target": contact.target});
+                                                scope.vessel.solutions.push({"time": contact.time, "location": location, "target": contact.target, "tgtLoc":tgtTrueLoc});
+
+                                                console.log(tgtTrueLoc);
+                                                console.log(location);
+                                                console.log("range:" + geoMath.rhumbBearingFromTo(tgtTrueLoc, location));
+
                                             }
                                             else {
                                                 // we're still doing hte average
@@ -222,6 +242,9 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                         else {
                                             setStatus("Averaging Leg One", Math.floor((legOneEndTime - contact.time) / 1000) + "secs");
                                         }
+
+                                        // take a working copy of the target location. we'll need it when we start the turn
+                                        tmpTargetLocation = contact.tgtLoc;
 
                                     }
                                     else {

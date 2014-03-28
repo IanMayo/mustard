@@ -115,22 +115,23 @@
             "name": "Gain & keep contact",
             "type": "SEQUENCE",
             "children": [
-                {
-                    "name": "Gain contact",
-                    "description": "Gain contact on the training target",
-                    "type": "GAIN_CONTACT",
-                    "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
-                },
-                {
-                    "name": "Maintain contact",
-                    "description": "Maintain contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
-                }
+              {
+                "name": "Gain contact",
+                "description": "Gain contact on the training target",
+                "type": "GAIN_CONTACT",
+                "elapsed": 480,
+                "success": "Well done, you've gained contact within the 8 minute limit. You now need to perform two ranging manoeuvres that are accurate to within 1 km.",
+                "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+              },
+              {
+                "name": "Range 2 times",
+                "description": "Perform 2 accurate ranging manoeuvres",
+                "type": "OBTAIN_SOLUTION",
+                "count" : 2,
+                "accuracy": 1000,
+                "subject" : "Ownship",
+                "success": "Well done, 2 solutions obtained"
+              }
             ]
         }
     ],
