@@ -19,6 +19,7 @@ angular.module('mustard.game.review', [
      *  indexed list of vessels in scenario
      * @type {Array}
      */
+//    console.log(JSON.stringify(reviewSnapshot.get()));
     $scope.history = reviewSnapshot.get();
 
     /**
@@ -156,6 +157,7 @@ angular.module('mustard.game.review', [
         });
 
         $timeout(function () {
+            $scope.$broadcast('showFeatures', $scope.history.mapFeatures);
             $scope.$broadcast('changeMarkers', $scope.vessels);
             $scope.$broadcast('vesselRoutes', routes);
             $scope.$broadcast('changeTargetsVisibility', true);

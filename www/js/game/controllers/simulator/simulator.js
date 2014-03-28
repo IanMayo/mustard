@@ -314,6 +314,7 @@ angular.module('mustard.game.simulator', [
                         "narratives": $scope.gameState.narratives,
                         "stepTime": $scope.gameState.simulationTimeStep,
                         "center": $scope.ownShip.location(),
+                        "mapFeatures": $scope.mapFeatures,
                         "vessels": trackHistory
                     })
                 }
