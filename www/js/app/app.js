@@ -8,6 +8,7 @@ angular.module('mustard', [
     'mustard.app.mission',
     'mustard.app.profile',
     'mustard.app.settings',
+    'mustard.app.missionsIndex',
     'mustard.game.simulator',
     'mustard.game.review',
     'ui.bootstrap'
@@ -27,7 +28,12 @@ angular.module('mustard', [
 
         .when('/main', {
             controller: 'MainCtrl',
-            templateUrl: 'js/app/controllers/main/main.tpl.html'
+            templateUrl: 'js/app/controllers/main/main.tpl.html',
+            resolve: {
+                levels: ['missionsIndex', function (missionsIndex) {
+                    return missionsIndex.get();
+                }]
+            }
         })
 
         .when('/mission/:id', {
@@ -57,8 +63,8 @@ angular.module('mustard', [
                         method: "GET",
                         url: 'js/game/scenarios/' + scenario
                     }).success(function (response) {
-                            deferred.resolve(response);
-                        });
+                        deferred.resolve(response);
+                    });
                     return deferred.promise;
                 }]
             }
@@ -68,7 +74,6 @@ angular.module('mustard', [
             controller: 'ReviewCtrl',
             templateUrl: 'js/game/controllers/review/review.tpl.html'
         })
-
 
         .otherwise({redirectTo: '/main'});
 
