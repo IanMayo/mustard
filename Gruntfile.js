@@ -9,7 +9,7 @@ module.exports = function(grunt) {
             src: 'www/js/game/scenarios/*.json',
             options: {
                 guidanceDir: 'guidance/',
-                output: 'www/js/app/missions-index/mission-index.json'
+                output: 'www/js/app/missionsIndex/missionsIndex.json'
             }
         }
     });
