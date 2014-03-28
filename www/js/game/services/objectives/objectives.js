@@ -215,7 +215,24 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 obtain.counter = 0;
               }
 
-              obtain.counter ++;
+              // ok, do we have an accuracy criteria?
+              if(obtain.accuracy)
+              {
+                var rangeError = geoMath.rhumbDistanceFromTo(solution.tgtLoc, solution.location);
+                if(rangeError <= obtain.accuracy)
+                {
+                  obtain.counter++;
+                }
+                else
+                {
+                  console.log("range too great:" + rangeError);
+                  console.log(solution.tgtLoc);
+                  console.log(solution.location);
+                }
+              }
+              else {
+                obtain.counter++;
+              }
             }
           });
 
@@ -700,7 +717,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 _.each(vessel.solutions, function (solution) {
                     if (!solution.recorded) {
                         solution.recorded = true;
-                        insertNarrative(gameState, solution.time, solution.location, "New Solution from " + vessel.name);
+                        var rangeError = geoMath.rhumbDistanceFromTo(solution.tgtLoc, solution.location);
+                        insertNarrative(gameState, solution.time, solution.location, "New Solution from " + vessel.name + " error:" + Math.floor(rangeError) + "m");
                     }
                 });
             });
