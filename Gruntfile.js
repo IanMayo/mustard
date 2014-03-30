@@ -119,7 +119,7 @@ module.exports = function(grunt) {
          * @returns {Array}
          */
         var processMissions = function (rawList, levelIndex) {
-            var missionIndex = levelIndex;
+            var missionsIndex = levelIndex;
 
             rawList.forEach(function (mission) {
                 if (!isMission(mission)) {
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
                 }
 
                 var rootId = mission.id.match(/\d+/g)[0];
-                var rootIndex = _.findIndex(missionIndex, function (mission) {
+                var rootIndex = _.findIndex(missionsIndex, function (mission) {
                     return mission.id === rootId;
                 });
 
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 
                 var fileName = getFileNameWithoutExtension(mission._url_);
 
-                missionIndex[rootIndex].missions.push({
+                missionsIndex[rootIndex].missions.push({
                     id: mission.id,
                     name: mission.name,
                     description: mission.description,
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
                 });
             });
 
-            return missionIndex;
+            return missionsIndex;
         };
 
         /**
