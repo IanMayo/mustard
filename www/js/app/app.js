@@ -6,7 +6,7 @@ angular.module('mustard', [
     'mustard.app.registration',
     'mustard.app.main',
     'mustard.app.mission',
-    'mustard.app.profile',
+    'mustard.app.userProfile',
     'mustard.app.settings',
     'mustard.app.missionsIndex',
     'mustard.game.simulator',
@@ -43,7 +43,7 @@ angular.module('mustard', [
 
         .when('/profile', {
             controller: 'ProfileCtrl',
-            templateUrl: 'js/app/controllers/user-profile/profile.tpl.html'
+            templateUrl: 'js/app/controllers/userProfile/userProfile.tpl.html'
         })
 
         .when('/settings', {
