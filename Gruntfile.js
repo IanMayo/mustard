@@ -11,7 +11,20 @@ module.exports = function(grunt) {
                 guidanceDir: 'guidance/',
                 output: 'www/js/app/missionsIndex/missionsIndex.json'
             }
+        },
+
+        "process-guidance": {
+            src: 'www/guidance/*.html',
+            options: {
+
+            }
         }
+    });
+
+    grunt.registerTask('build', ['missions-index', 'process-guidance']);
+
+    grunt.registerMultiTask('process-guidance', 'Process guidance files', function () {
+
     });
 
     grunt.registerMultiTask('missions-index', 'Create missions index', function () {
@@ -142,7 +155,7 @@ module.exports = function(grunt) {
                     name: mission.name,
                     description: mission.description,
                     url: fileName,
-                    guidanceUrl: guidanceDir + fileName + '/index.html'
+                    guidanceUrl: guidanceDir + fileName + '.html'
                 });
             });
 
