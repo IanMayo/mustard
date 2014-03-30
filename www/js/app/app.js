@@ -31,14 +31,19 @@ angular.module('mustard', [
             templateUrl: 'js/app/controllers/main/main.tpl.html',
             resolve: {
                 levels: ['missionsIndex', function (missionsIndex) {
-                    return missionsIndex.get();
+                    return missionsIndex.getLevels();
                 }]
             }
         })
 
         .when('/mission/:id', {
             controller: 'MissionCtrl',
-            templateUrl: 'js/app/controllers/mission/mission.tpl.html'
+            templateUrl: 'js/app/controllers/mission/mission.tpl.html',
+            resolve: {
+                mission: ['$route', 'missionsIndex', function ($route, missionsIndex) {
+                    return missionsIndex.getMission($route.current.params.id);
+                }]
+            }
         })
 
         .when('/profile', {
