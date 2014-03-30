@@ -27,6 +27,7 @@
     "dependencies": {},
     "devDependencies": {
         "grunt": "~0.4.4",
-        "lodash": "^2.4.1"
+        "lodash": "^2.4.1",
+        "grunt-text-replace": "^0.3.11"
     }
 }
