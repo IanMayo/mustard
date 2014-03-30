@@ -58,11 +58,10 @@ angular.module('mustard.app.main', ['mustard.app.user'])
     /** navigate to the specified URL, if the mission is avaialble to the current user
      *
      * @param id
-     * @param url
      */
-    $scope.moveToMission = function (id, url) {
+    $scope.moveToMission = function (id) {
         if (!isLocked(id)) {
-            $location.path('mission/' + url);
+            $location.path('mission/' + id);
         }
     };
 
