@@ -2,10 +2,12 @@ module.exports = function(grunt) {
 
     var _ = require('lodash');
 
+    grunt.loadNpmTasks('grunt-text-replace');
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        "missions-index": {
+        missionsIndex: {
             src: 'www/js/game/scenarios/*.json',
             options: {
                 guidanceDir: 'guidance/',
@@ -13,21 +15,32 @@ module.exports = function(grunt) {
             }
         },
 
-        "process-guidance": {
-            src: 'www/guidance/*.html',
-            options: {
+        replace: {
+            srcGuidanceApp: {
+                src: ['www/guidance/*.html'],
+                dest: 'www/guidance/',
+                replacements: [{
+                    // It can be improved by "regex" if you want
+                    from: 'src="img/',
+                    to: 'src="guidance/img/'
+                }]
+            },
 
+            srcGuidanceSingle: {
+                src: ['www/guidance/*.html'],
+                dest: 'www/guidance/',
+                replacements: [{
+                    // As well as it
+                    from: 'src="guidance/img/',
+                    to: 'src="img/'
+                }]
             }
         }
     });
 
-    grunt.registerTask('build', ['missions-index', 'process-guidance']);
+    grunt.registerTask('build', ['missionsIndex', 'replace:srcGuidanceApp']);
 
-    grunt.registerMultiTask('process-guidance', 'Process guidance files', function () {
-
-    });
-
-    grunt.registerMultiTask('missions-index', 'Create missions index', function () {
+    grunt.registerMultiTask('missionsIndex', 'Create missions index', function () {
 
         /**
          * Array of scenario files
