@@ -1,4 +1,4 @@
-angular.module('mustard.app.profile', ['mustard.app.user', 'LocalStorageModule'])
+angular.module('mustard.app.userProfile', ['mustard.app.user', 'LocalStorageModule'])
 
 /**
  * @module Profile

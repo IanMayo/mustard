@@ -1,16 +1,17 @@
 angular.module('mustard.game.timeDisplayDirective', [])
 
 .constant('timeDisplayConfig', {
-    initialSimulationSpeed: 1, // 1x
+    initialSimulationSpeed: 1, // 1x,
+    initialAccelRate: 16,
     initialTimerLabel: '01:00:00'
 })
 
-.directive('timeDisplay', ['timeDisplayConfig', function (timeDisplayConfig) {
+.directive('timeDisplay', ['timeDisplayConfig', '$interval', function (timeDisplayConfig, $interval) {
     return {
-        restrict : 'EA',
+        restrict :'EA',
         scope: {
             timer: '=',
-            speed: '='
+            timeStep: '='
         },
         templateUrl: 'js/game/directives/timeDisplay/timeDisplay.tpl.html',
         link: function (scope) {
@@ -19,17 +20,54 @@ angular.module('mustard.game.timeDisplayDirective', [])
              * Simulation speed trigger
              * @type {Number}
              */
-            var oldSpeedState = timeDisplayConfig.initialSimulationSpeed;
+            var oldSpeed = timeDisplayConfig.initialSimulationSpeed;
+            
+            /**
+             * Simulation time trigger
+             * @type {Number}
+             */
+            var oldTimer = 0;
 
+            /**
+             * Simulation interval trigger
+             * @type {Object}
+             */
+            var simulationIntervalId;
+
+            /**
+             * Increase or restore simulation timer value.
+             * We need restore the value if simulation process was stopped (gameState.simulationTime = 0)
+             * according to scenario conditions and user wishes continue the process.
+             */
+            var changeSimulationTimer = function () {
+                if (oldTimer) {
+                    // restore simulation timer
+                    scope.timer = oldTimer;
+                    oldTimer = 0;
+                }
+                scope.timer += scope.timeStep;
+            };
+
+            scope.speed = timeDisplayConfig.initialAccelRate;
             scope.timerLabel = timeDisplayConfig.initialTimerLabel;
 
             /**
              * Update timer label when simulation times changes
              */
-            scope.$watch('timer', function (newVal) {
-                if (newVal) {
-                    var date = new Date(newVal);
+            scope.$watch('timer', function (newVal, oldVal) {
+                var dateString = newVal || oldVal;
+                var date;
+
+                if (dateString) {
+                    date = new Date(dateString);
                     scope.timerLabel = date.toLocaleTimeString();
+                }
+
+                if (!newVal && oldVal) {
+                    // reset simulation speed
+                    scope.speed = 0;
+                    // and save timer value. Then we can restart process 'safely'.
+                    oldTimer = oldVal;
                 }
             });
 
@@ -39,10 +77,10 @@ angular.module('mustard.game.timeDisplayDirective', [])
             scope.simulate = function () {
                 if (scope.speed) {
                     // save current speed
-                    oldSpeedState = scope.speed;
+                    oldSpeed = scope.speed;
                     scope.speed = 0;
                 } else {
-                    scope.speed = oldSpeedState;
+                    scope.speed = oldSpeed;
                 }
             };
 
@@ -61,6 +99,18 @@ angular.module('mustard.game.timeDisplayDirective', [])
                     scope.speed /= 2;
                 }
             };
+
+            /**
+             * Change simulation interval
+             */
+            scope.$watch('speed', function (newVal) {
+                $interval.cancel(simulationIntervalId);
+
+                if (newVal) {
+                    // do play
+                    simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
+                }
+            });
         }
     };
 }]);

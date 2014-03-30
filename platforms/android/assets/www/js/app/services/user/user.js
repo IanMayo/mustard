@@ -40,6 +40,41 @@ angular.module('mustard.app.user', [
         return !!mission;
     };
 
+
+    /** if the mission after the one specified is locked, then unlock it
+     *
+     * @param user the user we're referring to
+     * @param missionId the previous mission
+     */
+    var unlockNextMission = function (user, missionId) {
+        var foundIt = null;
+
+        // note: we're using every instead of each so that
+        // we can drop out of the loop early (when we find a match)
+        _.every(user.missions, function (mission) {
+
+            // is this the mission in question?
+            if (mission.id == missionId) {
+                foundIt = true;
+            }
+            else if (foundIt) {
+                // ok - the previous one was the completed mission, what's the
+                // status of this one?
+                if (mission.status == 'LOCKED') {
+                    // ok, unlock it
+                    mission.status = 'UNLOCKED';
+
+                    // and drop out of the every loop
+                    return false;
+                }
+            }
+
+            // ok, allow move on to next loop iteration
+            return true;
+        })
+    };
+
+
     /**
      * It's IMPORTANT variable which indicates if user is authorized in app
      *
@@ -50,6 +85,21 @@ angular.module('mustard.app.user', [
 
     /**
      * User singleton object
+     *
+     * Note: this is what a user object looks like:
+     * {
+     *    "name": "Sailor",
+     *    "achievements": [
+     *        {"name": "Newbie"},
+     *        {"name": "Speed Demon"}
+     *    ],
+     *    "missions": [
+     *        {"id": "1a", "status": "SUCCESS"},
+     *        {"id": "1b", "status": "UNLOCKED"},
+     *        {"id": "1c", "status": "LOCKED"}
+     *    ]
+     * }
+     *
      */
     var user = {
         name: "",
@@ -143,7 +193,15 @@ angular.module('mustard.app.user', [
          * @returns {boolean}
          */
         missionCompleted: function (missionId) {
-            return changeMissionStatus(user, missionId, 'COMPLETED');
+            var res = changeMissionStatus(user, missionId, 'SUCCESS');
+
+            /** TODO: on mission completed, we need to UNLOCK the next mission, if it's locked
+             * this looks like some fancy underscore processing.
+             */
+            unlockNextMission(user, missionId);
+
+            return res;
+
         },
 
         /**
@@ -153,7 +211,7 @@ angular.module('mustard.app.user', [
          * @returns {boolean}
          */
         missionFailed: function (missionId) {
-            return changeMissionStatus(user, missionId, 'FAILED');
+            return changeMissionStatus(user, missionId, 'FAILURE');
         },
 
         /**

@@ -1,11 +1,11 @@
 <label>Show targets
-  <input type="checkbox" data-ng-checked="showTargets" data-ng-model="showTargets" data-ng-change="toggleTargets()"/>
+  <input type="checkbox" data-ng-checked="targetsVisibility" data-ng-model="targetsVisibility"
+         data-ng-change="toggleTargets()"/>
 </label>
 <label>Show detections
   <input type="checkbox" data-ng-model="showSonarDetections" data-ng-change="toggleDetections()"/>
 </label>
 
-<leaflet center="mapCenter" paths="paths" layers="layers" geojson="features" markers="vesselsMarker"
-  height="400px" width="100%" pan-to-vessel-position mouse-location map-scale></leaflet>
+<div data-leaflet-map style="height: 400px; width: 100%;"></div>
 
 

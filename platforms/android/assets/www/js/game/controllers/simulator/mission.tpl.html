@@ -2,12 +2,12 @@
   <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-star"></span> Back
   </button>
-  <table width="100%">
+  <table  style="width:100%">
     <tr>
-      <td width="40%" style="padding: 10px">
-        <time-bearing-display data-series="ownShip.newDetections"></time-bearing-display>
+      <td style="width:50%;padding: 10px">
+        <time-bearing-display data-series="ownShip.detections()"></time-bearing-display>
       </td>
-      <td width="60%" style="padding: 10px">
+      <td style="width:50%;padding: 10px">
         <spatial-view></spatial-view>
       </td>
     </tr>
@@ -15,12 +15,12 @@
       <td colspan="2">
         <ul class="list-inline mission-controls">
           <li>
-            <time-display class="form-group" data-speed="gameState.accelRate"
+            <time-display class="form-group" data-time-step="gameState.simulationTimeStep"
                           data-timer="gameState.simulationTime"></time-display>
           </li>
           <li>
-            <ship-state data-course="ownShip.state.course"
-                        data-speed="ownShip.state.speed"></ship-state>
+            <ship-state data-course="ownShip.state().course"
+                        data-speed="ownShip.state().speed"></ship-state>
           </li>
           <li>
             <ship-controls data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
@@ -32,7 +32,11 @@
             <objective-list data-objectives="objectives"></objective-list>
           </li>
           <li>
-            <fire-weapon data-ownship="ownShip"></fire-weapon>
+            <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
+          </li>
+          <li>
+            <range-calculator data-ng-hide="ownShip.vessel().unableToPerformRanging" data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
+                              data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
           </li>
         </ul>
       </td>
