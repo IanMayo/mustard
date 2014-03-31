@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         },
 
         replace: {
-            srcGuidanceApp: {
+            guidance: {
                 src: ['www/guidance/*.html'],
                 dest: 'www/guidance/processed/',
                 replacements: [{
@@ -26,5 +26,5 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('build', ['missionsIndex', 'replace:srcGuidanceApp']);
+    grunt.registerTask('build', ['missionsIndex', 'replace:guidance']);
 };
