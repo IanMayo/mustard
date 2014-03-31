@@ -8,28 +8,28 @@
                 "name": "Learner Driver",
                 "description": "Learn to drive, on the tracked range",
                 "url": "1a_drive_vessel",
-                "guidanceUrl": "guidance/1a_drive_vessel.html"
+                "guidanceUrl": "guidance/processed/1a_drive_vessel.html"
             },
             {
                 "id": "1b",
                 "name": "Reading Bearings",
                 "description": "Learn to trail a bearing",
                 "url": "1b_read_bearings",
-                "guidanceUrl": "guidance/1b_read_bearings.html"
+                "guidanceUrl": "guidance/processed/1b_read_bearings.html"
             },
             {
                 "id": "1c",
                 "name": "Handling ambiguity",
                 "description": "Intro to ambiguous bearings",
                 "url": "1c_resolve_ambiguity",
-                "guidanceUrl": "guidance/1c_resolve_ambiguity.html"
+                "guidanceUrl": "guidance/processed/1c_resolve_ambiguity.html"
             },
             {
                 "id": "1d",
                 "name": "Advanced Ambiguity",
                 "description": "More advanced ambiguous bearings",
                 "url": "1d_resolve_ambiguity_2",
-                "guidanceUrl": "guidance/1d_resolve_ambiguity_2.html"
+                "guidanceUrl": "guidance/processed/1d_resolve_ambiguity_2.html"
             }
         ]
     },
@@ -42,28 +42,28 @@
                 "name": "Elementary Self Noise",
                 "description": "An introduction to self-noise",
                 "url": "2a_intro_self_noise",
-                "guidanceUrl": "guidance/2a_intro_self_noise.html"
+                "guidanceUrl": "guidance/processed/2a_intro_self_noise.html"
             },
             {
                 "id": "2b",
                 "name": "Full Self Noise",
                 "description": "Full self-noise characteristics",
                 "url": "2b_full_self_noise",
-                "guidanceUrl": "guidance/2b_full_self_noise.html"
+                "guidanceUrl": "guidance/processed/2b_full_self_noise.html"
             },
             {
                 "id": "2c",
                 "name": "Advanced Self Noise",
                 "description": "Advanced Self Noise",
                 "url": "2c_adv_self_noise",
-                "guidanceUrl": "guidance/2c_adv_self_noise.html"
+                "guidanceUrl": "guidance/processed/2c_adv_self_noise.html"
             },
             {
                 "id": "2d",
                 "name": "Self Noise Extra",
                 "description": "More challenging self noise",
                 "url": "2d_more_self_noise",
-                "guidanceUrl": "guidance/2d_more_self_noise.html"
+                "guidanceUrl": "guidance/processed/2d_more_self_noise.html"
             }
         ]
     },
@@ -76,14 +76,14 @@
                 "name": "Fleeing Target",
                 "description": "Trailing a fleeing target",
                 "url": "3a_fleeing_target",
-                "guidanceUrl": "guidance/3a_fleeing_target.html"
+                "guidanceUrl": "guidance/processed/3a_fleeing_target.html"
             },
             {
                 "id": "3b",
                 "name": "Attacking Target",
                 "description": "Evading an attacking target",
                 "url": "3b_attacking_target",
-                "guidanceUrl": "guidance/3b_attacking_target.html"
+                "guidanceUrl": "guidance/processed/3b_attacking_target.html"
             }
         ]
     },
@@ -96,7 +96,7 @@
                 "name": "Weapons Intro",
                 "description": "First use of weapons",
                 "url": "4a_weapons_intro",
-                "guidanceUrl": "guidance/4a_weapons_intro.html"
+                "guidanceUrl": "guidance/processed/4a_weapons_intro.html"
             }
         ]
     },
@@ -109,14 +109,14 @@
                 "name": "Merchant in area",
                 "description": "Handling a cargo ship in the training area",
                 "url": "6a_merchant",
-                "guidanceUrl": "guidance/6a_merchant.html"
+                "guidanceUrl": "guidance/processed/6a_merchant.html"
             },
             {
                 "id": "6b",
                 "name": "White Shipping",
                 "description": "Handling multiple ships in the training area",
                 "url": "6b_merchant_and_fisherman",
-                "guidanceUrl": "guidance/6b_merchant_and_fisherman.html"
+                "guidanceUrl": "guidance/processed/6b_merchant_and_fisherman.html"
             }
         ]
     },
@@ -129,28 +129,28 @@
                 "name": "Unsteady Array",
                 "description": "The effects of the array being unsteady",
                 "url": "7a_array_unsteady",
-                "guidanceUrl": "guidance/7a_array_unsteady.html"
+                "guidanceUrl": "guidance/processed/7a_array_unsteady.html"
             },
             {
                 "id": "7b",
                 "name": "Quick win",
                 "description": "Test mission - succeeds quickly",
                 "url": "7b_quick_win",
-                "guidanceUrl": "guidance/7b_quick_win.html"
+                "guidanceUrl": "guidance/processed/7b_quick_win.html"
             },
             {
                 "id": "7c",
                 "name": "Quick fail",
                 "description": "Test mission - fails quickly",
                 "url": "7c_quick_fail",
-                "guidanceUrl": "guidance/7c_quick_fail.html"
+                "guidanceUrl": "guidance/processed/7c_quick_fail.html"
             },
             {
                 "id": "7d",
                 "name": "Test mission - Placeholder",
                 "description": "Plain mission - used to test onward flow from succeed/fail",
                 "url": "7d_placeholder",
-                "guidanceUrl": "guidance/7d_placeholder.html"
+                "guidanceUrl": "guidance/processed/7d_placeholder.html"
             }
         ]
     }
