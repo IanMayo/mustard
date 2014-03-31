@@ -58,7 +58,7 @@ module.exports = function(grunt) {
         };
 
         /**
-         * It reads scenario files and returns a raw collection of levels/mission data
+         * It reads scenario files and returns raw collection of levels/mission data
          *
          * @returns {Array}
          */
@@ -102,7 +102,6 @@ module.exports = function(grunt) {
 
         /**
          * It gets the missions from raw levels/mission collection then it adds them to the array with levels
-         * which will be returned after that
          *
          * @param rawList
          * @param levelIndex
