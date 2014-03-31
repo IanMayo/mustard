@@ -27,6 +27,21 @@ angular.module('mustard.app.missionsIndex', [])
         },
 
         /**
+         * It returns collection of missions which is taken from the levels collection
+         *
+         * @returns {promise}
+         */
+        getMissions: function () {
+            var deferred = $q.defer();
+
+            this.getLevels().then(function (levels) {
+                deferred.resolve(_.flatten(_.pluck(levels, 'missions')));
+            });
+
+            return deferred.promise;
+        },
+
+        /**
          * It returns particular mission from the levels collection based on its id
          *
          * @param id
