@@ -1,182 +1,185 @@
 {
-  "vessels": [
-    {
-      "name": "Ownship",
-      "categories": {
-        "force": "BLUE",
-        "environment": "SURFACE",
-        "type": "WARSHIP"
-      },
-      "behaviours": [],
-      "sonars": [
+    "id": "3b",
+    "name": "Attacking Target",
+    "description": "Evading an attacking target",
+    "welcome": "Ok, there's an aggressive looking submarine out there. Let's locate it, and get rid of it.",
+    "vessels": [
         {
-          "name": "BASIC_TOWED",
-          "categories": ["NO_STEADY_TIME"],
-          "offset": -1000,
-          "ArrayGain": 18,
-          "DT": -8
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 92,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50.0,
+                    "lng": -8.1
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Attack blue",
+                    "type": "ATTACK",
+                    "target": "Ownship",
+                    "height": -30,
+                    "speed": 12
+                },
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 50.15,
+                        "lng": -8.25
+                    },
+                    "br": {
+                        "lat": 49.85,
+                        "lng": -7.75
+                    },
+                    "height": -30,
+                    "speed": 8
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_HULL",
+                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+                    "coverage": 120,
+                    "offset": 0,
+                    "ArrayGain": 28,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 102,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "time": 0,
+                "location": {
+                    "lat": 50.09,
+                    "lng": -7.99
+                },
+                "height": 0,
+                "course": 222,
+                "speed": 8,
+                "demCourse": 222,
+                "demSpeed": 8,
+                "demHeight": 0.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
         }
-      ],
-      "radiatedNoise": {
-        "baseLevel": 92,
-        "speedPattern": "Uniform"
-      },
-      "state": {
-        "time": 0,
-        "categories": [],
-        "location": {
-          "lat": 50.0,
-          "lng": -8.1
-        },
-        "height": 0,
-        "course": 90,
-        "speed": 10,
-        "demCourse": 90,
-        "demSpeed": 10,
-        "demHeight": -10.0
-      },
-      "perf": {
-        "turnRadius": 1200.0,
-        "accelerationRate": 0.3,
-        "decelerationRate": 0.8,
-        "minSpeed": 4,
-        "maxSpeed": 40,
-        "climbRate": 1,
-        "diveRate": 2
-      }
-    },
-    {
-      "name": "Target",
-      "categories": {
-        "force": "RED",
-        "environment": "SUBSURFACE",
-        "type": "SUBMARINE"
-      },
-      "behaviours": [
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
         {
-          "name": "Attack blue",
-          "type": "ATTACK",
-          "target": "Ownship",
-          "height": -30,
-          "speed": 12
-        },
-        {
-          "name": "Patrol area",
-          "type": "RECTANGLE_WANDER",
-          "tl": {
-            "lat": 50.15,
-            "lng": -8.25
-          },
-          "br": {
-            "lat": 49.85,
-            "lng": -7.75
-          },
-          "height": -30,
-          "speed": 8
-        }
-      ],
-      "sonars": [
-        {
-          "name": "BASIC_HULL",
-          "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-          "coverage": 120,
-          "offset": 0,
-          "ArrayGain": 28,
-          "DT": -8,
-          "disabled": false
-        }
-      ],
-      "radiatedNoise": {
-        "baseLevel": 102,
-        "speedPattern": "Uniform"
-      },
-      "state": {
-        "categories": [],
-        "time": 0,
-        "location": {
-          "lat": 50.09,
-          "lng": -7.99
-        },
-        "height": 0,
-        "course": 222,
-        "speed": 8,
-        "demCourse": 222,
-        "demSpeed": 8,
-        "demHeight": 0.0,
-        "batteryLevel": 60
-      },
-      "perf": {
-        "turnRadius": 1200.0,
-        "accelerationRate": 0.3,
-        "decelerationRate": 0.8,
-        "minSpeed": 4,
-        "maxSpeed": 20,
-        "batteryUsage": 0.00035,
-        "chargeRate": 0.013,
-        "climbRate": 1,
-        "diveRate": 2
-      }
-    }
-  ],
-  "patrolArea": [
-    [50.15, -8.25],
-    [49.85, -7.75]
-  ],
-  "environment": {},
-  "objectives": [
-    {
-      "name": "Gain & maintain contact",
-      "type": "SEQUENCE",
-      "children": [
-        {
-          "name": "Gain contact",
-          "description": "Gain contact on the training target",
-          "type": "GAIN_CONTACT",
-          "elapsed": 300,
-          "success": "Good news, we've got in contact. Bad news, we've got a Weapons Failure. Engineers estimate an hour to fix it - so you've got to prevent it getting within 500m of us for the next hour.  He's got a stern null, so you may be able to hide behind him.",
-          "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
-        },
-        {
-          "name": "Detect it",
-          "description": "Get within 500m of Target vessel",
-          "type": "DISTANCE",
-          "target": "Ownship",
-          "subject": "Target",
-          "elapsed": 3600,
-          "achievement": {
-            "name": "Chicken",
-            "message": "You can now choose to chase or evade a target, discretion is the better part of valour..."
-          },
-          "range": 500,
-          "success": "Well done, that was tricky.",
-          "failure": "Incoming Torpedo!  It looks like he got us.  Did you try using Sprint and Drift to get further away from him?"
-        }
-      ]
-    }
-  ],
-  "welcome": "Ok, there's an aggressive looking submarine out there. Let's locate it, and get rid of it.",
-  "features": {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Ops Area"
-        },
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [-8.25, 50.15],
-              [-8.25, 49.85],
-              [-7.75, 49.85],
-              [-7.75, 50.15],
-              [-8.25, 50.15 ]
+            "name": "Gain & maintain contact",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact",
+                    "description": "Gain contact on the training target",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 300,
+                    "success": "Good news, we've got in contact. Bad news, we've got a Weapons Failure. Engineers estimate an hour to fix it - so you've got to prevent it getting within 500m of us for the next hour.  He's got a stern null, so you may be able to hide behind him.",
+                    "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
+                },
+                {
+                    "name": "Detect it",
+                    "description": "Get within 500m of Target vessel",
+                    "type": "DISTANCE",
+                    "target": "Ownship",
+                    "subject": "Target",
+                    "elapsed": 3600,
+                    "achievement": {
+                        "name": "Chicken",
+                        "message": "You can now choose to chase or evade a target, discretion is the better part of valour..."
+                    },
+                    "range": 500,
+                    "success": "Well done, that was tricky.",
+                    "failure": "Incoming Torpedo!  It looks like he got us.  Did you try using Sprint and Drift to get further away from him?"
+                }
             ]
-          ]
-        },
-        "id": "OpsArea"
-      }
-    ]
-  }
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
 }

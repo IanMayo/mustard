@@ -15,14 +15,14 @@
       <td colspan="2">
         <ul class="list-inline mission-controls">
           <li>
-            <time-display class="form-group" data-speed="reviewState.accelRate"
+            <time-display class="form-group" data-time-step="reviewState.reviewTimeStep"
                           data-timer="reviewState.reviewTime"></time-display>
           </li>
           <li>
-            <ship-state data-course="vesselsMarker.Ownship.course"
-                        data-speed="vesselsMarker.Ownship.speed"></ship-state>
-            <ship-state data-course="vesselsMarker.Target.course"
-                        data-speed="vesselsMarker.Target.speed"></ship-state>
+            <ship-state data-course="vessels.Ownship.state.course"
+                        data-speed="vessels.Ownship.state.speed"></ship-state>
+            <ship-state data-course="vessels.Target.state.course"
+                        data-speed="vessels.Target.state.speed"></ship-state>
           </li>
           <li>
             <objective-list data-objectives="history.objectives"></objective-list>

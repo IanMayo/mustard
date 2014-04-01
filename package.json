@@ -1,6 +1,33 @@
 {
-  "name": "mustard",
-  "version": "0.0.1",
-  "dependencies": {
-  }
+    "name": "mustard",
+    "version": "0.0.1",
+    "author": "Ian Mayo",
+    "license": "BSD",
+    "description": "Open Source (MIT License) mobile app to gamify Sonar best practices.",
+    "main": "/www/index.html",
+    "keywords": [
+        "sonar",
+        "game",
+        "phonegap",
+        "angularjs"
+    ],
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "test": "/tests/spec.html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/IanMayo/mustard.git"
+    },
+    "bugs": {
+        "url": "https://github.com/IanMayo/mustard/issues"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "~0.4.4",
+        "lodash": "^2.4.1",
+        "grunt-text-replace": "^0.3.11"
+    }
 }
