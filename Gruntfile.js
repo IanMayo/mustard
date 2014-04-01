@@ -7,8 +7,8 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         missionsIndex: {
-            src: 'www/js/game/scenarios/*.json',
             options: {
+                src: 'www/js/game/scenarios/*.json',
                 guidanceDir: 'guidance/processed/',
                 output: 'www/js/app/missionsIndex/missionsIndex.json'
             }

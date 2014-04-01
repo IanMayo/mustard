@@ -4,25 +4,34 @@ module.exports = function(grunt) {
 
     var _ = require('lodash');
 
-    grunt.registerMultiTask('missionsIndex', 'Create missions index', function () {
+    grunt.registerTask('missionsIndex', 'Create missions index', function () {
+
+        /**
+         * Path to the scenario files
+         *
+         * @type {String|Array}
+         */
+        var src = grunt.option('src') || this.options().src;
+
+        /**
+         * Path to the "mission-index" file
+         *
+         * @type {String}
+         */
+        var output = grunt.option('output') || this.options().output;
+
+        /**
+         * Path to the guidanceDir dir
+         *
+         * @type {String}
+         */
+        var guidanceDir = grunt.option('guidanceDir') || this.options().guidanceDir;
 
         /**
          * Array of scenario files
          * @type {Array}
          */
-        var filesSrc = this.filesSrc;
-
-        /**
-         * Path to the "mission-index" file
-         * @type {String}
-         */
-        var output = this.options().output;
-
-        /**
-         * Path to the guidanceDir dir
-         * @type {string}
-         */
-        var guidanceDir = this.options().guidanceDir;
+        var filesSrc = grunt.file.expand(src);
 
         /**
          * Check if current item is level
