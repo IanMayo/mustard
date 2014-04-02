@@ -228,15 +228,15 @@ angular.module('mustard.game.leafletMapDirective', [])
       /**
        * Add narrative markers.
        */
-      scope.$on('narrativeMarkers', function (event, vessels) {
+      scope.$on('narrativeMarkers', function (event, entries) {
           var marker;
 
           layerGroups.narratives = L.layerGroup();
 
-          _.each(vessels, function (vessel) {
+          _.each(entries, function (entry) {
               marker = new L.marker();
-              marker.setLatLng(vessel.location);
-              marker.bindPopup(vessel.message);
+              marker.setLatLng(entry.location);
+              marker.bindPopup(entry.message);
               layerGroups.narratives.addLayer(marker);
               map.addLayer(layerGroups.narratives);
           });
