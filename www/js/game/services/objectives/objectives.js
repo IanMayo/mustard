@@ -784,7 +784,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
              * @param {Function} listener
              */
             onVesselsDestroyed: function (listener) {
-                destroyedVesselsListener = _.isFunction(listener) || destroyedVesselsListener;
+                destroyedVesselsListener = listener || destroyedVesselsListener;
             }
         };
     }
