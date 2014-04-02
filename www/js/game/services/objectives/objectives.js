@@ -12,6 +12,11 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
     .service('objectives', ['geoMath', function (geoMath) {
 
+        /**
+         * Callback function which returns desstroyed vessel.
+         * @type {Function}
+         */
+        var destroyedVesselsListener = angular.noop;
 
         /** on the presumption that the objective was successful, insert the
          * relevant achievement
@@ -606,6 +611,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                                 gameState.destroyed = [];
                             }
                             gameState.destroyed.push(vessel);
+
+                            destroyedVesselsListener(vessel);
                         }
                     }
                 }
@@ -643,6 +650,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                                 gameState.destroyed.push(vessel);
                                 gameState.destroyed.push(target);
 
+                                destroyedVesselsListener([vessel, target]);
                             }
                         }
                     });
@@ -769,10 +777,16 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 handleTargetsDestroyed(gameState, vessels, deadVessels);
                 handleExpiredWeapon(gameState, vessels);
                 handleWeaponDetonation(gameState, vessels);
+            },
 
-
+            /**
+             * Return destroyed vessel.
+             * @param {Function} listener
+             */
+            onVesselsDestroyed: function (listener) {
+                destroyedVesselsListener = _.isFunction(listener) || destroyedVesselsListener;
             }
-        }
+        };
     }
     ])
 ;

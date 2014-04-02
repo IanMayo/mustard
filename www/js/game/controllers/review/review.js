@@ -67,6 +67,8 @@ angular.module('mustard.game.review', [
         }
     };
 
+    var lockedVessels = {};
+
     /**
      * Add necessary properties to create a map marker
      * @param {Object} vessel
@@ -75,7 +77,7 @@ angular.module('mustard.game.review', [
      */
     var markerOptions = function (vessel, name) {
         var stateData = {
-        name: name,
+            name: name,
             state: {
             course: 0,
                 location: {
@@ -89,11 +91,44 @@ angular.module('mustard.game.review', [
     };
 
     /**
-     * Update the UI to the current review time
+     * Set state options to vessel from track step.
+     *
+     * @param {Object} reviewTrack
+     * @param {Object} historyVessel
+     * @param {String} shortName
      */
-    var doUpdate = function () {
+    var applyTrackState = function (reviewTrack, historyVessel, shortName) {
+        var vessel;
+        // update state of existed vessel or add a vessel from history
+        vessel = $scope.vessels[shortName] || angular.copy(historyVessel);
+
+        // create vessel config state from history track
+        var newOptions = {
+            name: shortName,
+            state: {
+                speed: reviewTrack.speed,
+                location: {
+                    lat: reviewTrack.lat,
+                    lng: reviewTrack.lng
+                },
+                course: reviewTrack.course
+            }
+        };
+
+        // apply config options
+        _.extend(vessel, newOptions);
+        $scope.vessels[shortName] = vessel;
+    };
+
+    /**
+     * Create a list of vessels with track time state.
+     *
+     * @returns {Object}
+     */
+    var vesselsTracks = function () {
         // shortcut to the time
         var tNow = $scope.reviewState.reviewTime;
+        var vessels = {};
 
         // ok, retrieve the state, to update teh marker
         _.each($scope.history.vessels, function (vessel, name) {
@@ -107,35 +142,89 @@ angular.module('mustard.game.review', [
             // what's the index of the relevant array item
             var index = delta / $scope.history.stepTime;
 
-            var nearest;
+            var reviewTrack;
             var shortName;
-            var thisV;
 
             // is this less than the length?
-            if (index < vessel.track.length) {
-                nearest = vessel.track[index];
+            reviewTrack = vessel.track[index];
+            shortName = vesselShortName(name);
 
-                if (nearest) {
-                    shortName = vesselShortName(name);
-                    thisV = $scope.vessels[shortName];
-
-                    thisV.name = shortName
-                    thisV.state = {
-                        speed: nearest.speed,
-                        location: {
-                            lat: nearest.lat,
-                            lng: nearest.lng
-                        },
-                        course: nearest.course
-                    }
-                }
-            } else {
-                // stop review process
-                $scope.reviewState.reviewTime = 0;
+            if (reviewTrack) {
+                applyTrackState(reviewTrack, vessel, shortName);
             }
+
+            vessels[shortName] = {vessel: vessel, reviewTrack: reviewTrack};
         });
 
+        return vessels;
+    };
+
+    /**
+     * Remove destroyed vessels if their track time are outside of simulation step.
+     *
+     * @param {Object} vessels
+     */
+    var removeDestroyedVessels = function (vessels) {
+        _.each(vessels, function (item, shortName) {
+            var reviewTrack = item.reviewTrack;
+            var vessel = item.vessel;
+
+            if (reviewTrack) {
+                // a vessel has a track options on simulation time step
+                if (reviewTrack.destroyed) {
+                    if (reviewTrack.wasDestroyed) {
+                        // hold a vessel to show it's icon marker
+                        // even the vessel doesn't have track options simulation time step (tombstone marker case)
+                        lockedVessels[shortName] = reviewTrack;
+                        vessel.wasDestroyed = reviewTrack.wasDestroyed;
+                        // remove the vessel from scope to prevent broadcasting it to leafletMap directive
+                        delete $scope.vessels[shortName];
+                    }
+
+                    // remove a vessel's marker or change the icon to tombstone
+                    $scope.$broadcast('vesselsDestroyed', vessel);
+                }
+            } else {
+                if ($scope.ownShip.name() === vessel.name) {
+                    // stop review process
+                    $scope.reviewState.reviewTime = 0;
+                } else if (!lockedVessels[shortName] || $scope.reviewState.reviewTime < lockedVessels[shortName].time) {
+                    // case to remove torpedo icon marker
+                    if ($scope.reviewState.reviewTime > 0) {
+                        // if simulation process is running
+                        // remove the vessel from scope to prevent broadcasting it to leafletMap directive
+                        delete $scope.vessels[shortName];
+                        // delete marker from the map
+                        $scope.$broadcast('vesselsDestroyed', vessel);
+                    }
+                }
+            }
+
+            if (lockedVessels[shortName] && $scope.reviewState.reviewTime < lockedVessels[shortName].time) {
+                // case to remove tombstone icon marker
+                if ($scope.reviewState.reviewTime > 0) {
+                    // if simulation process is running
+                    // remove the vessel from scope to prevent broadcasting it to leafletMap directive
+                    delete $scope.vessels[shortName];
+                    // delete tombstone from the map
+                    $scope.$broadcast('vesselsDestroyed', vessel);
+                    // create torpedo icon marker
+                    $scope.$broadcast('changeMarkers', [vessel]);
+                }
+            }
+        });
+    };
+
+    /**
+     * Update the UI to the current review time.
+     *
+     */
+    var doUpdate = function () {
+        var vessels = vesselsTracks();
+
         $scope.$broadcast('changeMarkers', $scope.vessels);
+
+        removeDestroyedVessels(vessels);
     };
 
     /**
