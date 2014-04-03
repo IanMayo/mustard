@@ -24,6 +24,11 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                 var legOneEndTime;
                 var legTwoEndTime;
 
+                var tgtTrueLoc;   // the actual target location at the point where we apply the solution
+                var tmpTargetLocation; // working copy of target location - we won't be holding it in the turn
+                var tmpSonarLocation; // working copy of the sonar location
+                var rangeOrigin;  // the ownship location that we will apply the solution to
+
                 var turnStarted = false;
 
                 var firstDetection;  // we need to remember the first detection in each leg, for averaging
@@ -77,7 +82,11 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                     firstDetection = null;
                     legOneOSA = null;
                     legTwoOSA = null;
+                    tgtTrueLoc = null;
+                    rangeOrigin = null;
                     turnStarted = false;
+                    tmpTargetLocation = null;
+                    tmpSonarLocation = null;
                     scope.isRunning = false;
                 };
 
@@ -93,24 +102,33 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                     return trackName;
                 };
 
-                var calcBearingRate = function (lastDetection, newDetection) {
-                    var timeDelta = newDetection.time - lastDetection.time;
-                    var bearingDelta = newDetection.bearing - lastDetection.bearing;
-                    return bearingDelta / (timeDelta / (60000));
+                var calcBearingRate = function (newDetection, firstDetection) {
+                    var timeDelta = newDetection.time - firstDetection.time;
+                    var bearingDelta = newDetection.trueBearing - firstDetection.trueBearing;
+                    var res = bearingDelta / (timeDelta / (60000));
+                    return res;
                 };
 
                 var calcOSA = function (state, newDetection) {
                     var relBearing = newDetection.bearing - state.course;
-                    return (state.speed * Math.sin(geoMath.toRads(relBearing)));
+                    // put the relBearing in the correct domain, if necessary
+                    if(relBearing < -180)
+                    {
+                      relBearing += 360;
+                    }
+                    var res = state.speed * Math.sin(geoMath.toRads(relBearing));
+                    return res;
                 };
 
                 var calcRange = function (legOneOSA, legTwoOSA, legOneBdot, legTwoBdot) {
+
 
                     var deltaOSA = calcDelta(legOneOSA, legTwoOSA);
                     var deltaBdot = calcDelta(legOneBdot, legTwoBdot);
 
                     // note: yards value is 1936, this is 1770..28 in m
-                    return 1770.28 * deltaOSA / deltaBdot;
+                    var res = 1770.28 * deltaOSA / deltaBdot;
+                    return res;
                 };
 
                 var calcDelta = function (legOne, legTwo) {
@@ -127,7 +145,6 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                 scope.$on('addDetections', function () {
                     if (scope.hasTrack()) {
 
-
                         // ok, retrieve the detection for our subject track
                         var contact = _.find(scope.detections, function (det) {
                             return det.trackId == trackName;
@@ -136,7 +153,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
 
                         if (contact) {
                             scope.signalexcess = Math.ceil(contact.strength);
-                            scope.bearingrate = Math.floor(contact.bDot);
+                            scope.bearingrate = Math.abs(Math.floor(contact.bDot));
                         }
 
                         // ok, is this thing switched on?
@@ -157,6 +174,13 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                 else if (legOneBdot) {
                                     // ok, this is the turn at the end of leg one.
                                     turnStarted = true;
+
+                                    // store the sonar location, since this is where we apply the solutions from
+                                    rangeOrigin = angular.copy(tmpSonarLocation);
+
+                                    // and the target location, in case we want to measure the accuracy
+                                    // of the solution
+                                    tgtTrueLoc = angular.copy(tmpTargetLocation);
                                 }
                             }
                             else {
@@ -168,6 +192,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                         // ok, we've come out of the turn
 
                                         if (!legTwoEndTime) {
+                                            // ok, this is the first contact once out of the turn
                                             legTwoEndTime = contact.time + LEG_LENGTH;
                                             firstDetection = contact;
                                         }
@@ -190,7 +215,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                                 setStatus("Range:" + Math.floor(range) + "m Bearing:" + Math.floor(contact.bearing), null);
 
                                                 // ok, create the marker location
-                                                var rangeOrigin = angular.copy(scope.state.location);
+                                                rangeOrigin = angular.copy(scope.state.location);
                                                 var location = geoMath.rhumbDestinationPoint(rangeOrigin, geoMath.toRads(contact.bearing), range);
 
                                                 // insert a new marker
@@ -200,7 +225,8 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                                 if (!scope.vessel.solutions) {
                                                     scope.vessel.solutions = [];
                                                 }
-                                                scope.vessel.solutions.push({"time": contact.time, "location": location, "target": contact.target});
+                                                scope.vessel.solutions.push({"time": contact.time, "location": location, "target": contact.target, "tgtLoc":tgtTrueLoc});
+
                                             }
                                             else {
                                                 // we're still doing hte average
@@ -218,10 +244,15 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                             legOneBdot = calcBearingRate(contact, firstDetection);
                                             legOneOSA = calcOSA(scope.state, contact);
                                             setStatus("Leg One Complete, ready to turn", null);
+
+                                            // take a working copy of the target location. we'll need it when we start the turn
+                                            tmpTargetLocation = contact.tgtLoc;
+                                            tmpSonarLocation = contact.origin;
                                         }
                                         else {
                                             setStatus("Averaging Leg One", Math.floor((legOneEndTime - contact.time) / 1000) + "secs");
                                         }
+
 
                                     }
                                     else {
@@ -234,6 +265,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
                                 else {
                                     setStatus("Contact lost", null);
                                     doReset();
+                                    trackName = null;
                                 }
                             }
                         }

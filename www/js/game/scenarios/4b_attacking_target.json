@@ -1,8 +1,8 @@
 {
-    "id": "2d",
-    "name": "Self Noise Extra",
-    "description": "More challenging self noise",
-    "welcome": "Ok, let's work more on that bow null. As before, locate the target to start the mission. He's to the North-East of you, and you need to gain him within 5 minutes",
+    "id": "4b",
+    "name": "Attacking Target",
+    "description": "Evading an attacking target",
+    "welcome": "Ok, there's an aggressive looking submarine out there. Let's locate it, and get rid of it.",
     "vessels": [
         {
             "name": "Ownship",
@@ -11,7 +11,6 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
-            "unableToPerformRanging" : true,
             "behaviours": [],
             "sonars": [
                 {
@@ -23,7 +22,7 @@
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 90,
+                "baseLevel": 92,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -34,9 +33,9 @@
                     "lng": -8.1
                 },
                 "height": 0,
-                "course": 45,
+                "course": 90,
                 "speed": 10,
-                "demCourse": 45,
+                "demCourse": 90,
                 "demSpeed": 10,
                 "demHeight": -10.0
             },
@@ -59,6 +58,13 @@
             },
             "behaviours": [
                 {
+                    "name": "Attack blue",
+                    "type": "ATTACK",
+                    "target": "Ownship",
+                    "height": -30,
+                    "speed": 12
+                },
+                {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
@@ -69,13 +75,23 @@
                         "lat": 49.85,
                         "lng": -7.75
                     },
-                    "height": -30
+                    "height": -30,
+                    "speed": 8
                 }
             ],
             "sonars": [
+                {
+                    "name": "BASIC_HULL",
+                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
+                    "coverage": 120,
+                    "offset": 0,
+                    "ArrayGain": 28,
+                    "DT": -8,
+                    "disabled": false
+                }
             ],
             "radiatedNoise": {
-                "baseLevel": 104,
+                "baseLevel": 102,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -86,10 +102,10 @@
                     "lng": -7.99
                 },
                 "height": 0,
-                "course": 60,
-                "speed": 13,
-                "demCourse": 80,
-                "demSpeed": 13,
+                "course": 222,
+                "speed": 8,
+                "demCourse": 222,
+                "demSpeed": 8,
                 "demHeight": 0.0,
                 "batteryLevel": 60
             },
@@ -121,20 +137,23 @@
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
                     "elapsed": 300,
-                    "success": "Ok, you've gained contact. Now trail him continuously for the next hour.",
+                    "success": "Good news, we've got in contact. Bad news, we've got a Weapons Failure. Engineers estimate an hour to fix it - so you've got to prevent it getting within 500m of us for the next hour.  He's got a stern null, so you may be able to hide behind him.",
                     "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
                 },
                 {
-                    "name": "Maintain contact",
-                    "description": "Maintain continuous contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
+                    "name": "Detect it",
+                    "description": "Get within 500m of Target vessel",
+                    "type": "DISTANCE",
+                    "target": "Ownship",
+                    "subject": "Target",
                     "elapsed": 3600,
                     "achievement": {
-                        "name": "Passive King",
-                        "message": "There's not much more to teach you about handling self-noise"
+                        "name": "Chicken",
+                        "message": "You can now choose to chase or evade a target, discretion is the better part of valour..."
                     },
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null?"
+                    "range": 500,
+                    "success": "Well done, that was tricky.",
+                    "failure": "Incoming Torpedo!  It looks like he got us.  Did you try using Sprint and Drift to get further away from him?"
                 }
             ]
         }
