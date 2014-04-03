@@ -1,8 +1,8 @@
 {
-    "id": "3b",
-    "name": "Attacking Target",
-    "description": "Evading an attacking target",
-    "welcome": "Ok, there's an aggressive looking submarine out there. Let's locate it, and get rid of it.",
+    "id": "3c",
+    "name": "Subtle turns",
+    "description": "Conducting ranging using small manoeuvres",
+    "welcome": "So, that's ambiguous contacts covered. Next you need to learn to differentiate self-noise. Head East, to gain contact with the training target within 8 minutes.",
     "vessels": [
         {
             "name": "Ownship",
@@ -15,28 +15,28 @@
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": ["NO_STEADY_TIME"],
+                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 92,
+                "baseLevel": 90,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.0,
-                    "lng": -8.1
+                    "lat": 50,
+                    "lng": -8.18
                 },
-                "height": 0,
                 "course": 90,
-                "speed": 10,
                 "demCourse": 90,
                 "demSpeed": 10,
+                "speed": 10,
+                "height": 0,
                 "demHeight": -10.0
             },
             "perf": {
@@ -58,13 +58,6 @@
             },
             "behaviours": [
                 {
-                    "name": "Attack blue",
-                    "type": "ATTACK",
-                    "target": "Ownship",
-                    "height": -30,
-                    "speed": 12
-                },
-                {
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
@@ -75,38 +68,28 @@
                         "lat": 49.85,
                         "lng": -7.75
                     },
-                    "height": -30,
-                    "speed": 8
+                    "height": -30
                 }
             ],
             "sonars": [
-                {
-                    "name": "BASIC_HULL",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "coverage": 120,
-                    "offset": 0,
-                    "ArrayGain": 28,
-                    "DT": -8,
-                    "disabled": false
-                }
             ],
             "radiatedNoise": {
-                "baseLevel": 102,
+                "baseLevel": 100,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
-                "time": 0,
                 "location": {
-                    "lat": 50.09,
-                    "lng": -7.99
+                    "lat": 50.05,
+                    "lng": -7.9
                 },
-                "height": 0,
-                "course": 222,
-                "speed": 8,
-                "demCourse": 222,
-                "demSpeed": 8,
-                "demHeight": 0.0,
+                "course": 300,
+                "demCourse": 300,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
                 "batteryLevel": 60
             },
             "perf": {
@@ -129,31 +112,24 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Gain & maintain contact",
+            "name": "Gain & keep contact",
             "type": "SEQUENCE",
             "children": [
                 {
                     "name": "Gain contact",
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
-                    "elapsed": 300,
-                    "success": "Good news, we've got in contact. Bad news, we've got a Weapons Failure. Engineers estimate an hour to fix it - so you've got to prevent it getting within 500m of us for the next hour.  He's got a stern null, so you may be able to hide behind him.",
-                    "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
+                    "elapsed": 480,
+                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
-                    "name": "Detect it",
-                    "description": "Get within 500m of Target vessel",
-                    "type": "DISTANCE",
-                    "target": "Ownship",
-                    "subject": "Target",
+                    "name": "Maintain contact",
+                    "description": "Maintain contact on the training target for one hour",
+                    "type": "MAINTAIN_CONTACT",
                     "elapsed": 3600,
-                    "achievement": {
-                        "name": "Chicken",
-                        "message": "You can now choose to chase or evade a target, discretion is the better part of valour..."
-                    },
-                    "range": 500,
-                    "success": "Well done, that was tricky.",
-                    "failure": "Incoming Torpedo!  It looks like he got us.  Did you try using Sprint and Drift to get further away from him?"
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes."
                 }
             ]
         }

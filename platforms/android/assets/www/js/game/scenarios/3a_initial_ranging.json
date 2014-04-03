@@ -1,8 +1,8 @@
 {
-    "id": "2d",
-    "name": "Self Noise Extra",
-    "description": "More challenging self noise",
-    "welcome": "Ok, let's work more on that bow null. As before, locate the target to start the mission. He's to the North-East of you, and you need to gain him within 5 minutes",
+    "id": "3a",
+    "name": "Initial Ranging",
+    "description": "An introduction to passive ranging",
+    "welcome": "Your vessel now has a passive Range Calculator.  \n\nInitiate a ranging manoeuvre by selecting a sonar track.  Then, press the 'Start' button, let the caculator average the bearing rate for a minute, then make a turn, then wait another minute.\n\nThe solution will be shown on the map.",
     "vessels": [
         {
             "name": "Ownship",
@@ -11,7 +11,6 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
-            "unableToPerformRanging" : true,
             "behaviours": [],
             "sonars": [
                 {
@@ -30,14 +29,14 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.0,
-                    "lng": -8.1
+                    "lat": 50,
+                    "lng": -8.18
                 },
-                "height": 0,
-                "course": 45,
-                "speed": 10,
-                "demCourse": 45,
+                "course": 90,
+                "demCourse": 90,
                 "demSpeed": 10,
+                "speed": 10,
+                "height": 0,
                 "demHeight": -10.0
             },
             "perf": {
@@ -62,12 +61,12 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
+                        "lat": 49.9,
+                        "lng": -8.1
                     },
                     "br": {
-                        "lat": 49.85,
-                        "lng": -7.75
+                        "lat": 50.1,
+                        "lng": -7.8
                     },
                     "height": -30
                 }
@@ -75,22 +74,22 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 104,
+                "baseLevel": 100,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
-                "time": 0,
                 "location": {
-                    "lat": 50.09,
-                    "lng": -7.99
+                    "lat": 50.05,
+                    "lng": -7.9
                 },
-                "height": 0,
-                "course": 60,
-                "speed": 13,
-                "demCourse": 80,
-                "demSpeed": 13,
-                "demHeight": 0.0,
+                "course": 300,
+                "demCourse": 300,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
                 "batteryLevel": 60
             },
             "perf": {
@@ -113,28 +112,24 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Gain & maintain contact",
+            "name": "Gain & keep contact",
             "type": "SEQUENCE",
             "children": [
                 {
                     "name": "Gain contact",
                     "description": "Gain contact on the training target",
                     "type": "GAIN_CONTACT",
-                    "elapsed": 300,
-                    "success": "Ok, you've gained contact. Now trail him continuously for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. Aah, maybe he was sitting in your bow null the whole time. Try manoeuvring to move him out of the null"
+                    "elapsed": 480,
+                    "success": "Well done, you've gained contact within the 8 minute limit. You now need to perform 3 ranging manoeuvres on him.",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
-                    "name": "Maintain contact",
-                    "description": "Maintain continuous contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "achievement": {
-                        "name": "Passive King",
-                        "message": "There's not much more to teach you about handling self-noise"
-                    },
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes. We're you travelling quickly enough to trail him? Or did you accidentally put him into your bow null?"
+                    "name": "Range 3 times",
+                    "description": "Perform 3 ranging manoeuvres",
+                    "type": "OBTAIN_SOLUTION",
+                    "count" : 3,
+                    "subject" : "Ownship",
+                    "success": "Well done, 3 solutions obtained"
                 }
             ]
         }

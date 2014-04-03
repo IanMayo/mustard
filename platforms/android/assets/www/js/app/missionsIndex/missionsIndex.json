@@ -69,34 +69,62 @@
     },
     {
         "id": "3",
-        "name": "Active Targets",
+        "name": "Ranging Manoeuvres",
         "missions": [
             {
                 "id": "3a",
-                "name": "Fleeing Target",
-                "description": "Trailing a fleeing target",
-                "url": "3a_fleeing_target",
-                "guidanceUrl": "guidance/processed/3a_fleeing_target.html"
+                "name": "Initial Ranging",
+                "description": "An introduction to passive ranging",
+                "url": "3a_initial_ranging",
+                "guidanceUrl": "guidance/processed/3a_initial_ranging.html"
             },
             {
                 "id": "3b",
-                "name": "Attacking Target",
-                "description": "Evading an attacking target",
-                "url": "3b_attacking_target",
-                "guidanceUrl": "guidance/processed/3b_attacking_target.html"
+                "name": "Successive ranging",
+                "description": "Maintain a target solution using a series of ranging manoeuvres",
+                "url": "3b_successive_ranging",
+                "guidanceUrl": "guidance/processed/3b_successive_ranging.html"
+            },
+            {
+                "id": "3c",
+                "name": "Subtle turns",
+                "description": "Conducting ranging using small manoeuvres",
+                "url": "3c_subtle_turns",
+                "guidanceUrl": "guidance/processed/3c_subtle_turns.html"
+            },
+            {
+                "id": "3d",
+                "name": "Lay in wait",
+                "description": "Use passive tracking to predict target route",
+                "url": "3d_lay_in_wait",
+                "guidanceUrl": "guidance/processed/3d_lay_in_wait.html"
             }
         ]
     },
     {
         "id": "4",
-        "name": "Weapons",
+        "name": "Advanced Tactics & Weapons",
         "missions": [
             {
                 "id": "4a",
+                "name": "Fleeing Target",
+                "description": "Trailing a fleeing target",
+                "url": "4a_fleeing_target",
+                "guidanceUrl": "guidance/processed/4a_fleeing_target.html"
+            },
+            {
+                "id": "4b",
+                "name": "Attacking Target",
+                "description": "Evading an attacking target",
+                "url": "4b_attacking_target",
+                "guidanceUrl": "guidance/processed/4b_attacking_target.html"
+            },
+            {
+                "id": "4c",
                 "name": "Weapons Intro",
                 "description": "First use of weapons",
-                "url": "4a_weapons_intro",
-                "guidanceUrl": "guidance/processed/4a_weapons_intro.html"
+                "url": "4c_weapons_intro",
+                "guidanceUrl": "guidance/processed/4c_weapons_intro.html"
             }
         ]
     },
