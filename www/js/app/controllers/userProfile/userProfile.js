@@ -1,10 +1,14 @@
-angular.module('mustard.app.userProfile', ['mustard.app.user', 'LocalStorageModule'])
+angular.module('mustard.app.userProfile', [
+    'mustard.app.user',
+    'LocalStorageModule',
+    'mustard.game.audio'
+])
 
 /**
  * @module Profile
  * @class ProfileCtrl (controller)
  */
-.controller('ProfileCtrl', function ($scope, user, localStorageService, $location) {
+.controller('ProfileCtrl', function ($scope, user, localStorageService, $location, audio) {
 
     /**
      * GOD CONSOLE METHODS
@@ -37,5 +41,9 @@ angular.module('mustard.app.userProfile', ['mustard.app.user', 'LocalStorageModu
         user.syncWithWeb().then(function (isSaved) {
             alert('User is ' + (isSaved ? 'SAVED' : 'NOT SAVED'));
         });
+    };
+
+    $scope.testPlay = function (path) {
+        audio.play(path);
     };
 });
