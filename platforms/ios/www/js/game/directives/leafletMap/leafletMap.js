@@ -176,27 +176,31 @@ angular.module('mustard.game.leafletMapDirective', [])
       var destroyedMarker = function (vessel) {
         var marker = leafletMarkers[vessel.name];
         var iconSize = 48;
-        var icon = L.icon({
-          iconAngle: 0,
-          iconUrl: 'img/vessels/' + iconSize + '/' + 'tombstone.png',
-          iconSize: [iconSize, iconSize],
-          iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
-        });
+        var icon;
 
-        if (map.hasLayer(marker)) {
-          // remove layer from 'targets' layer
-          map.removeLayer(marker);
-        }
+        if (marker) {
+            icon = L.icon({
+              iconAngle: 0,
+              iconUrl: 'img/vessels/' + iconSize + '/' + 'tombstone.png',
+              iconSize: [iconSize, iconSize],
+              iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+            });
 
-        // update marker
-        marker.setIcon(icon);
-        marker.setIconAngle(0);
+            if (map.hasLayer(marker)) {
+              // remove layer from 'targets' layer
+              map.removeLayer(marker);
+            }
 
-        // add the marker to new layer
-        layerGroups.destroyed.addLayer(marker)
-        ;
-        // we don't need to update the marker, remove it
-        delete leafletMarkers[vessel.name];
+            // update marker
+            marker.setIcon(icon);
+            marker.setIconAngle(0);
+
+            // add the marker to new layer
+            layerGroups.destroyed.addLayer(marker);
+
+            // we don't need to update the marker, remove it
+//            delete leafletMarkers[vessel.name];
+          }
       };
 
       /**
@@ -224,15 +228,15 @@ angular.module('mustard.game.leafletMapDirective', [])
       /**
        * Add narrative markers.
        */
-      scope.$on('narrativeMarkers', function (event, vessels) {
+      scope.$on('narrativeMarkers', function (event, entries) {
           var marker;
 
           layerGroups.narratives = L.layerGroup();
 
-          _.each(vessels, function (vessel) {
+          _.each(entries, function (entry) {
               marker = new L.marker();
-              marker.setLatLng(vessel.location);
-              marker.bindPopup(vessel.message);
+              marker.setLatLng(entry.location);
+              marker.bindPopup(entry.message);
               layerGroups.narratives.addLayer(marker);
               map.addLayer(layerGroups.narratives);
           });
@@ -313,6 +317,10 @@ angular.module('mustard.game.leafletMapDirective', [])
       });
 
       scope.$on('vesselsDestroyed', function (event, vessels) {
+          if (!_.isArray(vessels)) {
+              vessels = [vessels]
+          }
+
         _.each(vessels, function (vessel) {
           if (vessel.wasDestroyed) {
             destroyedMarker(vessel);

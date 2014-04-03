@@ -12,6 +12,11 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
     .service('objectives', ['geoMath', function (geoMath) {
 
+        /**
+         * Callback function which returns desstroyed vessel.
+         * @type {Function}
+         */
+        var destroyedVesselsListener = angular.noop;
 
         /** on the presumption that the objective was successful, insert the
          * relevant achievement
@@ -47,8 +52,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
          * @param gameState
          * @param objective
          * @param vessels
+         * @param deadVessels
          */
-        var handleThis = function (gameState, objective, vessels) {
+        var handleThis = function (gameState, objective, vessels, deadVessels) {
             var thisType = objective.type;
 
             switch (thisType) {
@@ -71,7 +77,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                     handleElapsed(gameState, objective, vessels);
                     break;
                 case "DESTROY_TARGET":
-                    handleDestroyTarget(gameState, objective, vessels);
+                    handleDestroyTarget(gameState, objective, vessels, deadVessels);
                     break;
             }
 
@@ -561,19 +567,19 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         };
 
 
-        var handleDestroyTarget = function (gameState, destroy, vessels) {
+        var handleDestroyTarget = function (gameState, destroy, vessels, deadVessels) {
 
             if (!destroy.complete) {
-                var subject = vessels[destroy.subject];
-                var target = vessels[destroy.target];
+                // ok - is our target now in the list of dead vessels?
+                var target = deadVessels[destroy.target];
 
-                if (!target) {
+                if (target) {
                     // ok, must be dead. Win!
                     destroy.complete = true;
                     gameState.successMessage = destroy.success;
                     gameState.state = "DO_STOP";
 
-                    insertNarrative(gameState, gameState.simulationTime, subject.state.location, "Managed to destroy target");
+                    insertNarrative(gameState, gameState.simulationTime, target.state.location, "Managed to destroy target");
 
                     // and store any achievements
                     processAchievements(destroy.achievement, gameState);
@@ -606,6 +612,8 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                                 gameState.destroyed = [];
                             }
                             gameState.destroyed.push(vessel);
+
+                            destroyedVesselsListener(vessel);
                         }
                     }
                 }
@@ -643,6 +651,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                                 gameState.destroyed.push(vessel);
                                 gameState.destroyed.push(target);
 
+                                destroyedVesselsListener([vessel, target]);
                             }
                         }
                     });
@@ -761,7 +770,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
                 // ok, loop through the objectives
                 _.each(objectives, function (item) {
-                    handleThis(gameState, item, vessels)
+                    handleThis(gameState, item, vessels, deadVessels)
                 });
 
                 // also any "other" handlers that keep things tidy
@@ -769,10 +778,16 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 handleTargetsDestroyed(gameState, vessels, deadVessels);
                 handleExpiredWeapon(gameState, vessels);
                 handleWeaponDetonation(gameState, vessels);
+            },
 
-
+            /**
+             * Return destroyed vessel.
+             * @param {Function} listener
+             */
+            onVesselsDestroyed: function (listener) {
+                destroyedVesselsListener = listener || destroyedVesselsListener;
             }
-        }
+        };
     }
     ])
 ;

@@ -1,6 +1,8 @@
-angular.module('mustard.game.fireWeaponDirective', [])
+angular.module('mustard.game.fireWeaponDirective', [
+    'mustard.game.audio'
+])
 
-  .directive('fireWeapon', ['$timeout', function ($timeout) {
+  .directive('fireWeapon', ['$timeout', 'audio', function ($timeout, audio) {
     return {
       restrict: 'EA',
       scope: {
@@ -46,8 +48,7 @@ angular.module('mustard.game.fireWeaponDirective', [])
             "course": course, "template": weaponTemplate});
 
           // hey, play that sound!
-          document.getElementById("fireSound").play();
-
+          audio.play('audio/TorpedoLaunch.mp3');
         };
 
         scope.doFireStraight = function () {

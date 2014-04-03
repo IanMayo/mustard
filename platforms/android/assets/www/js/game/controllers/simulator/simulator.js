@@ -54,6 +54,12 @@ angular.module('mustard.game.simulator', [
         $scope.deadVessels = {};
 
         /**
+         * Indexed list of references
+         * @type {Object}
+         */
+        $scope.referenceLocations = {};
+
+        /**
          * Environment state
          * @type {Object}
          */
@@ -288,27 +294,55 @@ angular.module('mustard.game.simulator', [
                 }
             };
 
-
             var storeHistory = function () {
-                // put in the categories
-                _.each($scope.vessels, function (vessel) {
-                    // get history
-                    var history = trackHistory[vessel.name];
-                    if (history) {
-                        history.categories = angular.copy(vessel.categories);
-                    }
-                });
+                var addDestroyedState = function () {
+                    _.each($scope.deadVessels, function (vessel) {
+                        var history = trackHistory[vessel.name];
+                        var lastTrack;
 
-                // do we have a track history
-                if (_.size(trackHistory)) {
-                    reviewSnapshot.put({
-                        "period": [startTime, $scope.gameState.simulationTime],
-                        "narratives": $scope.gameState.narratives,
-                        "stepTime": $scope.gameState.simulationTimeStep,
-                        "center": $scope.ownShip.location(),
-                        "vessels": trackHistory
-                    })
-                }
+                        if (history) {
+                            lastTrack = _.last(trackHistory[vessel.name].track);
+
+                            if (lastTrack) {
+                                _.extend(lastTrack, {
+                                    destroyed: true,
+                                    wasDestroyed: vessel.wasDestroyed
+                                });
+                            }
+                        }
+                    });
+                };
+
+                var addCategoriesInfo = function () {
+                    var allVessels = _.extend({}, $scope.vessels, $scope.deadVessels, $scope.referenceLocations);
+
+                    // put in the categories
+                    _.each(allVessels, function (vessel) {
+                        // get history
+                        var history = trackHistory[vessel.name];
+                        if (history) {
+                            history.categories = angular.copy(vessel.categories);
+                        }
+                    });
+                };
+
+                var putTrackHistory = function () {
+                    // do we have a track history
+                    if (_.size(trackHistory)) {
+                        reviewSnapshot.put({
+                            "period": [startTime, $scope.gameState.simulationTime],
+                            "narratives": $scope.gameState.narratives,
+                            "stepTime": $scope.gameState.simulationTimeStep,
+                            "center": $scope.ownShip.location(),
+                            "mapFeatures": $scope.mapFeatures,
+                            "vessels": trackHistory
+                        })
+                    }
+                };
+
+                addDestroyedState();
+                addCategoriesInfo();
+                putTrackHistory();
             };
 
             var updateMapObjects = function () {
@@ -322,13 +356,20 @@ angular.module('mustard.game.simulator', [
              * @param timeIndex used to index the state data
              */
             var storeState = function (vessel, timeIndex) {
+                var track = {
+                    time: timeIndex,
+                    lat: vessel.state.location.lat,
+                    lng: vessel.state.location.lng,
+                    course: vessel.state.course,
+                    speed: vessel.state.speed
+                };
+
                 if (!trackHistory[vessel.name]) {
                     trackHistory[vessel.name] = {};
                     trackHistory[vessel.name].track = [];
                 }
 
-                trackHistory[vessel.name].track.push({'time': timeIndex, 'lat': vessel.state.location.lat, 'lng': vessel.state.location.lng,
-                    'course': vessel.state.course, 'speed': vessel.state.speed})
+                trackHistory[vessel.name].track.push(track);
             };
 
             /** move the scenario forwards one step - including all the simulated processes
@@ -442,7 +483,7 @@ angular.module('mustard.game.simulator', [
              */
             $scope.addReferenceLocation = function (location) {
               var reference = {
-                name: ["reference" + _.uniqueId()],
+                name: _.uniqueId('reference'),
                 state: {
                   course: 0,
                   location: location
@@ -453,15 +494,17 @@ angular.module('mustard.game.simulator', [
                   type: "REFERENCE"
                 }
               };
-  
+
+              storeState(reference, $scope.gameState.simulationTime);
+              $scope.referenceLocations[reference.name] = reference;
               $scope.$broadcast('addReferenceMarker', reference);
             };
 
-            $scope.$watch('gameState.destroyed', function (vessels) {
-                if (vessels && vessels.length) {
+            objectives.onVesselsDestroyed(function (vessels) {
+                $timeout(function () {
                     $scope.$broadcast('vesselsDestroyed', vessels);
-                }
-            }, true);
+                }, 100);
+            });
 
             $scope.goBack = function () {
                 storeHistory();
