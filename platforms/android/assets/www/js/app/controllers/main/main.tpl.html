@@ -12,7 +12,7 @@
           <h2>{{ level.id }} - {{ level.name }}</h2>
         </div>
         <div class="panel-body list-group mission-list">
-          <div ng-repeat="mission in level.missions" ng-click="moveToMission([mission.id], [mission.url])"
+          <div ng-repeat="mission in level.missions" ng-click="moveToMission([mission.id])"
             class="text-center list-group-item mission">
             <div class="pull-right">
               <span class="glyphicon mission-status" ng-class="glyphFor([mission.id])"></span>

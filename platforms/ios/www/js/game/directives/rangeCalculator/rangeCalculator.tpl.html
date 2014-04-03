@@ -1,0 +1,26 @@
+<h4>Range Calculator:</h4>
+<div>
+  <div class="well well-sm">
+    <div>Target:</div>
+    <span data-ng-show="!trackName()"
+          class="label label-default">Pending</span>
+    <span data-ng-show="trackName()"
+          class="label label-success">Acquired</span>
+    <span data-ng-show="trackName()"
+          class="label label-default">Strength:{{ signalexcess }}</span>
+    <span data-ng-show="trackName()"
+          class="label label-default">B-Rate:{{ bearingrate }}</span>
+    <button data-ng-disabled="!hasTrack()" data-ng-click="doClearTrack()"
+            type="button" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-record">Clear</span>
+    </button>
+  </div>
+  <div class="well well-sm" data-ng-show="hasTrack()">
+    <div>Ranging:</div>
+    <button data-ng-disabled="!hasTrack() || isRunning" data-ng-click="doRun()"
+            type="button" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-tasks">Start</span>
+    </button>
+    <div><span class="label label-warning">{{ status }}<span data-ng-show="badge" class="badge pull-right">{{ badge }}</span></span></div>
+  </div>
+</div>

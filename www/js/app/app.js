@@ -6,8 +6,9 @@ angular.module('mustard', [
     'mustard.app.registration',
     'mustard.app.main',
     'mustard.app.mission',
-    'mustard.app.profile',
+    'mustard.app.userProfile',
     'mustard.app.settings',
+    'mustard.app.missionsIndex',
     'mustard.game.simulator',
     'mustard.game.review',
     'ui.bootstrap'
@@ -27,17 +28,27 @@ angular.module('mustard', [
 
         .when('/main', {
             controller: 'MainCtrl',
-            templateUrl: 'js/app/controllers/main/main.tpl.html'
+            templateUrl: 'js/app/controllers/main/main.tpl.html',
+            resolve: {
+                levels: ['missionsIndex', function (missionsIndex) {
+                    return missionsIndex.getLevels();
+                }]
+            }
         })
 
         .when('/mission/:id', {
             controller: 'MissionCtrl',
-            templateUrl: 'js/app/controllers/mission/mission.tpl.html'
+            templateUrl: 'js/app/controllers/mission/mission.tpl.html',
+            resolve: {
+                mission: ['$route', 'missionsIndex', function ($route, missionsIndex) {
+                    return missionsIndex.getMission($route.current.params.id);
+                }]
+            }
         })
 
         .when('/profile', {
             controller: 'ProfileCtrl',
-            templateUrl: 'js/app/controllers/user-profile/profile.tpl.html'
+            templateUrl: 'js/app/controllers/userProfile/userProfile.tpl.html'
         })
 
         .when('/settings', {
@@ -57,8 +68,8 @@ angular.module('mustard', [
                         method: "GET",
                         url: 'js/game/scenarios/' + scenario
                     }).success(function (response) {
-                            deferred.resolve(response);
-                        });
+                        deferred.resolve(response);
+                    });
                     return deferred.promise;
                 }]
             }
@@ -68,7 +79,6 @@ angular.module('mustard', [
             controller: 'ReviewCtrl',
             templateUrl: 'js/game/controllers/review/review.tpl.html'
         })
-
 
         .otherwise({redirectTo: '/main'});
 

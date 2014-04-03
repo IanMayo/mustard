@@ -1,29 +1,5 @@
 {
     "name": "Newbie",
-    "achievements": [
-
-    ],
-    "missions": [
-        {"id": "1a", "status": "UNLOCKED"},
-        {"id": "1b", "status": "LOCKED"},
-        {"id": "1c", "status": "LOCKED"},
-        {"id": "1d", "status": "LOCKED"},
-        {"id": "2a", "status": "LOCKED"},
-        {"id": "2b", "status": "LOCKED"},
-        {"id": "2c", "status": "LOCKED"},
-        {"id": "2d", "status": "LOCKED"},
-        {"id": "3a", "status": "LOCKED"},
-        {"id": "3b", "status": "LOCKED"},
-        {"id": "3c", "status": "LOCKED"},
-        {"id": "3d", "status": "LOCKED"},
-        {"id": "4a", "status": "LOCKED"},
-        {"id": "4b", "status": "LOCKED"},
-        {"id": "4c", "status": "LOCKED"},
-        {"id": "6a", "status": "LOCKED"},
-        {"id": "6b", "status": "LOCKED"},
-        {"id": "7a", "status": "LOCKED"},
-        {"id": "7b", "status": "UNLOCKED"},
-        {"id": "7c", "status": "UNLOCKED"},
-        {"id": "7d", "status": "UNLOCKED"}
-    ]
+    "achievements": [],
+    "missions": []
 }
