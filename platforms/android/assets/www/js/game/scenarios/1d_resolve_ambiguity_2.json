@@ -11,6 +11,7 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
+            "unableToPerformRanging" : true,
             "behaviours": [],
             "sonars": [
                 {
