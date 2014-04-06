@@ -6,6 +6,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        /**
+         * It creates missions index based on scenario files also it adds correct guidance path to each mission
+         *
+         * @example
+         * $ grunt missionsIndex
+         * or
+         * $ grunt missionsIndex --src=[scenario files path] --output=[missions index output file path]
+         * --guidanceDir=[path to the guidance dir]
+         */
         missionsIndex: {
             options: {
                 src: 'www/js/game/scenarios/*.json',
@@ -14,6 +23,12 @@ module.exports = function(grunt) {
             }
         },
 
+        /**
+         * It replaces src paths in the source guidance files and produce new files with replaced src
+         *
+         * @example
+         * $ grunt replace:guidance
+         */
         replace: {
             guidance: {
                 src: ['www/guidance/*.html'],
