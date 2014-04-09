@@ -58,7 +58,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
         switch (thisType) {
             case "SEQUENCE":
-                handleSequence(gameState, objective, vessels);
+                handleSequence(gameState, objective, vessels, deadVessels);
                 break;
             case "PROXIMITY":
                 handleProximity(gameState, objective, vessels);
@@ -155,7 +155,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     };
 
 
-    var handleSequence = function (gameState, sequence, vessels) {
+    var handleSequence = function (gameState, sequence, vessels, deadVessels) {
         var thisId = 0;
         var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
 
@@ -168,7 +168,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             // is this one complete?
             if (!(child.complete)) {
                 // ok, run it
-                handleThis(gameState, child, vessels);
+                handleThis(gameState, child, vessels, deadVessels);
 
                 // did it finish?
                 if (child.complete) {
