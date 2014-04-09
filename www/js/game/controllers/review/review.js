@@ -6,6 +6,7 @@ angular.module('mustard.game.review', [
     'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
     'mustard.game.reviewSnapshot',
+    'mustard.game.reviewTourDirective',
     'mustard.game.geoMath'
 ])
 
@@ -264,7 +265,8 @@ angular.module('mustard.game.review', [
                     lat: item.location.lat,
                     lng: item.location.lng
                 },
-                message: narrMessage
+                message: narrMessage,
+                name: _.uniqueId('narrative')
             };
 
           // TODO: we should also create tour "stops" for each narrative entry
