@@ -26,6 +26,7 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 animation: true,
                 template: '<div class="popover tour">' +
                     '<div class="arrow"></div>' +
+                    '<div class="popover-title"></div>' +
                     '<div class="popover-content"></div>' +
                     '<div class="popover-navigation">' +
                         '<div class="btn-group">' +

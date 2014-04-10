@@ -259,15 +259,18 @@ angular.module('mustard.game.review', [
         var narratives = {};
 
         _.each($scope.history.narratives, function (item, index) {
-            var narrMessage = "Time:" + item.time + "<br/>" + item.message;
+            var timeLabel = new Date(item.time);
+            timeLabel = timeLabel.toLocaleTimeString();
+
             narratives['narrative_' + index] = {
                 location: {
                     lat: item.location.lat,
                     lng: item.location.lng
                 },
-                message: narrMessage,
+                message: item.message,
                 name: _.uniqueId('narrative'),
-                time: item.time
+                time: item.time,
+                timerLabel: timeLabel
             };
 
           // TODO: we should also create tour "stops" for each narrative entry

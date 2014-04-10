@@ -258,7 +258,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
 
                     tourSteps.push({
                         element: '.' + entry.name,
-                        title: "Narrative",
+                        title: 'Narrative at ' + entry.timerLabel,
                         content: entry.message,
                         time: entry.time
                     });
