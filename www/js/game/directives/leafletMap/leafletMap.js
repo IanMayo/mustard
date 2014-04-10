@@ -21,7 +21,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
     return {
         restrict: 'EA',
         scope: {},
-        require: ['^spatialView', 'reviewTour'],
+        require: ['^spatialView', '^reviewTour'],
         link: function (scope, element, attrs, controllers) {
             var spatialViewController = controllers[0];
             var reviewTourController = controllers[1];
@@ -259,7 +259,8 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                     tourSteps.push({
                         element: '.' + entry.name,
                         title: "Narrative",
-                        content: entry.message
+                        content: entry.message,
+                        time: entry.time
                     });
                 });
 

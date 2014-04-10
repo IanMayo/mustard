@@ -7,9 +7,21 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
 .directive('reviewTour', ['$timeout', function ($timeout) {
     return {
         restrict: 'EA',
-        require: 'leafletMap',
-        controller: function () {
-            var tour = new Tour({
+        controller: ['$scope', function ($scope) {
+            var narrativeSteps = [];
+            var currentStep = 0;
+            var tour;
+            var $stepWindow;
+
+            var changeTime = function () {
+                var step = tour.getCurrentStep();
+                $scope.$apply(function () {
+                    $scope.reviewState.reviewTime = narrativeSteps[step].time;
+                });
+            };
+
+            tour = new Tour({
+                onShown: changeTime,
                 storage: false,
                 animation: true,
                 template: '<div class="popover tour">' +
@@ -25,31 +37,34 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 '</div>'
             });
 
-            var $stepWindow;
-            var step = 0;
-
             tour.init();
+
+            $scope.showNarrative = function () {
+                tour.end();
+                tour.restart();
+            };
 
             return {
                 setNarrativeSteps: function (steps) {
+                    narrativeSteps = steps;
                     tour.addSteps(steps);
                     tour.start();
                 },
                 hideSteps: function () {
-                    step = tour.getCurrentStep();
-                    $stepWindow = $('#step-' + step);
+                    currentStep = tour.getCurrentStep();
+                    $stepWindow = $('#currentStep-' + currentStep);
                     $stepWindow.hide();
                 },
                 showSteps: function () {
-                    tour.showStep(step);
+                    tour.showStep(currentStep);
                     $timeout(function () {
                         // drag the map changes position of a narrative marker
                         // wait while method showStep() applies new position according to new coordinates of the marker
                         $stepWindow.show();
                     }, 1000);
                 }
-            }
-        }
+            };
+        }]
     }
 }]);
 

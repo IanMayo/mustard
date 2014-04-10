@@ -266,7 +266,8 @@ angular.module('mustard.game.review', [
                     lng: item.location.lng
                 },
                 message: narrMessage,
-                name: _.uniqueId('narrative')
+                name: _.uniqueId('narrative'),
+                time: item.time
             };
 
           // TODO: we should also create tour "stops" for each narrative entry
@@ -301,11 +302,4 @@ angular.module('mustard.game.review', [
 
     // put the markers on the map in their initial locations
     doUpdate();
-
-    // Note: the narrative "tour" should not require a button press to start, it should just run.
-    // but, we may provide UI control to restart tour.
-    $scope.showNarrative = function () {
-
-    // start the tour
-    }
 }]);
