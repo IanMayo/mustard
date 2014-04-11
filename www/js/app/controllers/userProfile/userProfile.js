@@ -1,10 +1,14 @@
-angular.module('mustard.app.userProfile', ['mustard.app.user', 'LocalStorageModule'])
+angular.module('mustard.app.userProfile', [
+    'mustard.app.user',
+    'mustard.app.message',
+    'LocalStorageModule'
+])
 
 /**
  * @module Profile
  * @class ProfileCtrl (controller)
  */
-.controller('ProfileCtrl', function ($scope, user, localStorageService, $location) {
+.controller('ProfileCtrl', function ($scope, user, localStorageService, $location, message) {
 
     /**
      * GOD CONSOLE METHODS
@@ -35,7 +39,11 @@ angular.module('mustard.app.userProfile', ['mustard.app.user', 'LocalStorageModu
 
     $scope.saveUser = function () {
         user.syncWithWeb().then(function (isSaved) {
-            alert('User is ' + (isSaved ? 'SAVED' : 'NOT SAVED'));
+            message.showModal('info', 'Notification', ('User is ' + (isSaved ? 'SAVED' : 'NOT SAVED')));
         });
+    };
+
+    $scope.showModalMessage = function () {
+        message.showModal('warning', 'Test message', 'Text Message');
     };
 });
