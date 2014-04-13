@@ -21,7 +21,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
     return {
         restrict: 'EA',
         scope: {},
-        require: ['^spatialView', '^reviewTour'],
+        require: ['^spatialView', '?^reviewTour'],
         link: function (scope, element, attrs, controllers) {
             var spatialViewController = controllers[0];
             var reviewTourController = controllers[1];
@@ -213,8 +213,10 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 map = new L.Map(element[0], {attributionControl: false});
 
                 L.tileLayer(tileLayerUrl).addTo(map);
-                map.on('dragstart', reviewTourController.hideSteps);
-                map.on('dragend', reviewTourController.showSteps);
+                if (reviewTourController) {
+                    map.on('dragstart', reviewTourController.hideSteps);
+                    map.on('dragend', reviewTourController.showSteps);
+                }
 
                 configureLayers();
                 addMapFeatures();
@@ -264,7 +266,9 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                     });
                 });
 
-                reviewTourController.setNarrativeSteps(tourSteps);
+                if (reviewTourController) {
+                    reviewTourController.setNarrativeSteps(tourSteps);
+                }
             });
 
             /**
