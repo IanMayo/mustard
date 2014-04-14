@@ -45,6 +45,11 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 tour.restart();
             };
 
+
+            $scope.$on("$routeChangeStart", function () {
+                tour.end();
+            });
+
             return {
                 setNarrativeSteps: function (steps) {
                     narrativeSteps = steps;
