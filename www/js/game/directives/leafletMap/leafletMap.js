@@ -216,6 +216,11 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 if (reviewTourController) {
                     map.on('dragstart', reviewTourController.hideSteps);
                     map.on('dragend', reviewTourController.showSteps);
+                    // handle re-locating the tour window on map zoom events
+                    map.on('viewreset', function(){
+                        reviewTourController.hideSteps();
+                        reviewTourController.showSteps();
+                    });
                 }
 
                 configureLayers();
