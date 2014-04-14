@@ -6,7 +6,14 @@ angular.module('mustard.app.message', [])
 
 .factory('message', function ($modal) {
 
-    var ModalInstanceController = function ($scope, $modalInstance, messageData) {
+    /**
+     * Modal instance controller
+     *
+     * @param $scope
+     * @param $modalInstance
+     * @param messageData
+     */
+    var modalInstanceController = function ($scope, $modalInstance, messageData) {
         $scope.messageData = messageData;
 
         $scope.ok = function () {
@@ -14,23 +21,35 @@ angular.module('mustard.app.message', [])
         };
     };
 
+    /**
+     * Default modal options
+     *
+     * @type {Object}
+     */
     var modalOptions = {
         templateUrl: 'js/game/services/message/message.html',
-        controller: ModalInstanceController
+        controller: modalInstanceController
     };
 
     return {
+        /**
+         * It shows modal popup window with "blocking" background
+         *
+         * @param type
+         * @param title
+         * @param text
+         * @returns {Object} it returns $modalInstance
+         */
         showModal: function (type, title, text) {
-            var messageData = {
-                type: type,
-                title: title,
-                text: text
-            };
 
             return $modal.open(angular.extend(modalOptions, {
                 resolve: {
                     messageData: function () {
-                        return messageData;
+                        return {
+                            type: type,
+                            title: title,
+                            text: text
+                        };
                     }
                 }
             }));
