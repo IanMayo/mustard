@@ -7,6 +7,7 @@ angular.module('mustard.game.review', [
     'mustard.game.objectiveListDirective',
     'mustard.game.reviewSnapshot',
     'mustard.game.eventPickerDirective',
+    'mustard.game.reviewTourDirective',
     'mustard.game.geoMath'
 ])
 
@@ -259,14 +260,18 @@ angular.module('mustard.game.review', [
         var narratives = {};
 
         _.each($scope.history.narratives, function (item, index) {
-            var narrMessage = "Time:" + item.time + "<br/>" + item.message;
+            var timeLabel = new Date(item.time);
+            timeLabel = timeLabel.toLocaleTimeString();
+
             narratives['narrative_' + index] = {
                 location: {
                     lat: item.location.lat,
                     lng: item.location.lng
                 },
-                message: narrMessage,
-                time: item.time
+                message: item.message,
+                name: _.uniqueId('narrative'),
+                time: item.time,
+                timerLabel: timeLabel
             };
 
           // TODO: we should also create tour "stops" for each narrative entry
@@ -311,10 +316,5 @@ angular.module('mustard.game.review', [
     $scope.showNarrative = function () {
 
     // start the tour
-    }
-
-    $scope.translate = function(value) {
-        var date = new Date(value);
-        return date.toLocaleTimeString();
     }
 }]);
