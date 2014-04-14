@@ -105,10 +105,11 @@ angular.module('mustard.game.timeDisplayDirective', [])
              */
             scope.$watch('speed', function (newVal) {
                 $interval.cancel(simulationIntervalId);
+                changeSimulationTimer();
 
                 if (newVal) {
                     // do play
-                    simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
+//                    simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
                 }
             });
         }

@@ -6,6 +6,7 @@ angular.module('mustard.game.review', [
     'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
     'mustard.game.reviewSnapshot',
+    'mustard.game.eventPickerDirective',
     'mustard.game.geoMath'
 ])
 
@@ -264,7 +265,8 @@ angular.module('mustard.game.review', [
                     lat: item.location.lat,
                     lng: item.location.lng
                 },
-                message: narrMessage
+                message: narrMessage,
+                time: item.time
             };
 
           // TODO: we should also create tour "stops" for each narrative entry
@@ -291,6 +293,10 @@ angular.module('mustard.game.review', [
         window.history.back();
     };
 
+    $scope.simulationTimeEnd = function () {
+        return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
+    }
+
     // show the markers, plus their routes
     showVesselRoutes();
 
@@ -305,5 +311,10 @@ angular.module('mustard.game.review', [
     $scope.showNarrative = function () {
 
     // start the tour
+    }
+
+    $scope.translate = function(value) {
+        var date = new Date(value);
+        return date.toLocaleTimeString();
     }
 }]);

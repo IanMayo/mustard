@@ -9,6 +9,16 @@
       </td>
       <td width="60%" style="padding: 10px">
         <spatial-view></spatial-view>
+        <event-picker data-vessels="vessels"
+                       data-time="{{simulationTimeEnd()}}"
+                       data-timer="reviewState.reviewTime"
+                       data-history="history"></event-picker>
+        <rzslider
+                rz-slider-floor="reviewState.reviewTime"
+                rz-slider-ceil="simulationTimeEnd()"
+                rz-slider-model="reviewState.reviewTime"
+                rz-slider-step="{{reviewState.reviewTimeStep}}"
+                rz-slider-translate="translate"></rzslider>
       </td>
     </tr>
     <tr>
