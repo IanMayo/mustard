@@ -53,7 +53,7 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 hideSteps: function () {
                     currentStep = tour.getCurrentStep();
-                    $stepWindow = $('#currentStep-' + currentStep);
+                    $stepWindow = $('#step-' + currentStep);
                     $stepWindow.hide();
                 },
                 showSteps: function () {
