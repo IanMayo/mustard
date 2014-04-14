@@ -30,10 +30,10 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     '<div class="popover-content"></div>' +
                     '<div class="popover-navigation">' +
                         '<div class="btn-group">' +
-                            '<button class="btn btn-sm btn-default" data-role="prev">« Prev</button>' +
-                            '<button class="btn btn-sm btn-default" data-role="next">Next »</button>' +
+                            '<button class="btn btn-sm btn-default" data-role="prev"><span class="glyphicon glyphicon-backward"></span></button>' +
+                            '<button class="btn btn-sm btn-default" data-role="next"><span class="glyphicon glyphicon-forward"></span></button>' +
                         '</div>' +
-                        '<button class="btn btn-sm btn-default" data-role="end">End tour</button>' +
+                        '<button class="btn btn-sm btn-default" data-role="end"><span class="glyphicon glyphicon-stop"></span></button>' +
                     '</div>' +
                 '</div>'
             });
