@@ -44,7 +44,8 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', function ($scope, $interval, $timeout) {
+.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls',
+    function ($scope, $interval, $timeout, steppingControls) {
 
     /**
      * Apply filter to a vessel name.
@@ -317,4 +318,8 @@ angular.module('mustard.game.review', [
 
     // start the tour
     }
+
+    // hide Stepping controls in TimeDisplay directive
+    steppingControls.setVisibility(false);
+
 }]);

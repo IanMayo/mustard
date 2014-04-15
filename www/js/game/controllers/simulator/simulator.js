@@ -109,9 +109,9 @@ angular.module('mustard.game.simulator', [
 * @class MissionCtrl (controller)
 */
 .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout',
+        'detection', 'reviewSnapshot', 'user', '$timeout', 'steppingControls',
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
-        reviewSnapshot, user, $timeout) {
+        reviewSnapshot, user, $timeout, steppingControls) {
 
         var trackHistory = {};
 
@@ -515,6 +515,9 @@ angular.module('mustard.game.simulator', [
             storeHistory();
             window.history.back();
         };
+
+        // show Stepping controls in TimeDisplay directive
+        steppingControls.setVisibility(true);
 
         // ok, do the init
         doInit();
