@@ -143,6 +143,13 @@ angular.module('mustard.game.simulator', [
                 },
                 updateState: function (data) {
                     _.extend(vessel.state, data);
+                },
+                /** whether this vessel can drive itself
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                autonomous: function() {
+                  return vessel.behaviours;
                 }
             }
         };
@@ -399,10 +406,15 @@ angular.module('mustard.game.simulator', [
 
             });
 
-            $scope.ownShip.updateState({
-                demCourse: parseInt($scope.demandedState.course),
-                demSpeed: parseInt($scope.demandedState.speed)
-            });
+            // can ownship drive itself?
+            if(!$scope.ownShip.autonomous()) {
+
+                // no, set the demanded states from the relevant control
+                $scope.ownShip.updateState({
+                    demCourse: parseInt($scope.demandedState.course),
+                    demSpeed: parseInt($scope.demandedState.speed)
+                });
+            }
 
             /////////////////////////
             // GAME LOOP STARTS HERE
@@ -509,6 +521,13 @@ angular.module('mustard.game.simulator', [
             $timeout(function () {
                 $scope.$broadcast('vesselsDestroyed', vessels);
             }, 100);
+        });
+
+        /** listen out for the user selecting a track from the sonar
+         *
+         */
+        $scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+            $scope.ownShip.vessel().selectedTrack = theTrackName;
         });
 
         $scope.goBack = function () {
