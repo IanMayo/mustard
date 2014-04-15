@@ -299,6 +299,17 @@ angular.module('mustard.game.review', [
         window.history.back();
     };
 
+    /** formatting function for the slider control
+     *
+     * @param value the current slider value (millis)
+     * @returns {string} a time-string representation of the value
+     */
+    $scope.translate = function(value)
+    {
+      var date = new Date(value);
+      return date.toLocaleTimeString();
+    }
+
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
     }
