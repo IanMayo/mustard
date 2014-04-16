@@ -61,16 +61,43 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     $stepWindow = $('#step-' + currentStep);
                     $stepWindow.hide();
                 },
-                showSteps: function () {
+                changeTour: function () {
                     tour.showStep(currentStep);
                     $timeout(function () {
                         // drag the map changes position of a narrative marker
                         // wait while method showStep() applies new position according to new coordinates of the marker
                         $stepWindow.show();
                     }, 1000);
+                },
+                showSteps: function () {
+                    $stepWindow.show();
                 }
             };
         }]
     }
-}]);
+}])
+
+.directive('rzslider', function () {
+    return {
+        restrict: 'E',
+        require: '?^reviewTour',
+        link: function (scope, elemment, attr, controller) {
+            var pointer = null;
+            _.each(elemment.children(), function(elem, index) {
+                var elem = angular.element(elem);
+                if (elem.hasClass('pointer')) {
+                    pointer = elem;
+                }
+            });
+
+            pointer.bind('mousedown touchstart', function () {
+                controller.hideSteps();
+            });
+
+            pointer.bind('mouseup touchend', function () {
+                controller.showSteps();
+            });
+        }
+    }
+});
 
