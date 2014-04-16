@@ -1,7 +1,27 @@
 [
     {
+        "id": "0",
+        "name": "Sonar School",
+        "missions": [
+            {
+                "id": "0a",
+                "name": "Surface Contacts",
+                "description": "Recognising surface contacts on the sonar",
+                "url": "0a_surface_contacts",
+                "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
+            },
+            {
+                "id": "0b",
+                "name": "Submarine Contacts",
+                "description": "Learn to recognise submarine contacts",
+                "url": "0b_submarine_contacts",
+                "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
+            }
+        ]
+    },
+    {
         "id": "1",
-        "name": "Tutorial",
+        "name": "Driving School",
         "missions": [
             {
                 "id": "1a",

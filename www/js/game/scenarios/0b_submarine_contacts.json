@@ -1,0 +1,254 @@
+{
+    "id": "0a",
+    "name": "Reading the display",
+    "description": "Learn to read and interact with the sonar",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.0,
+                            "lng": -8.18
+                        }
+                        ,
+                        {
+                            "lat": 50.00,
+                            "lng": -8.14
+                        }
+                        ,
+                        {
+                            "lat": 50.02,
+                            "lng": -8.10
+                        }
+                        ,
+                        {
+                            "lat": 50.02,
+                            "lng": -8.06
+                        }
+                        ,
+                        {
+                            "lat": 50.04,
+                            "lng": -8.02
+                        }
+                        ,
+                        {
+                            "lat": 50.04,
+                            "lng": -7.98
+                        }
+                        ,
+                        {
+                            "lat": 50.06,
+                            "lng": -7.94
+                        }
+                        ,
+                        {
+                            "lat": 50.06,
+                            "lng": -7.90
+                        }
+                        ,
+                        {
+                            "lat": 50.08,
+                            "lng": -7.86
+                        }
+                        ,
+                        {
+                            "lat": 50.08,
+                            "lng": -7.82
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [  "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.21
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.28,
+                            "lng": -7.98
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 100,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.92,
+                    "lng": -8.12
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Sonar Qualification",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Where am I",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "Ownship",
+                    "time": 30,
+                    "achievement": {
+                        "name": "Newbie",
+                        "message": "You've started your first mission, well done!"
+                    },
+                    "success": "Ok, well that was obvious. Now, wait until we gain contact with the target, and select any bearing that represents the target.",
+                    "failure": "Sorry, you didn't click on the ownship track in time.  Come on, there's only one track there",
+                    "narrSuccess" : "Spotted Ownship track"
+                },
+                {
+                    "name": "Spot target track",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "targetSubString": "Target_",
+                    "time": 30,
+                    "success": "Ok, well done. Now you need to determine which is the true bearing to the target. Wait for an ownship manoeuvre, and all should come obvious",
+                    "failure": "This should have been easy - it's any bearing other than the ownship one",
+                    "narrSuccess" : "Spotted any track track"
+                },
+                {
+                    "name": "Spot true bearing",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "Target_a",
+                    "time": 30,
+                    "success": "Ok, well done. Now select the ambiguous bearing to the target",
+                    "failure": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
+                    "narrSuccess" : "Spotted True bearing"
+                },
+                {
+                    "name": "Spot ambiguous bearing",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "Target_b",
+                    "time": 30,
+                    "success": "Ok, well done. That's the sonar display covered.",
+                    "failure": "Oops, did you select the correct one? The ambiguous bearing is the one that 'jumps' after an ownship turn",
+                    "narrSuccess" : "Spotted Ambiguous bearing"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.06, 50]
+
+                },
+                "id": "DestinationA"
+            },
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.20, 50.2]
+                },
+                "id": "DestinationB"
+            }
+        ]
+    }
+}

@@ -1,8 +1,8 @@
 {
-    "id": "1a",
-    "name": "Learner Driver",
-    "description": "Learn to drive, on the tracked range",
-    "welcome": "Let's start this off in a leisurely fashion on the tracked range. We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you). \nYou're going to have to press the Play ('>') button in the Time controls, you may also wish to use +/- buttons to speed up or slow down the time. \nYou will also have to steer to the correct course using the 'Demanded' course control (+5/-5)",
+    "id": "0a",
+    "name": "Reading Surface Contacts on the sonar display",
+    "description": "Learn to read and interact with the sonar",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions",
     "vessels": [
         {
             "name": "Ownship",
