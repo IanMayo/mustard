@@ -66,6 +66,9 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             case "DISTANCE":
                 handleDistance(gameState, objective, vessels);
                 break;
+            case "FIND_TARGET":
+                handleFindTarget(gameState, objective, vessels);
+                break;
             case "GAIN_CONTACT":
                 handleGainContact(gameState, objective, vessels);
                 break;
@@ -167,11 +170,13 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
             // is this one complete?
             if (!(child.complete)) {
+
                 // ok, run it
                 handleThis(gameState, child, vessels, deadVessels);
 
                 // did it finish?
                 if (child.complete) {
+
                     // OK. For a sequence we have to override the game state setting.
                     // this is because a STOP is actually a PAUSE if we're not at the last one yet.
 
@@ -398,6 +403,74 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             }
         }
     };
+
+
+        var handleFindTarget = function (gameState, findTarget, vessels) {
+
+            var subjectName = findTarget.subject;
+            if (!subjectName) {
+                subjectName = "Ownship";
+            }
+            var subject = vessels[subjectName];
+
+            if (!findTarget.stopTime) {
+                findTarget.stopTime = gameState.simulationTime + findTarget.elapsed * 1000;
+            }
+
+            // see if the subject has a current selection
+            var curSelection = subject.selectedTrack;
+
+            if(curSelection)
+            {
+                var matched = false;
+                if(findTarget.targetSubString)
+                {
+                    matched = curSelection.indexOf(findTarget.targetSubString) >= 0;
+                }
+                else if(findTarget.target)
+                {
+                    matched = curSelection == findTarget.target;
+                }
+
+                // does it match the target
+                if(matched)
+                {
+                    findTarget.complete = true;
+
+                    // cool,handle the success
+                    gameState.successMessage = findTarget.success;
+                    gameState.state = "DO_STOP";
+
+                    // clear the flag
+                    delete findTarget.stopTime;
+
+                    // and store any achievements
+                    processAchievements(findTarget.achievement, gameState);
+
+                    var narrMessage = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage);
+                }
+            }
+
+
+            if (!findTarget.complete) {
+
+                if (gameState.simulationTime > findTarget.stopTime) {
+                    // ok, game failure
+                    findTarget.complete = true;
+                    gameState.failureMessage = findTarget.failure;
+                    gameState.state = "DO_STOP";
+
+                    // clear the flag
+                    delete findTarget.stopTime;
+
+                    var narrMessage = findTarget.narrFailure ? findTarget.narrFailure : "Failed to select target track";
+
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                        narrMessage);
+                }
+            }
+        };
 
     var handleElapsed = function (gameState, elapsed) {
         // ok. do we know when this objective started?
