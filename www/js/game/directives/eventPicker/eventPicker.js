@@ -3,16 +3,40 @@ angular.module('mustard.game.eventPickerDirective', [])
 .directive('eventPicker', function () {
     return {
         restrict: 'EA',
+        replace: true,
         scope: {
             vessels: '=',
             history: '=',
             time: '@',
             timer: '='
         },
-//        transclude: true,
         templateUrl: 'js/game/directives/eventPicker/eventPicker.tpl.html',
-        link: function (scope) {
-            
+        link: function (scope, element) {
+            /**
+             * Event icon marker width
+             */
+            var iconMarkerWidth = 0;
+
+            /**
+             * Width of event markers wrapper
+             */
+            var containerWidth = 0;
+
+            /**
+             * Calculate width of event icon marker and event wrapper.
+             */
+            var calcDimensions = function () {
+                // in the template there is short term element (.glyphicon)
+                // it is used to calculate marker width
+                iconMarkerWidth = element.children()[0].getBoundingClientRect().width;
+                // we can remove it now
+                element.children().remove();
+
+                containerWidth = element[0].getBoundingClientRect().width - iconMarkerWidth;
+            };
+
+            calcDimensions();
+
             scope.timePoints = {};
 
             scope.$watch('history', function (history) {
@@ -21,7 +45,7 @@ angular.module('mustard.game.eventPickerDirective', [])
                     if ('narratives' === type) {
                         _.each(event, function (narrative, index) {
                             scope.timePoints['narrative' + index] = {
-                                position: narrative.time / parseInt(scope.time) * 100,
+                                position: narrative.time / parseInt(scope.time) * containerWidth,
                                 time: narrative.time
                             }
                         });
@@ -29,7 +53,7 @@ angular.module('mustard.game.eventPickerDirective', [])
                         _.each(event, function (vessel) {
                             var firstPoint = vessel.track[0].time;
                             scope.timePoints[vessel.name] = {
-                                position: firstPoint / parseInt(scope.time) * 100,
+                                position: firstPoint / parseInt(scope.time) * containerWidth,
                                 time: firstPoint
                             }
                         });
@@ -37,18 +61,6 @@ angular.module('mustard.game.eventPickerDirective', [])
                 });
             });
             
-//            scope.$watch('vessels', function (vessels) {
-//                if (vessels) {
-//                    _.each(vessels, function (vessel) {
-//                        var firstPoint = vessel.track[0].time;
-//                        scope.timePoints[vessel.name] = {
-//                            position: firstPoint / parseInt(scope.time) * 100,
-//                            time: firstPoint
-//                        }
-//                    });
-//                }
-//            });
-
             scope.changeEvent = function (time) {
                 scope.timer = time;
             };

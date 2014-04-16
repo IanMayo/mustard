@@ -1,6 +1,9 @@
-<div style="position: relative; height: 40px;">
-  <span style="position: absolute; top: 10px" data-ng-repeat="point in timePoints"
-        data-ng-style="{'left': point.position + '%'}"
+<div class="eventPicker">
+  <span class="glyphicon glyphicon-info-sign" data-ng-show=""></span>
+  <span data-ng-repeat="point in timePoints"
+        data-ng-style="{'left': point.position + 'px'}"
         data-ng-click="changeEvent(point.time)"
-        class="glyphicon glyphicon-arrow-up"></span>
+        class="eventMarker">
+          <span class="glyphicon glyphicon-info-sign"></span>
+  </span>
 </div>
