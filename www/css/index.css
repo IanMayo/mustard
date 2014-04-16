@@ -71,7 +71,7 @@ spatial-view .leaflet-container
 .eventPicker {
   position: absolute;
   height: 40px;
-  top: 20px;
+  top: 30px;
   width: 100%;
 }
 
