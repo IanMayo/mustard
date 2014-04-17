@@ -17,6 +17,7 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 var step = tour.getCurrentStep();
                 $timeout(function () {
                     $scope.reviewState.reviewTime = narrativeSteps[step].time;
+                    $stepWindow.show();
                 });
             };
 
@@ -63,11 +64,6 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 changeTour: function () {
                     tour.showStep(currentStep);
-                    $timeout(function () {
-                        // drag the map changes position of a narrative marker
-                        // wait while method showStep() applies new position according to new coordinates of the marker
-                        $stepWindow.show();
-                    }, 1000);
                 },
                 showSteps: function () {
                     $stepWindow.show();

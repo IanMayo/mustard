@@ -207,18 +207,11 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             };
 
             var updateReviewTour = function () {
-                map.on('movestart zoomstart', function (event) {
-                    if ('zoomstart' === event.type) {
-                        return;
-                    }
+                map.on('movestart', function () {
                     reviewTourController.hideSteps();
                 });
 
-                map.on('moveend zoomend', function (event) {
-                    if ('zoomend' === event.type) {
-                        return;
-                    }
-
+                map.on('moveend', function () {
                     if (layerGroups.narratives) {
                         var reviewStep = reviewTourController.currentStep();
                         var i = 0;
@@ -230,7 +223,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                                 // A narrative marker is not visible on the map and it's target tour step.
                                 // Hide the walkthrough window and set the flag to disable change the review tour
                                 reviewTourController.hideSteps();
-                                changeTour = !changeTour;
+                                changeTour = false;
                             }
 
                             i++;
