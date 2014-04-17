@@ -12,11 +12,15 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
             var currentStep = 0;
             var tour;
             var $stepWindow;
+            var stepChangedListener = angular.noop;
 
             var changeTime = function () {
                 var step = tour.getCurrentStep();
                 $timeout(function () {
                     $scope.reviewState.reviewTime = narrativeSteps[step].time;
+
+                    stepChangedListener(narrativeSteps[step]);
+
                     if ($stepWindow) {
                         $stepWindow.show();
                     }
@@ -72,6 +76,9 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 currentStep: function () {
                     return tour.getCurrentStep();
+                },
+                stepChanged: function (listener) {
+                    stepChangedListener = listener || stepChangedListener;
                 }
             };
         }]

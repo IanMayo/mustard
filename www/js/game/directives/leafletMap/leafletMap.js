@@ -207,6 +207,14 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             };
 
             var updateReviewTour = function () {
+                var panToNarrativeMarker = function (narrativeStep) {
+                    if (narrativeStep && !map.getBounds().contains(narrativeStep.latLng)) {
+                        map.panTo(narrativeStep.latLng);
+                    }
+                };
+
+                reviewTourController.stepChanged(panToNarrativeMarker);
+                
                 map.on('movestart', function () {
                     reviewTourController.hideSteps();
                 });
@@ -289,7 +297,8 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                         element: '.' + entry.name,
                         title: 'Narrative at ' + entry.timerLabel,
                         content: entry.message,
-                        time: entry.time
+                        time: entry.time,
+                        latLng: L.latLng(entry.location)
                     });
                 });
 
