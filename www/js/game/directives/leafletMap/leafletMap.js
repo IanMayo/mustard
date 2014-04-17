@@ -206,7 +206,14 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 }
             };
 
-            var updateReviewTour = function () {
+            /**
+             * Configure Review tour
+             */
+            var configureReviewTour = function () {
+                if (!reviewTourController) {
+                    return false;
+                }
+
                 var panToNarrativeMarker = function (narrativeStep) {
                     if (narrativeStep && !map.getBounds().contains(narrativeStep.latLng)) {
                         map.panTo(narrativeStep.latLng);
@@ -274,8 +281,6 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
 
                 layerGroups.narratives = L.layerGroup();
                 var tourSteps = [];
-
-                updateReviewTour();
 
                 _.each(entries, function (entry) {
                     marker = new L.marker();
@@ -399,6 +404,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             });
 
             createMap();
+            configureReviewTour();
         }
     };
 }]);
