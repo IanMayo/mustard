@@ -71,6 +71,9 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 showSteps: function () {
                     $stepWindow.show();
+                },
+                currentStep: function () {
+                    return tour.getCurrentStep();
                 }
             };
         }]

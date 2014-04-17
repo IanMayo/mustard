@@ -206,6 +206,40 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 }
             };
 
+            var updateReviewTour = function () {
+                map.on('movestart zoomstart', function (event) {
+                    if ('zoomstart' === event.type) {
+                        return;
+                    }
+                    reviewTourController.hideSteps();
+                });
+
+                map.on('moveend zoomend', function (event) {
+                    if ('zoomend' === event.type) {
+                        return;
+                    }
+
+                    if (layerGroups.narratives) {
+                        var reviewStep = reviewTourController.currentStep();
+                        var i = 0;
+                        var changeTour = true;
+
+                        layerGroups.narratives.eachLayer(function (layer) {
+                            if (!map.getBounds().contains(layer.getLatLng()) && reviewStep === i) {
+                                reviewTourController.hideSteps();
+                                changeTour = !changeTour;
+                            }
+
+                            i++;
+                        });
+
+                        if (changeTour) {
+                            reviewTourController.changeTour();
+                        }
+                    }
+                });
+            };
+
             /**
              * Create Leaflet map.
              */
@@ -213,15 +247,6 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 map = new L.Map(element[0], {attributionControl: false});
 
                 L.tileLayer(tileLayerUrl).addTo(map);
-                if (reviewTourController) {
-                    map.on('dragstart', reviewTourController.hideSteps);
-                    map.on('dragend', reviewTourController.changeTour);
-                    // handle re-locating the tour window on map zoom events
-                    map.on('viewreset', function(){
-                        reviewTourController.hideSteps();
-                        reviewTourController.changeTour();
-                    });
-                }
 
                 configureLayers();
                 addMapFeatures();
@@ -246,6 +271,8 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 layerGroups.narratives = L.layerGroup();
                 var tourSteps = [];
 
+                updateReviewTour();
+
                 _.each(entries, function (entry) {
                     marker = new L.marker();
                     marker.setLatLng(entry.location);
@@ -261,7 +288,6 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
 
 
                     layerGroups.narratives.addLayer(marker);
-                    map.addLayer(layerGroups.narratives);
 
                     tourSteps.push({
                         element: '.' + entry.name,
@@ -270,6 +296,9 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                         time: entry.time
                     });
                 });
+
+                map.addLayer(layerGroups.narratives);
+
 
                 if (reviewTourController) {
                     reviewTourController.setNarrativeSteps(tourSteps);
