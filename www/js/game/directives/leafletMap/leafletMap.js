@@ -224,8 +224,11 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                         var i = 0;
                         var changeTour = true;
 
+                        // run loop to find all narratives markers on the layer
                         layerGroups.narratives.eachLayer(function (layer) {
                             if (!map.getBounds().contains(layer.getLatLng()) && reviewStep === i) {
+                                // A narrative marker is not visible on the map and it's target tour step.
+                                // Hide the walkthrough window and set the flag to disable change the review tour
                                 reviewTourController.hideSteps();
                                 changeTour = !changeTour;
                             }
