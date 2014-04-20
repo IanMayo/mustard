@@ -16,6 +16,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.movement',
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
+    'mustard.game.modal',
     'mustard.app.user'
 ])
 
@@ -110,9 +111,9 @@ angular.module('mustard.game.simulator', [
 * @class MissionCtrl (controller)
 */
 .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout',
+        'detection', 'reviewSnapshot', 'user', '$timeout', 'modal',
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
-        reviewSnapshot, user, $timeout) {
+        reviewSnapshot, user, $timeout, modal) {
 
         var trackHistory = {};
 
@@ -227,11 +228,11 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    alert($scope.gameState.successMessage);
+                    modal.showMessage('success', 'Success message', $scope.gameState.successMessage);
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    alert($scope.gameState.failureMessage);
+                    modal.showMessage('danger', 'Failure message', $scope.gameState.failureMessage);
                     delete $scope.gameState.failureMessage;
                 }
 
@@ -248,8 +249,8 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
-                                // and display the alert
-                                alert("Well done, you've been awarded a new achievement:\n'" + element.name +
+                                modal.showMessage('success', 'New achievement',
+                                    "Well done, you've been awarded a new achievement:\n'" + element.name +
                                     "'\n\n" + element.message);
                             }
                         }
@@ -289,11 +290,13 @@ angular.module('mustard.game.simulator', [
                     storeHistory();
 
                     // ok, move on to the review stage
+                    // TODO: Create modal window with confirm buttons
                     var r = confirm("Ready for the debriefing?");
                     if (r == true) {
-                        alert("switch to the new route");
+                        modal.showMessage('info', 'Switch to the new route', 'Switch to the new route');
                     } else {
-                        alert("let the user view/pan/zoom the plot");
+                        modal.showMessage('info', 'Let the user view/pan/zoom the plot',
+                            'Let the user view/pan/zoom the plot');
                     }
                 }
             }
@@ -439,7 +442,7 @@ angular.module('mustard.game.simulator', [
         var showWelcome = function () {
             // show the welcome message
             if ($scope.welcome) {
-                alert($scope.welcome);
+                modal.showMessage('info', 'Welcome!', $scope.welcome);
             }
         };
 
