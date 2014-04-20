@@ -23,11 +23,12 @@
   <meta name="format-detection" content="telephone=no"/>
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
     width=device-width"/>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="css/index.css"/>
-  <link rel="stylesheet" type="text/css" href="css/main.css"/>
-  <link rel="stylesheet" type="text/css"  href="css/leaflet.css">
-  <link rel="stylesheet" type="text/css"  href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="css/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/messages.css">
   <title>Angular PhoneGap Seed</title>
 </head>
 <body>
@@ -57,12 +58,16 @@
 <!-- App -->
 <script type="text/javascript" src="js/app/index.js"></script>
 <script type="text/javascript" src="js/app/app.js"></script>
+
+<!-- App controllers -->
 <script type="text/javascript" src="js/app/controllers/login/login.js"></script>
 <script type="text/javascript" src="js/app/controllers/registration/registration.js"></script>
 <script type="text/javascript" src="js/app/controllers/main/main.js"></script>
 <script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
 <script type="text/javascript" src="js/app/controllers/userProfile/userProfile.js"></script>
 <script type="text/javascript" src="js/app/controllers/settings/settings.js"></script>
+
+<!-- App services -->
 <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserBackend/mockUserBackend.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserMissions/mockUserMissions.js"></script>
@@ -95,7 +100,7 @@
 <script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
 <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
 <script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
-<script type="text/javascript" src="js/game/services/message/message.js"></script>
+<script type="text/javascript" src="js/game/services/modal/modal.js"></script>
 
 <script type="text/javascript">
   app.initialize();

@@ -1,0 +1,5 @@
+#messageList {
+  display: block;
+  max-height: 500px;
+  overflow: auto
+}
