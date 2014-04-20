@@ -12,8 +12,18 @@ angular.module('mustard.game.modal', [])
      * @type {Object}
      */
     var modalMessageOptions = {
-        templateUrl: 'js/game/services/modal/modalMessage.html',
-        controller: modalInstanceController
+        templateUrl: 'js/game/services/modal/modalMessage.tpl.html',
+        controller: modalMessageController
+    };
+
+    /**
+     * Default modal message list options
+     *
+     * @type {Object}
+     */
+    var modalMessageListOptions = {
+        templateUrl: 'js/game/services/modal/modalMessageList.tpl.html',
+        controller: modalMessageListController
     };
 
     /**
@@ -23,8 +33,23 @@ angular.module('mustard.game.modal', [])
      * @param $modalInstance
      * @param messageData
      */
-    function modalInstanceController ($scope, $modalInstance, messageData) {
+    function modalMessageController ($scope, $modalInstance, messageData) {
         $scope.messageData = messageData;
+
+        $scope.ok = function () {
+            $modalInstance.dismiss('ok');
+        };
+    }
+
+    /**
+     * Modal instance controller
+     *
+     * @param $scope
+     * @param $modalInstance
+     * @param messages
+     */
+    function modalMessageListController ($scope, $modalInstance, messages) {
+        $scope.messages = messages;
 
         $scope.ok = function () {
             $modalInstance.dismiss('ok');
@@ -50,6 +75,23 @@ angular.module('mustard.game.modal', [])
                             title: title,
                             text: text
                         };
+                    }
+                }
+            }));
+        },
+
+        /**
+         * It shows modal popup window with "blocking" background that contains message list
+         *
+         * @param messages
+         * @returns {Object} it returns $modalInstance
+         */
+        showMessageList: function (messages) {
+
+            return $modal.open(angular.extend(modalMessageListOptions, {
+                resolve: {
+                    messages: function () {
+                        return messages;
                     }
                 }
             }));
