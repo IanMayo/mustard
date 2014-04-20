@@ -1,10 +1,20 @@
 /**
- * @module Message service
+ * @module Modal service
  */
 
-angular.module('mustard.app.message', [])
+angular.module('mustard.game.modal', [])
 
-.factory('message', function ($modal) {
+.factory('modal', function ($modal) {
+
+    /**
+     * Default modal message options
+     *
+     * @type {Object}
+     */
+    var modalMessageOptions = {
+        templateUrl: 'js/game/services/modal/modalMessage.html',
+        controller: modalInstanceController
+    };
 
     /**
      * Modal instance controller
@@ -13,23 +23,13 @@ angular.module('mustard.app.message', [])
      * @param $modalInstance
      * @param messageData
      */
-    var modalInstanceController = function ($scope, $modalInstance, messageData) {
+    function modalInstanceController ($scope, $modalInstance, messageData) {
         $scope.messageData = messageData;
 
         $scope.ok = function () {
             $modalInstance.dismiss('ok');
         };
-    };
-
-    /**
-     * Default modal options
-     *
-     * @type {Object}
-     */
-    var modalOptions = {
-        templateUrl: 'js/game/services/message/message.html',
-        controller: modalInstanceController
-    };
+    }
 
     return {
         /**
@@ -40,9 +40,9 @@ angular.module('mustard.app.message', [])
          * @param text
          * @returns {Object} it returns $modalInstance
          */
-        showModal: function (type, title, text) {
+        showMessage: function (type, title, text) {
 
-            return $modal.open(angular.extend(modalOptions, {
+            return $modal.open(angular.extend(modalMessageOptions, {
                 resolve: {
                     messageData: function () {
                         return {
