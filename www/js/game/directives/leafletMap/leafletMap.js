@@ -220,7 +220,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                     }
                 };
 
-                reviewTourController.stepChanged(panToNarrativeMarker);
+                reviewTourController.setStepChangeListener(panToNarrativeMarker);
                 
                 map.on('movestart', function () {
                     reviewTourController.hideSteps();

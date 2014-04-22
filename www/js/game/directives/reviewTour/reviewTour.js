@@ -77,7 +77,7 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 currentStep: function () {
                     return tour.getCurrentStep();
                 },
-                stepChanged: function (listener) {
+                setStepChangeListener: function (listener) {
                     stepChangedListener = listener || stepChangedListener;
                 },
                 breakTour: function () {
