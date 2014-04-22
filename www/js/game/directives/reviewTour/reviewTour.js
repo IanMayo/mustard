@@ -19,10 +19,6 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     $scope.reviewState.reviewTime = narrativeSteps[step].time;
 
                     stepChangedListener(narrativeSteps[step]);
-
-                    if ($stepWindow) {
-                        $stepWindow.show();
-                    }
                 });
             };
 
