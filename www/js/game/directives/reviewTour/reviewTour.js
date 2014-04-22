@@ -9,7 +9,6 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
         restrict: 'EA',
         controller: ['$scope', function ($scope) {
             var narrativeSteps = [];
-            var currentStep = 0;
             var tour;
             var $stepWindow;
             var stepChangedListener = angular.noop;
@@ -65,12 +64,11 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     tour.start();
                 },
                 hideSteps: function () {
-                    currentStep = tour.getCurrentStep();
-                    $stepWindow = $('#step-' + currentStep);
+                    $stepWindow = $('#step-' + (tour.getCurrentStep() || '0').toString());
                     $stepWindow.hide();
                 },
-                changeTour: function () {
-                    tour.showStep(currentStep);
+                showCurrentStep: function () {
+                    tour.showStep(tour.getCurrentStep());
                 },
                 showSteps: function () {
                     $stepWindow.show();
