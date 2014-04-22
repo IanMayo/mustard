@@ -50,6 +50,7 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
             $scope.showNarrative = function () {
                 tour.end();
                 tour.restart();
+                $scope.$broadcast('addBreakReviewTour');
             };
 
 
@@ -82,6 +83,9 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 breakTour: function () {
                     tour.end();
+                },
+                isTourEnded: function () {
+                    return tour.ended();
                 }
             };
         }]
@@ -102,6 +106,10 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 if (elem.hasClass('pointer')) {
                     pointer = elem;
                 }
+            });
+
+            scope.$on('addBreakReviewTour', function () {
+                doEventHandler = true;
             });
 
             pointer.bind('mousedown touchstart', function () {
