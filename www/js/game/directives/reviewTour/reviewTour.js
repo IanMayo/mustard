@@ -45,7 +45,6 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
             $scope.showNarrative = function () {
                 tour.end();
                 tour.restart();
-                $scope.$broadcast('addBreakReviewTour');
             };
 
 
@@ -76,10 +75,9 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     stepChangedListener = listener || stepChangedListener;
                 },
                 breakTour: function () {
-                    tour.end();
-                },
-                isTourEnded: function () {
-                    return tour.ended();
+                    if (!tour.ended()) {
+                        tour.end();
+                    }
                 }
             };
         }]
@@ -92,9 +90,6 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
         require: '?^reviewTour',
         link: function (scope, elemment, attr, controller) {
             var pointer = null;
-            // bind() doesn't support namespace in events, use the flag
-            var doEventHandler = true;
-
             _.each(elemment.children(), function(elem) {
                 var elem = angular.element(elem);
                 if (elem.hasClass('pointer')) {
@@ -102,15 +97,8 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 }
             });
 
-            scope.$on('addBreakReviewTour', function () {
-                doEventHandler = true;
-            });
-
             pointer.bind('mousedown touchstart', function () {
-                if(doEventHandler) {
-                    controller.breakTour();
-                    doEventHandler = false;
-                }
+                controller.breakTour();
             });
         }
     }
