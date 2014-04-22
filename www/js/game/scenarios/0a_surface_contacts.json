@@ -2,7 +2,7 @@
     "id": "0a",
     "name": "Reading Surface Contacts on the sonar display",
     "description": "Learn to read and interact with the sonar",
-    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions. Start off by selecting the ownship noise in the sonar display",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions. Start off by selecting the ownship noise trace in the sonar display",
     "vessels": [
         {
             "name": "Ownship",
@@ -111,7 +111,7 @@
             }
         },
         {
-            "name": "Target",
+            "name": "TargetB",
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
@@ -135,7 +135,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 98,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -165,6 +165,62 @@
                 "diveRate": 2
             }
         }
+        ,
+        {
+            "name": "TargetA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.10,
+                            "lng": -7.48
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 105,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.05,
+                    "lng": -8.44
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 13,
+                "speed": 13,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
     ],
     "patrolArea": [
         [50.15, -8.25],
@@ -177,17 +233,17 @@
             "type": "SEQUENCE",
             "children": [
                 {
-                    "name": "Where am I",
+                    "name": "Select ownship",
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "target": "Ownship",
-                    "time": 30,
+                    "elapsed": 180,
                     "clearAfterwards" : true,
                     "achievement": {
                         "name": "Newbie",
                         "message": "You've started your first mission, well done!"
                     },
-                    "success": "Ok, well that was obvious. Now, wait until we gain contact with the target, and select any bearing that represents the target.",
+                    "success": "Ok, well that was obvious. There are two other targets shown on the map display, though only one may be visible on the sonar. Select any bearing that represents the target to the North West of you.",
                     "failure": "Sorry, you didn't click on the ownship track in time.  Come on, there's only one track there",
                     "narrSuccess" : "Spotted Ownship track"
                 },
@@ -196,8 +252,8 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "clearAfterwards" : true,
-                    "targetSubString": "Target_",
-                    "time": 30,
+                    "targetSubString": "TargetA_",
+                    "elapsed": 180,
                     "success": "Ok, well done. Now you need to determine which is the true bearing to the target. Wait for an ownship manoeuvre, and all should come obvious",
                     "failure": "This should have been easy - it's any bearing other than the ownship one",
                     "narrSuccess" : "Spotted any track track"
@@ -206,9 +262,9 @@
                     "name": "Spot true bearing",
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
-                    "target": "Target_a",
+                    "target": "TargetA_a",
                     "clearAfterwards" : true,
-                    "time": 30,
+                    "elapsedNOT": 30,
                     "success": "Ok, well done. Now select the ambiguous bearing to the target",
                     "failure": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
                     "narrSuccess" : "Spotted True bearing"
@@ -218,8 +274,7 @@
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
-                    "target": "Target_b",
-                    "time": 30,
+                    "elapsed": 180,
                     "success": "Ok, well done. That's the sonar display covered.",
                     "failure": "Oops, did you select the correct one? The ambiguous bearing is the one that 'jumps' after an ownship turn",
                     "narrSuccess" : "Spotted Ambiguous bearing"
