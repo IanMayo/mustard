@@ -2,7 +2,7 @@
     "id": "0a",
     "name": "Reading Surface Contacts on the sonar display",
     "description": "Learn to read and interact with the sonar",
-    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions. Start off by selecting the ownship noise in the sonar display",
     "vessels": [
         {
             "name": "Ownship",
@@ -182,6 +182,7 @@
                     "subject": "Ownship",
                     "target": "Ownship",
                     "time": 30,
+                    "clearAfterwards" : true,
                     "achievement": {
                         "name": "Newbie",
                         "message": "You've started your first mission, well done!"
@@ -194,6 +195,7 @@
                     "name": "Spot target track",
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
+                    "clearAfterwards" : true,
                     "targetSubString": "Target_",
                     "time": 30,
                     "success": "Ok, well done. Now you need to determine which is the true bearing to the target. Wait for an ownship manoeuvre, and all should come obvious",
@@ -205,6 +207,7 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "target": "Target_a",
+                    "clearAfterwards" : true,
                     "time": 30,
                     "success": "Ok, well done. Now select the ambiguous bearing to the target",
                     "failure": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
@@ -212,6 +215,7 @@
                 },
                 {
                     "name": "Spot ambiguous bearing",
+                    "clearAfterwards" : true,
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "target": "Target_b",

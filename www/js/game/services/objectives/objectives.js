@@ -435,6 +435,12 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 // does it match the target
                 if(matched)
                 {
+                    // ok, are we meant to clear the selected flag now?
+                    if(findTarget.clearAfterwards)
+                    {
+                        delete subject.selectedTrack;
+                    }
+
                     findTarget.complete = true;
 
                     // cool,handle the success
