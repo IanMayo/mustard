@@ -79,19 +79,25 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                 },
                 stepChanged: function (listener) {
                     stepChangedListener = listener || stepChangedListener;
+                },
+                breakTour: function () {
+                    tour.end();
                 }
             };
         }]
     }
 }])
 
-.directive('rzslider', function () {
+.directive('breakReviewTour', function () {
     return {
-        restrict: 'E',
+        restrict: 'A',
         require: '?^reviewTour',
         link: function (scope, elemment, attr, controller) {
             var pointer = null;
-            _.each(elemment.children(), function(elem, index) {
+            // bind() doesn't support namespace in events, use the flag
+            var doEventHandler = true;
+
+            _.each(elemment.children(), function(elem) {
                 var elem = angular.element(elem);
                 if (elem.hasClass('pointer')) {
                     pointer = elem;
@@ -99,11 +105,10 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
             });
 
             pointer.bind('mousedown touchstart', function () {
-                controller.hideSteps();
-            });
-
-            pointer.bind('mouseup touchend', function () {
-                controller.showSteps();
+                if(doEventHandler) {
+                    controller.breakTour();
+                    doEventHandler = false;
+                }
             });
         }
     }
