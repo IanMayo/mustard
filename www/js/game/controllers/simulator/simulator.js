@@ -150,7 +150,7 @@ angular.module('mustard.game.simulator', [
                  * @returns {Boolean} yes/no
                  */
                 autonomous: function() {
-                  return vessel.behaviours;
+                  return vessel.behaviours && vessel.behaviours.length>0;
                 }
             }
         };
