@@ -113,9 +113,9 @@
         {
             "name": "Target",
             "categories": {
-                "force": "RED",
-                "environment": "SUBSURFACE",
-                "type": "SUBMARINE"
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
             },
             "behaviours": [
                 {
