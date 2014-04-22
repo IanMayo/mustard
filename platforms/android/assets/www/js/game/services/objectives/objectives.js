@@ -58,7 +58,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
         switch (thisType) {
             case "SEQUENCE":
-                handleSequence(gameState, objective, vessels);
+                handleSequence(gameState, objective, vessels, deadVessels);
                 break;
             case "PROXIMITY":
                 handleProximity(gameState, objective, vessels);
@@ -155,7 +155,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
     };
 
 
-    var handleSequence = function (gameState, sequence, vessels) {
+    var handleSequence = function (gameState, sequence, vessels, deadVessels) {
         var thisId = 0;
         var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
 
@@ -168,7 +168,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
             // is this one complete?
             if (!(child.complete)) {
                 // ok, run it
-                handleThis(gameState, child, vessels);
+                handleThis(gameState, child, vessels, deadVessels);
 
                 // did it finish?
                 if (child.complete) {
@@ -764,7 +764,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
      * @param vessel
      * @param vessels
      */
-    var handleFireWeapon = function (action, vessel, vessels) {
+    var handleFireWeapon = function (gameState, action, vessel, vessels) {
         // right, where is it starting from?
         var location = angular.copy(vessel.state.location);
 
@@ -784,23 +784,28 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
         // calculate the weapon dead time
         weapon.expiresAt = vessel.state.time + (weapon.duration * 1000);
 
+        // record a narrative entry
+        insertNarrative(gameState, gameState.simulationTime, angular.copy(location),
+            "Weapon launched");
+
         // and store it
         vessels[weapon.name] = weapon;
     };
 
     /** loop through the set of actions
      *
+     * @param gameState
      * @param vessel
      * @param vessels
      */
-    var handleActions = function (vessel, vessels) {
+    var handleActions = function (gameState, vessel, vessels) {
         var actions = vessel.state.actions;
         if (actions) {
             var toRemove = [];
             _.each(actions, function (action) {
                 switch (action.type) {
                     case "FIRE_WEAPON":
-                        handleFireWeapon(action, vessel, vessels);
+                        handleFireWeapon(gameState, action, vessel, vessels);
                         toRemove.push(action);
                         break;
                     default:
@@ -828,7 +833,7 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
 
             // handle any pending actions first
             _.each(vessels, function (vessel) {
-                handleActions(vessel, vessels);
+                handleActions(gameState, vessel, vessels);
             });
 
             // ok, loop through the objectives

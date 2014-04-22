@@ -2,7 +2,7 @@
  * @module mustard.game.leafletMapDirective
  */
 
-angular.module('mustard.game.leafletMapDirective', [])
+angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDirective'])
 
 .constant('leafletMapConfig', {
     initialZoom: 13,
@@ -21,8 +21,10 @@ angular.module('mustard.game.leafletMapDirective', [])
     return {
         restrict: 'EA',
         scope: {},
-        require: '^spatialView',
-        link: function (scope, element, attrs, spatialViewController) {
+        require: ['^spatialView', '?^reviewTour'],
+        link: function (scope, element, attrs, controllers) {
+            var spatialViewController = controllers[0];
+            var reviewTourController = controllers[1];
             var layerGroups = {};
             var tileLayerUrl = 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg';
             var leafletMarkers = {};
@@ -211,6 +213,15 @@ angular.module('mustard.game.leafletMapDirective', [])
                 map = new L.Map(element[0], {attributionControl: false});
 
                 L.tileLayer(tileLayerUrl).addTo(map);
+                if (reviewTourController) {
+                    map.on('dragstart', reviewTourController.hideSteps);
+                    map.on('dragend', reviewTourController.showSteps);
+                    // handle re-locating the tour window on map zoom events
+                    map.on('viewreset', function(){
+                        reviewTourController.hideSteps();
+                        reviewTourController.showSteps();
+                    });
+                }
 
                 configureLayers();
                 addMapFeatures();
@@ -233,14 +244,36 @@ angular.module('mustard.game.leafletMapDirective', [])
                 var marker;
 
                 layerGroups.narratives = L.layerGroup();
+                var tourSteps = [];
 
                 _.each(entries, function (entry) {
                     marker = new L.marker();
                     marker.setLatLng(entry.location);
                     marker.bindPopup(entry.message);
+
+                    var icon = L.icon({
+                        iconUrl: 'lib/leaflet/images/marker-icon.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [25 / 2, 41],
+                        className: entry.name
+                    });
+                    marker.setIcon(icon);
+
+
                     layerGroups.narratives.addLayer(marker);
                     map.addLayer(layerGroups.narratives);
+
+                    tourSteps.push({
+                        element: '.' + entry.name,
+                        title: 'Narrative at ' + entry.timerLabel,
+                        content: entry.message,
+                        time: entry.time
+                    });
                 });
+
+                if (reviewTourController) {
+                    reviewTourController.setNarrativeSteps(tourSteps);
+                }
             });
 
             /**
