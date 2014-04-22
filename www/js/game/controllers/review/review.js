@@ -323,13 +323,6 @@ angular.module('mustard.game.review', [
     // put the markers on the map in their initial locations
     doUpdate();
 
-    // Note: the narrative "tour" should not require a button press to start, it should just run.
-    // but, we may provide UI control to restart tour.
-    $scope.showNarrative = function () {
-
-    // start the tour
-    }
-
     // hide Stepping controls in TimeDisplay directive
     steppingControls.setVisibility(false);
 
