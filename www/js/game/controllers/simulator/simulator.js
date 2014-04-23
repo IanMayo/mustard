@@ -150,7 +150,21 @@ angular.module('mustard.game.simulator', [
                  * @returns {Boolean} yes/no
                  */
                 autonomous: function() {
-                  return vessel.behaviours && vessel.behaviours.length>0;
+                  return vessel.behaviours && vessel.behaviours.length > 0;
+                },
+                /** whether the vessel is carrying any weapons
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                hasWeapons: function() {
+                    return vessel.weapons && vessel.weapons.length > 0;
+                },
+                /** whether the vessel can perform ranging
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                ableToPerformRanging: function() {
+                    return vessel.ableToPerformRanging;
                 }
             }
         };

@@ -32,10 +32,10 @@
             <objective-list data-objectives="objectives"></objective-list>
           </li>
           <li>
-            <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
+            <fire-weapon  data-ng-show="ownShip.hasWeapons()" data-ownship="ownShip.vessel()"></fire-weapon>
           </li>
           <li>
-            <range-calculator data-ng-hide="ownShip.vessel().unableToPerformRanging"
+            <range-calculator data-ng-show="ownShip.ableToPerformRanging()"
                               data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                               data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
           </li>
