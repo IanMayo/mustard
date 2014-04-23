@@ -546,9 +546,14 @@ angular.module('mustard.game.simulator', [
         });
 
         $scope.goBack = function () {
-            storeHistory();
             window.history.back();
         };
+
+        /**
+         * When user leaves the page (e.g. press html "Back" or browser's button),
+         * save simulation state to the review history
+         */
+        $scope.$on("$routeChangeStart", storeHistory);
 
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);
