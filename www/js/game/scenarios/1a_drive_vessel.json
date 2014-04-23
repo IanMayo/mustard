@@ -2,7 +2,7 @@
     "id": "1a",
     "name": "Learner Driver",
     "description": "Learn to drive, on the tracked range",
-    "welcome": "Let's start this off in a leisurely fashion on the tracked range. We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you). \nYou're going to have to press the Play ('>') button in the Time controls, you may also wish to use +/- buttons to speed up or slow down the time. \nYou will also have to steer to the correct course using the 'Demanded' course control (+5/-5)",
+    "welcome": "Let's start this off in a leisurely fashion on the tracked range. We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you). \nYou may wish to change the Time Factor, using the <</>> buttons to slow down or speed up the time. \nYou will also have to steer to the correct course using the 'Demanded' course control (+5/-5). Hold it down for a longer turn.",
     "vessels": [
         {
             "name": "Ownship",
@@ -113,6 +113,105 @@
                 "diveRate": 2
             }
         }
+        ,
+        {
+            "name": "Survey Vessel",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.10,
+                            "lng": -7.48
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 1,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.0,
+                    "lng": -8.06
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 0,
+                "speed": 0,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.0,
+                "decelerationRate": 0.0,
+                "minSpeed": 0,
+                "maxSpeed": 0,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Support Barge",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 1,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.2,
+                    "lng": -8.2
+                },
+                "course": 1,
+                "demCourse": 1,
+                "demSpeed": 0,
+                "speed": 0,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.0,
+                "decelerationRate": 0.0,
+                "minSpeed": 0,
+                "maxSpeed": 0,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
     ],
     "patrolArea": [
         [50.15, -8.25],
@@ -173,7 +272,7 @@
                     "name": "Array Handling Experience",
                     "type": "ELAPSED",
                     "time": 240,
-                    "success": "Stop!\n\nIntruder in training ground!\n\nYou haven't got any weapons loaded, but we really need to capture him.  The best we can offer is that you'll have to ram him and bring him to the surface. Chase him down the bearing (as shown on the sonar display), and destroy the b*stard!  You may have to increase speed to catch him, but if you go too fast you won't be able to hear him.",
+                    "success": "Stop!\n\nIntruder in training ground!\n\nYou haven't got any weapons loaded, but we really need to capture him.  The best we can offer is that you'll have to ram him and bring him to the surface. Once you have detected him, chase down the bearing (as shown on the sonar display), and destroy the b*stard!  You may have to increase speed to catch him, but if you go too fast you won't be able to hear him.",
                     "successAction": {
                         "type": "ACTIVATE_SONAR",
                         "subject": "Ownship",
@@ -201,29 +300,7 @@
     "features": {
         "type": "FeatureCollection",
         "features": [
-            {
-                "type": "Feature",
-                "properties": {
-                    "name": "Ops Area"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-8.06, 50]
 
-                },
-                "id": "DestinationA"
-            },
-            {
-                "type": "Feature",
-                "properties": {
-                    "name": "Ops Area"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-8.20, 50.2]
-                },
-                "id": "DestinationB"
-            }
         ]
     }
 }
