@@ -89,9 +89,19 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
              */
             var panMapToOwnship = function (vessel) {
                 if (vessel.name === spatialViewController.ownShipName()) {
-                    var ownshipLocation = L.latLng(vessel.state.location);
-                    if (!map.getBounds().contains(ownshipLocation)) {
-                        map.panTo(ownshipLocation);
+
+                    if (reviewTourController && reviewTourController.isRunning()) {
+                        // don't bother panning to ownship, we're in a walkthrough
+                        return;
+                    } else {
+                        // get the current location
+                        var ownshipLocation = L.latLng(vessel.state.location);
+
+                        // is this location visible?
+                        if (!map.getBounds().contains(ownshipLocation)) {
+                            // no, pan to show it
+                            map.panTo(ownshipLocation);
+                        }
                     }
                 }
             };
@@ -207,21 +217,57 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             };
 
             /**
+             * Configure Review tour
+             */
+            var configureReviewTour = function () {
+                if (!reviewTourController) {
+                    return false;
+                }
+
+                var panToNarrativeMarker = function (narrativeStep) {
+                    if (narrativeStep && !map.getBounds().contains(narrativeStep.latLng)) {
+                        map.panTo(narrativeStep.latLng);
+                    }
+                };
+
+                reviewTourController.setStepChangeListener(panToNarrativeMarker);
+                
+                map.on('movestart', function () {
+                    reviewTourController.hideSteps();
+                });
+
+                map.on('moveend', function () {
+                    if (layerGroups.narratives) {
+                        var reviewStep = reviewTourController.currentStep();
+                        var i = 0;
+                        var showWalkthroughWindow = true;
+
+                        // run loop to find all narratives markers on the layer
+                        layerGroups.narratives.eachLayer(function (layer) {
+                            if (!map.getBounds().contains(layer.getLatLng()) && reviewStep === i) {
+                                // A narrative marker still is not visible on the map and it's target tour step.
+                                // Hide the walkthrough window and set the flag to disable change the review tour
+                                reviewTourController.hideSteps();
+                                showWalkthroughWindow = false;
+                            }
+
+                            i++;
+                        });
+
+                        if (showWalkthroughWindow) {
+                            reviewTourController.showCurrentStep();
+                        }
+                    }
+                });
+            };
+
+            /**
              * Create Leaflet map.
              */
             var createMap = function () {
                 map = new L.Map(element[0], {attributionControl: false});
 
                 L.tileLayer(tileLayerUrl).addTo(map);
-                if (reviewTourController) {
-                    map.on('dragstart', reviewTourController.hideSteps);
-                    map.on('dragend', reviewTourController.showSteps);
-                    // handle re-locating the tour window on map zoom events
-                    map.on('viewreset', function(){
-                        reviewTourController.hideSteps();
-                        reviewTourController.showSteps();
-                    });
-                }
 
                 configureLayers();
                 addMapFeatures();
@@ -261,15 +307,18 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
 
 
                     layerGroups.narratives.addLayer(marker);
-                    map.addLayer(layerGroups.narratives);
 
                     tourSteps.push({
                         element: '.' + entry.name,
                         title: 'Narrative at ' + entry.timerLabel,
                         content: entry.message,
-                        time: entry.time
+                        time: entry.time,
+                        latLng: L.latLng(entry.location)
                     });
                 });
+
+                map.addLayer(layerGroups.narratives);
+
 
                 if (reviewTourController) {
                     reviewTourController.setNarrativeSteps(tourSteps);
@@ -365,6 +414,7 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             });
 
             createMap();
+            configureReviewTour();
         }
     };
 }]);

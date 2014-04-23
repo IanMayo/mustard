@@ -6,7 +6,21 @@ angular.module('mustard.game.timeDisplayDirective', [])
     initialTimerLabel: '01:00:00'
 })
 
-.directive('timeDisplay', ['timeDisplayConfig', '$interval', function (timeDisplayConfig, $interval) {
+.factory('steppingControls', function () {
+    var steppingEnabled = true;
+
+    return {
+        setVisibility: function (mode) {
+            steppingEnabled = mode;
+        },
+        visibility: function () {
+            return steppingEnabled;
+        }
+    };
+})
+
+.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls',
+    function (timeDisplayConfig, $interval, steppingControls) {
     return {
         restrict :'EA',
         scope: {
@@ -48,8 +62,23 @@ angular.module('mustard.game.timeDisplayDirective', [])
                 scope.timer += scope.timeStep;
             };
 
+            /**
+             * Change simulation interval
+             */
+            var watchSpeedChanges = function () {
+                scope.$watch('speed', function (newVal) {
+                    $interval.cancel(simulationIntervalId);
+
+                    if (newVal) {
+                        // do play
+                        simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
+                    }
+                });
+            };
+
             scope.speed = timeDisplayConfig.initialAccelRate;
             scope.timerLabel = timeDisplayConfig.initialTimerLabel;
+            scope.steppingEnabled = steppingControls.visibility();
 
             /**
              * Update timer label when simulation times changes
@@ -100,17 +129,11 @@ angular.module('mustard.game.timeDisplayDirective', [])
                 }
             };
 
-            /**
-             * Change simulation interval
-             */
-            scope.$watch('speed', function (newVal) {
-                $interval.cancel(simulationIntervalId);
-
-                if (newVal) {
-                    // do play
-                    simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
-                }
-            });
+            if (scope.steppingEnabled) {
+                watchSpeedChanges();
+            } else {
+                changeSimulationTimer();
+            }
         }
     };
 }]);
