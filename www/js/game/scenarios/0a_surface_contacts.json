@@ -234,7 +234,7 @@
                     "target": "TargetB_b",
                     "subject": "Ownship",
                     "elapsedNot": 300,
-                    "success": "Ok, well done. That's the sonar display covered.",
+                    "success": "Ok, well done. That's the surface contacts covered.",
                     "failure": "Oops, did you select the correct one? Try estimating the bearing to the target using the map, then you can work out which is the 'other' one.",
                     "narrSuccess" : "Spotted Ambiguous bearing"
                 }
