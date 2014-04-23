@@ -175,7 +175,10 @@ angular.module('mustard.game.spatialViewDirective', [
              */
             scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
                 detectionTrackId = trackId;
-                scope.showSonarDetections = true;
+
+                // NOTE: we no longer wish to switch on display of detections
+                // when a sonar track is selected (this was of most value when debugging)
+                //   scope.showSonarDetections = true;
             });
 
             /**

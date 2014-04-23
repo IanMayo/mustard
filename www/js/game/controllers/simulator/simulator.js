@@ -15,6 +15,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.geoMath',
     'mustard.game.movement',
     'mustard.game.objectives',
+    'mustard.game.clickRepeat',
     'mustard.app.user'
 ])
 

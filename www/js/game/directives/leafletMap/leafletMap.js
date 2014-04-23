@@ -5,7 +5,7 @@
 angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDirective'])
 
 .constant('leafletMapConfig', {
-    initialZoom: 13,
+    initialZoom: 11,
     sonarBearingLines: {
         color: '#A9A9A9',
         weight: 2
