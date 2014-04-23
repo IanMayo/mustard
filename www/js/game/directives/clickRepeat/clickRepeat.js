@@ -67,14 +67,8 @@ angular.module('mustard.game.clickRepeat', [])
                 $timeout.cancel(timer);
             };
 
-            element.bind(Modernizr.touch ? 'touchstart' : 'mousedown', function () {
-                repeat();
-            });
-
-            element.bind(Modernizr.touch ? 'touchend touchleave touchcancel' : 'mouseup mouseleave',
-                function () {
-                cancelRepeating();
-            });
+            element.bind(Modernizr.touch ? 'touchstart' : 'mousedown', repeat);
+            element.bind(Modernizr.touch ? 'touchend touchleave touchcancel' : 'mouseup mouseleave', cancelRepeating);
         }
     };
 }]);
