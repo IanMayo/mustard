@@ -111,9 +111,9 @@ angular.module('mustard.game.simulator', [
 * @class MissionCtrl (controller)
 */
 .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout', 'modal',
+        'detection', 'reviewSnapshot', 'user', '$timeout', 'steppingControls', 'modal',
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
-        reviewSnapshot, user, $timeout, modal) {
+        reviewSnapshot, user, $timeout, steppingControls, modal) {
 
         var trackHistory = {};
 
@@ -145,6 +145,27 @@ angular.module('mustard.game.simulator', [
                 },
                 updateState: function (data) {
                     _.extend(vessel.state, data);
+                },
+                /** whether this vessel can drive itself
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                autonomous: function() {
+                  return vessel.behaviours && vessel.behaviours.length > 0;
+                },
+                /** whether the vessel is carrying any weapons
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                hasWeapons: function() {
+                    return vessel.weapons && vessel.weapons.length > 0;
+                },
+                /** whether the vessel can perform ranging
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                ableToPerformRanging: function() {
+                    return vessel.ableToPerformRanging;
                 }
             }
         };
@@ -403,10 +424,15 @@ angular.module('mustard.game.simulator', [
 
             });
 
-            $scope.ownShip.updateState({
-                demCourse: parseInt($scope.demandedState.course),
-                demSpeed: parseInt($scope.demandedState.speed)
-            });
+            // can ownship drive itself?
+            if(!$scope.ownShip.autonomous()) {
+
+                // no, set the demanded states from the relevant control
+                $scope.ownShip.updateState({
+                    demCourse: parseInt($scope.demandedState.course),
+                    demSpeed: parseInt($scope.demandedState.speed)
+                });
+            }
 
             /////////////////////////
             // GAME LOOP STARTS HERE
@@ -515,10 +541,20 @@ angular.module('mustard.game.simulator', [
             }, 100);
         });
 
+        /** listen out for the user selecting a track from the sonar
+         *
+         */
+        $scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+            $scope.ownShip.vessel().selectedTrack = theTrackName;
+        });
+
         $scope.goBack = function () {
             storeHistory();
             window.history.back();
         };
+
+        // show Stepping controls in TimeDisplay directive
+        steppingControls.setVisibility(true);
 
         // ok, do the init
         doInit();
