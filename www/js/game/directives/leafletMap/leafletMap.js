@@ -90,11 +90,10 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             var panMapToOwnship = function (vessel) {
                 if (vessel.name === spatialViewController.ownShipName()) {
 
-                    if(reviewTourController && reviewTourController.isRunning())
-                    {
+                    if (reviewTourController && reviewTourController.isRunning()) {
                         // don't bother panning to ownship, we're in a walkthrough
-                    }
-                    else {
+                        return;
+                    } else {
                         // get the current location
                         var ownshipLocation = L.latLng(vessel.state.location);
 
