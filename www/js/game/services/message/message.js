@@ -1,29 +1,29 @@
 /**
- * @module Modal service
+ * @module Message service
  */
 
-angular.module('mustard.game.modal', [])
+angular.module('mustard.game.message', [])
 
-.factory('modal', function ($modal) {
+.factory('message', function ($modal) {
 
     /**
-     * Default modal message options
+     * Default message options
      *
      * @type {Object}
      */
-    var modalMessageOptions = {
-        templateUrl: 'js/game/services/modal/modalMessage.tpl.html',
-        controller: modalMessageController
+    var messageOptions = {
+        templateUrl: 'js/game/services/message/message.tpl.html',
+        controller: messageController
     };
 
     /**
-     * Default modal message list options
+     * Default message list options
      *
      * @type {Object}
      */
-    var modalMessageListOptions = {
-        templateUrl: 'js/game/services/modal/modalMessageList.tpl.html',
-        controller: modalMessageListController
+    var messageListOptions = {
+        templateUrl: 'js/game/services/message/messageList.tpl.html',
+        controller: messageListController
     };
 
     /**
@@ -33,7 +33,7 @@ angular.module('mustard.game.modal', [])
      * @param $modalInstance
      * @param messageData
      */
-    function modalMessageController ($scope, $modalInstance, messageData) {
+    function messageController ($scope, $modalInstance, messageData) {
         $scope.messageData = messageData;
 
         $scope.ok = function () {
@@ -48,7 +48,7 @@ angular.module('mustard.game.modal', [])
      * @param $modalInstance
      * @param messages
      */
-    function modalMessageListController ($scope, $modalInstance, messages) {
+    function messageListController ($scope, $modalInstance, messages) {
         $scope.messages = messages;
 
         $scope.ok = function () {
@@ -65,9 +65,9 @@ angular.module('mustard.game.modal', [])
          * @param text
          * @returns {Object} it returns $modalInstance
          */
-        showMessage: function (type, title, text) {
+        show: function (type, title, text) {
 
-            return $modal.open(angular.extend(modalMessageOptions, {
+            return $modal.open(angular.extend(messageOptions, {
                 resolve: {
                     messageData: function () {
                         return {
@@ -86,9 +86,9 @@ angular.module('mustard.game.modal', [])
          * @param messages
          * @returns {Object} it returns $modalInstance
          */
-        showMessageList: function (messages) {
+        showList: function (messages) {
 
-            return $modal.open(angular.extend(modalMessageListOptions, {
+            return $modal.open(angular.extend(messageListOptions, {
                 resolve: {
                     messages: function () {
                         return messages;
