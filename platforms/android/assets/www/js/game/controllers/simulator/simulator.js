@@ -16,7 +16,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.movement',
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
-    'mustard.game.modal',
+    'mustard.game.message',
     'mustard.app.user'
 ])
 
@@ -111,9 +111,9 @@ angular.module('mustard.game.simulator', [
 * @class MissionCtrl (controller)
 */
 .controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout', 'modal',
+        'detection', 'reviewSnapshot', 'user', '$timeout', 'steppingControls', 'message',
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
-        reviewSnapshot, user, $timeout, modal) {
+        reviewSnapshot, user, $timeout, steppingControls, message) {
 
         var trackHistory = {};
 
@@ -145,6 +145,27 @@ angular.module('mustard.game.simulator', [
                 },
                 updateState: function (data) {
                     _.extend(vessel.state, data);
+                },
+                /** whether this vessel can drive itself
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                autonomous: function() {
+                  return vessel.behaviours && vessel.behaviours.length > 0;
+                },
+                /** whether the vessel is carrying any weapons
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                hasWeapons: function() {
+                    return vessel.weapons && vessel.weapons.length > 0;
+                },
+                /** whether the vessel can perform ranging
+                 *
+                 * @returns {Boolean} yes/no
+                 */
+                ableToPerformRanging: function() {
+                    return vessel.ableToPerformRanging;
                 }
             }
         };
@@ -228,11 +249,11 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    modal.showMessage('success', 'Success message', $scope.gameState.successMessage);
+                    message.show('success', 'Success message', $scope.gameState.successMessage);
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    modal.showMessage('danger', 'Failure message', $scope.gameState.failureMessage);
+                    message.show('danger', 'Failure message', $scope.gameState.failureMessage);
                     delete $scope.gameState.failureMessage;
                 }
 
@@ -249,7 +270,7 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
-                                modal.showMessage('success', 'New achievement',
+                                message.show('success', 'New achievement',
                                     "Well done, you've been awarded a new achievement:\n'" + element.name +
                                     "'\n\n" + element.message);
                             }
@@ -293,9 +314,9 @@ angular.module('mustard.game.simulator', [
                     // TODO: Create modal window with confirm buttons
                     var r = confirm("Ready for the debriefing?");
                     if (r == true) {
-                        modal.showMessage('info', 'Switch to the new route', 'Switch to the new route');
+                        message.show('info', 'Switch to the new route', 'Switch to the new route');
                     } else {
-                        modal.showMessage('info', 'Let the user view/pan/zoom the plot',
+                        message.show('info', 'Let the user view/pan/zoom the plot',
                             'Let the user view/pan/zoom the plot');
                     }
                 }
@@ -403,10 +424,15 @@ angular.module('mustard.game.simulator', [
 
             });
 
-            $scope.ownShip.updateState({
-                demCourse: parseInt($scope.demandedState.course),
-                demSpeed: parseInt($scope.demandedState.speed)
-            });
+            // can ownship drive itself?
+            if(!$scope.ownShip.autonomous()) {
+
+                // no, set the demanded states from the relevant control
+                $scope.ownShip.updateState({
+                    demCourse: parseInt($scope.demandedState.course),
+                    demSpeed: parseInt($scope.demandedState.speed)
+                });
+            }
 
             /////////////////////////
             // GAME LOOP STARTS HERE
@@ -442,7 +468,7 @@ angular.module('mustard.game.simulator', [
         var showWelcome = function () {
             // show the welcome message
             if ($scope.welcome) {
-                modal.showMessage('info', 'Welcome!', $scope.welcome);
+                message.show('info', 'Welcome!', $scope.welcome);
             }
         };
 
@@ -515,10 +541,25 @@ angular.module('mustard.game.simulator', [
             }, 100);
         });
 
+        /** listen out for the user selecting a track from the sonar
+         *
+         */
+        $scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+            $scope.ownShip.vessel().selectedTrack = theTrackName;
+        });
+
         $scope.goBack = function () {
-            storeHistory();
             window.history.back();
         };
+
+        /**
+         * When user leaves the page (e.g. press html "Back" or browser's button),
+         * save simulation state to the review history
+         */
+        $scope.$on("$routeChangeStart", storeHistory);
+
+        // show Stepping controls in TimeDisplay directive
+        steppingControls.setVisibility(true);
 
         // ok, do the init
         doInit();

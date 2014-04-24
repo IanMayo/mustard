@@ -11,7 +11,8 @@ angular.module('mustard', [
     'mustard.app.missionsIndex',
     'mustard.game.simulator',
     'mustard.game.review',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'rzModule'
 ])
 .config(function ($routeProvider) {
 
