@@ -16,7 +16,8 @@ angular.module('mustard.game.simulator', [
     'mustard.game.movement',
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
-    'mustard.app.user'
+    'mustard.app.user',
+    'mustard.game.sonarBearing'
 ])
 
 /**
