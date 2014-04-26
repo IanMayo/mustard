@@ -81,4 +81,16 @@ angular.module('mustard.app.userProfile', [
     $scope.showModalMessageList = function () {
         message.showList(mockMessages);
     };
+
+    $scope.showModalConfirm = function () {
+        message.show('info', 'Test message', 'Text Message', true).result.then(
+            function () {
+                message.show('success', 'Yes!', 'You pushed yes button');
+            },
+
+            function () {
+                message.show('danger', 'No!', 'You pushed no button');
+            }
+        );
+    };
 });

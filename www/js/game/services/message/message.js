@@ -37,12 +37,16 @@ angular.module('mustard.game.message', [])
         $scope.messageData = messageData;
 
         $scope.ok = function () {
-            $modalInstance.dismiss('ok');
+            $modalInstance.close('ok');
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
         };
     }
 
     /**
-     * Modal instance controller
+     * Modal instance controller for the message list
      *
      * @param $scope
      * @param $modalInstance
@@ -52,7 +56,7 @@ angular.module('mustard.game.message', [])
         $scope.messages = messages;
 
         $scope.ok = function () {
-            $modalInstance.dismiss('ok');
+            $modalInstance.close('ok');
         };
     }
 
@@ -63,9 +67,10 @@ angular.module('mustard.game.message', [])
          * @param type
          * @param title
          * @param text
+         * @param confirm
          * @returns {Object} it returns $modalInstance
          */
-        show: function (type, title, text) {
+        show: function (type, title, text, confirm) {
 
             return $modal.open(angular.extend(messageOptions, {
                 resolve: {
@@ -73,7 +78,8 @@ angular.module('mustard.game.message', [])
                         return {
                             type: type,
                             title: title,
-                            text: text
+                            text: text,
+                            confirm: !!confirm
                         };
                     }
                 }
