@@ -29,7 +29,7 @@ angular.module('mustard.game.message', [])
     };
 
     /**
-     * Modal instance controller
+     * Modal instance controller for the message
      *
      * @param $scope
      * @param $modalInstance
