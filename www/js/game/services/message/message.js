@@ -13,6 +13,7 @@ angular.module('mustard.game.message', [])
      */
     var messageOptions = {
         templateUrl: 'js/game/services/message/message.tpl.html',
+        backdrop: 'static',
         controller: messageController
     };
 
@@ -23,6 +24,7 @@ angular.module('mustard.game.message', [])
      */
     var messageListOptions = {
         templateUrl: 'js/game/services/message/messageList.tpl.html',
+        backdrop: 'static',
         controller: messageListController
     };
 
@@ -73,8 +75,6 @@ angular.module('mustard.game.message', [])
         show: function (type, title, text, confirm) {
 
             return $modal.open(angular.extend(messageOptions, {
-                backdrop: confirm ? 'static': true,
-
                 resolve: {
                     messageData: function () {
                         return {
