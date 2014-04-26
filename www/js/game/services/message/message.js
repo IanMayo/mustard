@@ -73,6 +73,8 @@ angular.module('mustard.game.message', [])
         show: function (type, title, text, confirm) {
 
             return $modal.open(angular.extend(messageOptions, {
+                backdrop: confirm ? 'static': true,
+
                 resolve: {
                     messageData: function () {
                         return {
