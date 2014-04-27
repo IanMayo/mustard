@@ -17,6 +17,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
     'mustard.game.message',
+    'mustard.game.newMessage',
     'mustard.app.user'
 ])
 
@@ -104,6 +105,13 @@ angular.module('mustard.game.simulator', [
         simulationTimeStep: 2000,
         patrolArea: scenario.patrolArea
     };
+
+    /**
+     * Messages collection
+     *
+     * @type {Array}
+     */
+    $scope.messages = [];
 }])
 
 /**
