@@ -6,7 +6,7 @@ angular.module('mustard.game.newMessage', ['mustard.game.message'])
 
 /**
  * New message directive
- * It gets the message collection and start blinking if there are new messages
+ * It takes the message collection and indicate if there are new messages
  */
 .directive('newMessage', ['message', function (message) {
 
