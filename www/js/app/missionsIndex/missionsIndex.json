@@ -5,15 +5,15 @@
         "missions": [
             {
                 "id": "0a",
-                "name": "Surface Contacts",
-                "description": "Recognising surface contacts on the sonar",
+                "name": "Reading Surface Contacts on the sonar display",
+                "description": "Learn to read and interact with the sonar",
                 "url": "0a_surface_contacts",
                 "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
             },
             {
-                "id": "0b",
-                "name": "Submarine Contacts",
-                "description": "Learn to recognise submarine contacts",
+                "id": "0a",
+                "name": "Reading the display",
+                "description": "Using ownship manoeuvres to determine bearing ambiguity",
                 "url": "0b_submarine_contacts",
                 "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
             }
