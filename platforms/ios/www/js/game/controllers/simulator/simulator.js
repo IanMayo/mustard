@@ -17,6 +17,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
     'mustard.game.message',
+    'mustard.game.newMessage',
     'mustard.app.user'
 ])
 
@@ -104,6 +105,13 @@ angular.module('mustard.game.simulator', [
         simulationTimeStep: 2000,
         patrolArea: scenario.patrolArea
     };
+
+    /**
+     * Messages collection
+     *
+     * @type {Array}
+     */
+    $scope.messages = [];
 }])
 
 /**
@@ -311,14 +319,16 @@ angular.module('mustard.game.simulator', [
                     storeHistory();
 
                     // ok, move on to the review stage
-                    // TODO: Create modal window with confirm buttons
-                    var r = confirm("Ready for the debriefing?");
-                    if (r == true) {
-                        message.show('info', 'Switch to the new route', 'Switch to the new route');
-                    } else {
-                        message.show('info', 'Let the user view/pan/zoom the plot',
-                            'Let the user view/pan/zoom the plot');
-                    }
+                    message.show('info', 'Debriefing', 'Ready for the debriefing?', true).result.then(
+                        function () {
+                            message.show('info', 'Switch to the new route', 'Switch to the new route');
+                        },
+
+                        function () {
+                            message.show('info', 'Let the user view/pan/zoom the plot',
+                                'Let the user view/pan/zoom the plot');
+                        }
+                    );
                 }
             }
         };

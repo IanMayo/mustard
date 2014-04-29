@@ -14,5 +14,13 @@
 <div class="modal-body">{{ messageData.text }}</div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-{{messageData.type}}" ng-click="ok()">Ok</button>
+  <div ng-switch="messageData.confirm">
+    <div ng-switch-when="true">
+      <button type="button" class="btn btn-success" ng-click="ok()">Yes</button>
+      <button type="button" class="btn btn-danger" ng-click="cancel()">No</button>
+    </div>
+    <div ng-switch-when="false">
+      <button type="button" class="btn btn-{{messageData.type}}" ng-click="ok()">Ok</button>
+    </div>
+  </div>
 </div>
