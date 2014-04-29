@@ -12,7 +12,7 @@
       <accordion id="messageList" close-others="true">
         <accordion-group ng-repeat="message in messages">
           <accordion-heading>
-            <h4 class="modal-title">
+            <span class="modal-title" ng-click="message.unread = false">
               <i class="glyphicon" ng-class="{
                 info: 'glyphicon-info-sign',
                 success: 'glyphicon-ok',
@@ -21,7 +21,8 @@
               </i>
 
               {{ message.title }}
-            </h4>
+            </span>
+            <span class="label label-info pull-right" ng-show="message.unread">new!</span>
           </accordion-heading>
           <span>{{ message.text }}</span>
         </accordion-group>
