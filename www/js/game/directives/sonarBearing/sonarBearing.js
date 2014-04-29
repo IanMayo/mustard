@@ -49,36 +49,34 @@ angular.module('mustard.game.sonarBearing', [])
             // Minor Viz
             var sonar_minor_viz = d3.sonar()
                 .container_el(sonar_minor_el)
-                .xTickValues([0,45,90,135,180,225,270,315,360])
-                .xTickFormat(
-                function (d) {
-                    return (d <= 180) ? ((d+180) === 360 ? 0: (d+180)) : d-180;
-                }
-            )
-                .xTickFormatInverse(
-                function (d) {
-                    return (d <= 180) ? d+180 : d-180;
-                }
-            )
+                .xTickValues([0, 45, 90, 135, 180, 225, 270, 315, 360])
+                .xTickFormat(function (d) {
+                        return (d <= 180) ? ((d+180) === 360 ? 0: (d+180)) : d-180;
+                    }
+                )
+                .xTickFormatInverse(function (d) {
+                        return (d <= 180) ? d+180 : d-180;
+                    }
+                )
                 .yTicks(3)
                 .headingKeys({
                     x: 'degree',
                     y: 'date'
                 })
-                .showXAxis(false)
-                .margin({top: 0, left: 100, bottom: 50, right: 50})
                 .detectionKeys({
                     x: 'degree',
                     y: 'date'
                 })
+                .showXAxis(true)
+                .margin({top: 40, left: 100, bottom: 0, right: 50})
                 .dataAge(MINOR_TIME_JAR)
                 .colors(colors);
 
             var setDataUpdateRoutine = function () {
+                var i = 0;
                 _t_step_init = new Date().getTime();
 
-                var i = 0, j = 0, k = 0, l = 0;
-                addHeading( _t_step(++i), getRandomInt(110,150) );
+                addHeading(_t_step(++i), getRandomInt(110,150));
             };
 
             var addHeading = function (time, bearing) {
