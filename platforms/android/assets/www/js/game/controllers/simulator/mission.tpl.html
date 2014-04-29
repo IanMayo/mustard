@@ -23,7 +23,8 @@
                         data-speed="ownShip.state().speed"></ship-state>
           </li>
           <li>
-            <ship-controls data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
+            <ship-controls data-ng-hide="ownShip.autonomous()"
+                           data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
           </li>
           <li>
             <time-remaining data-remaining="gameState.remaining"></time-remaining>
@@ -32,10 +33,13 @@
             <objective-list data-objectives="objectives"></objective-list>
           </li>
           <li>
-            <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
+            <fire-weapon  data-ng-show="ownShip.hasWeapons()" data-ownship="ownShip.vessel()"></fire-weapon>
           </li>
           <li>
-            <range-calculator data-ng-hide="ownShip.vessel().unableToPerformRanging"
+            <new-message data-messages="messages"></new-message>
+          </li>
+          <li>
+            <range-calculator data-ng-show="ownShip.ableToPerformRanging()"
                               data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                               data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
           </li>

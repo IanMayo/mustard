@@ -64,3 +64,21 @@ spatial-view .leaflet-container
   color: #333;
   font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
+.timeSlider {
+  position: relative;
+}
+.eventPicker {
+  position: absolute;
+  height: 40px;
+  top: 30px;
+  width: 100%;
+}
+
+.eventPicker .eventMarker {
+  position: absolute;
+}
+.eventPicker .glyphicon {
+  font-size: 21px;
+}
+

@@ -9,14 +9,16 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
         restrict: 'EA',
         controller: ['$scope', function ($scope) {
             var narrativeSteps = [];
-            var currentStep = 0;
             var tour;
             var $stepWindow;
+            var stepChangedListener = angular.noop;
 
             var changeTime = function () {
                 var step = tour.getCurrentStep();
                 $timeout(function () {
                     $scope.reviewState.reviewTime = narrativeSteps[step].time;
+
+                    stepChangedListener(narrativeSteps[step]);
                 });
             };
 
@@ -57,20 +59,51 @@ angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDire
                     tour.start();
                 },
                 hideSteps: function () {
-                    currentStep = tour.getCurrentStep();
-                    $stepWindow = $('#step-' + currentStep);
+                    $stepWindow = $('#step-' + (tour.getCurrentStep() || '0').toString());
                     $stepWindow.hide();
                 },
+                showCurrentStep: function () {
+                    tour.showStep(tour.getCurrentStep());
+                },
                 showSteps: function () {
-                    tour.showStep(currentStep);
-                    $timeout(function () {
-                        // drag the map changes position of a narrative marker
-                        // wait while method showStep() applies new position according to new coordinates of the marker
-                        $stepWindow.show();
-                    }, 1000);
+                    $stepWindow.show();
+                },
+                currentStep: function () {
+                    return tour.getCurrentStep();
+                },
+                setStepChangeListener: function (listener) {
+                    stepChangedListener = listener || stepChangedListener;
+                },
+                isRunning: function () {
+                    return !tour.ended();
+                },
+                breakTour: function () {
+                    if (!tour.ended()) {
+                        tour.end();
+                    }
                 }
             };
         }]
     }
-}]);
+}])
+
+.directive('breakReviewTour', function () {
+    return {
+        restrict: 'A',
+        require: '?^reviewTour',
+        link: function (scope, elemment, attr, controller) {
+            var pointer = null;
+            _.each(elemment.children(), function(elem) {
+                var elem = angular.element(elem);
+                if (elem.hasClass('pointer')) {
+                    pointer = elem;
+                }
+            });
+
+            pointer.bind('mousedown touchstart', function () {
+                controller.breakTour();
+            });
+        }
+    }
+});
 

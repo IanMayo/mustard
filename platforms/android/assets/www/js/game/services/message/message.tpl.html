@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <i class="glyphicon" ng-class="{
+      info: 'glyphicon-info-sign',
+      success: 'glyphicon-ok',
+      warning: 'glyphicon-exclamation-sign',
+      danger: 'glyphicon-ban-circle'}[messageData.type]">
+    </i>
+
+    {{ messageData.title }}
+  </h4>
+</div>
+
+<div class="modal-body">{{ messageData.text }}</div>
+
+<div class="modal-footer">
+  <div ng-switch="messageData.confirm">
+    <div ng-switch-when="true">
+      <button type="button" class="btn btn-success" ng-click="ok()">Yes</button>
+      <button type="button" class="btn btn-danger" ng-click="cancel()">No</button>
+    </div>
+    <div ng-switch-when="false">
+      <button type="button" class="btn btn-{{messageData.type}}" ng-click="ok()">Ok</button>
+    </div>
+  </div>
+</div>

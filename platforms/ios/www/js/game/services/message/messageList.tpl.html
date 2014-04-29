@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <i class="glyphicon glyphicon-info-sign"></i>
+    Message list
+  </h4>
+</div>
+
+<div class="modal-body">
+  <div ng-switch="!!messages.length">
+
+    <div ng-switch-when="true">
+      <accordion id="messageList" close-others="true">
+        <accordion-group ng-repeat="message in messages">
+          <accordion-heading>
+            <span class="modal-title" ng-click="message.unread = false">
+              <i class="glyphicon" ng-class="{
+                info: 'glyphicon-info-sign',
+                success: 'glyphicon-ok',
+                warning: 'glyphicon-exclamation-sign',
+                danger: 'glyphicon-ban-circle'}[message.type]">
+              </i>
+
+              {{ message.title }}
+            </span>
+            <span class="label label-info pull-right" ng-show="message.unread">new!</span>
+          </accordion-heading>
+          <span>{{ message.text }}</span>
+        </accordion-group>
+      </accordion>
+    </div>
+
+    <div ng-switch-when="false">
+      <h4>No messages</h4>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="ok()">Ok</button>
+</div>
