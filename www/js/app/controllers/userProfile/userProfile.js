@@ -1,6 +1,7 @@
 angular.module('mustard.app.userProfile', [
     'mustard.app.user',
     'mustard.game.message',
+    'mustard.game.newMessage',
     'LocalStorageModule'
 ])
 
@@ -15,7 +16,7 @@ angular.module('mustard.app.userProfile', [
      */
 
     // Mock messages
-    var mockMessages = [
+    $scope.messages = [
         {title: 'You achieve something', type: 'info', text: 'Message #1', unread: true},
         {title: 'Something happened', type: 'danger', text: 'Message #2', unread: true},
         {title: 'Warning message', type: 'warning', text: 'Message #3', unread: true},
@@ -79,7 +80,7 @@ angular.module('mustard.app.userProfile', [
     };
 
     $scope.showModalMessageList = function () {
-        message.showList(mockMessages);
+        message.showList($scope.messages);
     };
 
     $scope.showModalConfirm = function () {
@@ -92,5 +93,9 @@ angular.module('mustard.app.userProfile', [
                 message.show('danger', 'No!', 'You pushed no button');
             }
         );
+    };
+
+    $scope.addMessage = function () {
+        $scope.messages.unshift({title: 'Welcome!', type: 'info', text: 'Welcome message', unread: true})
     };
 });
