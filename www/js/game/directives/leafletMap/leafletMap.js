@@ -279,7 +279,6 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
              */
             var scaleToRoutes = function (routes) {
                 if (reviewTourController) {
-                    console.log('routes', routes)
                     map.fitBounds(routes.getBounds());
                 }
             };
