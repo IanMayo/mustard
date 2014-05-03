@@ -1,19 +1,25 @@
-<div class="well well-sm">
-  <div>Course: <span class="label label-default">{{course}}</span></div>
-  <button data-click-repeat="changeCourse(-courseRate)" type="button" class="btn btn-default btn-sm">
-    <span class="glyphicon glyphicon-chevron-left"></span>
+<div class="speed-container">
+  <button data-click-repeat="changeSpeed(-speedRate)" type="button" class="btn-ship-ctrl">
+    <span class="ship-ctrl-down">-1</span>
   </button>
-  <button data-click-repeat="changeCourse(courseRate)" type="button" class="btn btn-default btn-sm">
-    <span class="glyphicon glyphicon-chevron-right"></span>
+  <div class="speed-label">
+    <div class="text-center">Speed</div>
+    <span class="label label-info">{{speed}} m/s</span>
+  </div>
+  <button data-click-repeat="changeSpeed(speedRate)" type="button" class="btn-ship-ctrl">
+    <span class="ship-ctrl-up">+1</span>
   </button>
-
 </div>
-<div class="well well-sm">
-  <div>Speed: <span class="label label-default">{{speed}}</span></div>
-  <button data-click-repeat="changeSpeed(-speedRate)" type="button" class="btn btn-default btn-sm">
-    <span class="glyphicon glyphicon-chevron-down"></span>
+
+<div class="course-container">
+  <button data-click-repeat="changeCourse(-courseRate)" type="button" class="btn-ship-ctrl">
+    <span class="ship-ctrl-left">-5</span>
   </button>
-  <button data-click-repeat="changeSpeed(speedRate)" type="button" class="btn btn-default btn-sm">
-    <span class="glyphicon glyphicon-chevron-up"></span>
+  <div class="course-label">
+    <div class="text-center">Course</div>
+    <span class="label label-info">{{course}}&deg;</span>
+  </div>
+  <button data-click-repeat="changeCourse(courseRate)" type="button" class="btn-ship-ctrl">
+    <span class="ship-ctrl-right">+5</span>
   </button>
 </div>

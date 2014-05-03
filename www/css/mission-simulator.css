@@ -1,8 +1,13 @@
+/* Mission simulator layout */
+
 .mission-simulator,
 .time-bearing-container,
 .spatial-container,
 .data-leaflet-map-container,
 .data-leaflet-map,
+.mission-controls,
+.mission-controls li,
+.ship-controls,
 #Sonar {
   height: 100%;
   padding: 0;
@@ -14,9 +19,14 @@
   height: 77%;
 }
 
+.time-bearing-container {
+  border-right: 2px solid grey;
+}
+
 .controls-container {
   padding: 0;
   height: 23%;
+  border-top: 2px solid grey;
 }
 
 .spatial-view,
@@ -28,7 +38,7 @@
   position: absolute;
   right: 0;
   overflow: hidden;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 .mission-controls li{
@@ -36,4 +46,62 @@
 }
 .mission-controls li h4{
   border-bottom: solid 2px darkgray;
+}
+
+.mission-list {
+  padding: 0;
+}
+
+.mission-list > .mission {
+  cursor: pointer;
+}
+
+.mission-list > .mission.ng-click-active {
+  background: #E4E4E4;
+}
+
+.mission .mission-status {
+  font-size: 24px;
+}
+
+/* Ship controls */
+
+.speed-container,
+.course-container {
+  height: 50%;
+  padding: 10px 10px 0 40px;
+}
+
+.speed-label,
+.course-label {
+  display: inline-block;
+  padding: 0 5px;
+  vertical-align: middle;
+}
+
+.speed-label .label,
+.course-label .label {
+  display: inline-block;
+  width: 60px;
+  padding: 5px;
+}
+
+.btn-ship-ctrl {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  border: 2px solid red;
+  border-radius: 100%;
+  vertical-align: middle;
+  outline: none;
+  cursor: pointer;
+}
+
+.ship-ctrl-up,
+.ship-ctrl-down,
+.ship-ctrl-left,
+.ship-ctrl-right {
+  display: inline-block;
+  text-align: center;
 }
