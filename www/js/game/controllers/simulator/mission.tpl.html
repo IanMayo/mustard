@@ -10,19 +10,12 @@
   <div class="controls-container">
     <ul class="list-inline mission-controls">
       <li>
-        <time-display class="form-group" data-time-step="gameState.simulationTimeStep"
-                      data-timer="gameState.simulationTime"></time-display>
-      </li>
-      <li>
-        <ship-state data-course="ownShip.state().course"
-                    data-speed="ownShip.state().speed"></ship-state>
-      </li>
-      <li>
         <ship-controls data-ng-hide="ownShip.autonomous()"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
       <li>
-        <time-remaining data-remaining="gameState.remaining"></time-remaining>
+        <ship-state data-course="ownShip.state().course"
+                    data-speed="ownShip.state().speed"></ship-state>
       </li>
       <li>
         <objective-list data-objectives="objectives"></objective-list>
@@ -37,6 +30,13 @@
         <range-calculator data-ng-show="ownShip.ableToPerformRanging()"
                           data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                           data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
+      </li>
+      <li>
+        <time-remaining data-remaining="gameState.remaining"></time-remaining>
+      </li>
+      <li>
+        <time-display class="form-group" data-time-step="gameState.simulationTimeStep"
+                      data-timer="gameState.simulationTime"></time-display>
       </li>
       <li>
         <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
