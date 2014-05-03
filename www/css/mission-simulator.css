@@ -41,29 +41,6 @@
   z-index: 1000;
 }
 
-.mission-controls li{
-  vertical-align: top;
-}
-.mission-controls li h4{
-  border-bottom: solid 2px darkgray;
-}
-
-.mission-list {
-  padding: 0;
-}
-
-.mission-list > .mission {
-  cursor: pointer;
-}
-
-.mission-list > .mission.ng-click-active {
-  background: #E4E4E4;
-}
-
-.mission .mission-status {
-  font-size: 24px;
-}
-
 /* Ship controls */
 
 .speed-container,
@@ -81,9 +58,9 @@
 
 .speed-label .label,
 .course-label .label {
-  display: inline-block;
+  display: block;
+  padding: 5px 0;
   width: 60px;
-  padding: 5px;
 }
 
 .btn-ship-ctrl {
