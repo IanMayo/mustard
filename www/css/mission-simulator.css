@@ -24,6 +24,18 @@
   border-right: 2px solid grey;
 }
 
+.time-display-container {
+  height: 35px;
+  overflow: hidden;
+}
+
+.tab-bar-container {
+  height: 140px;
+  width: 330px;
+  padding: 5px 0 0 10px;
+  overflow: hidden;
+}
+
 .controls-container {
   padding: 0;
   height: 175px;
@@ -89,10 +101,16 @@
 
 .ship-state {
   display: block;
-  padding: 50px 50px 0 50px;
+  padding: 50px 20px 0 20px;
   text-align: center;
 }
 
 .ship-state-header {
+  margin: 0;
+}
+
+/* Time remaining */
+
+.time-remaining-header {
   margin: 0;
 }
