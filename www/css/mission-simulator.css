@@ -41,12 +41,16 @@
   z-index: 1000;
 }
 
+.mission-controls {
+  padding: 0 5%;
+}
+
 /* Ship controls */
 
 .speed-container,
 .course-container {
+  padding-top: 5%;
   height: 50%;
-  padding: 10px 10px 0 40px;
 }
 
 .speed-label,
