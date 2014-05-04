@@ -10,14 +10,11 @@
   <div class="controls-container">
     <ul class="list-inline mission-controls">
       <li>
-        <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
-                       data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
+        <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-star"></span> Back
+        </button>
       </li>
-      <li>
-        <ship-state data-course="ownShip.state().course"
-                    data-speed="ownShip.state().speed"></ship-state>
-      </li>
-      <li>
+      <!--<li>
         <objective-list data-objectives="objectives"></objective-list>
       </li>
       <li>
@@ -37,11 +34,14 @@
       <li>
         <time-display class="form-group" data-time-step="gameState.simulationTimeStep"
                       data-timer="gameState.simulationTime"></time-display>
+      </li>-->
+      <li class="pull-right">
+        <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
+                       data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
-      <li>
-        <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
-          <span class="glyphicon glyphicon-star"></span> Back
-        </button>
+      <li class="pull-right">
+        <ship-state class="ship-state" data-course="ownShip.state().course"
+                    data-speed="ownShip.state().speed"></ship-state>
       </li>
     </ul>
   </div>

@@ -15,8 +15,9 @@
 }
 
 .time-bearing-spatial-container {
-  padding: 0;
-  height: 77%;
+  padding: 0 0 175px 0;
+  margin-bottom: -175px;
+  height: 100%;
 }
 
 .time-bearing-container {
@@ -25,7 +26,7 @@
 
 .controls-container {
   padding: 0;
-  height: 23%;
+  height: 175px;
   border-top: 2px solid grey;
 }
 
@@ -41,23 +42,24 @@
   z-index: 1000;
 }
 
-.mission-controls {
-  padding: 0 5%;
-}
-
 /* Ship controls */
+
+.ship-controls {
+  display: block;
+  text-align: center;
+  padding: 15px 10px 0 10px;
+}
 
 .speed-container,
 .course-container {
-  padding-top: 5%;
   height: 50%;
 }
 
 .speed-label,
 .course-label {
   display: inline-block;
-  padding: 0 5px;
-  vertical-align: middle;
+  padding: 0 10px;
+  vertical-align: top;
 }
 
 .speed-label .label,
@@ -65,6 +67,7 @@
   display: block;
   padding: 5px 0;
   width: 60px;
+  font-size: 12px;
 }
 
 .btn-ship-ctrl {
@@ -73,8 +76,8 @@
   height: 60px;
   background: transparent;
   border: 2px solid red;
-  border-radius: 100%;
-  vertical-align: middle;
+  border-radius: 50%;
+  vertical-align: top;
   outline: none;
   cursor: pointer;
 }
@@ -85,4 +88,16 @@
 .ship-ctrl-right {
   display: inline-block;
   text-align: center;
+}
+
+/* Ship state */
+
+.ship-state {
+  display: block;
+  padding: 50px 50px 0 50px;
+  text-align: center;
+}
+
+.ship-state h3 {
+  margin: 0;
 }
