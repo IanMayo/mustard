@@ -55,39 +55,34 @@
   height: 50%;
 }
 
-.speed-label,
-.course-label {
+.speed-label-container,
+.course-label-container {
   display: inline-block;
   padding: 0 10px;
   vertical-align: top;
+  text-align: center;
 }
 
-.speed-label .label,
-.course-label .label {
+.label-speed,
+.label-course {
   display: block;
   padding: 5px 0;
   width: 60px;
   font-size: 12px;
 }
 
-.btn-ship-ctrl {
-  display: inline-block;
+.btn-round {
   width: 60px;
   height: 60px;
   background: transparent;
   border: 2px solid red;
   border-radius: 50%;
-  vertical-align: top;
   outline: none;
-  cursor: pointer;
 }
 
-.ship-ctrl-up,
-.ship-ctrl-down,
-.ship-ctrl-left,
-.ship-ctrl-right {
-  display: inline-block;
-  text-align: center;
+.btn-round:focus,
+.btn-round:hover {
+  outline: none;
 }
 
 /* Ship state */
@@ -98,6 +93,6 @@
   text-align: center;
 }
 
-.ship-state h3 {
+.ship-state-header {
   margin: 0;
 }
