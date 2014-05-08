@@ -1,0 +1,129 @@
+/* Mission simulator layout */
+
+.mission-simulator,
+.time-bearing-container,
+.spatial-container,
+.data-leaflet-map-container,
+.data-leaflet-map,
+.mission-controls,
+.mission-controls li,
+.ship-controls,
+.time-display-container,
+#Sonar {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.time-bearing-spatial-container {
+  padding: 0 0 175px 0;
+  margin-bottom: -175px;
+  height: 100%;
+}
+
+.time-bearing-container {
+  border-right: 2px solid grey;
+}
+
+.time-display-container {
+  padding: 10px 0 0 10px;
+  width: 150px;
+  margin-bottom: -40px;
+}
+
+.tab-bar-container {
+  height: 140px;
+  width: 400px;
+  padding: 10px 0 0 10px;
+  overflow: hidden;
+}
+
+.controls-container {
+  padding: 0;
+  height: 175px;
+  border-top: 2px solid grey;
+}
+
+.spatial-view,
+.time-bearing-display {
+  height: 100%;
+}
+
+.data-leaflet-map-controls {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Ship controls */
+
+.ship-controls {
+  display: block;
+  text-align: center;
+  padding: 15px 10px 0 10px;
+}
+
+.speed-container,
+.course-container {
+  height: 50%;
+}
+
+.speed-label-container,
+.course-label-container {
+  display: inline-block;
+  padding: 0 10px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.label-speed,
+.label-course {
+  display: block;
+  padding: 5px 0;
+  width: 60px;
+  font-size: 12px;
+}
+
+.btn-round {
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  border: 2px solid red;
+  border-radius: 50%;
+  outline: none;
+}
+
+.btn-round:focus,
+.btn-round:hover {
+  outline: none;
+}
+
+/* Ship state */
+
+.ship-state {
+  display: block;
+  padding: 50px 20px 0 20px;
+  text-align: center;
+}
+
+.ship-state-header {
+  margin: 0;
+}
+
+/* Time remaining & Time display */
+
+.time-remaining-header,
+.timer-header {
+  margin: 0 0 10px 0;
+}
+
+.time-remaining-header {
+  margin-top: 5px;
+}
+
+/* Back button */
+
+.btn-back {
+  margin-left: 10px;
+}

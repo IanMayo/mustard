@@ -173,7 +173,7 @@ angular.module('mustard.game.simulator', [
                  * @returns {Boolean} yes/no
                  */
                 ableToPerformRanging: function() {
-                    return vessel.ableToPerformRanging;
+                    return !vessel.unableToPerformRanging;
                 }
             }
         };
