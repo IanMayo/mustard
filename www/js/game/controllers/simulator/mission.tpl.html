@@ -2,12 +2,15 @@
   <button data-ng-click="goBack()" type="button" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-star"></span> Back
   </button>
+  <div id="meter"></div>
   <table  style="width:100%">
     <tr>
       <td style="width:50%;padding: 10px">
+        <div id="sonarMeter"></div>
         <time-bearing-display data-series="ownShip.detections()"></time-bearing-display>
       </td>
       <td style="width:50%;padding: 10px">
+        <div id="mapMeter"></div>
         <spatial-view></spatial-view>
       </td>
     </tr>

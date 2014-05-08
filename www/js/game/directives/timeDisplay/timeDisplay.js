@@ -19,8 +19,8 @@ angular.module('mustard.game.timeDisplayDirective', [])
     };
 })
 
-.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls',
-    function (timeDisplayConfig, $interval, steppingControls) {
+.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls', '$timeout',
+    function (timeDisplayConfig, $interval, steppingControls, $timeout) {
     return {
         restrict :'EA',
         scope: {
@@ -29,6 +29,52 @@ angular.module('mustard.game.timeDisplayDirective', [])
         },
         templateUrl: 'js/game/directives/timeDisplay/timeDisplay.tpl.html',
         link: function (scope) {
+
+            function uiPart(params) {
+                var defaults = {
+                    uiUpdateInterval: 1,
+                    skipFrames: 10
+                };
+                var params = _.extend(defaults, params);
+                var frameCounter = 0;
+                var maximumSkipFrames = 0;
+                var uiUpdateInterval = 0;
+                var nextUpdateInterval = 0;
+
+                function init() {
+                    maximumSkipFrames = params.skipFrames;
+                    uiUpdateInterval = params.uiUpdateInterval * 1000;
+                    nextUpdateInterval = _.now() + params.uiUpdateInterval;
+                }
+
+                init();
+
+                function update() {
+                    if (_.now() >= nextUpdateInterval || frameCounter > maximumSkipFrames) {
+                        nextUpdateInterval = _.now() + uiUpdateInterval;
+                        frameCounter = 0;
+                        params.emitEvent();
+                    } else {
+                        frameCounter += 1;
+                    }
+                }
+
+                return {
+                    update: update
+                }
+            };
+
+            var sonarUi = uiPart({
+                uiUpdateInterval: 0.5,
+                skipFrames: 10,
+                emitEvent: function () {scope.$emit('updateSonarUi')}
+            });
+
+            var mapUi = uiPart({
+                uiUpdateInterval: 1,
+                skipFrames: 5,
+                emitEvent: function () {scope.$emit('updateMapUi')}
+            });
 
             /**
              * Simulation speed trigger
@@ -60,6 +106,9 @@ angular.module('mustard.game.timeDisplayDirective', [])
                     oldTimer = 0;
                 }
                 scope.timer += scope.timeStep;
+
+                sonarUi.update();
+                mapUi.update();
             };
 
             /**

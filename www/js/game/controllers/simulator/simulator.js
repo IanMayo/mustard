@@ -123,6 +123,21 @@ angular.module('mustard.game.simulator', [
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
+        var meters = {
+            app: new FPSMeter($('#meter')[0], {
+                left: '50%',
+                margin: '0 0 0 0'
+            }),
+            map: new FPSMeter($('#mapMeter')[0], {
+                left: '90%',
+                margin: '60px 0 0 0'
+            }),
+            sonar: new FPSMeter($('#sonarMeter')[0], {
+                left: '5%',
+                margin: '60px 0 0 0'
+            })
+        };
+
         var trackHistory = {};
 
         var startTime; // keep track of the start time, so we can pass the period to the history object.
@@ -245,6 +260,8 @@ angular.module('mustard.game.simulator', [
             if (detections) {
                 $scope.$broadcast('addDetections', detections);
             }
+
+            meters.sonar.tick();
         };
 
         var missionStatus = function () {
@@ -387,6 +404,7 @@ angular.module('mustard.game.simulator', [
         var updateMapObjects = function () {
             $scope.$broadcast('changeMarkers', $scope.vessels);
             $scope.$broadcast('vesselsStateUpdated');
+            meters.map.tick();
         };
 
         /** capture (and store) the state of the vessel at this time
@@ -465,15 +483,16 @@ angular.module('mustard.game.simulator', [
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
-            // update the UI
-            shareSonarDetections();
+            meters.app.tick();
             missionStatus();
-            updateMapObjects();
             /////////////////////////
             // GAME LOOP ENDS HERE
             /////////////////////////
         };
 
+        $scope.$on('updateMapUi', updateMapObjects);
+
+        $scope.$on('updateSonarUi', shareSonarDetections);
 
         var showWelcome = function () {
             // show the welcome message
