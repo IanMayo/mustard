@@ -11,20 +11,21 @@
     <ul class="list-inline mission-controls">
       <li class="pull-left">
         <div class="time-display-container">
-          <time-display class="form-group" data-time-step="gameState.simulationTimeStep"
+          <time-display class="form-group time-display" data-time-step="gameState.simulationTimeStep"
                         data-timer="gameState.simulationTime"></time-display>
+          <time-remaining data-remaining="gameState.remaining"></time-remaining>
         </div>
+        <button data-ng-click="goBack()" type="button" class="btn btn-default btn-sm btn-back">
+          <i class="glyphicon glyphicon-arrow-left"></i> Back
+        </button>
+      </li>
+      <li class="pull-left">
         <div class="tab-bar-container">
-          <!--<button data-ng-click="goBack()" type="button" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-star"></span> Back
-          </button>-->
           <tabset vertical="true">
             <tab>
               <tab-heading>
                 <i class="glyphicon glyphicon-warning-sign"></i>
               </tab-heading>
-
-              <time-remaining data-remaining="gameState.remaining"></time-remaining>
             </tab>
             <tab>
               <tab-heading>

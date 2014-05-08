@@ -8,6 +8,7 @@
 .mission-controls,
 .mission-controls li,
 .ship-controls,
+.time-display-container,
 #Sonar {
   height: 100%;
   padding: 0;
@@ -25,14 +26,15 @@
 }
 
 .time-display-container {
-  height: 35px;
-  overflow: hidden;
+  padding: 10px 0 0 10px;
+  width: 150px;
+  margin-bottom: -40px;
 }
 
 .tab-bar-container {
   height: 140px;
-  width: 330px;
-  padding: 5px 0 0 10px;
+  width: 430px;
+  padding: 10px 0 0 10px;
   overflow: hidden;
 }
 
@@ -109,8 +111,19 @@
   margin: 0;
 }
 
-/* Time remaining */
+/* Time remaining & Time display */
+
+.time-remaining-header,
+.timer-header {
+  margin: 0 0 10px 0;
+}
 
 .time-remaining-header {
-  margin: 0;
+  margin-top: 5px;
+}
+
+/* Back button */
+
+.btn-back {
+  margin-left: 10px;
 }
