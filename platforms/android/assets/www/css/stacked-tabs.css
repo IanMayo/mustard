@@ -19,6 +19,7 @@
 }
 
 .nav-stacked > li > a {
+  padding: 14px 20px;
   border-radius: 4px 0 0 4px;
   margin-right: -1px;
 }
