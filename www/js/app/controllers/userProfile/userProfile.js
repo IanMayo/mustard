@@ -1,7 +1,7 @@
 angular.module('mustard.app.userProfile', [
     'mustard.app.user',
     'mustard.game.message',
-    'mustard.game.newMessage',
+    'mustard.game.newMessageIndicator',
     'LocalStorageModule'
 ])
 
