@@ -9,6 +9,7 @@
   </div>
   <div class="controls-container">
     <ul class="list-inline mission-controls">
+
       <li class="pull-left">
         <div class="time-display-container">
           <time-display class="form-group time-display" data-time-step="gameState.simulationTimeStep"
@@ -19,6 +20,7 @@
           <i class="glyphicon glyphicon-arrow-left"></i> Back
         </button>
       </li>
+
       <li class="pull-left">
         <div class="tab-bar-container">
           <tabset vertical="true">
@@ -35,9 +37,6 @@
               </tab-heading>
 
               <objective-list data-objectives="objectives"></objective-list>
-              <range-calculator data-ng-show="ownShip.ableToPerformRanging()"
-                                data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
-                                data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
             </tab>
             <tab data-ng-show="ownShip.hasWeapons()">
               <tab-heading>
@@ -49,6 +48,13 @@
           </tabset>
         </div>
       </li>
+
+      <li class="pull-left">
+        <range-calculator class="range-calculator" data-ng-show="ownShip.ableToPerformRanging()"
+                          data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
+                          data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
+      </li>
+
       <li class="pull-right">
         <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
