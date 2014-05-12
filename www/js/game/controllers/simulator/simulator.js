@@ -123,6 +123,9 @@ angular.module('mustard.game.simulator', [
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
+        /**
+         * Configure FPS meters
+         */
         var meters = {
             app: new FPSMeter($('#meter')[0], {
                 left: '50%',
@@ -141,6 +144,16 @@ angular.module('mustard.game.simulator', [
         var trackHistory = {};
 
         var startTime; // keep track of the start time, so we can pass the period to the history object.
+
+        /**
+         * Update sonar UI API
+         */
+        var sonarUi = {};
+
+        /**
+         * Update map UI API
+         */
+        var mapUi = {};
 
         /**
          * Ownship vessel API helper (since the ownship name 'may' change)
@@ -234,14 +247,30 @@ angular.module('mustard.game.simulator', [
             return deferred.promise;
         };
 
-        var shareSonarDetections = function () {
-            // share the good news about detections
-            var detections = null;
+        /**
+         * Share ownship sonar detections.
+         *
+         */
+        var shareSonarDetections = function (detections) {
+            if (detections.length) {
+                $scope.$broadcast('addDetections', detections);
+            }
+
+            meters.sonar.tick();
+        };
+
+        /**
+         * Create ownship sonar detections.
+         *
+         * @returns {Array}
+         */
+        var sonarDetections = function () {
+            var detections = [];
             var thisB;
 
             _.each($scope.ownShip.detections(), function (detection) {
                 // is this the first item?
-                if (!detections) {
+                if (!detections.length) {
                     detections = [new Date(detection.time)];
                 }
 
@@ -256,12 +285,7 @@ angular.module('mustard.game.simulator', [
                 detections.push(thisB);
             });
 
-            // did we find any?
-            if (detections) {
-                $scope.$broadcast('addDetections', detections);
-            }
-
-            meters.sonar.tick();
+            return detections;
         };
 
         var missionStatus = function () {
@@ -429,6 +453,62 @@ angular.module('mustard.game.simulator', [
             trackHistory[vessel.name].track.push(track);
         };
 
+        /**
+         * Update partial UI API.
+         *
+         * @param params {Object}
+         * @returns {Object}
+         */
+        var updateUiPart = function (params) {
+            var defaults = {
+                uiUpdateInterval: 1,
+                skipFrames: 10
+            };
+            var params = _.extend(defaults, params);
+            var frameCounter = 0;
+            var maximumSkipFrames = 0;
+            var uiUpdateInterval = 0;
+            var nextUpdateInterval = 0;
+            var cacheStorage = [];
+
+            function init() {
+                maximumSkipFrames = params.skipFrames;
+                uiUpdateInterval = params.uiUpdateInterval * 1000;
+                nextUpdateInterval = _.now() + params.uiUpdateInterval;
+            }
+
+            function addCache() {
+                var cache = [];
+
+                if (_.isFunction(params.cacheHandler)) {
+                    cache = params.cacheHandler();
+                    if (cache) {
+                        cacheStorage.push(cache);
+                    }
+                }
+            }
+
+            function update() {
+                if (_.now() >= nextUpdateInterval || frameCounter > maximumSkipFrames) {
+                    nextUpdateInterval = _.now() + uiUpdateInterval;
+                    frameCounter = 0;
+
+                    params.updateHandler(cacheStorage);
+                    cacheStorage = [];
+                } else {
+                    frameCounter += 1;
+                    addCache();
+                }
+            }
+
+            init();
+
+            return {
+                update: update,
+                cacheHandler: addCache
+            }
+        };
+
         /** move the scenario forwards one step - including all the simulated processes
          *
          */
@@ -483,16 +563,15 @@ angular.module('mustard.game.simulator', [
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
-            meters.app.tick();
             missionStatus();
+            meters.app.tick();
+
+            sonarUi.update();
+            mapUi.update();
             /////////////////////////
             // GAME LOOP ENDS HERE
             /////////////////////////
         };
-
-        $scope.$on('updateMapUi', updateMapObjects);
-
-        $scope.$on('updateSonarUi', shareSonarDetections);
 
         var showWelcome = function () {
             // show the welcome message
@@ -589,6 +668,19 @@ angular.module('mustard.game.simulator', [
 
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);
+
+        sonarUi = updateUiPart({
+            uiUpdateInterval: 0.5,
+            skipFrames: 10,
+            updateHandler: shareSonarDetections,
+            cacheHandler: sonarDetections
+        });
+
+        mapUi = updateUiPart({
+            uiUpdateInterval: 1,
+            skipFrames: 5,
+            updateHandler: updateMapObjects
+        });
 
         // ok, do the init
         doInit();
