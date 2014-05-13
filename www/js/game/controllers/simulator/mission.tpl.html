@@ -36,7 +36,7 @@
 
               <objective-list data-objectives="objectives"></objective-list>
             </tab>
-            <tab data-ng-show="ownShip.hasWeapons()">
+            <tab data-show-block="hasWeapons">
               <tab-heading>
                 <i class="glyphicon glyphicon-flash"></i>
               </tab-heading>
@@ -51,12 +51,12 @@
         <new-message data-messages="messages"></new-message>
       </li>-->
       <li>
-        <range-calculator data-ng-show="ownShip.ableToPerformRanging()"
+        <range-calculator data-show-block="ableToPerformRanging"
                           data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                           data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
       </li>
       <li class="pull-right">
-        <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
+        <ship-controls class="ship-controls" data-hide-block="autonomous"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
       <li class="pull-right ship-state-container">

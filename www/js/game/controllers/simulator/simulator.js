@@ -18,6 +18,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.clickRepeat',
     'mustard.game.message',
     'mustard.game.newMessage',
+    'mustard.game.blockVisibility',
     'mustard.app.user'
 ])
 
