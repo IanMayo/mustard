@@ -137,7 +137,7 @@ angular.module('mustard.game.simulator', [
                 margin: '10px 0 0 0'
             }),
             sonar: new FPSMeter($('#sonarMeter')[0], {
-                left: '50%',
+                left: '20%',
                 margin: '10px 0 0 0'
             })
         };
