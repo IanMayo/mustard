@@ -247,7 +247,7 @@ angular.module('mustard.game.simulator', [
             return deferred.promise;
         };
 
-        var missionStatus = function () {
+        var handleMissionEnd = function () {
             // do we need to pause/stop?
             if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
 
@@ -580,9 +580,11 @@ angular.module('mustard.game.simulator', [
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
-            missionStatus();
-            meters.model.tick();
+            // see if this mission is complete
+            handleMissionEnd();
 
+            // and now for UI updates
+            meters.model.tick();
             sonarUi.update();
             mapUi.update();
             /////////////////////////
