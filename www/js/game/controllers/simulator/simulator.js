@@ -127,7 +127,7 @@ angular.module('mustard.game.simulator', [
          * Configure FPS meters
          */
         var meters = {
-            app: new FPSMeter($('#meter')[0], {
+            model: new FPSMeter($('#modelMeter')[0], {
                 left: '50%',
                 margin: '0 0 0 0'
             }),
@@ -245,47 +245,6 @@ angular.module('mustard.game.simulator', [
 
             deferred.resolve();
             return deferred.promise;
-        };
-
-        /**
-         * Share ownship sonar detections.
-         *
-         */
-        var shareSonarDetections = function (detections) {
-            if (detections.length) {
-                $scope.$broadcast('addDetections', detections);
-            }
-
-            meters.sonar.tick();
-        };
-
-        /**
-         * Create ownship sonar detections.
-         *
-         * @returns {Array}
-         */
-        var sonarDetections = function () {
-            var detections = [];
-            var thisB;
-
-            _.each($scope.ownShip.detections(), function (detection) {
-                // is this the first item?
-                if (!detections.length) {
-                    detections = [new Date(detection.time)];
-                }
-
-                thisB = detection.bearing;
-
-                // clip to +/- 180
-                if (thisB > 180) {
-                    thisB -= 360;
-                }
-
-                // add this detection to the list
-                detections.push(thisB);
-            });
-
-            return detections;
         };
 
         var missionStatus = function () {
@@ -453,13 +412,58 @@ angular.module('mustard.game.simulator', [
             trackHistory[vessel.name].track.push(track);
         };
 
+
         /**
-         * Update partial UI API.
+         * Share ownship sonar detections.
+         *
+         */
+        var shareSonarDetections = function (detections) {
+            if (detections.length) {
+                $scope.$broadcast('addDetections', detections);
+            }
+
+            meters.sonar.tick();
+        };
+
+        /**
+         * collate current ownship sonar detections.
+         *
+         * @returns {Array}
+         */
+        var collateCurrentSonarDetections = function () {
+            var detections = [];
+            var thisB;
+
+            _.each($scope.ownShip.detections(), function (detection) {
+                // is this the first item?
+                if (!detections.length) {
+                    detections = [new Date(detection.time)];
+                }
+
+                thisB = detection.bearing;
+
+                // clip to +/- 180
+                if (thisB > 180) {
+                    thisB -= 360;
+                }
+
+                // add this detection to the list
+                detections.push(thisB);
+            });
+
+            return detections;
+        };
+
+
+        /**
+         * Functionality to cache recent data
+         * for a commodity/concept calling the UI
+         * less frequently
          *
          * @param params {Object}
          * @returns {Object}
          */
-        var updateUiPart = function (params) {
+        var cachedCommodity = function (params) {
             var defaults = {
                 uiUpdateInterval: 1,
                 skipFrames: 10
@@ -477,35 +481,48 @@ angular.module('mustard.game.simulator', [
                 nextUpdateInterval = _.now() + params.uiUpdateInterval;
             }
 
-            function addCache() {
+            /** add the current data for this concept to the cache
+             *
+             */
+            function cacheData() {
                 var cache = [];
 
-                if (_.isFunction(params.cacheHandler)) {
-                    cache = params.cacheHandler();
+                if (_.isFunction(params.dataProvider)) {
+                    cache = params.dataProvider();
                     if (cache) {
                         cacheStorage.push(cache);
                     }
                 }
             }
 
+            /** the simulation has moved forward, maybe we should
+             * update the UI
+             */
             function update() {
-                if (_.now() >= nextUpdateInterval || frameCounter > maximumSkipFrames) {
-                    nextUpdateInterval = _.now() + uiUpdateInterval;
-                    frameCounter = 0;
+                // retrieve (and store) any data for this cycle
+                cacheData();
 
+                if (_.now() >= nextUpdateInterval || frameCounter > maximumSkipFrames) {
+                    // calculate the next update time BEFORE we update UI,
+                    // so that it consumes some of the remaining time
+                    nextUpdateInterval = _.now() + uiUpdateInterval;
+
+                    // ok, trigger the UI update
                     params.updateHandler(cacheStorage);
+
+                    // lastly, clear the cache, and get ready to restart
                     cacheStorage = [];
+                    frameCounter = 0;
                 } else {
+                    // it's not time for us to move forward yet - increment the counter
                     frameCounter += 1;
-                    addCache();
                 }
             }
 
             init();
 
             return {
-                update: update,
-                cacheHandler: addCache
+                update: update
             }
         };
 
@@ -564,7 +581,7 @@ angular.module('mustard.game.simulator', [
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
             missionStatus();
-            meters.app.tick();
+            meters.model.tick();
 
             sonarUi.update();
             mapUi.update();
@@ -669,14 +686,14 @@ angular.module('mustard.game.simulator', [
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);
 
-        sonarUi = updateUiPart({
+        sonarUi = cachedCommodity({
             uiUpdateInterval: 0.5,
             skipFrames: 10,
             updateHandler: shareSonarDetections,
-            cacheHandler: sonarDetections
+            dataProvider: collateCurrentSonarDetections
         });
 
-        mapUi = updateUiPart({
+        mapUi = cachedCommodity({
             uiUpdateInterval: 1,
             skipFrames: 5,
             updateHandler: updateMapObjects
