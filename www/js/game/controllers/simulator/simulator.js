@@ -128,16 +128,17 @@ angular.module('mustard.game.simulator', [
          */
         var meters = {
             model: new FPSMeter($('#modelMeter')[0], {
-                left: '50%',
+                left: '25%',
+                top: '60%',
                 margin: '0 0 0 0'
             }),
             map: new FPSMeter($('#mapMeter')[0], {
-                left: '90%',
-                margin: '60px 0 0 0'
+                left: '50%',
+                margin: '10px 0 0 0'
             }),
             sonar: new FPSMeter($('#sonarMeter')[0], {
-                left: '5%',
-                margin: '60px 0 0 0'
+                left: '50%',
+                margin: '10px 0 0 0'
             })
         };
 
@@ -201,7 +202,7 @@ angular.module('mustard.game.simulator', [
                  * @returns {Boolean} yes/no
                  */
                 ableToPerformRanging: function() {
-                    return vessel.ableToPerformRanging;
+                    return !vessel.unableToPerformRanging;
                 }
             }
         };

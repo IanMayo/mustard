@@ -1,9 +1,12 @@
-<label>Show targets
-  <input type="checkbox" data-ng-checked="targetsVisibility" data-ng-model="targetsVisibility"
-         data-ng-change="toggleTargets()"/>
-</label>
-<label>Show detections
-  <input type="checkbox" data-ng-model="showSonarDetections" data-ng-change="toggleDetections()"/>
-</label>
-
-<div data-leaflet-map style="height: 400px; width: 100%;"></div>
+<div class="data-leaflet-map-container">
+  <div class="data-leaflet-map-controls text-right">
+    <label>Show targets
+      <input type="checkbox" data-ng-checked="targetsVisibility" data-ng-model="targetsVisibility"
+             data-ng-change="toggleTargets()"/>
+    </label>
+    <label>Show detections
+      <input type="checkbox" data-ng-model="showSonarDetections" data-ng-change="toggleDetections()"/>
+    </label>
+  </div>
+  <div data-leaflet-map class="data-leaflet-map"></div>
+</div>
