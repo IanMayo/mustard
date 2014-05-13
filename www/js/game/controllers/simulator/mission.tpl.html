@@ -1,9 +1,11 @@
 <div data-ng-controller="MissionSimulatorCtrl" class="mission-simulator">
   <div class="container-fluid time-bearing-spatial-container">
     <div class="col-xs-4 col-md-4 time-bearing-container">
+      <div id="sonarMeter"></div>
       <time-bearing-display class="time-bearing-display" data-series="ownShip.detections()"></time-bearing-display>
     </div>
     <div class="col-xs-8 col-md-8 spatial-container">
+      <div id="mapMeter"></div>
       <spatial-view class="spatial-view"></spatial-view>
     </div>
   </div>
@@ -57,9 +59,10 @@
         <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
-      <li class="pull-right">
+      <li class="pull-right ship-state-container">
         <ship-state class="ship-state" data-course="ownShip.state().course"
                     data-speed="ownShip.state().speed"></ship-state>
+        <div id="modelMeter"></div>
       </li>
     </ul>
   </div>
