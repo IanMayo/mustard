@@ -1,16 +1,16 @@
 /**
- * @module mustard.game.blockVisibility
+ * @module mustard.game.elementVisibility
  *
- * Set visibility mode for UI blocks depends on ownship state.
+ * Set visibility mode for UI element depending on ownShip object state.
  */
 
-angular.module('mustard.game.blockVisibility', [])
+angular.module('mustard.game.elementVisibility', [])
 
-.directive('showBlock', function () {
+.directive('showElement', function () {
     return {
         restrict: 'A',
         controller: function ($scope, $element, $attrs) {
-            if ($scope.ownShip[$attrs.showBlock]()) {
+            if ($scope.ownShip[$attrs.showElement]()) {
                 $element.removeClass('ng-hide');
             } else {
                 $element.addClass('ng-hide');
@@ -18,11 +18,11 @@ angular.module('mustard.game.blockVisibility', [])
         }
     }
 })
-.directive('hideBlock', function () {
+.directive('hideElement', function () {
     return {
         restrict: 'A',
         controller: function ($scope, $element, $attrs) {
-            if ($scope.ownShip[$attrs.hideBlock]()) {
+            if ($scope.ownShip[$attrs.hideElement]()) {
                 $element.addClass('ng-hide');
             } else {
                 $element.removeClass('ng-hide');
