@@ -489,7 +489,9 @@ angular.module('mustard.game.simulator', [
 
                 if (_.isFunction(params.dataProvider)) {
                     cache = params.dataProvider();
-                    if (cache) {
+
+                    // did we get any data?
+                    if (cache  && cache.length > 0) {
                         cacheStorage.push(cache);
                     }
                 }
