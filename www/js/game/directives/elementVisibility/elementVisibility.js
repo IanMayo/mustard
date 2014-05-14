@@ -13,8 +13,13 @@ angular.module('mustard.game.elementVisibility', [])
             var conditionals = $parse($attrs.conditionalDisplay)();
             var displayMode = _.keys(conditionals).toString();
             var condition = conditionals[displayMode];
+            var isVisible = $scope.$eval(condition);
 
-            if ($scope.$eval(condition) && 'show' === displayMode) {
+            if ('hide' === displayMode) {
+                isVisible = !isVisible;
+            }
+
+            if (isVisible) {
                 $element.removeClass('ng-hide');
             } else {
                 $element.addClass('ng-hide');
