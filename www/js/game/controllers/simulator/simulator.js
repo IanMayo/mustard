@@ -675,8 +675,9 @@ angular.module('mustard.game.simulator', [
         /** listen out for the user selecting a track from the sonar
          *
          */
-        $scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+        $scope.$on('sonarTrackSelected', function (event, theTrackName) {
             $scope.ownShip.vessel().selectedTrack = theTrackName;
+            $scope.$broadcast('shareSelectedTrack', theTrackName)
         });
 
         $scope.goBack = function () {
