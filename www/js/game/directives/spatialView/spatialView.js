@@ -173,7 +173,7 @@ angular.module('mustard.game.spatialViewDirective', [
             /**
              * Change sonar bearing lines for a selected track only
              */
-            scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
+            scope.$on('shareSelectedTrack', function (event, trackId) {
                 detectionTrackId = trackId;
 
                 // NOTE: we no longer wish to switch on display of detections
