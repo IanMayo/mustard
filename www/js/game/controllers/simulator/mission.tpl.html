@@ -1,9 +1,11 @@
 <div data-ng-controller="MissionSimulatorCtrl" class="mission-simulator">
   <div class="container-fluid time-bearing-spatial-container">
     <div class="col-xs-4 col-md-4 time-bearing-container">
+      <div id="sonarMeter"></div>
       <time-bearing-display class="time-bearing-display" data-series="ownShip.detections()"></time-bearing-display>
     </div>
     <div class="col-xs-8 col-md-8 spatial-container">
+      <div id="mapMeter"></div>
       <spatial-view class="spatial-view"></spatial-view>
     </div>
   </div>
@@ -38,7 +40,7 @@
 
               <objective-list data-objectives="objectives"></objective-list>
             </tab>
-            <tab data-ng-show="ownShip.hasWeapons()">
+            <tab data-conditional-display="{show: 'ownShip.hasWeapons()'}">
               <tab-heading>
                 <i class="glyphicon glyphicon-flash"></i>
               </tab-heading>
@@ -50,18 +52,19 @@
       </li>
 
       <li class="pull-left">
-        <range-calculator class="range-calculator" data-ng-show="ownShip.ableToPerformRanging()"
+        <range-calculator class="range-calculator" data-conditional-display="{show: 'ownShip.ableToPerformRanging()'}"
                           data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                           data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
       </li>
 
       <li class="pull-right">
-        <ship-controls class="ship-controls" data-ng-hide="ownShip.autonomous()"
+        <ship-controls class="ship-controls" data-conditional-display="{hide: 'ownShip.autonomous()'}"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
-      <li class="pull-right">
+      <li class="pull-right ship-state-container">
         <ship-state class="ship-state" data-course="ownShip.state().course"
                     data-speed="ownShip.state().speed"></ship-state>
+        <div id="modelMeter"></div>
       </li>
     </ul>
   </div>

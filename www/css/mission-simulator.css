@@ -29,6 +29,12 @@
   border-right: 2px solid grey;
 }
 
+.time-bearing-container,
+.spatial-container,
+.ship-state-container {
+  position: relative; /* needed for FPS meter */
+}
+
 .time-display-container {
   padding: 10px 0 0 10px;
   width: 130px;
