@@ -1,7 +1,6 @@
 angular.module('mustard.app.userProfile', [
     'mustard.app.user',
     'mustard.game.message',
-    'mustard.game.newMessageIndicator',
     'LocalStorageModule'
 ])
 
@@ -93,9 +92,5 @@ angular.module('mustard.app.userProfile', [
                 message.show('danger', 'No!', 'You pushed no button');
             }
         );
-    };
-
-    $scope.addMessage = function () {
-        $scope.messages.unshift({title: 'Welcome!', type: 'info', text: 'Welcome message', unread: true})
     };
 });
