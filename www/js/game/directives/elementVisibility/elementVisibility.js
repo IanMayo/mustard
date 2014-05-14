@@ -6,27 +6,29 @@
 
 angular.module('mustard.game.elementVisibility', [])
 
-.directive('showElement', function () {
+.directive('showElement', ['$parse', function ($parse) {
     return {
         restrict: 'A',
         controller: function ($scope, $element, $attrs) {
-            if ($scope.ownShip[$attrs.showElement]()) {
+            var condition = $parse($attrs.showElement)().condition;
+            if ($scope.$eval(condition)) {
                 $element.removeClass('ng-hide');
             } else {
                 $element.addClass('ng-hide');
             }
         }
     }
-})
-.directive('hideElement', function () {
+}])
+.directive('hideElement', ['$parse', function ($parse) {
     return {
         restrict: 'A',
         controller: function ($scope, $element, $attrs) {
-            if ($scope.ownShip[$attrs.hideElement]()) {
+            var condition = $parse($attrs.hideElement)().condition;
+            if ($scope.$eval(condition)) {
                 $element.addClass('ng-hide');
             } else {
                 $element.removeClass('ng-hide');
             }
         }
     }
-});
+}]);
