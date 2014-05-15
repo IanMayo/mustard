@@ -1,6 +1,7 @@
 .nav-stacked {
   float: left;
   border-bottom: none;
+  margin-right: 10px !important;
 }
 
 .nav-stacked + .tab-content,
