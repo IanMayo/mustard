@@ -3,8 +3,10 @@
   border-bottom: none;
 }
 
-.nav-stacked + .tab-content {
+.nav-stacked + .tab-content,
+.nav-stacked + .tab-content > .tab-pane {
   border: none;
+  overflow: auto;
 }
 
 .nav-stacked {
