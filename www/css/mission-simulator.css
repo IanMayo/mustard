@@ -9,6 +9,10 @@
 .mission-controls li,
 .ship-controls,
 .time-display-container,
+.tab-bar-container,
+.tab-content,
+.tabbable,
+.range-calculator,
 #Sonar {
   height: 100%;
   padding: 0;
@@ -33,14 +37,13 @@
 
 .time-display-container {
   padding: 10px 0 0 10px;
-  width: 150px;
+  width: 130px;
   margin-bottom: -40px;
 }
 
 .tab-bar-container {
-  height: 140px;
-  width: 400px;
-  padding: 10px 0 0 10px;
+  width: 285px;
+  padding: 10px 0 10px 5px;
   overflow: hidden;
 }
 
@@ -109,7 +112,7 @@
 
 .ship-state {
   display: block;
-  padding: 50px 20px 0 20px;
+  padding-top: 50px;
   text-align: center;
 }
 
@@ -132,4 +135,21 @@
 
 .btn-back {
   margin-left: 10px;
+}
+
+/* Range calculator */
+
+.range-calculator {
+  display: block;
+  padding: 10px;
+  width: 200px;
+}
+
+.range-target,
+.range-status {
+  margin-bottom: 10px;
+}
+
+.range-controls {
+  margin-top: 5px;
 }

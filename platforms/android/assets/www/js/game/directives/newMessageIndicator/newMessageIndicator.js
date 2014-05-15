@@ -1,18 +1,18 @@
 /**
- * @module mustard.game.newMessage
+ * @module mustard.game.newMessageIndicator
  */
 
-angular.module('mustard.game.newMessage', ['mustard.game.message'])
+angular.module('mustard.game.newMessageIndicator', ['mustard.game.message'])
 
 /**
- * New message directive
+ * New message indicator directive
  * It takes the message collection and indicate if there are new messages
  */
-.directive('newMessage', ['message', function (message) {
+.directive('newMessageIndicator', ['message', function (message) {
 
     return {
         restrict: 'EA',
-        templateUrl: 'js/game/directives/newMessage/newMessage.tpl.html',
+        templateUrl: 'js/game/directives/newMessageIndicator/newMessageIndicator.tpl.html',
 
         scope: {
             messages: '='

@@ -17,7 +17,8 @@ angular.module('mustard.game.simulator', [
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
     'mustard.game.message',
-    'mustard.game.newMessage',
+    'mustard.game.messageList',
+    'mustard.game.elementVisibility',
     'mustard.app.user'
 ])
 
@@ -123,9 +124,38 @@ angular.module('mustard.game.simulator', [
     function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
+        /**
+         * Configure FPS meters
+         */
+        var meters = {
+            model: new FPSMeter($('#modelMeter')[0], {
+                left: '25%',
+                top: '60%',
+                margin: '0 0 0 0'
+            }),
+            map: new FPSMeter($('#mapMeter')[0], {
+                left: '50%',
+                margin: '10px 0 0 0'
+            }),
+            sonar: new FPSMeter($('#sonarMeter')[0], {
+                left: '20%',
+                margin: '10px 0 0 0'
+            })
+        };
+
         var trackHistory = {};
 
         var startTime; // keep track of the start time, so we can pass the period to the history object.
+
+        /**
+         * Update sonar UI API
+         */
+        var sonarUi = {};
+
+        /**
+         * Update map UI API
+         */
+        var mapUi = {};
 
         /**
          * Ownship vessel API helper (since the ownship name 'may' change)
@@ -219,35 +249,7 @@ angular.module('mustard.game.simulator', [
             return deferred.promise;
         };
 
-        var shareSonarDetections = function () {
-            // share the good news about detections
-            var detections = null;
-            var thisB;
-
-            _.each($scope.ownShip.detections(), function (detection) {
-                // is this the first item?
-                if (!detections) {
-                    detections = [new Date(detection.time)];
-                }
-
-                thisB = detection.bearing;
-
-                // clip to +/- 180
-                if (thisB > 180) {
-                    thisB -= 360;
-                }
-
-                // add this detection to the list
-                detections.push(thisB);
-            });
-
-            // did we find any?
-            if (detections) {
-                $scope.$broadcast('addDetections', detections);
-            }
-        };
-
-        var missionStatus = function () {
+        var handleMissionEnd = function () {
             // do we need to pause/stop?
             if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
 
@@ -257,11 +259,21 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    message.show('success', 'Success message', $scope.gameState.successMessage);
+                    $scope.messages.unshift({
+                        title: 'Success message',
+                        type: 'success',
+                        text: $scope.gameState.successMessage,
+                        time: new Date().toLocaleTimeString()
+                    });
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    message.show('danger', 'Failure message', $scope.gameState.failureMessage);
+                    $scope.messages.unshift({
+                        title: 'Failure message',
+                        type: 'danger',
+                        text: $scope.gameState.failureMessage,
+                        time: new Date().toLocaleTimeString()
+                    });
                     delete $scope.gameState.failureMessage;
                 }
 
@@ -278,6 +290,7 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
+                                // TODO: Make a decision to show it as a popup or just a message in list
                                 message.show('success', 'New achievement',
                                     "Well done, you've been awarded a new achievement:\n'" + element.name +
                                     "'\n\n" + element.message);
@@ -319,6 +332,7 @@ angular.module('mustard.game.simulator', [
                     storeHistory();
 
                     // ok, move on to the review stage
+                    // TODO: This is the confirm popup so I think we don't need to replace this by message in list
                     message.show('info', 'Debriefing', 'Ready for the debriefing?', true).result.then(
                         function () {
                             message.show('info', 'Switch to the new route', 'Switch to the new route');
@@ -387,6 +401,7 @@ angular.module('mustard.game.simulator', [
         var updateMapObjects = function () {
             $scope.$broadcast('changeMarkers', $scope.vessels);
             $scope.$broadcast('vesselsStateUpdated');
+            meters.map.tick();
         };
 
         /** capture (and store) the state of the vessel at this time
@@ -409,6 +424,122 @@ angular.module('mustard.game.simulator', [
             }
 
             trackHistory[vessel.name].track.push(track);
+        };
+
+
+        /**
+         * Share ownship sonar detections.
+         *
+         */
+        var shareSonarDetections = function (detections) {
+            if (detections.length) {
+                $scope.$broadcast('addDetections', detections);
+            }
+
+            meters.sonar.tick();
+        };
+
+        /**
+         * collate current ownship sonar detections.
+         *
+         * @returns {Array}
+         */
+        var collateCurrentSonarDetections = function () {
+            var detections = [];
+            var thisB;
+
+            _.each($scope.ownShip.detections(), function (detection) {
+                // is this the first item?
+                if (!detections.length) {
+                    detections = [new Date(detection.time)];
+                }
+
+                thisB = detection.bearing;
+
+                // clip to +/- 180
+                if (thisB > 180) {
+                    thisB -= 360;
+                }
+
+                // add this detection to the list
+                detections.push(thisB);
+            });
+
+            return detections;
+        };
+
+
+        /**
+         * Functionality to cache recent data
+         * for a commodity/concept calling the UI
+         * less frequently
+         *
+         * @param params {Object}
+         * @returns {Object}
+         */
+        var cachedCommodity = function (params) {
+            var defaults = {
+                uiUpdateInterval: 1,
+                skipFrames: 10
+            };
+            var params = _.extend(defaults, params);
+            var frameCounter = 0;
+            var maximumSkipFrames = 0;
+            var uiUpdateInterval = 0;
+            var nextUpdateInterval = 0;
+            var cacheStorage = [];
+
+            function init() {
+                maximumSkipFrames = params.skipFrames;
+                uiUpdateInterval = params.uiUpdateInterval * 1000;
+                nextUpdateInterval = _.now() + params.uiUpdateInterval;
+            }
+
+            /** add the current data for this concept to the cache
+             *
+             */
+            function cacheData() {
+                var cache = [];
+
+                if (_.isFunction(params.dataProvider)) {
+                    cache = params.dataProvider();
+
+                    // did we get any data?
+                    if (cache  && cache.length > 0) {
+                        cacheStorage.push(cache);
+                    }
+                }
+            }
+
+            /** the simulation has moved forward, maybe we should
+             * update the UI
+             */
+            function update() {
+                // retrieve (and store) any data for this cycle
+                cacheData();
+
+                if (_.now() >= nextUpdateInterval || frameCounter > maximumSkipFrames) {
+                    // calculate the next update time BEFORE we update UI,
+                    // so that it consumes some of the remaining time
+                    nextUpdateInterval = _.now() + uiUpdateInterval;
+
+                    // ok, trigger the UI update
+                    params.updateHandler(cacheStorage);
+
+                    // lastly, clear the cache, and get ready to restart
+                    cacheStorage = [];
+                    frameCounter = 0;
+                } else {
+                    // it's not time for us to move forward yet - increment the counter
+                    frameCounter += 1;
+                }
+            }
+
+            init();
+
+            return {
+                update: update
+            }
         };
 
         /** move the scenario forwards one step - including all the simulated processes
@@ -465,20 +596,28 @@ angular.module('mustard.game.simulator', [
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
 
-            // update the UI
-            shareSonarDetections();
-            missionStatus();
-            updateMapObjects();
+            // see if this mission is complete
+            handleMissionEnd();
+
+            // and now for UI updates
+            meters.model.tick();
+            sonarUi.update();
+            mapUi.update();
             /////////////////////////
             // GAME LOOP ENDS HERE
             /////////////////////////
         };
 
-
         var showWelcome = function () {
             // show the welcome message
             if ($scope.welcome) {
-                message.show('info', 'Welcome!', $scope.welcome);
+
+                $scope.messages.unshift({
+                    title: 'Welcome!',
+                    type: 'info',
+                    text: $scope.welcome,
+                    time: new Date().toLocaleTimeString()
+                });
             }
         };
 
@@ -554,8 +693,9 @@ angular.module('mustard.game.simulator', [
         /** listen out for the user selecting a track from the sonar
          *
          */
-        $scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+        $scope.$on('sonarTrackSelected', function (event, theTrackName) {
             $scope.ownShip.vessel().selectedTrack = theTrackName;
+            $scope.$broadcast('shareSelectedTrack', theTrackName)
         });
 
         $scope.goBack = function () {
@@ -570,6 +710,19 @@ angular.module('mustard.game.simulator', [
 
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);
+
+        sonarUi = cachedCommodity({
+            uiUpdateInterval: 0.5,
+            skipFrames: 10,
+            updateHandler: shareSonarDetections,
+            dataProvider: collateCurrentSonarDetections
+        });
+
+        mapUi = cachedCommodity({
+            uiUpdateInterval: 1,
+            skipFrames: 5,
+            updateHandler: updateMapObjects
+        });
 
         // ok, do the init
         doInit();

@@ -67,9 +67,12 @@ angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatia
                     return tracks[index] || label;
                 });
 
-                data.push(dataValues);
+                _.each(dataValues, function (values) {
+                    data.push(values);
+                });
+
                 // calculate the 5 minute window
-                var time = dataValues[0];
+                var time = dataValues[0][0];
                 var newStart = new Date(time - 10000 * 60);
 
                 // get the chart to redraw

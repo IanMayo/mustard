@@ -17,7 +17,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.objectives',
     'mustard.game.clickRepeat',
     'mustard.game.message',
-    'mustard.game.newMessage',
+    'mustard.game.messageList',
     'mustard.game.elementVisibility',
     'mustard.app.user'
 ])
@@ -259,11 +259,21 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    message.show('success', 'Success message', $scope.gameState.successMessage);
+                    $scope.messages.unshift({
+                        title: 'Success message',
+                        type: 'success',
+                        text: $scope.gameState.successMessage,
+                        time: new Date().toLocaleTimeString()
+                    });
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    message.show('danger', 'Failure message', $scope.gameState.failureMessage);
+                    $scope.messages.unshift({
+                        title: 'Failure message',
+                        type: 'danger',
+                        text: $scope.gameState.failureMessage,
+                        time: new Date().toLocaleTimeString()
+                    });
                     delete $scope.gameState.failureMessage;
                 }
 
@@ -280,6 +290,7 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
+                                // TODO: Make a decision to show it as a popup or just a message in list
                                 message.show('success', 'New achievement',
                                     "Well done, you've been awarded a new achievement:\n'" + element.name +
                                     "'\n\n" + element.message);
@@ -321,6 +332,7 @@ angular.module('mustard.game.simulator', [
                     storeHistory();
 
                     // ok, move on to the review stage
+                    // TODO: This is the confirm popup so I think we don't need to replace this by message in list
                     message.show('info', 'Debriefing', 'Ready for the debriefing?', true).result.then(
                         function () {
                             message.show('info', 'Switch to the new route', 'Switch to the new route');
@@ -599,7 +611,13 @@ angular.module('mustard.game.simulator', [
         var showWelcome = function () {
             // show the welcome message
             if ($scope.welcome) {
-                message.show('info', 'Welcome!', $scope.welcome);
+
+                $scope.messages.unshift({
+                    title: 'Welcome!',
+                    type: 'info',
+                    text: $scope.welcome,
+                    time: new Date().toLocaleTimeString()
+                });
             }
         };
 

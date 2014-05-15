@@ -1,7 +1,6 @@
 angular.module('mustard.app.userProfile', [
     'mustard.app.user',
     'mustard.game.message',
-    'mustard.game.newMessage',
     'LocalStorageModule'
 ])
 
@@ -15,34 +14,36 @@ angular.module('mustard.app.userProfile', [
      * GOD CONSOLE METHODS
      */
 
+    var localTime = new Date().toLocaleTimeString();
+
     // Mock messages
     $scope.messages = [
-        {title: 'You achieve something', type: 'info', text: 'Message #1', unread: true},
-        {title: 'Something happened', type: 'danger', text: 'Message #2', unread: true},
-        {title: 'Warning message', type: 'warning', text: 'Message #3', unread: true},
-        {title: 'Your ship is upgraded', type: 'info', text: 'Message #4', unread: true},
-        {title: 'Missile launched', type: 'danger', text: 'Message #5', unread: false},
-        {title: 'You have something weird on your ship', type: 'warning', text: 'Message #6', unread: false},
-        {title: 'Another achievement ', type: 'info', text: 'Message #7', unread: false},
-        {title: 'You are drowning', type: 'danger', text: 'Message #8', unread: false},
-        {title: 'Gud Luck!', type: 'info', text: 'Message #9', unread: false},
-        {title: 'Hey it is another warning message', type: 'warning', text: 'Message #10', unread: false},
-        {title: 'Missile launched but it missed', type: 'danger', text: 'Message #11', unread: false},
-        {title: 'Buy something in our shop', type: 'info', text: 'Message #12', unread: false},
-        {title: 'You have bought easter skinn for your ship', type: 'info', text: 'Message #13', unread: false},
-        {title: 'Watch out!', type: 'warning', text: 'Message #14', unread: false},
-        {title: 'Happy Easter!', type: 'info', text: 'Message #15', unread: false},
-        {title: 'Something is coming from sky ... UFO', type: 'danger', text: 'Message #16', unread: false},
-        {title: 'You have just bitten the record', type: 'info', text: 'Message #17', unread: false},
-        {title: 'Game tricks wanna read?', type: 'info', text: 'Message #18', unread: false},
-        {title: 'Your ship is out of course!', type: 'danger', text: 'Message #19', unread: false},
-        {title: 'Ship is ready to go', type: 'info', text: 'Message #20', unread: false},
-        {title: 'Hey something is happening', type: 'warning', text: 'Message #21', unread: false},
-        {title: 'Another info message', type: 'info', text: 'Message #22', unread: false},
-        {title: 'You are going to loose?', type: 'warning', text: 'Message #23', unread: false},
-        {title: 'Current objective is done', type: 'info', text: 'Message #24', unread: false},
-        {title: 'What is the objective?', type: 'info', text: 'Message #25', unread: false},
-        {title: 'We detect a submarine?', type: 'danger', text: 'Message #26', unread: false}
+        {title: 'You achieve something', type: 'info', text: 'Message #1', time: localTime},
+        {title: 'Something happened', type: 'danger', text: 'Message #2', time: localTime},
+        {title: 'Warning message', type: 'warning', text: 'Message #3', time: localTime},
+        {title: 'Your ship is upgraded', type: 'info', text: 'Message #4', time: localTime},
+        {title: 'Missile launched', type: 'danger', text: 'Message #5', time: localTime},
+        {title: 'You have something weird on your ship', type: 'warning', text: 'Message #6', time: localTime},
+        {title: 'Another achievement ', type: 'info', text: 'Message #7', time: localTime},
+        {title: 'You are drowning', type: 'danger', text: 'Message #8', time: localTime},
+        {title: 'Gud Luck!', type: 'info', text: 'Message #9', time: localTime},
+        {title: 'Hey it is another warning message', type: 'warning', text: 'Message #10', time: localTime},
+        {title: 'Missile launched but it missed', type: 'danger', text: 'Message #11', time: localTime},
+        {title: 'Buy something in our shop', type: 'info', text: 'Message #12', time: localTime},
+        {title: 'You have bought easter skinn for your ship', type: 'info', text: 'Message #13', time: localTime},
+        {title: 'Watch out!', type: 'warning', text: 'Message #14', time: localTime},
+        {title: 'Happy Easter!', type: 'info', text: 'Message #15', time: localTime},
+        {title: 'Something is coming from sky ... UFO', type: 'danger', text: 'Message #16', time: localTime},
+        {title: 'You have just bitten the record', type: 'info', text: 'Message #17', time: localTime},
+        {title: 'Game tricks wanna read?', type: 'info', text: 'Message #18', time: localTime},
+        {title: 'Your ship is out of course!', type: 'danger', text: 'Message #19', time: localTime},
+        {title: 'Ship is ready to go', type: 'info', text: 'Message #20', time: localTime},
+        {title: 'Hey something is happening', type: 'warning', text: 'Message #21', time: localTime},
+        {title: 'Another info message', type: 'info', text: 'Message #22', time: localTime},
+        {title: 'You are going to loose?', type: 'warning', text: 'Message #23', time: localTime},
+        {title: 'Current objective is done', type: 'info', text: 'Message #24', time: localTime},
+        {title: 'What is the objective?', type: 'info', text: 'Message #25', time: localTime},
+        {title: 'We detect a submarine?', type: 'danger', text: 'Message #26', time: localTime}
     ];
 
     $scope.user = user;
@@ -93,9 +94,5 @@ angular.module('mustard.app.userProfile', [
                 message.show('danger', 'No!', 'You pushed no button');
             }
         );
-    };
-
-    $scope.addMessage = function () {
-        $scope.messages.unshift({title: 'Welcome!', type: 'info', text: 'Welcome message', unread: true})
     };
 });
