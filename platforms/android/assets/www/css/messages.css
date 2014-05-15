@@ -14,3 +14,15 @@
 .new-message.active {
   background-color: red;
 }
+
+.message-list {
+  padding: 0;
+}
+
+.message-list > li {
+  margin-bottom: 10px;
+}
+
+.message-text {
+  font-size: 11px;
+}

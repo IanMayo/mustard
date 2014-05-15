@@ -29,6 +29,12 @@
   border-right: 2px solid grey;
 }
 
+.time-bearing-container,
+.spatial-container,
+.ship-state-container {
+  position: relative; /* needed for FPS meter */
+}
+
 .time-display-container {
   padding: 10px 0 0 10px;
   width: 130px;
@@ -36,8 +42,8 @@
 }
 
 .tab-bar-container {
-  width: 300px;
-  padding: 10px 10px 0 10px;
+  width: 285px;
+  padding: 10px 0 10px 5px;
   overflow: hidden;
 }
 
@@ -106,7 +112,7 @@
 
 .ship-state {
   display: block;
-  padding: 50px 10px 0 10px;
+  padding-top: 50px;
   text-align: center;
 }
 
@@ -135,6 +141,15 @@
 
 .range-calculator {
   display: block;
-  padding: 10px 10px 0 10px;
-  width: 165px;
+  padding: 10px;
+  width: 200px;
+}
+
+.range-target,
+.range-status {
+  margin-bottom: 10px;
+}
+
+.range-controls {
+  margin-top: 5px;
 }

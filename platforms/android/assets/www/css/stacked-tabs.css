@@ -1,10 +1,13 @@
 .nav-stacked {
   float: left;
   border-bottom: none;
+  margin-right: 10px !important;
 }
 
-.nav-stacked + .tab-content {
+.nav-stacked + .tab-content,
+.nav-stacked + .tab-content > .tab-pane {
   border: none;
+  overflow: auto;
 }
 
 .nav-stacked {

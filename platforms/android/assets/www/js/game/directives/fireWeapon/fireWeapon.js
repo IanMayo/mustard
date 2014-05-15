@@ -90,7 +90,7 @@ angular.module('mustard.game.fireWeaponDirective', [])
             /**
              * Change sonar bearing lines for a selected track only
              */
-            scope.$parent.$on('sonarTrackSelected', function (event, trackId) {
+            scope.$on('shareSelectedTrack', function (event, trackId) {
                 scope.detectionTrackId = trackId;
             });
 
