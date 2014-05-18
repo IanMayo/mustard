@@ -2,13 +2,13 @@
  * @module mustard.game.newMessageIndicator
  */
 
-angular.module('mustard.game.newMessageIndicator', ['mustard.game.message'])
+angular.module('mustard.game.newMessageIndicator', [])
 
 /**
  * New message indicator directive
  * It takes the message collection and indicate if there are new messages
  */
-.directive('newMessageIndicator', ['message', function (message) {
+.directive('newMessageIndicator', function () {
 
     return {
         restrict: 'EA',
@@ -33,14 +33,6 @@ angular.module('mustard.game.newMessageIndicator', ['mustard.game.message'])
             scope.$watch('messages.length', function (newValue, oldValue) {
                 scope.isActive = newValue > oldValue;
             });
-
-            /**
-             * It shows message list and deactivate the new message button
-             */
-            scope.showMessageList = function () {
-                message.showList(scope.messages);
-                scope.isActive = false;
-            };
         }
     };
-}]);
+});
