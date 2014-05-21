@@ -6,6 +6,7 @@ angular.module('mustard.game.review', [
     'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
     'mustard.game.reviewSnapshot',
+    'mustard.game.eventPickerDirective',
     'mustard.game.reviewTourDirective',
     'mustard.game.geoMath'
 ])
@@ -43,7 +44,8 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', function ($scope, $interval, $timeout) {
+.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls',
+    function ($scope, $interval, $timeout, steppingControls) {
 
     /**
      * Apply filter to a vessel name.
@@ -297,6 +299,21 @@ angular.module('mustard.game.review', [
         window.history.back();
     };
 
+    /** formatting function for the slider control
+     *
+     * @param value the current slider value (millis)
+     * @returns {string} a time-string representation of the value
+     */
+    $scope.translate = function(value)
+    {
+      var date = new Date(value);
+      return date.toLocaleTimeString();
+    }
+
+    $scope.simulationTimeEnd = function () {
+        return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
+    }
+
     // show the markers, plus their routes
     showVesselRoutes();
 
@@ -305,4 +322,8 @@ angular.module('mustard.game.review', [
 
     // put the markers on the map in their initial locations
     doUpdate();
+
+    // hide Stepping controls in TimeDisplay directive
+    steppingControls.setVisibility(false);
+
 }]);

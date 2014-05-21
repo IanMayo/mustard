@@ -1,0 +1,28 @@
+#messageList {
+  display: block;
+  max-height: 500px;
+  overflow: auto
+}
+
+.new-message {
+  width: 75px;
+  height: 75px;
+  background-color: lightgray;
+  border-radius: 1000px;
+}
+
+.new-message.active {
+  background-color: red;
+}
+
+.message-list {
+  padding: 0;
+}
+
+.message-list > li {
+  margin-bottom: 10px;
+}
+
+.message-text {
+  font-size: 11px;
+}

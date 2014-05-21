@@ -51,7 +51,7 @@ angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath']
             /** listen out for the user selecting a track from the sonar
              *
              */
-            scope.$parent.$on('sonarTrackSelected', function (event, theTrackName) {
+            scope.$on('shareSelectedTrack', function (event, theTrackName) {
                 trackName = theTrackName;
             });
 

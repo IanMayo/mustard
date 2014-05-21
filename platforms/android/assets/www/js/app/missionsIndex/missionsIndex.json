@@ -1,7 +1,27 @@
 [
     {
+        "id": "0",
+        "name": "Sonar School",
+        "missions": [
+            {
+                "id": "0a",
+                "name": "Reading Surface Contacts on the sonar display",
+                "description": "Learn to read and interact with the sonar",
+                "url": "0a_surface_contacts",
+                "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
+            },
+            {
+                "id": "0a",
+                "name": "Reading the display",
+                "description": "Using ownship manoeuvres to determine bearing ambiguity",
+                "url": "0b_submarine_contacts",
+                "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
+            }
+        ]
+    },
+    {
         "id": "1",
-        "name": "Tutorial",
+        "name": "Ship Control",
         "missions": [
             {
                 "id": "1a",

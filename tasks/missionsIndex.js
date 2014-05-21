@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Missions index task
+ *
+ * @param grunt
+ */
+
 module.exports = function(grunt) {
 
     var _ = require('lodash');

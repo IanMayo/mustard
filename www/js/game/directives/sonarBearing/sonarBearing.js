@@ -117,16 +117,18 @@ angular.module('mustard.game.sonarBearing', [])
                     return tracks[index] || label;
                 });
 
-                var time = _.first(dataValues);
-                var detections = _.rest(dataValues);
+                var time = dataValues[0][0];
                 var currentTime = new Date();
                 currentTime.setSeconds(time.getSeconds());
                 currentTime.setMinutes(time.getMinutes());
-                _.each(labels, function (label, index) {
-                    if (detections[index]) {
-                        addDetection(currentTime, label, detections[index], lineStroke);
-                    }
-                });
+                _.each(dataValues, function (values) {
+                    var detections = _.rest(values);
+                    _.each(labels, function (label, index) {
+                        if (detections[index]) {
+                            addDetection(currentTime, label, detections[index], lineStroke);
+                        }
+                    });
+                })
             });
         }
     }

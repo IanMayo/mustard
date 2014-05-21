@@ -23,11 +23,15 @@
   <meta name="format-detection" content="telephone=no"/>
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
     width=device-width"/>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="css/index.css"/>
-  <link rel="stylesheet" type="text/css" href="css/main.css"/>
-  <link rel="stylesheet" type="text/css"  href="css/leaflet.css">
-  <link rel="stylesheet" type="text/css"  href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="lib/angularjs-slider/dist/rzslider.css">
+  <link rel="stylesheet" type="text/css" href="css/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/messages.css">
+  <link rel="stylesheet" type="text/css" href="css/mission-simulator.css">
+  <link rel="stylesheet" type="text/css" href="css/stacked-tabs.css">
   <title>Angular PhoneGap Seed</title>
 </head>
 <body>
@@ -46,23 +50,29 @@
 <script type="text/javascript" src="lib/angular/angular-route.js"></script>
 <script type="text/javascript" src="lib/angular/angular-touch.js"></script>
 <script type="text/javascript" src="lib/angular/angular-local-storage.js"></script>
+<script type="text/javascript" src="lib/angularjs-slider/dist/rzslider.min.js"></script>
 <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
 <script type="text/javascript" src="lib/jquery.min.js"></script>
+<script type="text/javascript" src="lib/fpsmeter.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
 
 
 <!-- App -->
 <script type="text/javascript" src="js/app/index.js"></script>
 <script type="text/javascript" src="js/app/app.js"></script>
+
+<!-- App controllers -->
 <script type="text/javascript" src="js/app/controllers/login/login.js"></script>
 <script type="text/javascript" src="js/app/controllers/registration/registration.js"></script>
 <script type="text/javascript" src="js/app/controllers/main/main.js"></script>
 <script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
 <script type="text/javascript" src="js/app/controllers/userProfile/userProfile.js"></script>
 <script type="text/javascript" src="js/app/controllers/settings/settings.js"></script>
+
+<!-- App services -->
 <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserBackend/mockUserBackend.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserMissions/mockUserMissions.js"></script>
@@ -85,7 +95,10 @@
 <script type="text/javascript" src="js/game/directives/objectiveList/objectiveList.js"></script>
 <script type="text/javascript" src="js/game/directives/leafletMap/leafletMap.js"></script>
 <script type="text/javascript" src="js/game/directives/reviewTour/reviewTour.js"></script>
+<script type="text/javascript" src="js/game/directives/eventPicker/eventPicker.js"></script>
 <script type="text/javascript" src="js/game/directives/clickRepeat/clickRepeat.js"></script>
+<script type="text/javascript" src="js/game/directives/elementVisibility/elementVisibility.js"></script>
+<script type="text/javascript" src="js/game/directives/messageList/messageList.js"></script>
 
 <!-- Game services -->
 <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
@@ -95,6 +108,7 @@
 <script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
 <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
 <script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
+<script type="text/javascript" src="js/game/services/message/message.js"></script>
 
 <script type="text/javascript">
   app.initialize();

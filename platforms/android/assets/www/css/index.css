@@ -28,6 +28,8 @@ body {
   -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
   -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
   -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+  /*background-image: url("../img/mockup.png");*/
+  background-size: 100% 100%;
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -37,13 +39,6 @@ body {
 spatial-view .leaflet-container
 {
     background-color:#b5d0d0;
-}
-
-.mission-controls li{
-  vertical-align: top;
-}
-.mission-controls li h4{
-  border-bottom: solid 2px darkgray;
 }
 
 #missionAccordion .panel-group{
@@ -64,3 +59,21 @@ spatial-view .leaflet-container
   color: #333;
   font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
+.timeSlider {
+  position: relative;
+}
+.eventPicker {
+  position: absolute;
+  height: 40px;
+  top: 30px;
+  width: 100%;
+}
+
+.eventPicker .eventMarker {
+  position: absolute;
+}
+.eventPicker .glyphicon {
+  font-size: 21px;
+}
+

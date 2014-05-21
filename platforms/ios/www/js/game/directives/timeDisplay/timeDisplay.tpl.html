@@ -1,16 +1,17 @@
-<h4>Time:</h4>
-<h3><span class="label label-default" >{{timerLabel}}</span></h3>
-<button data-ng-click="slower()" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-backward"></span>
-</button>
-<button class="btn btn-default btn-sm" data-ng-click="simulate()">
-  <span class="glyphicon glyphicon-play" data-ng-show="!speed"></span>
-  <span class="glyphicon glyphicon-pause" data-ng-show="speed"></span>
-</button>
-<button data-ng-click="faster()" type="button" class="btn btn-default btn-sm">
-  <span class="glyphicon glyphicon-forward"></span>
-</button>
-<div ng-switch on="speed">
-  <span class="label label-warning" ng-switch-when="0">stopped</span>
-  <span class="label label-success" ng-switch-default>{{speed}}x</span>
+<div data-ng-show="steppingEnabled">
+  <h3 class="timer-header"><span class="label label-default" >{{timerLabel}}</span></h3>
+  <button data-ng-click="slower()" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-backward"></span>
+  </button>
+  <button class="btn btn-default btn-sm" data-ng-click="simulate()">
+    <span class="glyphicon glyphicon-play" data-ng-show="!speed"></span>
+    <span class="glyphicon glyphicon-pause" data-ng-show="speed"></span>
+  </button>
+  <button data-ng-click="faster()" type="button" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-forward"></span>
+  </button>
+  <div ng-switch on="speed">
+    <span class="label label-warning" ng-switch-when="0">stopped</span>
+    <span class="label label-success" ng-switch-default>{{speed}}x</span>
+  </div>
 </div>

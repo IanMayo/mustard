@@ -1,0 +1,39 @@
+.nav-stacked {
+  float: left;
+  border-bottom: none;
+  margin-right: 10px !important;
+}
+
+.nav-stacked + .tab-content,
+.nav-stacked + .tab-content > .tab-pane {
+  border: none;
+  overflow: auto;
+}
+
+.nav-stacked {
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
+
+.nav-stacked > li {
+  float: none;
+  min-width: 50px;
+  margin-right: -1px;
+}
+
+.nav-stacked > li > a {
+  padding: 14px 20px;
+  border-radius: 4px 0 0 4px;
+  margin-right: -1px;
+}
+
+.nav-stacked > li > a:hover,
+.nav-stacked > li > a:focus {
+  border-color: #eee #ddd #eee #eee !important;
+}
+
+.nav-stacked .active > a,
+.nav-stacked .active > a:hover,
+.nav-stacked .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd !important;
+}

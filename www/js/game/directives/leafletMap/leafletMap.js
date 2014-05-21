@@ -274,6 +274,16 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
             };
 
             /**
+             * Scale the map to show all target tracks
+             * @param {Object} MultiPolyline routes
+             */
+            var scaleToRoutes = function (routes) {
+                if (reviewTourController) {
+                    map.fitBounds(routes.getBounds());
+                }
+            };
+
+            /**
              * Change vessels' markers on the map.
              */
             scope.$on('changeMarkers', function (event, vessels) {
@@ -377,6 +387,8 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 layerGroups.vesselRoutes = L.layerGroup();
                 layerGroups.vesselRoutes.addLayer(vesselRoutesPolyline);
                 map.addLayer(layerGroups.vesselRoutes);
+
+                scaleToRoutes(vesselRoutesPolyline);
             });
 
             /**
