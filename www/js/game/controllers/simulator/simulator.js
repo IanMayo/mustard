@@ -114,6 +114,13 @@ angular.module('mustard.game.simulator', [
      * @type {Array}
      */
     $scope.messages = [];
+
+    /**
+     * Status of new message indicator
+     *
+     * @type {Boolean}
+     */
+    $scope.isNewMessage = false;
 }])
 
 /**
@@ -660,6 +667,13 @@ angular.module('mustard.game.simulator', [
             if (newVal) {
                 doStep();
             }
+        });
+
+        /**
+         * Watches on the messages length and switch new message indicator state
+         */
+        $scope.$watch('messages.length', function (newValue, oldValue) {
+            $scope.isNewMessage = newValue > oldValue;
         });
 
         /**

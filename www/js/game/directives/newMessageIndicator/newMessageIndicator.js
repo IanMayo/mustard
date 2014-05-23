@@ -15,24 +15,9 @@ angular.module('mustard.game.newMessageIndicator', [])
         templateUrl: 'js/game/directives/newMessageIndicator/newMessageIndicator.tpl.html',
 
         scope: {
-            messages: '='
+            active: '='
         },
 
-        link: function (scope) {
-
-            /**
-             * New message button active state
-             *
-             * @type {Boolean}
-             */
-            scope.isActive = false;
-
-            /**
-             * It watches on message collection length and activate the new message button if length is changed
-             */
-            scope.$watch('messages.length', function (newValue, oldValue) {
-                scope.isActive = newValue > oldValue;
-            });
-        }
+        link: function () { }
     };
 });
