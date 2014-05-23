@@ -15,8 +15,6 @@ angular.module('mustard.game.messageList', [])
 
         scope: {
             messages: '='
-        },
-
-        link: function (scope) { }
+        }
     };
 });
