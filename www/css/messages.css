@@ -16,7 +16,7 @@
   font-size: 11px;
 }
 
-.new-message.active {
+.nav-stacked > li:not(.active) .new-message.active {
   -webkit-animation-name: blinker;
   -webkit-animation-duration: 1s;
   -webkit-animation-timing-function: linear;
