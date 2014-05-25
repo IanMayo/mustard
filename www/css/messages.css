@@ -16,7 +16,11 @@
   font-size: 11px;
 }
 
-.nav-stacked > li:not(.active) .new-message.active {
+.notification-icon.active {
+  color: #ff8c00;
+}
+
+.notification-icon.active.flashing {
   -webkit-animation-name: blinker;
   -webkit-animation-duration: 1s;
   -webkit-animation-timing-function: linear;

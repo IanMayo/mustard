@@ -26,9 +26,11 @@
       <li class="pull-left">
         <div class="tab-bar-container">
           <tabset vertical="true">
-            <tab>
+            <tab data-active="isMessageTabActive">
               <tab-heading>
-                <new-message-indicator data-active="isNewMessage"></new-message-indicator>
+                <notification-icon class="glyphicon-warning-sign" data-active="isNewMessage"
+                                   data-flashing="isNewMessage && !isMessageTabActive">
+                </notification-icon>
               </tab-heading>
 
               <message-list data-messages="messages"></message-list>

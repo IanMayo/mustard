@@ -18,7 +18,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.clickRepeat',
     'mustard.game.message',
     'mustard.game.messageList',
-    'mustard.game.newMessageIndicator',
+    'mustard.game.notificationIcon',
     'mustard.game.elementVisibility',
     'mustard.app.user'
 ])
