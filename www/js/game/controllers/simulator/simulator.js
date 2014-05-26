@@ -116,11 +116,22 @@ angular.module('mustard.game.simulator', [
     $scope.messages = [];
 
     /**
-     * Status of new message indicator
+     * Control panel tabs model
      *
-     * @type {Boolean}
+     * @type {Object}
      */
-    $scope.isNewMessage = false;
+    $scope.tabs = {
+        messages: {
+            active: false,
+            isNewMessage: false
+        },
+        objectives: {
+            active: false
+        },
+        weapon: {
+            active: false
+        }
+    };
 }])
 
 /**
