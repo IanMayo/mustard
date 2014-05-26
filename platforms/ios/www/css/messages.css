@@ -4,17 +4,6 @@
   overflow: auto
 }
 
-.new-message {
-  width: 75px;
-  height: 75px;
-  background-color: lightgray;
-  border-radius: 1000px;
-}
-
-.new-message.active {
-  background-color: red;
-}
-
 .message-list {
   padding: 0;
 }
@@ -25,4 +14,32 @@
 
 .message-text {
   font-size: 11px;
+}
+
+.notification-icon.active {
+  color: #ff8c00;
+}
+
+.notification-icon.active.flashing {
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+
+  animation-name: blinker;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
 }
