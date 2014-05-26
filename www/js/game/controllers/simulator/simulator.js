@@ -123,7 +123,7 @@ angular.module('mustard.game.simulator', [
     $scope.tabs = {
         messages: {
             active: false,
-            isNewMessage: false
+            isNew: false
         },
         objectives: {
             active: false
@@ -684,8 +684,17 @@ angular.module('mustard.game.simulator', [
          * Watches on the messages length and switch new message indicator state
          */
         $scope.$watch('messages.length', function (newValue, oldValue) {
-            $scope.isNewMessage = newValue > oldValue;
+            $scope.tabs.messages.isNew = newValue > oldValue;
         });
+
+        /**
+         * It removes notification from message tab when this tab is activated by user
+         */
+        $scope.removeNotification = function () {
+            if ($scope.tabs.messages.isNew && $scope.tabs.messages.active) {
+                $scope.tabs.messages.isNew = false;
+            }
+        };
 
         /**
          * Create reference location based on range maths location
