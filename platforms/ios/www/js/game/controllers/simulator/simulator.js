@@ -18,6 +18,7 @@ angular.module('mustard.game.simulator', [
     'mustard.game.clickRepeat',
     'mustard.game.message',
     'mustard.game.messageList',
+    'mustard.game.notificationIcon',
     'mustard.game.elementVisibility',
     'mustard.app.user'
 ])
@@ -113,6 +114,24 @@ angular.module('mustard.game.simulator', [
      * @type {Array}
      */
     $scope.messages = [];
+
+    /**
+     * Control panel tabs model
+     *
+     * @type {Object}
+     */
+    $scope.tabs = {
+        messages: {
+            active: false,
+            hasNew: false
+        },
+        objectives: {
+            active: false
+        },
+        weapon: {
+            active: false
+        }
+    };
 }])
 
 /**
@@ -660,6 +679,22 @@ angular.module('mustard.game.simulator', [
                 doStep();
             }
         });
+
+        /**
+         * Watches on the messages length and switch new message indicator state
+         */
+        $scope.$watch('messages.length', function (newValue, oldValue) {
+            $scope.tabs.messages.hasNew = newValue > oldValue;
+        });
+
+        /**
+         * It removes notification from message tab when this tab is activated by user
+         */
+        $scope.removeNotification = function () {
+            if ($scope.tabs.messages.hasNew && $scope.tabs.messages.active) {
+                $scope.tabs.messages.hasNew = false;
+            }
+        };
 
         /**
          * Create reference location based on range maths location

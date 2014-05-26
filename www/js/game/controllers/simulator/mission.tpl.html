@@ -26,21 +26,26 @@
       <li class="pull-left">
         <div class="tab-bar-container">
           <tabset vertical="true">
-            <tab>
+            <tab select="removeNotification()" data-active="tabs.messages.active">
               <tab-heading>
-                <i class="glyphicon glyphicon-warning-sign"></i>
+                <notification-icon class="glyphicon glyphicon-warning-sign" data-active="tabs.messages.hasNew"
+                                   data-flashing="tabs.messages.hasNew && !tabs.messages.active">
+                </notification-icon>
               </tab-heading>
 
               <message-list data-messages="messages"></message-list>
             </tab>
-            <tab>
+
+            <tab select="removeNotification()" data-active="tabs.objectives.active">
               <tab-heading>
                 <i class="glyphicon glyphicon-eye-open"></i>
               </tab-heading>
 
               <objective-list data-objectives="objectives"></objective-list>
             </tab>
-            <tab data-conditional-display="{show: 'ownShip.hasWeapons()'}">
+
+            <tab select="removeNotification()" data-active="tabs.weapon.active"
+                 data-conditional-display="{show: 'ownShip.hasWeapons()'}">
               <tab-heading>
                 <i class="glyphicon glyphicon-flash"></i>
               </tab-heading>
