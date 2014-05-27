@@ -1,16 +1,11 @@
-
-body {
-  /*font: 10px sans-serif;*/
-}
-
 .axis path,
 .axis line {
   fill: none;
-  stroke: #888;
+  stroke: #535353;
   shape-rendering: crispEdges;
 }
 .axis text {
-  fill: #444;
+  fill: #bcdf1b;
 }
 
 .x.axis{
@@ -27,14 +22,6 @@ body {
   stroke-width: 2.85px;
   shape-rendering: crispEdges;  /* gives rough edges */
 }
-
-#viz_container{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /*min-height: 450px;*/
-  margin: 10px auto;
-}
 #legend {
   position: absolute;
   width: 150px;
@@ -47,4 +34,34 @@ body {
 }
 .legend {
   cursor: pointer;
+}
+.viz-sonar {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+.viz-sonar svg.chart rect.bg {
+  fill: #000000;
+}
+
+/* style for dual scale sonar */
+.viz-major {
+  margin-top: -5px; /* This adjusts the 2 graph scales */
+  z-index: 5;
+}
+.viz-minor{
+  z-index: 10;
+}
+
+#viz-container{
+  display: block;
+  height: 450px;  /* initial height */
+  position: relative;
+  background-color: #000000;
+}
+#viz-major{
+  height: 450px;
+  margin-top: -5px;
+}
+#viz-minor{
+  height: 250px;
 }
