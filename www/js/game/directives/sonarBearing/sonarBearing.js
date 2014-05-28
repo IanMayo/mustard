@@ -44,18 +44,22 @@ angular.module('mustard.game.sonarBearing', [])
                 }
             });
 
-            var setDataUpdateRoutine = function () {
+            var pointClickCallback = function (point) {
+                // 'Safe' $apply
+                $timeout(function () {
+                    scope.$emit('sonarTrackSelected', point.key);
+                });
+            };
+
+            var configurePlots = function () {
                 var firstRunTime = new Date().getTime();
 
                 // set major viz's yDomain
                 plot.major_viz().yDomain([firstRunTime - options.PAST_TIME_JAR, firstRunTime + options.LIVE_TIME_JAR ]);
                 plot.major_viz()();
 
-//                plot.addSelectionListener(function (point) {
-//                    $timeout(function () {
-//                        scope.$emit('sonarTrackSelected', point.key);
-//                    })
-//                });
+                plot.major_viz().onclick(pointClickCallback);
+                plot.minor_viz().onclick(pointClickCallback);
             };
 
             var addDetection = function(time, seriesName, bearing, strength) {
@@ -71,7 +75,7 @@ angular.module('mustard.game.sonarBearing', [])
                 .options(options)  // do initialization settings
                 .createPlot();
 
-            setDataUpdateRoutine();
+            configurePlots();
 
             scope.$on('addDetections', function (event, dataValues) {
                 // extract track names from detections
