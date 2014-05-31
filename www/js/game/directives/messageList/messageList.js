@@ -29,15 +29,6 @@ angular.module('mustard.game.messageList', ['ngAnimate'])
         scope: {
             messages: '=',
             hasNew: '='
-        },
-
-        link: function (scope) {
-            /**
-             * Watches on messages length and switch the value of hasNew flag
-             */
-            scope.$watch('messages.length', function (newValue, oldValue) {
-                scope.hasNew = newValue > oldValue;
-            });
         }
     };
 });
