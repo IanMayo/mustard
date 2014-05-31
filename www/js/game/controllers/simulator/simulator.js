@@ -108,12 +108,16 @@ angular.module('mustard.game.simulator', [
         patrolArea: scenario.patrolArea
     };
 
+
     /**
-     * Messages collection
+     * Message list model
      *
-     * @type {Array}
+     * @type {Object}
      */
-    $scope.messages = [];
+    $scope.messages = {
+        list: [],
+        hasNew: false
+    };
 
     /**
      * Control panel tabs model
@@ -122,8 +126,7 @@ angular.module('mustard.game.simulator', [
      */
     $scope.tabs = {
         messages: {
-            active: false,
-            hasNew: false
+            active: false
         },
         objectives: {
             active: false
@@ -278,7 +281,7 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    $scope.messages.unshift({
+                    $scope.messages.list.unshift({
                         title: 'Success message',
                         type: 'success',
                         text: $scope.gameState.successMessage,
@@ -287,7 +290,7 @@ angular.module('mustard.game.simulator', [
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    $scope.messages.unshift({
+                    $scope.messages.list.unshift({
                         title: 'Failure message',
                         type: 'danger',
                         text: $scope.gameState.failureMessage,
@@ -631,7 +634,7 @@ angular.module('mustard.game.simulator', [
             // show the welcome message
             if ($scope.welcome) {
 
-                $scope.messages.unshift({
+                $scope.messages.list.unshift({
                     title: 'Welcome!',
                     type: 'info',
                     text: $scope.welcome,
@@ -680,18 +683,11 @@ angular.module('mustard.game.simulator', [
         });
 
         /**
-         * Watches on messages length and switch the new message indicator state
-         */
-        $scope.$watch('messages.length', function (newValue, oldValue) {
-            $scope.tabs.messages.hasNew = newValue > oldValue;
-        });
-
-        /**
          * It deactivates notification icon on the message tab when this tab is selected
          */
         $scope.removeNotification = function () {
-            if ($scope.tabs.messages.hasNew && $scope.tabs.messages.active) {
-                $scope.tabs.messages.hasNew = false;
+            if ($scope.messages.hasNew && $scope.tabs.messages.active) {
+                $scope.messages.hasNew = false;
             }
         };
 

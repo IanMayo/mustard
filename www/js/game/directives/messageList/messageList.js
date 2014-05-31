@@ -14,7 +14,17 @@ angular.module('mustard.game.messageList', [])
         templateUrl: 'js/game/directives/messageList/messageList.tpl.html',
 
         scope: {
-            messages: '='
+            messages: '=',
+            hasNew: '='
+        },
+
+        link: function (scope) {
+            /**
+             * Watches on messages length and switch the value of hasNew flag
+             */
+            scope.$watch('messages.length', function (newValue, oldValue) {
+                scope.hasNew = newValue > oldValue;
+            });
         }
     };
 });
