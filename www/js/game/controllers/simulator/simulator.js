@@ -116,7 +116,11 @@ angular.module('mustard.game.simulator', [
      */
     $scope.messages = {
         list: [],
-        hasNew: false
+        hasNew: false,
+
+        add: function (message) {
+            angular.isObject(message) && this.list.unshift(message);
+        }
     };
 
     /**
@@ -281,7 +285,7 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    $scope.messages.list.unshift({
+                    $scope.messages.add({
                         title: 'Success message',
                         type: 'success',
                         text: $scope.gameState.successMessage,
@@ -290,7 +294,7 @@ angular.module('mustard.game.simulator', [
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    $scope.messages.list.unshift({
+                    $scope.messages.add({
                         title: 'Failure message',
                         type: 'danger',
                         text: $scope.gameState.failureMessage,
@@ -634,7 +638,7 @@ angular.module('mustard.game.simulator', [
             // show the welcome message
             if ($scope.welcome) {
 
-                $scope.messages.list.unshift({
+                $scope.messages.add({
                     title: 'Welcome!',
                     type: 'info',
                     text: $scope.welcome,
