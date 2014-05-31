@@ -681,14 +681,14 @@ angular.module('mustard.game.simulator', [
         });
 
         /**
-         * Watches on the messages length and switch new message indicator state
+         * Watches on messages length and switch the new message indicator state
          */
         $scope.$watch('messages.length', function (newValue, oldValue) {
             $scope.tabs.messages.hasNew = newValue > oldValue;
         });
 
         /**
-         * It removes notification from message tab when this tab is activated by user
+         * It deactivates notification icon on the message tab when this tab is selected
          */
         $scope.removeNotification = function () {
             if ($scope.tabs.messages.hasNew && $scope.tabs.messages.active) {
