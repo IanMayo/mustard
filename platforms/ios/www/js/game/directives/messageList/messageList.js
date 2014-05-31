@@ -2,7 +2,20 @@
  * @module mustard.game.messageList
  */
 
-angular.module('mustard.game.messageList', [])
+angular.module('mustard.game.messageList', ['ngAnimate'])
+
+.animation('.new-message', function ($timeout) {
+    return {
+        enter: function (element, done) {
+            element.addClass('new');
+
+            $timeout(function() {
+                element.removeClass('new');
+                done();
+            }, 15000);
+        }
+    };
+})
 
 /**
  * Message list directive
@@ -14,7 +27,17 @@ angular.module('mustard.game.messageList', [])
         templateUrl: 'js/game/directives/messageList/messageList.tpl.html',
 
         scope: {
-            messages: '='
+            messages: '=',
+            hasNew: '='
+        },
+
+        link: function (scope) {
+            /**
+             * Watches on messages length and switch the value of hasNew flag
+             */
+            scope.$watch('messages.length', function (newValue, oldValue) {
+                scope.hasNew = newValue > oldValue;
+            });
         }
     };
 });
