@@ -9,7 +9,13 @@
 }
 
 .message-list > li {
-  margin-bottom: 10px;
+  margin: 3px 3px 10px 3px;
+}
+
+.message-list > li.new {
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 0px 5px 0px #ff8c00;
+  box-shadow: 0px 0px 5px 0px #ff8c00;
 }
 
 .message-text {
