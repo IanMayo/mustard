@@ -4,6 +4,9 @@
 
 angular.module('mustard.game.messageList', ['ngAnimate'])
 
+/**
+ * It adds .new class to the new item in the message list and removes the class after 3sec
+ */
 .animation('.message', function ($timeout) {
     return {
         enter: function (element, done) {
