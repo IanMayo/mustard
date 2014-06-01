@@ -677,7 +677,7 @@ angular.module('mustard.game.simulator', [
                 $scope.$broadcast('changeMarkers', $scope.vessels);
                 $scope.$broadcast('showFeatures', $scope.mapFeatures);
                 showWelcome();
-            }, 100);
+            }, 300);
         };
 
         $scope.$watch('gameState.simulationTime', function (newVal) {
