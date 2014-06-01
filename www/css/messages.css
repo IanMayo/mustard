@@ -13,10 +13,42 @@
 }
 
 .message-list > li.new {
+  margin: 3px 3px 10px 3px;
   border-radius: 4px;
-  -webkit-box-shadow: 0px 0px 5px 0px #ff8c00;
-  box-shadow: 0px 0px 5px 0px #ff8c00;
+
+  -webkit-animation-name: blinker-border;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+
+  animation-name: blinker-border;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
+
+@-webkit-keyframes blinker-border {
+  0%, 100% {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(255, 140, 0, 0.0);
+    box-shadow: 0px 0px 5px 0px rgba(255, 140, 0, 0.0);
+  }
+  50% {
+    -webkit-box-shadow: 0px 0px 5px 0px #ff8c00;
+    box-shadow: 0px 0px 5px 0px #ff8c00;
+  }
+}
+
+@keyframes blinker-border {
+  0%, 100% {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(255, 140, 0, 0.0);
+    box-shadow: 0px 0px 5px 0px rgba(255, 140, 0, 0.0);
+  }
+  50% {
+    -webkit-box-shadow: 0px 0px 5px 0px #ff8c00;
+    box-shadow: 0px 0px 5px 0px #ff8c00;
+  }
+}
+
 
 .message-text {
   font-size: 11px;
@@ -39,13 +71,11 @@
 }
 
 @-webkit-keyframes blinker {
-  0% { opacity: 1.0; }
+  0%, 100% { opacity: 1.0; }
   50% { opacity: 0.0; }
-  100% { opacity: 1.0; }
 }
 
 @keyframes blinker {
-  0% { opacity: 1.0; }
+  0%, 100% { opacity: 1.0; }
   50% { opacity: 0.0; }
-  100% { opacity: 1.0; }
 }
