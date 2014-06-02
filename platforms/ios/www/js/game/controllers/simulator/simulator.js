@@ -108,12 +108,20 @@ angular.module('mustard.game.simulator', [
         patrolArea: scenario.patrolArea
     };
 
+
     /**
-     * Messages collection
+     * Message list model
      *
-     * @type {Array}
+     * @type {Object}
      */
-    $scope.messages = [];
+    $scope.messages = {
+        list: [],
+        hasNew: false,
+
+        add: function (message) {
+            angular.isObject(message) && this.list.unshift(message);
+        }
+    };
 
     /**
      * Control panel tabs model
@@ -122,8 +130,7 @@ angular.module('mustard.game.simulator', [
      */
     $scope.tabs = {
         messages: {
-            active: false,
-            hasNew: false
+            active: false
         },
         objectives: {
             active: false
@@ -278,7 +285,7 @@ angular.module('mustard.game.simulator', [
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
-                    $scope.messages.unshift({
+                    $scope.messages.add({
                         title: 'Success message',
                         type: 'success',
                         text: $scope.gameState.successMessage,
@@ -287,7 +294,7 @@ angular.module('mustard.game.simulator', [
                     delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
-                    $scope.messages.unshift({
+                    $scope.messages.add({
                         title: 'Failure message',
                         type: 'danger',
                         text: $scope.gameState.failureMessage,
@@ -631,7 +638,7 @@ angular.module('mustard.game.simulator', [
             // show the welcome message
             if ($scope.welcome) {
 
-                $scope.messages.unshift({
+                $scope.messages.add({
                     title: 'Welcome!',
                     type: 'info',
                     text: $scope.welcome,
@@ -665,13 +672,12 @@ angular.module('mustard.game.simulator', [
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
 
-            showWelcome();
-
             $timeout(function () {
                 // trigger an initial update of locations
                 $scope.$broadcast('changeMarkers', $scope.vessels);
                 $scope.$broadcast('showFeatures', $scope.mapFeatures);
-            }, 100);
+                showWelcome();
+            }, 300);
         };
 
         $scope.$watch('gameState.simulationTime', function (newVal) {
@@ -681,18 +687,18 @@ angular.module('mustard.game.simulator', [
         });
 
         /**
-         * Watches on the messages length and switch new message indicator state
+         * Watches on messages length and switch the value of hasNew flag
          */
-        $scope.$watch('messages.length', function (newValue, oldValue) {
-            $scope.tabs.messages.hasNew = newValue > oldValue;
+        $scope.$watch('messages.list.length', function (newValue, oldValue) {
+            $scope.messages.hasNew = newValue > oldValue;
         });
 
         /**
-         * It removes notification from message tab when this tab is activated by user
+         * It deactivates notification icon on the message tab when this tab is selected
          */
         $scope.removeNotification = function () {
-            if ($scope.tabs.messages.hasNew && $scope.tabs.messages.active) {
-                $scope.tabs.messages.hasNew = false;
+            if ($scope.messages.hasNew && $scope.tabs.messages.active) {
+                $scope.messages.hasNew = false;
             }
         };
 

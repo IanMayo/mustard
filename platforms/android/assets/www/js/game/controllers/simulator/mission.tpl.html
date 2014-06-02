@@ -28,12 +28,12 @@
           <tabset vertical="true">
             <tab select="removeNotification()" data-active="tabs.messages.active">
               <tab-heading>
-                <notification-icon class="glyphicon glyphicon-warning-sign" data-active="tabs.messages.hasNew"
-                                   data-flashing="tabs.messages.hasNew && !tabs.messages.active">
+                <notification-icon class="glyphicon glyphicon-warning-sign" data-active="messages.hasNew"
+                                   data-flashing="messages.hasNew && !tabs.messages.active">
                 </notification-icon>
               </tab-heading>
 
-              <message-list data-messages="messages"></message-list>
+              <message-list data-messages="messages.list"></message-list>
             </tab>
 
             <tab select="removeNotification()" data-active="tabs.objectives.active">
