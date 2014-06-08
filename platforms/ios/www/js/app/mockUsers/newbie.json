@@ -1,5 +1,10 @@
 {
     "name": "Newbie",
     "achievements": [],
-    "missions": []
+    "missions": [],
+    "options": {
+        "audio": 2,
+        "sfx": 2,
+        "language": "EN"
+    }
 }

@@ -5,7 +5,7 @@
 angular.module('mustard.game.messageList', ['ngAnimate'])
 
 /**
- * Time during which the new element in the message list is considered
+ * period for which the new element in the message list is highlighted
  */
 .constant('HIGHLIGHT_MILLIS', 3000)
 

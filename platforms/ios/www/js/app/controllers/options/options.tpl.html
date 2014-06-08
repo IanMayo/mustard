@@ -1,0 +1,63 @@
+<div class="wrapper-mobile without-top-nav">
+  <div class="container-with-scroll-mobile">
+    <div class="container-fluid">
+      <h1>Options</h1>
+
+      <div class="option-container container-fluid">
+        <div class="col-md-6 col-xs-6">
+          <span class="h2">Audio</span>
+        </div>
+        <div class="col-md-6 col-xs-6">
+          <div class="btn-group">
+            <label class="btn btn-lg btn-default" data-ng-model="options.audio" btn-radio="1">1</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.audio" btn-radio="2">2</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.audio" btn-radio="3">3</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.audio" btn-radio="4">4</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.audio" btn-radio="5">5</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="option-container container-fluid">
+        <div class="col-md-6 col-xs-6">
+          <span class="h2">SFX</span>
+        </div>
+        <div class="col-md-6 col-xs-6">
+          <div class="btn-group">
+            <label class="btn btn-lg btn-default" data-ng-model="options.sfx" btn-radio="1">1</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.sfx" btn-radio="2">2</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.sfx" btn-radio="3">3</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.sfx" btn-radio="4">4</label>
+            <label class="btn btn-lg btn-default" data-ng-model="options.sfx" btn-radio="5">5</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="option-container container-fluid">
+        <div class="col-md-6 col-xs-6">
+          <span class="h2">Language</span>
+        </div>
+        <div class="col-md-6 col-xs-6">
+          <label>
+            <select class="form-control input-lg" data-ng-model="options.language">
+              <option value="EN">English</option>
+              <option value="GR">German</option>
+              <option value="FR">French</option>
+              <option value="IT">Italian</option>
+              <option value="UA">Ukrainian</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-mobile-bottom">
+  <div class="container-fluid">
+    <a href="#/main" class="btn btn-default btn-lg pull-right">
+      <span class="glyphicon glyphicon-arrow-left"></span>
+    </a>
+  </div>
+</nav>

@@ -7,13 +7,14 @@ angular.module('mustard', [
     'mustard.app.main',
     'mustard.app.mission',
     'mustard.app.userProfile',
-    'mustard.app.settings',
+    'mustard.app.options',
     'mustard.app.missionsIndex',
     'mustard.game.simulator',
     'mustard.game.review',
     'ui.bootstrap',
     'rzModule'
 ])
+
 .config(function ($routeProvider) {
 
     $routeProvider
@@ -52,9 +53,9 @@ angular.module('mustard', [
             templateUrl: 'js/app/controllers/userProfile/userProfile.tpl.html'
         })
 
-        .when('/settings', {
-            controller: 'SettingsCtrl',
-            templateUrl: 'js/app/controllers/settings/settings.tpl.html'
+        .when('/options', {
+            controller: 'OptionsCtrl',
+            templateUrl: 'js/app/controllers/options/options.tpl.html'
         })
 
         .when('/game/mission/:scenario', {
