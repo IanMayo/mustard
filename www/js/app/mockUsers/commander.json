@@ -6,5 +6,10 @@
         {"name": "Driver"},
         {"name": "Ram Raider"}
     ],
-    "missions": []
+    "missions": [],
+    "options": {
+        "audio": 3,
+        "sfx": 3,
+        "language": "EN"
+    }
 }

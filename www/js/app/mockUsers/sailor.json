@@ -4,5 +4,10 @@
         {"name": "Newbie"},
         {"name": "Speed Demon"}
     ],
-    "missions": []
+    "missions": [],
+    "options": {
+        "audio": 4,
+        "sfx": 2,
+        "language": "EN"
+    }
 }
