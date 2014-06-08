@@ -55,7 +55,7 @@ angular.module('mustard', [
 
         .when('/options', {
             controller: 'OptionsCtrl',
-            templateUrl: 'js/app/controllers/settings/options.tpl.html'
+            templateUrl: 'js/app/controllers/options/options.tpl.html'
         })
 
         .when('/game/mission/:scenario', {
