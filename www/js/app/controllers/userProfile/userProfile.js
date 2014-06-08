@@ -58,7 +58,7 @@ angular.module('mustard.app.userProfile', [
     };
 
     $scope.addMockOption = function (optionName, optionValue) {
-        console.log(user.setOption(optionName, optionValue));
+        user.setOption(optionName, optionValue);
     };
 
     $scope.missionMockCompleted = function (missionId) {
