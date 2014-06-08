@@ -105,6 +105,7 @@ angular.module('mustard.app.user', [
         name: "",
         missions: [],
         achievements: [],
+        options: {},
 
         /**
          * It restores user from web API
@@ -184,6 +185,20 @@ angular.module('mustard.app.user', [
          */
         isAchievementPresent: function (achievementName) {
             return !!_.findWhere(this.achievements, {name: achievementName});
+        },
+
+        /**
+         * It sets option and save the user in local storage
+         *
+         * @param optionName
+         * @param optionValue
+         * @returns {boolean}
+         */
+        setOption: function (optionName, optionValue) {
+            if (!optionName || !optionValue) return false;
+
+            user.options[optionName] = optionValue;
+            return saveUserToLocal(user);
         },
 
         /**
