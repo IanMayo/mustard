@@ -110,11 +110,7 @@ angular.module('mustard.app.user', [
         name: "",
         missions: [],
         achievements: [],
-        options: {
-            audio: 0,
-            sfx: 0,
-            language: ""
-        },
+        options: {},
 
         /**
          * It restores user from web API
@@ -197,16 +193,15 @@ angular.module('mustard.app.user', [
         },
 
         /**
-         * It sets option and save the user in local storage
+         * It sets options and save the user in local storage
          *
-         * @param optionName
-         * @param optionValue
+         * @param options
          * @returns {boolean}
          */
-        setOption: function (optionName, optionValue) {
-            if (!optionName || !optionValue) return false;
+        setOptions: function (options) {
+            if (!options) return false;
 
-            user.options[optionName] = optionValue;
+            angular.extend(user.options, options);
             return saveUserToLocal(user);
         },
 

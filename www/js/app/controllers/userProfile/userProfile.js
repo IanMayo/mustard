@@ -57,8 +57,8 @@ angular.module('mustard.app.userProfile', [
         user.addAchievement(achievementName);
     };
 
-    $scope.addMockOption = function (optionName, optionValue) {
-        user.setOption(optionName, optionValue);
+    $scope.addMockOption = function (options) {
+        user.setOptions(options);
     };
 
     $scope.missionMockCompleted = function (missionId) {
