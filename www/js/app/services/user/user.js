@@ -98,6 +98,11 @@ angular.module('mustard.app.user', [
      *        {"id": "1b", "status": "UNLOCKED"},
      *        {"id": "1c", "status": "LOCKED"}
      *    ]
+     *    "options": {
+     *        "audio": 0,
+     *        "sfx": 0,
+     *        "language": ""
+     *    }
      * }
      *
      */
@@ -105,7 +110,11 @@ angular.module('mustard.app.user', [
         name: "",
         missions: [],
         achievements: [],
-        options: {},
+        options: {
+            audio: 0,
+            sfx: 0,
+            language: ""
+        },
 
         /**
          * It restores user from web API
