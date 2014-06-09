@@ -98,6 +98,11 @@ angular.module('mustard.app.user', [
      *        {"id": "1b", "status": "UNLOCKED"},
      *        {"id": "1c", "status": "LOCKED"}
      *    ]
+     *    "options": {
+     *        "audio": 0,
+     *        "sfx": 0,
+     *        "language": ""
+     *    }
      * }
      *
      */
@@ -105,6 +110,7 @@ angular.module('mustard.app.user', [
         name: "",
         missions: [],
         achievements: [],
+        options: {},
 
         /**
          * It restores user from web API
@@ -184,6 +190,19 @@ angular.module('mustard.app.user', [
          */
         isAchievementPresent: function (achievementName) {
             return !!_.findWhere(this.achievements, {name: achievementName});
+        },
+
+        /**
+         * It sets options and save the user in local storage
+         *
+         * @param options
+         * @returns {boolean}
+         */
+        setOptions: function (options) {
+            if (!options) return false;
+
+            angular.extend(user.options, options);
+            return saveUserToLocal(user);
         },
 
         /**
