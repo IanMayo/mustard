@@ -8,6 +8,7 @@ angular.module('mustard', [
     'mustard.app.mission',
     'mustard.app.userProfile',
     'mustard.app.options',
+    'mustard.app.debug',
     'mustard.app.missionsIndex',
     'mustard.game.simulator',
     'mustard.game.review',
@@ -15,7 +16,22 @@ angular.module('mustard', [
     'rzModule'
 ])
 
-.config(function ($routeProvider) {
+/**
+ * Global Configuration
+ */
+.constant('APP_DEBUG', true)
+
+/**
+ * Routing Configuration
+ */
+.config(function ($routeProvider, APP_DEBUG) {
+
+    if (APP_DEBUG) {
+        $routeProvider.when('/debug', {
+            controller: 'DebugCtrl',
+            templateUrl: 'js/app/controllers/debug/debug.tpl.html'
+        })
+    }
 
     $routeProvider
         .when('/login', {
