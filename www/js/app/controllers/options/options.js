@@ -4,7 +4,12 @@ angular.module('mustard.app.options', ['mustard.app.user'])
  * @module Options
  * @class OptionsCtrl (controller)
  */
-.controller('OptionsCtrl', function ($scope, user) {
+.controller('OptionsCtrl', function ($scope, user, APP_DEBUG) {
+
+    /**
+     * Debug flag
+     */
+    $scope.appDebug = APP_DEBUG;
 
     /**
      * Local options model
