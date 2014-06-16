@@ -6,4 +6,5 @@
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/com/phonegap/mustard/R$string.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/com/phonegap/mustard/R$xml.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/com/phonegap/mustard/R.class \
+/Users/alexander/Repos/mustard/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/dexedLibs/classes-27c94a763782d7aefbf11ffbd41724b6.jar \
