@@ -16,8 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+/* make transparent link selection, adjust last value opacity 0 to 1.0 */
 * {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* styles for ng-cloack directive */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
 
 html, body, .app-body {

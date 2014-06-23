@@ -9,7 +9,7 @@ angular.module('mustard.game.clickRepeat', [])
  *
  * @example <... click-repeat="handler()" [delay="1000" speedup="1.5"] >
  */
-.directive('clickRepeat', ['$timeout', function ($timeout) {
+.directive('clickRepeat', ['$timeout', 'IS_MOBILE', function ($timeout, IS_MOBILE) {
 
     return {
         restrict: 'A',
@@ -67,8 +67,8 @@ angular.module('mustard.game.clickRepeat', [])
                 $timeout.cancel(timer);
             };
 
-            element.bind(Modernizr.touch ? 'touchstart' : 'mousedown', repeat);
-            element.bind(Modernizr.touch ? 'touchend touchleave touchcancel' : 'mouseup mouseleave', cancelRepeating);
+            element.bind(IS_MOBILE ? 'touchstart' : 'mousedown', repeat);
+            element.bind(IS_MOBILE ? 'touchend touchleave touchcancel' : 'mouseup mouseleave', cancelRepeating);
         }
     };
 }]);

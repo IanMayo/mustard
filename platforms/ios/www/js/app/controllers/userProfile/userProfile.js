@@ -1,5 +1,6 @@
 angular.module('mustard.app.userProfile', [
     'mustard.app.user',
+    'mustard.app.splashScreen',
     'mustard.game.message',
     'LocalStorageModule'
 ])
@@ -8,7 +9,7 @@ angular.module('mustard.app.userProfile', [
  * @module Profile
  * @class ProfileCtrl (controller)
  */
-.controller('ProfileCtrl', function ($scope, user, localStorageService, $location, message) {
+.controller('ProfileCtrl', function ($scope, $timeout, user, localStorageService, $location, message, splashScreen) {
 
     /**
      * GOD CONSOLE METHODS
@@ -99,4 +100,13 @@ angular.module('mustard.app.userProfile', [
             }
         );
     };
+
+    $scope.showSplash = function () {
+        splashScreen.unblock();
+        splashScreen.show();
+
+        $timeout(function () {
+            splashScreen.hide();
+        }, 3000);
+    }
 });
