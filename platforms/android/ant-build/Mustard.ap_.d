@@ -62,6 +62,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/messages.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/mission-simulator.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers.png \
@@ -86,6 +87,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/logo.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mockup.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/twitter.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac/atlases \
@@ -3101,11 +3103,13 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserMissions \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady/cordovaReady.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex/missionsIndex.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend/mockUserBackend.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserMissions/mockUserMissions.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user/user.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/controllers \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives \

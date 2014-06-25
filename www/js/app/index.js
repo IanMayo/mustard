@@ -17,9 +17,6 @@
  * under the License.
  */
 var app = {
-    // Delay after that we close the splash screen
-    splashScreenDelay: 3000,
-
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -36,10 +33,6 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        setTimeout(function() {
-            navigator.splashscreen.hide();
-        }, app.splashScreenDelay);
-
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event

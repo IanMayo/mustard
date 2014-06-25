@@ -10,6 +10,7 @@ angular.module('mustard', [
     'mustard.app.options',
     'mustard.app.debug',
     'mustard.app.missionsIndex',
+    'mustard.app.splashScreen',
     'mustard.game.simulator',
     'mustard.game.review',
     'ui.bootstrap',
@@ -17,14 +18,17 @@ angular.module('mustard', [
 ])
 
 /**
- * Global Configuration
+ * Constants
+ *
+ * IS_MOBILE determines if browser supports touch events also it indicates a mobile device
+ * SPLASH_ON_LOGIN & SPLASH_ON_MAIN these are created for Ian's splash screen testing
  */
 .constant('APP_DEBUG', true)
+.constant('IS_MOBILE', Modernizr.touch)
+.constant('SPLASH_ON_LOGIN', true)
+.constant('SPLASH_ON_MAIN', false)
 
-/**
- * Routing Configuration
- */
-.config(function ($routeProvider, APP_DEBUG) {
+.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
 
     if (APP_DEBUG) {
         $routeProvider.when('/debug', {
@@ -36,7 +40,12 @@ angular.module('mustard', [
     $routeProvider
         .when('/login', {
             controller: 'LoginCtrl',
-            templateUrl: 'js/app/controllers/login/login.tpl.html'
+            templateUrl: 'js/app/controllers/login/login.tpl.html',
+            resolve: {
+                splash: IS_MOBILE ? angular.noop : ['splashScreen', function (splashScreen) {
+                    return splashScreen.resolver(SPLASH_ON_LOGIN);
+                }]
+            }
         })
 
         .when('/register', {
@@ -50,6 +59,9 @@ angular.module('mustard', [
             resolve: {
                 levels: ['missionsIndex', function (missionsIndex) {
                     return missionsIndex.getLevels();
+                }],
+                splash: IS_MOBILE ? angular.noop : ['splashScreen', function (splashScreen) {
+                    return splashScreen.resolver(SPLASH_ON_MAIN);
                 }]
             }
         })
@@ -102,7 +114,7 @@ angular.module('mustard', [
 
 }).run(function ($rootScope, $location, user) {
 
-    $rootScope.$on("$locationChangeStart", function () {
+    $rootScope.$on("$routeChangeStart", function () {
         !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');
     });
 });
