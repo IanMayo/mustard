@@ -41,6 +41,7 @@ angular.module('mustard.app.mockUserMissions', [
         angular.forEach(missions, function (mission, key) {
             user.missions.push({
                 id: mission.id,
+                name: mission.name,
                 status: getMockMissionStatus(user.name, key, missionsLength)
             });
         });
