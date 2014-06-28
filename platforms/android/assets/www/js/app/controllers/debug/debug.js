@@ -1,5 +1,6 @@
 angular.module('mustard.app.debug', [
     'mustard.app.user',
+    'mustard.app.splashScreen',
     'mustard.game.message',
     'LocalStorageModule'
 ])
@@ -8,7 +9,7 @@ angular.module('mustard.app.debug', [
  * @module Debug
  * @class DebugCtrl (controller)
  */
-.controller('DebugCtrl', function ($scope, user, localStorageService, $location, message) {
+.controller('DebugCtrl', function ($scope, $timeout, user, localStorageService, $location, message, splashScreen) {
 
     /**
      * DEBUG CONSOLE METHODS
@@ -99,4 +100,13 @@ angular.module('mustard.app.debug', [
             }
         );
     };
+
+    $scope.showSplash = function () {
+        splashScreen.unblock();
+        splashScreen.show();
+
+        $timeout(function () {
+            splashScreen.hide();
+        }, 3000);
+    }
 });

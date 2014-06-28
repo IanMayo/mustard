@@ -62,6 +62,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/messages.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/mission-simulator.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/profile.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers-2x.png \

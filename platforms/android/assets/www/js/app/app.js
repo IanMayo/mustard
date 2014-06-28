@@ -8,6 +8,7 @@ angular.module('mustard', [
     'mustard.app.mission',
     'mustard.app.userProfile',
     'mustard.app.options',
+    'mustard.app.debug',
     'mustard.app.missionsIndex',
     'mustard.app.splashScreen',
     'mustard.game.simulator',
@@ -22,11 +23,19 @@ angular.module('mustard', [
  * IS_MOBILE determines if browser supports touch events also it indicates a mobile device
  * SPLASH_ON_LOGIN & SPLASH_ON_MAIN these are created for Ian's splash screen testing
  */
+.constant('APP_DEBUG', true)
 .constant('IS_MOBILE', Modernizr.touch)
 .constant('SPLASH_ON_LOGIN', true)
 .constant('SPLASH_ON_MAIN', false)
 
-.config(function ($routeProvider, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
+.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
+
+    if (APP_DEBUG) {
+        $routeProvider.when('/debug', {
+            controller: 'DebugCtrl',
+            templateUrl: 'js/app/controllers/debug/debug.tpl.html'
+        })
+    }
 
     $routeProvider
         .when('/login', {
