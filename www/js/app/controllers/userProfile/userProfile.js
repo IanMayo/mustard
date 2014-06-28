@@ -7,5 +7,17 @@ angular.module('mustard.app.userProfile', [
  * @class ProfileCtrl (controller)
  */
 .controller('ProfileCtrl', function ($scope, user) {
-    // Profile code
+    /**
+     * User's achievements
+     *
+     * @type {Array}
+     */
+    $scope.achievements = user.achievements;
+
+    /**
+     * Complete user's missions
+     *
+     * @type {Array}
+     */
+    $scope.completeMissions = _.where(user.missions, {status: 'SUCCESS'});
 });
