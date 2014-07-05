@@ -19,5 +19,5 @@ angular.module('mustard.app.userProfile', [
      *
      * @type {Array}
      */
-    $scope.completeMissions = _.where(user.missions, {status: 'SUCCESS'});
+    $scope.completeMissions = _.where(user.getMissions(), {status: 'SUCCESS'});
 });
