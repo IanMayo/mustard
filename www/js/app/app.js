@@ -8,6 +8,7 @@ angular.module('mustard', [
     'mustard.app.mission',
     'mustard.app.userProfile',
     'mustard.app.options',
+    'mustard.app.credits',
     'mustard.app.debug',
     'mustard.app.missionsIndex',
     'mustard.app.splashScreen',
