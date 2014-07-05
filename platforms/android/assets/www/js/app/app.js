@@ -8,6 +8,7 @@ angular.module('mustard', [
     'mustard.app.mission',
     'mustard.app.userProfile',
     'mustard.app.options',
+    'mustard.app.credits',
     'mustard.app.debug',
     'mustard.app.missionsIndex',
     'mustard.app.splashScreen',
@@ -84,6 +85,11 @@ angular.module('mustard', [
         .when('/options', {
             controller: 'OptionsCtrl',
             templateUrl: 'js/app/controllers/options/options.tpl.html'
+        })
+
+        .when('/credits', {
+            controller: 'CreditsCtrl',
+            templateUrl: 'js/app/controllers/credits/credits.tpl.html'
         })
 
         .when('/game/mission/:scenario', {

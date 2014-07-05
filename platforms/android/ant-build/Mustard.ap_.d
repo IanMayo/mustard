@@ -3074,6 +3074,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/missionsIndex \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/credits \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/debug \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/login \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/main \
@@ -3081,6 +3082,8 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/options \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/registration \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/userProfile \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/credits/credits.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/credits/credits.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/debug/debug.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/debug/debug.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/login/login.js \
