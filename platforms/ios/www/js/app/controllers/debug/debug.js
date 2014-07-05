@@ -72,7 +72,7 @@ angular.module('mustard.app.debug', [
 
     $scope.logout = function () {
         user.deauthorizeUser();
-        $location.path('/');
+        $location.path('/login');
     };
 
     $scope.saveUser = function () {

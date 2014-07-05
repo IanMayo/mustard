@@ -3,14 +3,14 @@
  */
 
 angular.module('mustard.app.mockUserBackend', [
-    'mustard.app.mockUserMissions'
+    'mustard.app.mockUserLevels'
 ])
 
-.factory('mockUserBackend', function ($http, $q, mockUserMissions) {
+.factory('mockUserBackend', function ($http, $q, mockUserLevels) {
 
     return {
         /**
-         * It returns the mock user data by its username
+         * It returns the mock user data based on username
          *
          * @param username
          * @returns {promise}
@@ -22,7 +22,7 @@ angular.module('mustard.app.mockUserBackend', [
                 method: 'GET',
                 url: 'js/app/mockUsers/' + username + '.json'
             }).success(function (response) {
-                mockUserMissions.process(response).then(function (user) {
+                mockUserLevels.process(response).then(function (user) {
                     deferred.resolve(user);
                 });
             });
@@ -31,7 +31,7 @@ angular.module('mustard.app.mockUserBackend', [
         },
 
         /**
-         * It emulates possible API call for the user saving on the remote server
+         * It emulates saving of user on the server
          *
          * @param user
          * @returns {promise}

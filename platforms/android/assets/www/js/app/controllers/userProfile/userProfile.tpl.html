@@ -15,15 +15,29 @@
             <i class="glyphicon glyphicon-star"></i>
             Achievements
           </tab-heading>
-          <ul class="list-group achievements-list">
-            <li data-ng-repeat="achievement in achievements" class="list-group-item">
-              <i class="glyphicon glyphicon-star"></i>
-              {{ achievement.name }}
-            </li>
-            <li data-ng-hide="achievements.length" class="list-group-item">
-              <strong>You don't have achievements</strong>
-            </li>
-          </ul>
+
+          <div class="achievements-list">
+            <div class="panel panel-default" data-ng-show="achievements.length">
+              <div class="panel-heading">
+                <h3 class="panel-title">Achieved items</h3>
+              </div>
+              <table class="table">
+                <tbody>
+                  <tr data-ng-repeat="achievement in achievements">
+                    <td>
+                      <i class="glyphicon glyphicon-star"></i>
+                      {{ achievement.name }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="panel panel-default" data-ng-hide="achievements.length">
+              <div class="panel-body">
+                <strong>You don't have achievements</strong>
+              </div>
+            </div>
+          </div>
         </tab>
 
         <tab>
@@ -31,15 +45,29 @@
             <i class="glyphicon glyphicon-ok"></i>
             Complete Missions
           </tab-heading>
-          <ul class="list-group complete-missions-list">
-            <li data-ng-repeat="mission in completeMissions" class="list-group-item">
-              <i class="glyphicon glyphicon-ok"></i>
-              {{ mission.name }}
-            </li>
-            <li data-ng-hide="completeMissions.length" class="list-group-item">
-              <strong>You don't have complete missions</strong>
-            </li>
-          </ul>
+
+          <div class="levels-with-complete-missions-list">
+            <div class="panel panel-default" data-ng-repeat="level in levels">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ level.name }}</h3>
+              </div>
+              <table class="table">
+                <tbody>
+                  <tr data-ng-repeat="mission in level.missions">
+                    <td>
+                      <i class="glyphicon glyphicon-ok"></i>
+                      {{ mission.name }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="panel panel-default" data-ng-hide="levels.length">
+              <div class="panel-body">
+                <strong>You don't have complete missions</strong>
+              </div>
+            </div>
+          </div>
         </tab>
       </tabset>
 
