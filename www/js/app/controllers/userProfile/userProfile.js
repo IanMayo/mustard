@@ -14,10 +14,18 @@ angular.module('mustard.app.userProfile', [
      */
     $scope.achievements = user.achievements;
 
+
     /**
-     * Complete user's missions
+     * Get the levels with complete missions only
      *
      * @type {Array}
      */
-    $scope.completeMissions = _.where(user.getMissions(), {status: 'SUCCESS'});
+    $scope.levels = [];
+    angular.copy(user.levels, $scope.levels);
+
+    $scope.levels = _.filter($scope.levels, function (level) {
+        level.missions = _.where(level.missions, { status: 'SUCCESS' });
+
+        return level.missions.length;
+    });
 });
