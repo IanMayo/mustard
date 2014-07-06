@@ -46,20 +46,16 @@ angular.module('mustard.app.splashScreen', [])
     return {
         /**
          * Block splash screen
-         *
-         * @returns {Boolean}
          */
         block: function () {
-            return isBlocked = true;
+            isBlocked = true;
         },
 
         /**
          * Unblock splash screen
-         *
-         * @returns {Boolean}
          */
         unblock: function () {
-            return isBlocked = false;
+            isBlocked = false;
         },
 
         /**

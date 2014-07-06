@@ -21,6 +21,24 @@ angular.module('mustard.app.user', [
     };
 
     /**
+     * It parses levels in user data and returns missions collection
+     *
+     * @param user
+     * @returns {Array}
+     */
+    var getMissionsCollection = function (user) {
+        var missions = [];
+
+        _.each(user.levels, function (level) {
+            _.each(level.missions, function (mission) {
+                missions.push(mission);
+            });
+        });
+
+        return missions;
+    };
+
+    /**
      * It changes status of the particular mission
      *
      * @private
@@ -30,7 +48,7 @@ angular.module('mustard.app.user', [
      * @returns {boolean}
      */
     var changeMissionStatus = function (user, missionId, missionStatus) {
-        var mission = _.findWhere(user.missions, {id: missionId});
+        var mission = _.findWhere(getMissionsCollection(user), { id: missionId });
 
         if (mission) {
             mission.status = missionStatus;
@@ -41,7 +59,8 @@ angular.module('mustard.app.user', [
     };
 
 
-    /** if the mission after the one specified is locked, then unlock it
+    /**
+     * If the mission after the one specified is locked, then unlock it
      *
      * @param user the user we're referring to
      * @param missionId the previous mission
@@ -51,7 +70,7 @@ angular.module('mustard.app.user', [
 
         // note: we're using every instead of each so that
         // we can drop out of the loop early (when we find a match)
-        _.every(user.missions, function (mission) {
+        _.every(getMissionsCollection(user), function (mission) {
 
             // is this the mission in question?
             if (mission.id == missionId) {
@@ -63,6 +82,7 @@ angular.module('mustard.app.user', [
                 if (mission.status == 'LOCKED') {
                     // ok, unlock it
                     mission.status = 'UNLOCKED';
+                    saveUserToLocal(user);
 
                     // and drop out of the every loop
                     return false;
@@ -93,10 +113,16 @@ angular.module('mustard.app.user', [
      *        {"name": "Newbie"},
      *        {"name": "Speed Demon"}
      *    ],
-     *    "missions": [
-     *        {"id": "1a", "status": "SUCCESS"},
-     *        {"id": "1b", "status": "UNLOCKED"},
-     *        {"id": "1c", "status": "LOCKED"}
+     *    "levels": [
+     *        {
+     *            "id": "1",
+     *            "name": "Sonar School",
+     *            "missions": [
+     *                {"id": "1a", name: "A", "status": "SUCCESS"},
+     *                {"id": "1b", name: "B", "status": "UNLOCKED"},
+     *                {"id": "1c", name: "C", "status": "LOCKED"}
+     *            ]
+     *        }
      *    ]
      *    "options": {
      *        "audio": 0,
@@ -108,7 +134,7 @@ angular.module('mustard.app.user', [
      */
     var user = {
         name: "",
-        missions: [],
+        levels: [],
         achievements: [],
         options: {},
 
@@ -231,6 +257,15 @@ angular.module('mustard.app.user', [
          */
         missionFailed: function (missionId) {
             return changeMissionStatus(user, missionId, 'FAILURE');
+        },
+
+        /**
+         * Returns missions collection
+         *
+         * @returns {Array}
+         */
+        getMissions: function () {
+            return getMissionsCollection(user);
         },
 
         /**

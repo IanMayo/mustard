@@ -11,7 +11,7 @@
                 "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
             },
             {
-                "id": "0a",
+                "id": "0b",
                 "name": "Reading the display",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
                 "url": "0b_submarine_contacts",
