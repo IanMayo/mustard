@@ -29,17 +29,20 @@
   <link rel="stylesheet" type="text/css" href="css/leaflet.css">
   <link rel="stylesheet" type="text/css" href="css/index.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/options.css">
   <link rel="stylesheet" type="text/css" href="css/messages.css">
   <link rel="stylesheet" type="text/css" href="css/mission-simulator.css">
   <link rel="stylesheet" type="text/css" href="css/stacked-tabs.css">
-  <title>Angular PhoneGap Seed</title>
+  <link rel="stylesheet" type="text/css" href="css/splash.css">
+  <link rel="stylesheet" type="text/css" href="css/profile.css">
+  <title>Mustard - ASW Trainer</title>
 </head>
 <body>
 
 <div class="app-body" ng-view></div>
 
 <!-- Libs -->
-<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="lib/Marker.Rotate.js"></script>
 
@@ -50,6 +53,7 @@
 <script type="text/javascript" src="lib/angular/angular-route.js"></script>
 <script type="text/javascript" src="lib/angular/angular-touch.js"></script>
 <script type="text/javascript" src="lib/angular/angular-local-storage.js"></script>
+<script type="text/javascript" src="lib/angular/angular-animate.js"></script>
 <script type="text/javascript" src="lib/angularjs-slider/dist/rzslider.min.js"></script>
 <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
@@ -70,14 +74,17 @@
 <script type="text/javascript" src="js/app/controllers/main/main.js"></script>
 <script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
 <script type="text/javascript" src="js/app/controllers/userProfile/userProfile.js"></script>
-<script type="text/javascript" src="js/app/controllers/settings/settings.js"></script>
+<script type="text/javascript" src="js/app/controllers/options/options.js"></script>
+<script type="text/javascript" src="js/app/controllers/debug/debug.js"></script>
+<script type="text/javascript" src="js/app/controllers/credits/credits.js"></script>
 
 <!-- App services -->
 <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserBackend/mockUserBackend.js"></script>
-<script type="text/javascript" src="js/app/services/mockUserMissions/mockUserMissions.js"></script>
+<script type="text/javascript" src="js/app/services/mockUserLevels/mockUserLevels.js"></script>
 <script type="text/javascript" src="js/app/services/user/user.js"></script>
 <script type="text/javascript" src="js/app/services/missionsIndex/missionsIndex.js"></script>
+<script type="text/javascript" src="js/app/services/splashScreen/splashScreen.js"></script>
 
 <!-- Game controllers -->
 <script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
@@ -99,6 +106,7 @@
 <script type="text/javascript" src="js/game/directives/clickRepeat/clickRepeat.js"></script>
 <script type="text/javascript" src="js/game/directives/elementVisibility/elementVisibility.js"></script>
 <script type="text/javascript" src="js/game/directives/messageList/messageList.js"></script>
+<script type="text/javascript" src="js/game/directives/notificationIcon/notificationIcon.js"></script>
 
 <!-- Game services -->
 <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>

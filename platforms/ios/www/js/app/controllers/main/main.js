@@ -20,6 +20,14 @@ angular.module('mustard.app.main', ['mustard.app.user'])
     $scope.levels = levels;
 
 
+    /**
+     * Missions collection
+     *
+     * @type {Array}
+     */
+    var userMissions = user.getMissions();
+
+
     /** whether the specified mission is available to the user
      *
      * @param id the mission id
@@ -29,7 +37,7 @@ angular.module('mustard.app.main', ['mustard.app.user'])
         var res = null;
 
         // ok, lookup this id in the player achievements
-        var found = _.find($scope.player.missions, function (ach) {
+        var found = _.find(userMissions, function (ach) {
             return ach.id == id;
         });
 
@@ -72,8 +80,9 @@ angular.module('mustard.app.main', ['mustard.app.user'])
      */
     $scope.glyphFor = function (id) {
         var res = false;
+
         // ok, lookup this id in the player achievemtns
-        var found = _.find($scope.player.missions, function (ach) {
+        var found = _.find(userMissions, function (ach) {
             return ach.id == id;
         });
 
