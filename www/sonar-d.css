@@ -16,12 +16,6 @@
 
 }
 
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2.85px;
-  shape-rendering: crispEdges;  /* gives rough edges */
-}
 #legend {
   position: absolute;
   width: 150px;
@@ -54,14 +48,10 @@
 
 #viz-container{
   display: block;
-  height: 450px;  /* initial height */
+  height: 100%;
   position: relative;
   background-color: #000000;
 }
 #viz-major{
-  height: 450px;
   margin-top: -5px;
-}
-#viz-minor{
-  height: 250px;
 }

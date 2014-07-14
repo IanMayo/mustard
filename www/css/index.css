@@ -79,6 +79,6 @@ spatial-view .leaflet-container
 
 .sonarBearing {
   display: block;
-  height: 400px;
+  height: 100%;
 }
 

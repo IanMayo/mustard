@@ -4,7 +4,7 @@
 
 angular.module('mustard.game.sonarBearing', [])
 
-.directive('sonarBearing', ['$timeout', function ($timeout) {
+.directive('sonarBearing', function () {
     return {
         restrict: 'EA',
         scope: {
@@ -25,80 +25,51 @@ angular.module('mustard.game.sonarBearing', [])
                 heading: "#1A68DB"
             };
             var containerElement = element.children();
-            var sonar_minor_el;
-            var sonar_major_el;
             var plotElements = {
-                sonar_el: containerElement[0],
-                major_el: null,
-                minor_el: null
+                sonarElement: containerElement[0]
             };
 
             angular.forEach(containerElement.children(), function (el, index) {
                 switch(index) {
-                    case 0: sonar_major_el = el;
-                        plotElements.minor_el = el;
+                    case 0: plotElements.liveGraphElement = el;
                         break;
-                    case 1: sonar_minor_el = el;
-                        plotElements.major_el = el;
+                    case 1: plotElements.reviewGraphElement = el;
                         break;
                 }
             });
 
-            var pointClickCallback = function (point) {
-                // 'Safe' $apply
-                $timeout(function () {
-                    scope.$emit('sonarTrackSelected', point.key);
-                });
-            };
+            var options = _.extend({}, plotElements, colors);
 
-            var configurePlots = function () {
-                var firstRunTime = new Date().getTime();
+            var plotGraphs = PlotGraphs(options);
+            plotGraphs.createPlot();
 
-                // set major viz's yDomain
-                plot.major_viz().yDomain([firstRunTime - options.PAST_TIME_JAR, firstRunTime + options.LIVE_TIME_JAR ]);
-                plot.major_viz()();
-
-                plot.major_viz().onclick(pointClickCallback);
-                plot.minor_viz().onclick(pointClickCallback);
-            };
-
-            var addDetection = function(time, seriesName, bearing, strength) {
-                plot.addDetection(time, seriesName, bearing, strength);
-            };
-
-            var options = _.extend({
-                PAST_TIME_JAR: 16 * 60 * 1000,
-                LIVE_TIME_JAR: 1 * 60 * 1000
-            }, plotElements, colors);
-
-            var plot = PlotSonar()
-                .options(options)  // do initialization settings
-                .createPlot();
-
-            configurePlots();
-
-            scope.$on('addDetections', function (event, dataValues) {
+            scope.$on('addDetections', function addDetectionsToPlots(event, dataValues) {
                 // extract track names from detections
                 var tracks = [].concat(_.pluck(scope.series, 'trackId'));
                 // replace default label names by track names
-                labels = _.map(labels, function (label, index) {
+                labels = _.map(labels, function mapLabels(label, index) {
                     return tracks[index] || label;
                 });
 
-
                 _.each(dataValues, function (values) {
+                    var detections = [];
                     var time = values[0];
-                    var currentTime = new Date();
-                    currentTime.setSeconds(time.getSeconds());
-                    currentTime.setMinutes(time.getMinutes());
-                    var detections = _.rest(values);
+                    var currentTime = new Date(time.getTime());
+                    var detectionsValue = _.rest(values);
                     _.each(labels, function (label, index) {
-                        if (detections[index]) {
-                            addDetection(currentTime, label, detections[index], lineStroke);
+                        if (detectionsValue[index]) {
+                            detections.push({
+                                name: label,
+                                date: currentTime,
+                                degree: detectionsValue[index],
+                                strength: lineStroke
+                            });
                         }
                     });
+
+                    plotGraphs.addDetection(detections);
                 })
             });
         }
     }
-}]);
+});
