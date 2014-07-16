@@ -7,7 +7,7 @@
         var xTickFormat = function (d) {return (d <= 180) ? ((d + 180) === 360 ? 0: (d + 180)) : d - 180};
         var xTickFormatInverse = function (d) {return (d <= 180) ? d + 180 : d - 180;};
 
-        var d3MapDetections = d3.map([]);
+        var d3MapDetections = {};
         var detectionKeys = {x: 'degree', y: 'date'};
         var renderedDetections = {};
         var graph;
@@ -21,8 +21,10 @@
         var xAxisElement;
         var yAxisElement;
 
-        var yAxis = d3.time.scale();
-        var xAxis;
+        var yAxisScale = d3.time.scale();
+        var xComponent;
+
+        var initialTime;
 
         var config = {
             containerElement: null,
@@ -31,7 +33,8 @@
             detectionPointRadii: {rx: 0, ry: 0},
             yAxisLabel: "Time",
             showXAxis: true,
-            margin: {top: 25, left: 100, bottom: 5, right: 50}
+            margin: {top: 25, left: 100, bottom: 5, right: 50},
+            detectionSelect: function () {}
         };
 
         init();
@@ -64,11 +67,11 @@
         }
 
         function configureScale() {
-            xAxis = d3.scale.linear()
+            xComponent = d3.scale.linear()
                 .domain(xDomain)
                 .range([0, containerElementSize.width]);
 
-            yAxis.range([containerElementSize.height, 0]);
+            yAxisScale.range([containerElementSize.height, 0]);
         }
 
         function addClipPath() {
@@ -81,29 +84,29 @@
                 .attr('width', containerElementSize.width)
                 .attr('height', containerElementSize.height);
 
-            graph.append('defs')
-                .append('marker')
-                .attr('id', 'pathMarker_' + config.containerElement.id)
-                .attr('markerWidth', 6)
-                .attr('markerHeight', 9)
+            graph
+                .append('defs')
                 .append('ellipse')
                 .attr('cx', 2.5)
                 .attr('cy', 4)
                 .attr('rx', config.detectionPointRadii.rx)
                 .attr('ry', config.detectionPointRadii.ry)
+                .attr('id', 'pathMarker_' + config.containerElement.id)
                 .style({'fill': 'rgb(170, 206, 0)'});
         }
 
         function addGxAxis() {
+            xComponent.axis = d3.svg.axis()
+                .scale(xComponent)
+                .tickValues(xTickValues)
+                .tickFormat(xTickFormat)
+                .orient("top");
+
             xAxisElement = graph.append('g')
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0, 0)')
                 .style('opacity', config.showXAxis ? 1 : 0)
-                .call(xAxis.axis = d3.svg.axis()
-                    .scale(xAxis)
-                    .tickValues(xTickValues)
-                    .tickFormat(xTickFormat)
-                    .orient("top"))
+                .call(xComponent.axis);
 
             xAxisElement.append('text')
                 .classed('axis-unit', true)
@@ -115,16 +118,18 @@
         }
 
         function addGyAxis() {
+            yAxisScale.axis = d3.svg.axis()
+                .scale(yAxisScale)
+                .ticks(config.yTicks)
+                .tickFormat(function (d) {
+                    return yAxisFormat(d);
+                })
+                .orient('left');
+
             yAxisElement = graph.append('g')
                 .attr('class', 'y axis')
                 .attr('transform', 'translate(0,0)')
-                .call(yAxis.axis = d3.svg.axis()
-                    .scale(yAxis)
-                    .ticks(config.yTicks)
-                    .tickFormat(function (d) {
-                        return yAxisFormat(d);
-                    })
-                    .orient('left'));
+                .call(yAxisScale.axis);
 
             yAxisElement
                 .append('text')
@@ -144,61 +149,61 @@
             if (currentDate) {
                 firstRunTime = currentDate.getTime();
 
-                yAxis.domain([firstRunTime - config.yDomainDensity * 60 * 1000, firstRunTime]);
+                yAxisScale.domain([firstRunTime - config.yDomainDensity * 60 * 1000, firstRunTime]);
                 yAxisElement
-                    .call(yAxis.axis);
+                    .call(yAxisScale.axis);
             }
         }
 
+        function appendDetectionPointToGroup(group, detection, name) {
+            return group
+                .append('use')
+                .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
+                .attr('x', xComponent(xTickFormatInverse(detection[detectionKeys.x])))
+                .attr('y', -yAxisScale(initialTime))
+                .attr('class', name)
+        }
+
         function render() {
-            _.each(d3MapDetections.entries(), function (detection) {
-                if (detection.key === 'Time' || detection.key === 'S1' || detection.key === 'S2') {
-                    // skip useless paths
-                    return;
-                }
+            _.each(d3MapDetections, function (detection, name) {
 
-                if (!renderedDetections[detection.key]) {
-                    // there is no element, need to create it
+                if (!renderedDetections[name]) {
                     var data = [];
+                    var group = gMain.append('g')
+                        .attr('class', 'line ' + name)
+                    .on('click', function () {
+                            var detectionName = '';
+                            if(event.target.getAttribute) {
+                                detectionName = event.target.getAttribute('class');
+                            } else if (event.target.correspondingUseElement) {
+                                detectionName = event.target.correspondingUseElement.getAttribute('class');
+                            } else {
+                                alert('Can\'t get class attribute of the target');
+                            }
+                            config.detectionSelect(detectionName);
+                    });
 
-                    var line = d3.svg.line()
-                        .interpolate('linear')
-                        .y(function(d) {
-                            return yAxis(d[detectionKeys.y]);
-                        })
-                        .x(function(d) {
-                            return xAxis(xTickFormatInverse(d[detectionKeys.x]));
-                        });
-
-                    var path = gMain
-                        .append("path")
-                        .data([data])
-                        .attr("d", line)
-                        .attr('marker-mid', 'url(#pathMarker_' + config.containerElement.id +')')
-                        .style('stroke-opacity', 0)
-                        .attr('fill', 'none')
-                        .attr('class', 'line ' + detection.key);
-
-
-                    // add detection path to the list
-                    renderedDetections[detection.key] = {
-                        path: path,
-                        line: line,
-                        data: data
+                    detection.pointElement = appendDetectionPointToGroup(group, detection, name);
+//                    // there is no element, need to create it
+                    data.push(detection);
+                    renderedDetections[name] = {
+                        data: data,
+                        group: group
                     };
 
                 } else {
-                    var lastPoint = _.last(detection.value);
+                    // move group element
+                    renderedDetections[name].group
+                        .attr('transform', 'translate(0, ' + yAxisScale(initialTime) +')');
 
-                    if (renderedDetections[detection.key]) {
-                        renderedDetections[detection.key].data.push(lastPoint);
-                        renderedDetections[detection.key].path
-                            .attr('d', function (d) {return renderedDetections[detection.key].line(d)})
-                            .attr("transform", null);
+                    if (!renderedDetections[name].isExpired) {
+                        detection.pointElement = appendDetectionPointToGroup(renderedDetections[name].group, detection, name);
+                        renderedDetections[name].data.push(detection);
 
-                        if (yAxis.domain()[0].getTime() >
-                            (_.first(renderedDetections[detection.key].data).date.getTime() + 1 * 1 * 1000)) {
-                            renderedDetections[detection.key].data.shift();
+                        if (yAxisScale.domain()[0].getTime() >
+                            (_.first(renderedDetections[name].data).date.getTime() + 1 * 60 * 1000)) {
+                            var expiredDetection = renderedDetections[name].data.shift();
+                            expiredDetection.pointElement.remove();
                         }
                     }
                 }
@@ -214,37 +219,68 @@
         function addDetection(detections){
             // create list of path names from detections
             _.each(detections, function (detection) {
+                // exclude a detection path name from the list
                 addDatapoint(d3MapDetections, detection);
             });
+
+            findExpiredDetections(detections);
 
             render();
             changeYAxisDomain(detections);
         }
 
+        function findExpiredDetections(detections) {
+            var existedDetections = _.keys(renderedDetections);
+            var newDetections = _.pluck(detections, 'name');
+            var expiredDetections = [];
+
+            _.each(existedDetections, function (detection) {
+                if (!_.contains(newDetections, detection)) {
+                    expiredDetections.push(detection);
+                    renderedDetections[detection].isExpired = true;
+                }
+            });
+
+            if (expiredDetections.length) {
+                // if list still contains detections - just move the corresponded path
+                removeExpiredDetection(d3MapDetections, expiredDetections);
+            }
+        }
+
+        function removeExpiredDetection(_map_detections, datapoints) {
+            _.each(datapoints, function (datapoint) {
+
+            var expiredDetection = renderedDetections[datapoint].data.shift();
+                expiredDetection.pointElement.remove();
+
+                if (!renderedDetections[datapoint].data.length) {
+                    delete renderedDetections[datapoint];
+                    delete _map_detections[datapoint];
+                    $('#' + config.containerElement.id + ' .' + datapoint).remove();
+                }
+            });
+        }
+
         function addDatapoint(dataset, row) {
-            // check if key exists
-            if ( dataset.has(row.name) ) {
-                var dataSet = dataset.get(row.name);
-                dataSet.push({
-                    date: row.date,
-                    degree: row.degree,
-                    strength: row.strength ? row.strength : null
-                });
-                dataSet.shift();
-            } else {
-//              // add the new key
-                dataset.set(row.name, [{
-                        date: row.date,
-                        degree: row.degree,
-                        strength: row.strength ? row.strength : null
-                    }]
-                );
+            if (row.name === 'Time' || row.name === 'S1' || row.name === 'S2') {
+                // skip useless paths
+                return;
+            }
+
+            dataset[row.name] = {
+                date: row.date,
+                degree: row.degree,
+                strength: row.strength ? row.strength : null
+            };
+
+            if (!initialTime) {
+                initialTime = row.date;
             }
         }
 
         function changeGraphHeight(dimension) {
             elementSize(dimension);
-            yAxis.range([containerElementSize.height, 0]);
+            yAxisScale.range([containerElementSize.height, 0]);
         }
 
         return {

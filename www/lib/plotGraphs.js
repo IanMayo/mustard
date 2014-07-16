@@ -6,7 +6,8 @@
             sonarElement: null,
             reviewGraphElement: null,
             liveGraphElement: null,
-            liveGraphTimeLength : 1 * 60 * 1000, // 1 minute in milliseconds
+            liveGraphDuration: 1, // minutes
+            reviewGraphDuration: 8, // minutes
             colors : {
                 indicator: "#aace00",
                 heading: "#1A68DB"
@@ -14,6 +15,7 @@
         };
 
         var config = _.extend(config, options);
+        var reviewGraphTimeLatency = config.liveGraphDuration * 60 * 1000; // milliseconds
         var seriesStack = [];
         var liveGraph,
             reviewGraph;
@@ -51,7 +53,7 @@
 
         function fixTime(detection) {
             var detection = _.extend({}, detection); // "copy" object
-            var time = detection.date.getTime() - config.liveGraphTimeLength;
+            var time = detection.date.getTime() - reviewGraphTimeLatency;
             detection.date = new Date(time);
             return detection;
         }
@@ -64,7 +66,7 @@
             seriesStack.push(series);
             lastDetectionTime = series[0].date.getTime();
 
-            if (lastDetectionTime > config.liveGraphTimeLength) {
+            if (lastDetectionTime > reviewGraphTimeLatency) {
                 reviewGraph.addDetection(seriesStack.shift());
             } else {
                 var detectionsForAxis = _.map(series, fixTime);
@@ -76,21 +78,23 @@
             liveGraph = sonarGraph({
                 containerElement: config.liveGraphElement,
                 yTicks: 5,
-                yDomainDensity: 1,
-                detectionPointRadii: {rx: 2.33, ry: 4.29},
+                yDomainDensity: config.liveGraphDuration,
+                detectionPointRadii: {rx: 1.5, ry: 3},
                 yAxisLabel: '',
-                elementSize: graphDimension($liveGraphElement)
+                elementSize: graphDimension($liveGraphElement),
+                detectionSelect: config.detectionSelect
             });
 
             reviewGraph = sonarGraph({
                 containerElement: config.reviewGraphElement,
                 yTicks: 12,
-                yDomainDensity: 16,
+                yDomainDensity: config.reviewGraphDuration,
                 detectionPointRadii: {rx: 2, ry: 1},
                 yAxisLabel: '',
                 showXAxis: false,
                 margin: {top: 0, left: 100, bottom: 10, right: 50},
-                elementSize: graphDimension($reviewGraphElement)
+                elementSize: graphDimension($reviewGraphElement),
+                detectionSelect: config.detectionSelect
             });
         }
 

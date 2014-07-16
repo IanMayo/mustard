@@ -4,7 +4,7 @@
 
 angular.module('mustard.game.sonarBearing', [])
 
-.directive('sonarBearing', function () {
+.directive('sonarBearing', ['$timeout', function ($timeout) {
     return {
         restrict: 'EA',
         scope: {
@@ -38,7 +38,14 @@ angular.module('mustard.game.sonarBearing', [])
                 }
             });
 
-            var options = _.extend({}, plotElements, colors);
+            var pointClickCallback = function (detectionName) {
+                // 'Safe' $apply
+                $timeout(function () {
+                    scope.$emit('sonarTrackSelected', detectionName);
+                });
+            };
+
+            var options = _.extend({detectionSelect: pointClickCallback}, plotElements, colors);
 
             var plotGraphs = PlotGraphs(options);
             plotGraphs.createPlot();
@@ -72,4 +79,4 @@ angular.module('mustard.game.sonarBearing', [])
             });
         }
     }
-});
+}]);
