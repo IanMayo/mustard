@@ -152,10 +152,27 @@ angular.module('mustard.app.debug', [
                 $location.path('/main');
             },
             function () {
-                console.log('next mission call');
+                console.log('review mission call');
             },
             function () {
-                console.log('review mission call');
+                console.log('next mission call');
+            }
+        ).result.then(function () {
+            console.log('popup was closed');
+        });
+    };
+
+    $scope.showFailedMission = function () {
+        message.showMissionFailed(
+            $scope.objectives,
+            function () {
+                $location.path('/main');
+            },
+            function () {
+                console.log('brief mission call');
+            },
+            function () {
+                console.log('replay mission call');
             }
         ).result.then(function () {
             console.log('popup was closed');
