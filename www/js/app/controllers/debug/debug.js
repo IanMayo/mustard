@@ -47,6 +47,49 @@ angular.module('mustard.app.debug', [
         {title: 'We detect a submarine?', type: 'danger', text: 'Message #26', time: localTime}
     ];
 
+    $scope.objectives = [
+        {
+            name: 'Gain & keep contact',
+            type: 'SEQUENCE',
+            children: [
+                {
+                    name: 'Gain contact',
+                    complete: true,
+                    description: 'Gain contact on the training target',
+                    type: 'GAIN_CONTACT',
+                    elapsed: 480,
+                    success: 'Well done, you have gained contact within the' +
+                        ' 8 minute limit. Try to keep trailing it for the next hour.',
+                    failure: 'Sorry, you did not make contact in time. You do just have to keep heading East!'
+                },
+                {
+                    name: 'Maintain contact',
+                    complete: true,
+                    description: 'Maintain contact on the training target for one hour',
+                    type: 'MAINTAIN_CONTACT',
+                    elapsed: 3600,
+                    success: 'Well done, you have held contact for one hour',
+                    failure: 'More practice needed, you only held contact for [time] minutes.'
+                },
+                {
+                    name: 'Gain contact',
+                    complete: false,
+                    description: 'Gain contact on the training target',
+                    type: 'GAIN_CONTACT',
+                    elapsed: 480,
+                    success: 'Well done, you have gained contact within the' +
+                        ' 8 minute limit. Try to keep trailing it for the next hour.',
+                    failure: 'Sorry, you did not make contact in time. You do just have to keep heading East!'
+                }
+            ]
+        }
+    ];
+
+    $scope.achievements = [
+        {name: 'Speed Demon'},
+        {name: 'Spitfire'}
+    ];
+
     $scope.user = user;
     $scope.userInStorage = localStorageService.get('user');
 
@@ -99,6 +142,24 @@ angular.module('mustard.app.debug', [
                 message.show('danger', 'No!', 'You pushed no button');
             }
         );
+    };
+
+    $scope.showCompleteMission = function () {
+        message.showMissionComplete(
+            $scope.objectives,
+            $scope.achievements,
+            function () {
+                $location.path('/main');
+            },
+            function () {
+                console.log('next mission call');
+            },
+            function () {
+                console.log('review mission call');
+            }
+        ).result.then(function () {
+            console.log('popup was closed');
+        });
     };
 
     $scope.showSplash = function () {
