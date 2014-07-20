@@ -29,6 +29,17 @@ angular.module('mustard.game.message', [])
     };
 
     /**
+     * Mission complete modal message options
+     *
+     * @type {Object}
+     */
+    var missionCompleteOptions = {
+        templateUrl: 'js/game/services/message/missionComplete.tpl.html',
+        backdrop: 'static',
+        controller: missionCompleteController
+    };
+
+    /**
      * Modal instance controller for the message
      *
      * @param $scope
@@ -60,6 +71,34 @@ angular.module('mustard.game.message', [])
         $scope.ok = function () {
             $modalInstance.close('ok');
         };
+    }
+
+    /**
+     * Modal instance controller for the "mission complete" message
+     *
+     * @param $scope
+     * @param $modalInstance
+     * @param missionCompleteData
+     */
+    function missionCompleteController ($scope, $modalInstance, missionCompleteData) {
+
+        $scope.objectives = missionCompleteData.objectives;
+        $scope.achievements = missionCompleteData.achievements;
+
+        $scope.menu = function () {
+            missionCompleteData.menu();
+            $modalInstance.close('ok');
+        };
+
+        $scope.next = function () {
+            missionCompleteData.next();
+            $modalInstance.close('ok');
+        };
+
+        $scope.review = function () {
+            missionCompleteData.review();
+            $modalInstance.close('ok');
+        }
     }
 
     return {
@@ -100,6 +139,51 @@ angular.module('mustard.game.message', [])
                 resolve: {
                     messages: function () {
                         return messages;
+                    }
+                }
+            }));
+        },
+
+        /**
+         * It shows the modal popup window with proper controls when user complete some mission
+         * also it can show the list of user achievements which were achieved in the mission
+         *
+         * @example
+         * message.showMissionComplete(
+         *     [{}], // objectives collection
+         *     [{}], // achievements collection
+         *     function () {
+         *         // main menu
+         *     },
+         *     function () {
+         *         // next mission
+         *     },
+         *     function () {
+         *         // review mission
+         *     }
+         * ).result.then(function () {
+         *     // popup is closed
+         * });
+         *
+         * @param objectives
+         * @param achievements
+         * @param menuCb main menu callback
+         * @param nextCb next mission callback
+         * @param reviewCb review mission callback
+         * @returns {Object}
+         */
+        showMissionComplete: function (objectives, achievements, menuCb, nextCb, reviewCb) {
+
+            return $modal.open(angular.extend(missionCompleteOptions, {
+                resolve: {
+                    missionCompleteData: function () {
+                        return {
+                            objectives: objectives,
+                            achievements: achievements,
+                            menu: angular.isFunction(menuCb) ? menuCb : angular.noop,
+                            next: angular.isFunction(nextCb) ? nextCb : angular.noop,
+                            review: angular.isFunction(reviewCb) ? reviewCb : angular.noop
+                        }
                     }
                 }
             }));
