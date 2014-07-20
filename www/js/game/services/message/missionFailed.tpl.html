@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <i class="glyphicon glyphicon-remove"></i>
+    Mission failed
+  </h4>
+</div>
+
+<div class="modal-body">
+
+  <div class="panel panel-info" ng-repeat="objective in objectives">
+    <div class="panel-heading">
+      <h5>{{ objective.name }}</h5>
+    </div>
+    <div class="panel-body text-center">
+      <h1 class="objective" ng-repeat="childObjective in objective.children">
+        <i class="glyphicon glyphicon-screenshot" ng-class="{active: childObjective.complete}"></i>
+      </h1>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="menu()">Main Menu</button>
+  <button type="button" class="btn btn-warning" ng-click="brief()">Mission Brief</button>
+  <button type="button" class="btn btn-success" ng-click="replay()">Replay</button>
+</div>

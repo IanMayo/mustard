@@ -40,6 +40,17 @@ angular.module('mustard.game.message', [])
     };
 
     /**
+     * Mission failed modal message options
+     *
+     * @type {Object}
+     */
+    var missionFailedOptions = {
+        templateUrl: 'js/game/services/message/missionFailed.tpl.html',
+        backdrop: 'static',
+        controller: missionFailedController
+    };
+
+    /**
      * Modal instance controller for the message
      *
      * @param $scope
@@ -90,15 +101,42 @@ angular.module('mustard.game.message', [])
             $modalInstance.close('ok');
         };
 
+        $scope.review = function () {
+            missionCompleteData.review();
+            $modalInstance.close('ok');
+        };
+
         $scope.next = function () {
             missionCompleteData.next();
             $modalInstance.close('ok');
         };
+    }
 
-        $scope.review = function () {
-            missionCompleteData.review();
+    /**
+     * Modal instance controller for the "mission complete" message
+     *
+     * @param $scope
+     * @param $modalInstance
+     * @param missionFailedData
+     */
+    function missionFailedController ($scope, $modalInstance, missionFailedData) {
+
+        $scope.objectives = missionFailedData.objectives;
+
+        $scope.menu = function () {
+            missionFailedData.menu();
             $modalInstance.close('ok');
-        }
+        };
+
+        $scope.brief = function () {
+            missionFailedData.brief();
+            $modalInstance.close('ok');
+        };
+
+        $scope.replay = function () {
+            missionFailedData.replay();
+            $modalInstance.close('ok');
+        };
     }
 
     return {
@@ -156,11 +194,11 @@ angular.module('mustard.game.message', [])
          *         // main menu
          *     },
          *     function () {
-         *         // next mission
-         *     },
-         *     function () {
          *         // review mission
          *     }
+         *     function () {
+         *         // next mission
+         *     },
          * ).result.then(function () {
          *     // popup is closed
          * });
@@ -168,11 +206,11 @@ angular.module('mustard.game.message', [])
          * @param objectives
          * @param achievements
          * @param menuCb main menu callback
-         * @param nextCb next mission callback
          * @param reviewCb review mission callback
+         * @param nextCb next mission callback
          * @returns {Object}
          */
-        showMissionComplete: function (objectives, achievements, menuCb, nextCb, reviewCb) {
+        showMissionComplete: function (objectives, achievements, menuCb, reviewCb, nextCb) {
 
             return $modal.open(angular.extend(missionCompleteOptions, {
                 resolve: {
@@ -181,8 +219,49 @@ angular.module('mustard.game.message', [])
                             objectives: objectives,
                             achievements: achievements,
                             menu: angular.isFunction(menuCb) ? menuCb : angular.noop,
-                            next: angular.isFunction(nextCb) ? nextCb : angular.noop,
-                            review: angular.isFunction(reviewCb) ? reviewCb : angular.noop
+                            review: angular.isFunction(reviewCb) ? reviewCb : angular.noop,
+                            next: angular.isFunction(nextCb) ? nextCb : angular.noop
+                        }
+                    }
+                }
+            }));
+        },
+
+        /**
+         * It shows the modal popup window with proper controls when user failed some mission
+         *
+         * @example
+         * message.showMissionComplete(
+         *     [{}], // objectives collection
+         *     function () {
+         *         // main menu
+         *     },
+         *     function () {
+         *         // brief mission
+         *     }
+         *     function () {
+         *         // replay mission
+         *     },
+         * ).result.then(function () {
+         *     // popup is closed
+         * });
+         *
+         * @param objectives
+         * @param menuCb main menu callback
+         * @param briefCb review mission callback
+         * @param replayCb next mission callback
+         * @returns {Object}
+         */
+        showMissionFailed: function (objectives, menuCb, briefCb, replayCb) {
+
+            return $modal.open(angular.extend(missionFailedOptions, {
+                resolve: {
+                    missionFailedData: function () {
+                        return {
+                            objectives: objectives,
+                            menu: angular.isFunction(menuCb) ? menuCb : angular.noop,
+                            brief: angular.isFunction(briefCb) ? briefCb : angular.noop,
+                            replay: angular.isFunction(replayCb) ? replayCb : angular.noop
                         }
                     }
                 }
