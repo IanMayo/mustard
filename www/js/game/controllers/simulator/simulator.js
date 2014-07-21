@@ -339,26 +339,7 @@ angular.module('mustard.game.simulator', [
                     // hey was it success or failure?
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
-                    }
-                    else if ($scope.gameState.state == "FAILURE") {
-                        user.missionFailed($scope.missionID);
-                    }
 
-                    // for diagnostics, show any narrative entries
-                    if ($scope.gameState.narratives) {
-                        var showOnConsole = function (element) {
-                            console.log("narrative. time:" + element.time + " location:" + element.location +
-                                " msg:" + element.message);
-                        };
-                        console.log("== NARRATIVE ENTRIES FOR THIS MISSION ===");
-                        _.each($scope.gameState.narratives, showOnConsole);
-                        console.log("== ================================== ===");
-                    }
-
-                    // ok, store the snapshot
-                    storeHistory();
-
-                    if ($scope.gameState.state == "SUCCESS") {
                         message.finishMission({
                             title: 'Mission Accomplished',
                             achievements: [], // TODO: Add achievements which user get during the mission
@@ -386,7 +367,10 @@ angular.module('mustard.game.simulator', [
                                 }
                             ]
                         });
-                    } else if ($scope.gameState.state == "FAILURE") {
+                    }
+                    else if ($scope.gameState.state == "FAILURE") {
+                        user.missionFailed($scope.missionID);
+
                         message.finishMission({
                             title: 'Mission Failed',
                             achievements: [], // TODO: Add achievements which user get during the mission
@@ -415,6 +399,20 @@ angular.module('mustard.game.simulator', [
                             ]
                         });
                     }
+
+                    // for diagnostics, show any narrative entries
+                    if ($scope.gameState.narratives) {
+                        var showOnConsole = function (element) {
+                            console.log("narrative. time:" + element.time + " location:" + element.location +
+                                " msg:" + element.message);
+                        };
+                        console.log("== NARRATIVE ENTRIES FOR THIS MISSION ===");
+                        _.each($scope.gameState.narratives, showOnConsole);
+                        console.log("== ================================== ===");
+                    }
+
+                    // ok, store the snapshot
+                    storeHistory();
                 }
             }
         };
