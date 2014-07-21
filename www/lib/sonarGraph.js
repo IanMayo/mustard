@@ -40,7 +40,12 @@
         init();
 
         function init() {
-            config = _.extend(config, options);
+            _.each(options, function (value, key) {
+                if (value !== undefined) {
+                    config[key] = value;
+                }
+            });
+
             addSvgElement();
             elementSize(config.elementSize);
             configureScale();

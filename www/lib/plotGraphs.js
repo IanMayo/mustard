@@ -4,10 +4,7 @@
 
         var config = {
             sonarElement: null,
-            reviewGraphElement: null,
-            liveGraphElement: null,
-            liveGraphDuration: 1, // minutes
-            reviewGraphDuration: 8, // minutes
+            graphs: [],
             colors : {
                 indicator: "#aace00",
                 heading: "#1A68DB"
@@ -15,21 +12,20 @@
         };
 
         var config = _.extend(config, options);
-        var reviewGraphTimeLatency = config.liveGraphDuration * 60 * 1000; // milliseconds
         var seriesStack = [];
-        var liveGraph,
-            reviewGraph;
 
         var $sonarElement = null;
-        var $liveGraphElement = null;
-        var $reviewGraphElement = null;
+        var sonarGraphs = [];
 
         init();
 
         function init() {
             $sonarElement = $(config.sonarElement);
-            $liveGraphElement = $(config.liveGraphElement);
-            $reviewGraphElement = $(config.reviewGraphElement);
+
+            _.map(config.graphs, function (graph) {
+                graph.element = $(graph.element);
+                graph.timeLatency = graph.duration * 60 * 1000; // milliseconds
+            });
 
             fitGraphsHeight();
             $(window).on('resize', windowResizeHandler);
@@ -37,11 +33,10 @@
 
         function fitGraphsHeight() {
             var height = $sonarElement.height();
-            var liveGraphHeight = Math.floor(height * 0.25);
-            var reviewGraphHeight = Math.floor(height * 0.75);
 
-            $liveGraphElement.height(liveGraphHeight);
-            $reviewGraphElement.height(reviewGraphHeight);
+            _.each(config.graphs, function (graph) {
+                graph.element.height(Math.floor(graph.height * height));
+            });
         }
 
         function graphDimension($element) {
@@ -53,7 +48,7 @@
 
         function fixTime(detection) {
             var detection = _.extend({}, detection); // "copy" object
-            var time = detection.date.getTime() - reviewGraphTimeLatency;
+            var time = detection.date.getTime() - _.first(config.graphs).timeLatency;
             detection.date = new Date(time);
             return detection;
         }
@@ -61,47 +56,47 @@
         function addDetection(series) {
             var lastDetectionTime;
 
-            liveGraph.addDetection(series);
+            _.each(sonarGraphs, function (sonar, index) {
+                if (index > 0) {
+                    if (lastDetectionTime > config.graphs[index - 1].timeLatency) {
+                        sonar.addDetection(seriesStack.shift());
+                    } else {
+                        var detectionsForAxis = _.map(series, fixTime);
+                        sonar.changeYAxisDomain(detectionsForAxis);
+                    }
+                } else {
+                    sonar.addDetection(series);
 
-            seriesStack.push(series);
-            lastDetectionTime = series[0].date.getTime();
-
-            if (lastDetectionTime > reviewGraphTimeLatency) {
-                reviewGraph.addDetection(seriesStack.shift());
-            } else {
-                var detectionsForAxis = _.map(series, fixTime);
-                reviewGraph.changeYAxisDomain(detectionsForAxis);
-            }
+                    seriesStack.push(series);
+                    lastDetectionTime = series[0].date.getTime();
+                }
+            });
         }
 
          function addGraphs() {
-            liveGraph = sonarGraph({
-                containerElement: config.liveGraphElement,
-                yTicks: 5,
-                yDomainDensity: config.liveGraphDuration,
-                detectionPointRadii: {rx: 1.5, ry: 3},
-                yAxisLabel: '',
-                elementSize: graphDimension($liveGraphElement),
-                detectionSelect: config.detectionSelect
-            });
+             _.each(config.graphs, function (graph) {
+                 var sonarConfig = {
+                     containerElement: graph.element.get(-1),
+                     yTicks: graph.yTicks,
+                     yDomainDensity: graph.duration,
+                     detectionPointRadii: graph.detectionPointRadii,
+                     yAxisLabel: graph.yAxisLabel,
+                     showXAxis: graph.showXAxis,
+                     margin: graph.margin,
+                     elementSize: graphDimension(graph.element),
+                     detectionSelect: config.detectionSelect
+                 };
 
-            reviewGraph = sonarGraph({
-                containerElement: config.reviewGraphElement,
-                yTicks: 12,
-                yDomainDensity: config.reviewGraphDuration,
-                detectionPointRadii: {rx: 2, ry: 1},
-                yAxisLabel: '',
-                showXAxis: false,
-                margin: {top: 0, left: 100, bottom: 10, right: 50},
-                elementSize: graphDimension($reviewGraphElement),
-                detectionSelect: config.detectionSelect
-            });
+                 sonarGraphs.push(sonarGraph(sonarConfig));
+             });
         }
 
         function windowResizeHandler() {
             fitGraphsHeight();
-            liveGraph.changeGraphHeight(graphDimension($liveGraphElement));
-            reviewGraph.changeGraphHeight(graphDimension($reviewGraphElement));
+
+            _.each(sonarGraphs, function (sonar, index) {
+                sonar.changeGraphHeight(graphDimension(config.graphs[index].element));
+            });
         }
 
         return {
