@@ -77,6 +77,12 @@ angular.module('mustard.game.simulator', [
     $scope.objectives = scenario.objectives;
 
     /**
+     * It should keep achievements that user got during the current scenario
+     * @type {Array}
+     */
+    $scope.reachedAchievements = [];
+
+    /**
      * Welcome message
      * @type {String}
      */
@@ -145,10 +151,10 @@ angular.module('mustard.game.simulator', [
 * @module Game
 * @class MissionCtrl (controller)
 */
-.controller('MissionSimulatorCtrl', ['$scope', '$location', '$interval', '$q', 'geoMath',
+.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$interval', '$q', 'geoMath',
         'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
         '$timeout', 'steppingControls', 'message',
-    function ($scope, $location, $interval, $q, geoMath, movement, decision, objectives, detection,
+    function ($scope, $location, $route, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
         /**
@@ -317,6 +323,8 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
+                                $scope.reachedAchievements.push(element);
+
                                 // TODO: Make a decision to show it as a popup or just a message in list
                                 message.show('success', 'New achievement',
                                     "Well done, you've been awarded a new achievement:\n'" + element.name +
@@ -339,10 +347,11 @@ angular.module('mustard.game.simulator', [
                     // hey was it success or failure?
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
+                        var nextMission = user.getNextMission($scope.missionID);
 
                         message.finishMission({
                             title: 'Mission Accomplished',
-                            achievements: [], // TODO: Add achievements which user get during the mission
+                            achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
                                     text: 'Main Menu',
@@ -362,7 +371,9 @@ angular.module('mustard.game.simulator', [
                                     text: 'Next Mission',
                                     type: 'success',
                                     handler: function () {
-                                        // TODO: Add next mission logic
+                                        nextMission
+                                            ? $location.path('/game/mission/' + nextMission.url)
+                                            : $location.path('/main')
                                     }
                                 }
                             ]
@@ -373,7 +384,7 @@ angular.module('mustard.game.simulator', [
 
                         message.finishMission({
                             title: 'Mission Failed',
-                            achievements: [], // TODO: Add achievements which user get during the mission
+                            achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
                                     text: 'Main Menu',
@@ -386,14 +397,14 @@ angular.module('mustard.game.simulator', [
                                     text: 'Mission Brief',
                                     type: 'warning',
                                     handler: function () {
-                                        // TODO: Add brief logic
+                                        $location.path('/mission/' + $scope.missionID)
                                     }
                                 },
                                 {
                                     text: 'Replay',
                                     type: 'success',
                                     handler: function () {
-                                        // TODO: Add replay mission logic
+                                        $route.reload();
                                     }
                                 }
                             ]
