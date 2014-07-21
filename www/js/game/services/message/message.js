@@ -135,6 +135,37 @@ angular.module('mustard.game.message', [])
          * It shows the modal popup window with proper controls when user finish some mission
          * also it can show the list of user achievements which were achieved in the mission
          *
+         * @example
+         * message.finishMission({
+         *     title: 'Mission Accomplished',
+         *     achievements: $scope.achievements,
+         *     buttons: [
+         *         {
+         *             text: 'Main Menu',
+         *             type: 'default',
+         *             handler: function () {
+         *                 $location.path('/main');
+         *             }
+         *         },
+         *         {
+         *             text: 'Review',
+         *             type: 'warning',
+         *             handler: function () {
+         *                 console.log('Review call');
+         *             }
+         *         },
+         *         {
+         *             text: 'Next Mission',
+         *             type: 'success',
+         *             handler: function () {
+         *                 console.log('Next Mission call');
+         *             }
+         *         }
+         *     ]
+         * }).result.then(function () {
+         *     console.log('popup was closed');
+         * });
+         *
          * @param missionFinishConfig mission finish option parameters
          * @returns {Object}
          */
