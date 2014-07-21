@@ -138,7 +138,7 @@ angular.module('mustard.game.message', [])
          * @example
          * message.finishMission({
          *     title: 'Mission Accomplished',
-         *     achievements: $scope.achievements,
+         *     achievements: [{name: 'Speed Demon'}],
          *     buttons: [
          *         {
          *             text: 'Main Menu',
