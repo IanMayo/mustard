@@ -52,9 +52,15 @@
         }
 
         function addSvgElement() {
-            graph = d3.select(config.containerElement)
+            var svg = d3.select(config.containerElement)
                 .append('svg')
-                .attr('class', 'graph g-wrapper')
+                .attr('class', 'graph g-wrapper');
+
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=779368
+            // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
+            svg.style({width: '100%', height: '100%'});
+
+            graph = svg
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
         }
