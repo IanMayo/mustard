@@ -94,6 +94,37 @@ angular.module('mustard.app.user', [
         })
     };
 
+    /**
+     * It returns the next mission from the passed one
+     *
+     * @param user
+     * @param missionId
+     * @returns {Object}
+     */
+    var getNextAvailableMission = function (user, missionId) {
+        var nextMission = null;
+        var foundId;
+
+        _.every(getMissionsCollection(user), function (mission) {
+            if (mission.id === missionId) {
+                foundId = true;
+
+            } else if (foundId) {
+                switch (mission.status) {
+                    case 'UNLOCKED':
+                    case 'SUCCESS' :
+                    case 'FAILURE' :
+                        nextMission = mission;
+                        return false;
+                }
+            }
+
+            return true;
+        });
+
+        return nextMission;
+    };
+
 
     /**
      * It's IMPORTANT variable which indicates if user is authorized in app
@@ -266,6 +297,16 @@ angular.module('mustard.app.user', [
          */
         getMissions: function () {
             return getMissionsCollection(user);
+        },
+
+        /**
+         * Returns the next mission from the passed one
+         *
+         * @param missionId
+         * @returns {Object}
+         */
+        getNextMission: function (missionId) {
+            return getNextAvailableMission(user, missionId);
         },
 
         /**
