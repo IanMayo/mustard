@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{ config.title }}
+  </h4>
+</div>
+
+<div class="modal-body">
+  <div ng-switch="!!config.achievements.length">
+    <div ng-switch-when="true">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h5>Achievement Unlocked</h5>
+        </div>
+        <div class="panel-body">
+          <h4 ng-repeat="achievement in config.achievements">
+            <span class="label label-success">
+              {{ achievement.name }}
+            </span>
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <div ng-switch-when="false">
+      <h4>You don't get any achievements</h4>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button
+      type="button"
+      class="btn btn-{{button.type}}"
+      ng-repeat="button in config.buttons"
+      ng-click="button.handler(); ok();">
+    {{ button.text }}
+  </button>
+</div>
