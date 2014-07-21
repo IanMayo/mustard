@@ -47,44 +47,6 @@ angular.module('mustard.app.debug', [
         {title: 'We detect a submarine?', type: 'danger', text: 'Message #26', time: localTime}
     ];
 
-    $scope.objectives = [
-        {
-            name: 'Gain & keep contact',
-            type: 'SEQUENCE',
-            children: [
-                {
-                    name: 'Gain contact',
-                    complete: true,
-                    description: 'Gain contact on the training target',
-                    type: 'GAIN_CONTACT',
-                    elapsed: 480,
-                    success: 'Well done, you have gained contact within the' +
-                        ' 8 minute limit. Try to keep trailing it for the next hour.',
-                    failure: 'Sorry, you did not make contact in time. You do just have to keep heading East!'
-                },
-                {
-                    name: 'Maintain contact',
-                    complete: true,
-                    description: 'Maintain contact on the training target for one hour',
-                    type: 'MAINTAIN_CONTACT',
-                    elapsed: 3600,
-                    success: 'Well done, you have held contact for one hour',
-                    failure: 'More practice needed, you only held contact for [time] minutes.'
-                },
-                {
-                    name: 'Gain contact',
-                    complete: false,
-                    description: 'Gain contact on the training target',
-                    type: 'GAIN_CONTACT',
-                    elapsed: 480,
-                    success: 'Well done, you have gained contact within the' +
-                        ' 8 minute limit. Try to keep trailing it for the next hour.',
-                    failure: 'Sorry, you did not make contact in time. You do just have to keep heading East!'
-                }
-            ]
-        }
-    ];
-
     $scope.achievements = [
         {name: 'Speed Demon'},
         {name: 'Spitfire'}
@@ -145,36 +107,65 @@ angular.module('mustard.app.debug', [
     };
 
     $scope.showCompleteMission = function () {
-        message.showMissionComplete(
-            $scope.objectives,
-            $scope.achievements,
-            function () {
-                $location.path('/main');
-            },
-            function () {
-                console.log('review mission call');
-            },
-            function () {
-                console.log('next mission call');
-            }
-        ).result.then(function () {
+        message.finishMission({
+            title: 'Mission Accomplished',
+            achievements: $scope.achievements,
+            buttons: [
+                {
+                    text: 'Main Menu',
+                    type: 'default',
+                    handler: function () {
+                        $location.path('/main');
+                    }
+                },
+                {
+                    text: 'Review',
+                    type: 'warning',
+                    handler: function () {
+                        console.log('Review call');
+                    }
+                },
+                {
+                    text: 'Next Mission',
+                    type: 'success',
+                    handler: function () {
+                        console.log('Next Mission call');
+                    }
+                }
+            ]
+        }).result.then(function () {
             console.log('popup was closed');
         });
     };
 
     $scope.showFailedMission = function () {
-        message.showMissionFailed(
-            $scope.objectives,
-            function () {
-                $location.path('/main');
-            },
-            function () {
-                console.log('brief mission call');
-            },
-            function () {
-                console.log('replay mission call');
-            }
-        ).result.then(function () {
+        message.finishMission({
+            title: 'Mission Failed',
+            achievements: [],
+            buttons: [
+                {
+                    text: 'Main Menu',
+                    type: 'default',
+                    handler: function () {
+                        $location.path('/main');
+                    }
+                },
+                {
+                    text: 'Mission Brief',
+                    type: 'warning',
+                    handler: function () {
+                        console.log('Brief call');
+                    }
+                },
+                {
+                    text: 'Replay',
+                    type: 'success',
+                    handler: function () {
+                        console.log('Replay call');
+                    }
+                }
+            ]
+        }).result.then(function () {
             console.log('popup was closed');
         });
     };
