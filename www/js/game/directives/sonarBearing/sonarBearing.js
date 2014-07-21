@@ -35,23 +35,10 @@ angular.module('mustard.game.sonarBearing', [])
                     case 0: plotElements.liveGraphElement = el;
                         plotElements.graphs.push({
                             element: el,
-                            height: 0.25,
-                            duration: 1,
-                            yTicks: 5,
-                            detectionPointRadii: {rx: 1.5, ry: 3}
-                        });
-                        break;
-
-                    case 1: plotElements.reviewGraphElement = el;
-                        plotElements.graphs.push({
-                            element: el,
-                            height: 0.75,
+                            height: 1,
                             duration: 8,
-                            yTicks: 15,
-                            detectionPointRadii: {rx: 2, ry: 1},
-                            showXAxis: false,
-                            yAxisLabel: '',
-                            margin: {top: 0, left: 100, bottom: 10, right: 50}
+                            yTicks: 25,
+                            detectionPointRadii: {rx: 1.5, ry: 3}
                         });
                         break;
                 }
