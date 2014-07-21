@@ -145,9 +145,10 @@ angular.module('mustard.game.simulator', [
 * @module Game
 * @class MissionCtrl (controller)
 */
-.controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout', 'steppingControls', 'message',
-    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
+.controller('MissionSimulatorCtrl', ['$scope', '$location', '$interval', '$q', 'geoMath',
+        'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
+        '$timeout', 'steppingControls', 'message',
+    function ($scope, $location, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
         /**
@@ -357,18 +358,63 @@ angular.module('mustard.game.simulator', [
                     // ok, store the snapshot
                     storeHistory();
 
-                    // ok, move on to the review stage
-                    // TODO: This is the confirm popup so I think we don't need to replace this by message in list
-                    message.show('info', 'Debriefing', 'Ready for the debriefing?', true).result.then(
-                        function () {
-                            message.show('info', 'Switch to the new route', 'Switch to the new route');
-                        },
-
-                        function () {
-                            message.show('info', 'Let the user view/pan/zoom the plot',
-                                'Let the user view/pan/zoom the plot');
-                        }
-                    );
+                    if ($scope.gameState.state == "SUCCESS") {
+                        message.finishMission({
+                            title: 'Mission Accomplished',
+                            achievements: [], // TODO: Add achievements which user get during the mission
+                            buttons: [
+                                {
+                                    text: 'Main Menu',
+                                    type: 'default',
+                                    handler: function () {
+                                        $location.path('/main');
+                                    }
+                                },
+                                {
+                                    text: 'Review',
+                                    type: 'warning',
+                                    handler: function () {
+                                        $location.path('/review/mission');
+                                    }
+                                },
+                                {
+                                    text: 'Next Mission',
+                                    type: 'success',
+                                    handler: function () {
+                                        // TODO: Add next mission logic
+                                    }
+                                }
+                            ]
+                        });
+                    } else if ($scope.gameState.state == "FAILURE") {
+                        message.finishMission({
+                            title: 'Mission Failed',
+                            achievements: [], // TODO: Add achievements which user get during the mission
+                            buttons: [
+                                {
+                                    text: 'Main Menu',
+                                    type: 'default',
+                                    handler: function () {
+                                        $location.path('/main');
+                                    }
+                                },
+                                {
+                                    text: 'Mission Brief',
+                                    type: 'warning',
+                                    handler: function () {
+                                        // TODO: Add brief logic
+                                    }
+                                },
+                                {
+                                    text: 'Replay',
+                                    type: 'success',
+                                    handler: function () {
+                                        // TODO: Add replay mission logic
+                                    }
+                                }
+                            ]
+                        });
+                    }
                 }
             }
         };
