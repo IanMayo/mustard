@@ -13,7 +13,6 @@ angular.module('mustard.game.sonarBearing', [])
         template: '' +
             '<div id="viz-container" class="visContainer">' +
                 '<div id="viz-minor" class="viz-sonar viz-minor"></div>' +
-                '<div id="viz-major" class="viz-sonar viz-major"></div>' +
             '</div>',
         link: function (scope, element) {
             var seriesNum = _.range(16);
