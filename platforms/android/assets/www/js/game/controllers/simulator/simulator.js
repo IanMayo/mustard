@@ -77,6 +77,12 @@ angular.module('mustard.game.simulator', [
     $scope.objectives = scenario.objectives;
 
     /**
+     * It should keep achievements that user got during the current scenario
+     * @type {Array}
+     */
+    $scope.reachedAchievements = [];
+
+    /**
      * Welcome message
      * @type {String}
      */
@@ -145,9 +151,10 @@ angular.module('mustard.game.simulator', [
 * @module Game
 * @class MissionCtrl (controller)
 */
-.controller('MissionSimulatorCtrl', ['$scope', '$interval', '$q', 'geoMath', 'movement', 'decision', 'objectives',
-        'detection', 'reviewSnapshot', 'user', '$timeout', 'steppingControls', 'message',
-    function ($scope, $interval, $q, geoMath, movement, decision, objectives, detection,
+.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$interval', '$q', 'geoMath',
+        'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
+        '$timeout', 'steppingControls', 'message',
+    function ($scope, $location, $route, $interval, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
         /**
@@ -316,6 +323,8 @@ angular.module('mustard.game.simulator', [
                                 // ok, display it
                                 user.addAchievement(element.name);
 
+                                $scope.reachedAchievements.push(element);
+
                                 // TODO: Make a decision to show it as a popup or just a message in list
                                 message.show('success', 'New achievement',
                                     "Well done, you've been awarded a new achievement:\n'" + element.name +
@@ -338,9 +347,68 @@ angular.module('mustard.game.simulator', [
                     // hey was it success or failure?
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
+                        var nextMission = user.getNextMission($scope.missionID);
+
+                        message.finishMission({
+                            title: 'Mission Accomplished',
+                            achievements: $scope.reachedAchievements,
+                            buttons: [
+                                {
+                                    text: 'Main Menu',
+                                    type: 'default',
+                                    handler: function () {
+                                        $location.path('/main');
+                                    }
+                                },
+                                {
+                                    text: 'Review',
+                                    type: 'warning',
+                                    handler: function () {
+                                        $location.path('/review/mission');
+                                    }
+                                },
+                                {
+                                    text: 'Next Mission',
+                                    type: 'success',
+                                    handler: function () {
+                                        nextMission
+                                            ? $location.path('/game/mission/' + nextMission.url)
+                                            : $location.path('/main')
+                                    }
+                                }
+                            ]
+                        });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
                         user.missionFailed($scope.missionID);
+
+                        message.finishMission({
+                            title: 'Mission Failed',
+                            achievements: $scope.reachedAchievements,
+                            buttons: [
+                                {
+                                    text: 'Main Menu',
+                                    type: 'default',
+                                    handler: function () {
+                                        $location.path('/main');
+                                    }
+                                },
+                                {
+                                    text: 'Mission Brief',
+                                    type: 'warning',
+                                    handler: function () {
+                                        $location.path('/mission/' + $scope.missionID)
+                                    }
+                                },
+                                {
+                                    text: 'Replay',
+                                    type: 'success',
+                                    handler: function () {
+                                        $route.reload();
+                                    }
+                                }
+                            ]
+                        });
                     }
 
                     // for diagnostics, show any narrative entries
@@ -356,19 +424,6 @@ angular.module('mustard.game.simulator', [
 
                     // ok, store the snapshot
                     storeHistory();
-
-                    // ok, move on to the review stage
-                    // TODO: This is the confirm popup so I think we don't need to replace this by message in list
-                    message.show('info', 'Debriefing', 'Ready for the debriefing?', true).result.then(
-                        function () {
-                            message.show('info', 'Switch to the new route', 'Switch to the new route');
-                        },
-
-                        function () {
-                            message.show('info', 'Let the user view/pan/zoom the plot',
-                                'Let the user view/pan/zoom the plot');
-                        }
-                    );
                 }
             }
         };

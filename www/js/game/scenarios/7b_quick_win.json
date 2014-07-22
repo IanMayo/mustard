@@ -120,7 +120,11 @@
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
                     "success": "First success achieved.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!",
+                    "achievement": {
+                        "name": "Quick Win 1",
+                        "message": "You've won an achievement"
+                    }
                 },
                 {
                     "name": "Maintain contact",
@@ -128,7 +132,11 @@
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 120,
                     "success": "Second success achieved",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
+                    "failure": "More practice needed, you only held contact for [time] minutes.",
+                    "achievement": {
+                        "name": "Quick Win 2",
+                        "message": "You've won another achievement"
+                    }
                 }
             ]
         }

@@ -41,7 +41,7 @@ angular.module('mustard.app.mockUserLevels', [
             level.missions = _.map(level.missions, function (mission) {
                 mission.status = getMockStatus(user.name, key, level.missions.length);
 
-                return _.pick(mission, 'id', 'name', 'status');
+                return _.pick(mission, 'id', 'name', 'status', 'url');
             });
         });
 

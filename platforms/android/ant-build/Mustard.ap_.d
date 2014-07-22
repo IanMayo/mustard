@@ -61,6 +61,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/main.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/messages.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/mission-simulator.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/modal-messages.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/profile.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash.css \
@@ -3221,6 +3222,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/message.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/message.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/messageList.tpl.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/missionFinish.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement/movement.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/decision.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/detection.js \

@@ -47,6 +47,11 @@ angular.module('mustard.app.debug', [
         {title: 'We detect a submarine?', type: 'danger', text: 'Message #26', time: localTime}
     ];
 
+    $scope.achievements = [
+        {name: 'Speed Demon'},
+        {name: 'Spitfire'}
+    ];
+
     $scope.user = user;
     $scope.userInStorage = localStorageService.get('user');
 
@@ -99,6 +104,72 @@ angular.module('mustard.app.debug', [
                 message.show('danger', 'No!', 'You pushed no button');
             }
         );
+    };
+
+    $scope.showCompleteMission = function () {
+        message.finishMission({
+            title: 'Mission Accomplished',
+            icon: 'glyphicon-ok',
+            achievements: $scope.achievements,
+            buttons: [
+                {
+                    text: 'Main Menu',
+                    type: 'default',
+                    handler: function () {
+                        $location.path('/main');
+                    }
+                },
+                {
+                    text: 'Review',
+                    type: 'warning',
+                    handler: function () {
+                        console.log('Review call');
+                    }
+                },
+                {
+                    text: 'Next Mission',
+                    type: 'success',
+                    handler: function () {
+                        console.log('Next Mission call');
+                    }
+                }
+            ]
+        }).result.then(function () {
+            console.log('popup was closed');
+        });
+    };
+
+    $scope.showFailedMission = function () {
+        message.finishMission({
+            title: 'Mission Failed',
+            icon: 'glyphicon-remove',
+            achievements: [],
+            buttons: [
+                {
+                    text: 'Main Menu',
+                    type: 'default',
+                    handler: function () {
+                        $location.path('/main');
+                    }
+                },
+                {
+                    text: 'Mission Brief',
+                    type: 'warning',
+                    handler: function () {
+                        console.log('Brief call');
+                    }
+                },
+                {
+                    text: 'Replay',
+                    type: 'success',
+                    handler: function () {
+                        console.log('Replay call');
+                    }
+                }
+            ]
+        }).result.then(function () {
+            console.log('popup was closed');
+        });
     };
 
     $scope.showSplash = function () {
