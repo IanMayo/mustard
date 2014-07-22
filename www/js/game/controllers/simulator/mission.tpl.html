@@ -1,11 +1,11 @@
 <div data-ng-controller="MissionSimulatorCtrl" class="mission-simulator">
   <div class="container-fluid time-bearing-spatial-container">
-    <div class="col-xs-4 col-md-4 time-bearing-container">
+    <div class="col-xs-5 col-md-5 time-bearing-container">
       <div id="sonarMeter"></div>
       <!--<time-bearing-display class="time-bearing-display" data-series="ownShip.detections()"></time-bearing-display>-->
       <sonar-bearing class="sonarBearing" class="time-bearing-display" data-series="ownShip.detections()"></sonar-bearing>
     </div>
-    <div class="col-xs-8 col-md-8 spatial-container">
+    <div class="col-xs-7 col-md-7 spatial-container">
       <div id="mapMeter"></div>
       <spatial-view class="spatial-view"></spatial-view>
     </div>
