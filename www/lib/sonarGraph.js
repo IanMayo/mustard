@@ -200,17 +200,18 @@
          * Append datapoint element to group.
          *
          * @param {Object} group
-         * @param {Object} detection
+         * @param {Object} detectionPoint
          * @param {String} name
+         * @param {Number} offset
          * @returns {Object}
          */
-        function appendDetectionPointToGroup(group, detection, name) {
+        function appendDetectionPointToGroup(group, detectionPoint, name, offset) {
             return group
                 .append('use')
                 .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
-                .attr('x', xComponent(xTickFormat(detection[detectionKeys.x])))
-                .attr('y', -yAxisScale(initialTime))
-                .attr('class', name)
+                .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
+                .attr('y', - (offset - yAxisScale(detectionPoint.date - initialTime)))
+                .attr('class', name);
         }
 
         /**
@@ -219,6 +220,7 @@
         function render() {
             _.each(d3MapDetections, function (detection, name) {
                 if (!renderedDetections[name]) {
+                    var groupOffset = yAxisScale(detection.date);
                     // new detection
                     var data = [];
                     // add group element
@@ -238,24 +240,26 @@
                     });
 
                     // append new point element based on detection
-                    detection.pointElement = appendDetectionPointToGroup(group, detection, name);
+                    detection.pointElement = appendDetectionPointToGroup(group, detection, name, groupOffset);
                     // there is no element, need to create it
                     data.push(detection);
 
                     // add detection data to rendered collection
                     renderedDetections[name] = {
                         data: data,
-                        group: group
+                        group: group,
+                        date: detection.date
                     };
 
                 } else {
                     // move group element
                     renderedDetections[name].group
-                        .attr('transform', 'translate(0, ' + yAxisScale(initialTime) +')');
+                        .attr('transform', 'translate(0, ' + yAxisScale(renderedDetections[name].date) +')');
 
                     if (!renderedDetections[name].isExpired) {
                         // append new point element based on detection
-                        detection.pointElement = appendDetectionPointToGroup(renderedDetections[name].group, detection, name);
+                        var groupOffset = yAxisScale(renderedDetections[name].date);
+                        detection.pointElement = appendDetectionPointToGroup(renderedDetections[name].group, detection, name, groupOffset);
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
@@ -376,6 +380,41 @@
         function changeGraphHeight(dimension) {
             elementSize(dimension);
             yAxisScale.range([containerElementSize.height, 0]);
+            updateClipPathHeight();
+            changeDetectionsPosition();
+            updateLabelPosition();
+        }
+
+        function updateClipPathHeight() {
+            graph
+                .select('#clipPath_' + config.containerElement.id + ' rect')
+                .attr('width', containerElementSize.width)
+                .attr('height', containerElementSize.height);
+        }
+
+        function updateLabelPosition () {
+            yAxisElement
+                .select('.axis-unit')
+                .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)');
+        }
+
+        /**
+         * Change detections positions according to settings of axis.
+         *
+         */
+        function changeDetectionsPosition() {
+            _.each(renderedDetections, function (detection, key) {
+                var groupOffset = yAxisScale(detection.date);
+
+                // move group container
+                gMain.select('.' + key).
+                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+
+                // move detections points within group
+                _.each(detection.data, function (element) {
+                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - initialTime)));
+                });
+            });
         }
 
         /**
