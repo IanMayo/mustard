@@ -138,6 +138,7 @@ angular.module('mustard.game.message', [])
          * @example
          * message.finishMission({
          *     title: 'Mission Accomplished',
+         *     icon: 'glyphicon-add',
          *     achievements: [{name: 'Speed Demon'}],
          *     buttons: [
          *         {
