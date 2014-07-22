@@ -38,7 +38,8 @@ angular.module('mustard.game.sonarBearing', [])
                             height: 1,
                             duration: 8,
                             yTicks: 25,
-                            detectionPointRadii: {rx: 1.5, ry: 3}
+                            detectionPointRadii: {rx: 3, ry: 4.5},
+                            margin: {top: 25, left: 60, bottom: 5, right: 10}
                         });
                         break;
                 }
