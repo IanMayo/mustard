@@ -351,6 +351,7 @@ angular.module('mustard.game.simulator', [
 
                         message.finishMission({
                             title: 'Mission Accomplished',
+                            icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
@@ -384,6 +385,7 @@ angular.module('mustard.game.simulator', [
 
                         message.finishMission({
                             title: 'Mission Failed',
+                            icon: 'glyphicon-remove',
                             achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
