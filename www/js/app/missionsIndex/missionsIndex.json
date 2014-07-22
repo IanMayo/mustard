@@ -12,7 +12,7 @@
             },
             {
                 "id": "0b",
-                "name": "Reading the display",
+                "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
                 "url": "0b_submarine_contacts",
                 "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
