@@ -84,7 +84,8 @@
                      showXAxis: graph.showXAxis,
                      margin: graph.margin,
                      elementSize: graphDimension(graph.element),
-                     detectionSelect: config.detectionSelect
+                     detectionSelect: config.detectionSelect,
+                     initialTime: config.initialTime
                  };
 
                  sonarGraphs.push(sonarGraph(sonarConfig));
@@ -99,9 +100,16 @@
             });
         }
 
+        function updatePlotTime(time) {
+            _.each(sonarGraphs, function (sonar) {
+                sonar.changeYAxisDomain(time);
+            });
+        }
+
         return {
             createPlot: addGraphs,
-            addDetection: addDetection
+            addDetection: addDetection,
+            updatePlotTime: updatePlotTime
         }
     }
 

@@ -3,7 +3,8 @@
     <div class="col-xs-5 col-md-5 time-bearing-container">
       <div id="sonarMeter"></div>
       <!--<time-bearing-display class="time-bearing-display" data-series="ownShip.detections()"></time-bearing-display>-->
-      <sonar-bearing class="sonarBearing" class="time-bearing-display" data-series="ownShip.detections()"></sonar-bearing>
+      <sonar-bearing class="sonarBearing" class="time-bearing-display" data-timer="{{gameState.simulationTime}}"
+                     data-series="ownShip.detections()"></sonar-bearing>
     </div>
     <div class="col-xs-7 col-md-7 spatial-container">
       <div id="mapMeter"></div>

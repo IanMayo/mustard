@@ -23,8 +23,6 @@
         var yAxisScale = d3.time.scale();
         var xComponent;
 
-        var initialTime;
-
         var config = {
             containerElement: null,
             yTicks: 5,
@@ -33,7 +31,8 @@
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
-            detectionSelect: function () {}
+            detectionSelect: function () {},
+            initialTime: new Date()
         };
 
         var detectionExpireTime =  1 * 60 * 1000; // 1 minute
@@ -181,19 +180,14 @@
         /**
          * Reconfigure Y-axis domain.
          *
-         * @param {Object} detections
+         * @param {Date} simulationTime
          */
-        function changeYAxisDomain(detections) {
-            var currentDate = _.first(detections).date;
-            var firstRunTime;
+        function changeYAxisDomain(simulationTime) {
+            var time = simulationTime.getTime();
 
-            if (currentDate) {
-                firstRunTime = currentDate.getTime();
-
-                yAxisScale.domain([firstRunTime - config.yDomainDensity * 60 * 1000, firstRunTime]);
-                yAxisElement
-                    .call(yAxisScale.axis);
-            }
+            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
+            yAxisElement
+                .call(yAxisScale.axis);
         }
 
         /**
@@ -210,7 +204,7 @@
                 .append('use')
                 .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
                 .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
-                .attr('y', - (offset - yAxisScale(detectionPoint.date - initialTime)))
+                .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)))
                 .attr('class', name);
         }
 
@@ -298,7 +292,6 @@
             findExpiredDetections(detections);
 
             render();
-            changeYAxisDomain(detections);
         }
 
         /**
@@ -366,10 +359,6 @@
                 degree: row.degree,
                 strength: row.strength ? row.strength : null
             };
-
-            if (!initialTime) {
-                initialTime = row.date;
-            }
         }
 
         /**
@@ -412,7 +401,7 @@
 
                 // move detections points within group
                 _.each(detection.data, function (element) {
-                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - initialTime)));
+                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - config.initialTime)));
                 });
             });
         }

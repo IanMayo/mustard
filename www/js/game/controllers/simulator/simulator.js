@@ -459,9 +459,7 @@ angular.module('mustard.game.simulator', [
          *
          */
         var shareSonarDetections = function (detections) {
-            if (detections.length) {
-                $scope.$broadcast('addDetections', detections);
-            }
+            $scope.$broadcast('addDetections', detections, $scope.gameState.simulationTime);
 
             meters.sonar.tick();
         };
