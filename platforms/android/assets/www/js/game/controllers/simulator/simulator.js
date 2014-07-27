@@ -351,6 +351,7 @@ angular.module('mustard.game.simulator', [
 
                         message.finishMission({
                             title: 'Mission Accomplished',
+                            icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
@@ -361,7 +362,7 @@ angular.module('mustard.game.simulator', [
                                     }
                                 },
                                 {
-                                    text: 'Review',
+                                    text: 'Review Mission',
                                     type: 'warning',
                                     handler: function () {
                                         $location.path('/review/mission');
@@ -372,7 +373,7 @@ angular.module('mustard.game.simulator', [
                                     type: 'success',
                                     handler: function () {
                                         nextMission
-                                            ? $location.path('/game/mission/' + nextMission.url)
+                                            ? $location.path('/mission/' + nextMission.id)
                                             : $location.path('/main')
                                     }
                                 }
@@ -384,6 +385,7 @@ angular.module('mustard.game.simulator', [
 
                         message.finishMission({
                             title: 'Mission Failed',
+                            icon: 'glyphicon-remove',
                             achievements: $scope.reachedAchievements,
                             buttons: [
                                 {
@@ -394,19 +396,19 @@ angular.module('mustard.game.simulator', [
                                     }
                                 },
                                 {
-                                    text: 'Mission Brief',
-                                    type: 'warning',
+                                    text: 'Restart Mission',
+                                    type: 'info',
                                     handler: function () {
                                         $location.path('/mission/' + $scope.missionID)
                                     }
                                 },
                                 {
-                                    text: 'Replay',
-                                    type: 'success',
+                                    text: 'Review Mission',
+                                    type: 'warning',
                                     handler: function () {
-                                        $route.reload();
+                                        $location.path('/review/mission');
                                     }
-                                }
+                                },
                             ]
                         });
                     }

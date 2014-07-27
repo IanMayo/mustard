@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    {{ config.title }}
+      <span class="glyphicon {{ config.icon }}"></span>&nbsp;{{ config.title }}
   </h4>
 </div>
 
@@ -22,7 +22,7 @@
     </div>
 
     <div ng-switch-when="false">
-      <h4>You don't get any achievements</h4>
+      <h4>You didn't get any achievements</h4>
     </div>
   </div>
 </div>

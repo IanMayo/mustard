@@ -86,6 +86,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/airplane.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/fb.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/googlep.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/lock.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/logo.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mockup.png \

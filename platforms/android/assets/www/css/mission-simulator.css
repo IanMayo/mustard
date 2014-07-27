@@ -153,3 +153,24 @@
 .range-controls {
   margin-top: 5px;
 }
+
+/* Lock overlay styles please use/change it carefully */
+
+.lock-target {
+  position: relative !important;
+}
+
+.lock-overlay {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: .9;
+  background: white url(../img/lock.png) no-repeat center;
+  background-size: 50% auto;
+  z-index: 1000;
+}
