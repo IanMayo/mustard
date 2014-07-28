@@ -16,18 +16,11 @@ angular.module('mustard.game.elementVisibility', [])
             var conditionals = $parse($attrs.conditionalDisplay)();
             var displayMode = _.keys(conditionals).toString();
             var condition = conditionals[displayMode];
-            var isDisplayed = !!$scope.$eval(condition);
+            var isLocked = !!$scope.$eval(condition);
 
-            if (displayMode === 'hide' || displayMode === 'lock') {
-                isDisplayed = !isDisplayed;
+            if (displayMode === 'lock') {
+                isLocked = !isLocked;
             }
-
-            /**
-             * Show or hide the element depending on isDisplayed condition
-             */
-            var showElement = function () {
-                isDisplayed ? $element.removeClass('ng-hide') : $element.addClass('ng-hide');
-            };
 
             /**
              * Add lock overlay block to the specific element to show user
@@ -49,29 +42,9 @@ angular.module('mustard.game.elementVisibility', [])
                 $($element[0]).find('.lock-overlay').remove();
             };
 
-            /**
-             * It locks or unlocks the target element (it seems that it is almost always UI controls)
-             * depending on isDisplayed value
-             */
-            var lockElement = function () {
-                $scope.$evalAsync(function () {
-                    isDisplayed ? removeLockOverlay() : addLockOverlay();
-                });
-            };
-
-            // Choose the proper action depending on displayMode value
-            // TODO: maybe it should support 2 or more actions at one time?
-            switch (displayMode) {
-                case 'show':
-                case 'hide':
-                    showElement();
-                    break;
-
-                case 'unlock':
-                case 'lock':
-                    lockElement();
-                    break;
-            }
+            $scope.$evalAsync(function () {
+                isLocked ? removeLockOverlay() : addLockOverlay();
+            });
         }
     }
 }]);
