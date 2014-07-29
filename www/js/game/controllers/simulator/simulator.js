@@ -408,7 +408,7 @@ angular.module('mustard.game.simulator', [
                                     handler: function () {
                                         $location.path('/review/mission');
                                     }
-                                },
+                                }
                             ]
                         });
                     }
