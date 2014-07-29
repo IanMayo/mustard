@@ -109,6 +109,7 @@ angular.module('mustard.app.debug', [
     $scope.showCompleteMission = function () {
         message.finishMission({
             title: 'Mission Accomplished',
+            icon: 'glyphicon-ok',
             achievements: $scope.achievements,
             buttons: [
                 {
@@ -141,6 +142,7 @@ angular.module('mustard.app.debug', [
     $scope.showFailedMission = function () {
         message.finishMission({
             title: 'Mission Failed',
+            icon: 'glyphicon-remove',
             achievements: [],
             buttons: [
                 {

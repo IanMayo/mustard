@@ -12,18 +12,22 @@ angular.module('mustard.app.mockUserLevels', [
      * This weird method returns mission status based on username and mission index
      * FIXME: Please remove me when it will be possible
      *
-     * @param useranme
+     * @param username
      * @param key
      * @param length
+     * @param isFirst - whether this is the very first mission
      * @returns {string}
      */
-    var getMockStatus = function (useranme, key, length) {
-        if (useranme === 'Sailor') {
+    var getMockStatus = function (username, key, length, isFirst) {
+        if (username === 'Sailor') {
+            // unlock the first 1/2 of the missions
             return key <= length/2 ? 'UNLOCKED' : 'LOCKED';
-        } else if (useranme === 'Commander') {
+        } else if (username === 'Commander') {
+            // unlock all missions
             return 'UNLOCKED';
         } else {
-            return !key ? 'UNLOCKED' : 'LOCKED';
+            // just onlock the very first mission
+            return isFirst ? 'UNLOCKED' : 'LOCKED';
         }
     };
 
@@ -37,9 +41,17 @@ angular.module('mustard.app.mockUserLevels', [
     var processLevels = function (user, levels) {
         user.levels = levels;
 
+        // keep track of if this is the first mission
+        var isFirst = true;
+
         _.each(user.levels, function (level, key) {
             level.missions = _.map(level.missions, function (mission) {
-                mission.status = getMockStatus(user.name, key, level.missions.length);
+                mission.status = getMockStatus(user.name, key, level.missions.length, isFirst);
+
+                if (isFirst) {
+                    // ok, we've processed the first one, clear the flag
+                    isFirst = false;
+                }
 
                 return _.pick(mission, 'id', 'name', 'status', 'url');
             });

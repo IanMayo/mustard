@@ -7,23 +7,44 @@
 angular.module('mustard.game.elementVisibility', [])
 
 .directive('conditionalDisplay', ['$parse', function ($parse) {
+
     return {
         restrict: 'A',
+
         controller: function ($scope, $element, $attrs) {
+
             var conditionals = $parse($attrs.conditionalDisplay)();
             var displayMode = _.keys(conditionals).toString();
             var condition = conditionals[displayMode];
-            var isVisible = $scope.$eval(condition);
+            var isLocked = !!$scope.$eval(condition);
 
-            if ('hide' === displayMode) {
-                isVisible = !isVisible;
+            if (displayMode === 'lock') {
+                isLocked = !isLocked;
             }
 
-            if (isVisible) {
-                $element.removeClass('ng-hide');
-            } else {
-                $element.addClass('ng-hide');
-            }
+            /**
+             * Add lock overlay block to the specific element to show user
+             * that he could get in future if he'll be a good boy
+             */
+            var addLockOverlay = function () {
+                $element.addClass('lock-target');
+
+                $(document.createElement('div'))
+                    .addClass('lock-overlay').prependTo($element);
+            };
+
+            /**
+             * Remove lock overlay block from target element
+             */
+            var removeLockOverlay = function () {
+                $element.removeClass('lock-target');
+
+                $($element[0]).find('.lock-overlay').remove();
+            };
+
+            $scope.$evalAsync(function () {
+                isLocked ? removeLockOverlay() : addLockOverlay();
+            });
         }
     }
 }]);

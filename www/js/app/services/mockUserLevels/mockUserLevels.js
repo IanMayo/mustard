@@ -12,7 +12,7 @@ angular.module('mustard.app.mockUserLevels', [
      * This weird method returns mission status based on username and mission index
      * FIXME: Please remove me when it will be possible
      *
-     * @param useranme
+     * @param username
      * @param key
      * @param length
      * @param isFirst - whether this is the very first mission
@@ -48,8 +48,7 @@ angular.module('mustard.app.mockUserLevels', [
             level.missions = _.map(level.missions, function (mission) {
                 mission.status = getMockStatus(user.name, key, level.missions.length, isFirst);
 
-                if(isFirst)
-                {
+                if (isFirst) {
                     // ok, we've processed the first one, clear the flag
                     isFirst = false;
                 }

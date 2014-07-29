@@ -45,7 +45,7 @@
             </tab>
 
             <tab select="removeNotification()" data-active="tabs.weapon.active"
-                 data-conditional-display="{show: 'ownShip.hasWeapons()'}">
+                 data-conditional-display="{unlock: 'ownShip.hasWeapons()'}">
               <tab-heading>
                 <i class="glyphicon glyphicon-flash"></i>
               </tab-heading>
@@ -57,13 +57,13 @@
       </li>
 
       <li class="pull-left">
-        <range-calculator class="range-calculator" data-conditional-display="{show: 'ownShip.ableToPerformRanging()'}"
+        <range-calculator class="range-calculator" data-conditional-display="{unlock: 'ownShip.ableToPerformRanging()'}"
                           data-marker-location="addReferenceLocation(data)"  data-vessel="ownShip.vessel()"
                           data-detections="ownShip.detections()" data-state="ownShip.state()"></range-calculator>
       </li>
 
       <li class="pull-right">
-        <ship-controls class="ship-controls" data-conditional-display="{hide: 'ownShip.autonomous()'}"
+        <ship-controls class="ship-controls" data-conditional-display="{lock: 'ownShip.autonomous()'}"
                        data-course="demandedState.course" data-speed="demandedState.speed"></ship-controls>
       </li>
       <li class="pull-right ship-state-container">
