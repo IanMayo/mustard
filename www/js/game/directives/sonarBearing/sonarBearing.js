@@ -2,9 +2,9 @@
  * @module mustard.game.sonarBearing
  */
 
-angular.module('mustard.game.sonarBearing', [])
+angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
 
-.directive('sonarBearing', ['$timeout', function ($timeout) {
+.directive('sonarBearing', ['$timeout', 'plotGraphs', function ($timeout, plotGraphs) {
     return {
         restrict: 'EA',
         scope: {
@@ -57,7 +57,7 @@ angular.module('mustard.game.sonarBearing', [])
                 detectionSelect: pointClickCallback
             }, plotElements, colors);
 
-            var plotGraphs = PlotGraphs(options);
+            plotGraphs.setup(options);
             plotGraphs.createPlot();
 
             scope.$on('addDetections', function addDetectionsToPlots(event, detections, simulationTime) {

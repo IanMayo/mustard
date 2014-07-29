@@ -1,27 +1,48 @@
-(function (exports) {
+/**
+ * @module Sonar Graph
+ */
 
-    var sonarGraph = function (options) {
+angular.module('mustard.game.sonarGraph', [])
+
+/**
+ * @module Sonar Graph
+ * @class Service
+ * @description Sonar Graph. Depends on d3 lib (http://d3js.org/)
+ */
+
+.factory('sonarGraph', function () {
+
+    /**
+     * Graph class.
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function Graph(options) {
 
         var xDomain = [-180, 180];
         var xTickValues = _.range(-180, 181, 45);
         var xTickFormat = function (d) { return d; };
 
-        var d3MapDetections = {};
         var detectionKeys = {x: 'degree', y: 'date'};
-        var renderedDetections = {};
+        var yAxisFormat = d3.time.format("%H:%M:%S");
+        var xAxisLabel = "Degree º";
+
+        var detectionExpireTime =  1 * 60 * 1000; // 1 minute
+
         var graph;
         var mainClipPath;
         var gMain;
         var containerElementSize;
 
-        var yAxisFormat = d3.time.format("%H:%M:%S");
-        var xAxisLabel = "Degree º";
 
         var xAxisElement;
         var yAxisElement;
 
         var yAxisScale = d3.time.scale();
         var xComponent;
+
+        var d3MapDetections = {};
+        var renderedDetections = {};
 
         var config = {
             containerElement: null,
@@ -35,11 +56,9 @@
             initialTime: new Date()
         };
 
-        var detectionExpireTime =  1 * 60 * 1000; // 1 minute
+        init(options);
 
-        init();
-
-        function init() {
+        function init(options) {
             _.each(options, function (value, key) {
                 if (value !== undefined) {
                     config[key] = value;
@@ -54,6 +73,25 @@
             addGxAxis();
             addGyAxis();
             addGroupContainer();
+        }
+
+        /**
+         * Change detections positions according to settings of axis.
+         *
+         */
+        function changeDetectionsPosition() {
+            _.each(renderedDetections, function (detection, key) {
+                var groupOffset = yAxisScale(detection.date);
+
+                // move group container
+                gMain.select('.' + key).
+                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+
+                // move detections points within group
+                _.each(detection.data, function (element) {
+                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - config.initialTime)));
+                });
+            });
         }
 
         /**
@@ -119,34 +157,6 @@
         }
 
         /**
-         * Add X axis to the graph
-         */
-        function addGxAxis() {
-            // d3 axis component
-            xComponent.axis = d3.svg.axis()
-                .scale(xComponent)
-                .tickValues(xTickValues)
-                .tickFormat(xTickFormat)
-                .orient("top");
-
-            // add axis element and apply axis component
-            xAxisElement = graph.append('g')
-                .attr('class', 'x axis')
-                .attr('transform', 'translate(0, 0)')
-                .style('opacity', config.showXAxis ? 1 : 0)
-                .call(xComponent.axis);
-
-            // axis label
-            xAxisElement.append('text')
-                .classed('axis-unit', true)
-                .attr('transform', 'translate(' + containerElementSize.width + ',0)')
-                .attr('y', 0)
-                .attr('dy', '1.71em')
-                .style('text-anchor', 'end')
-                .text(xAxisLabel);
-        }
-
-        /**
          * Add Y axis to the graph
          */
         function addGyAxis() {
@@ -178,16 +188,31 @@
         }
 
         /**
-         * Reconfigure Y-axis domain.
-         *
-         * @param {Date} simulationTime
+         * Add X axis to the graph
          */
-        function changeYAxisDomain(simulationTime) {
-            var time = simulationTime.getTime();
+        function addGxAxis() {
+            // d3 axis component
+            xComponent.axis = d3.svg.axis()
+                .scale(xComponent)
+                .tickValues(xTickValues)
+                .tickFormat(xTickFormat)
+                .orient("top");
 
-            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
-            yAxisElement
-                .call(yAxisScale.axis);
+            // add axis element and apply axis component
+            xAxisElement = graph.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', 'translate(0, 0)')
+                .style('opacity', config.showXAxis ? 1 : 0)
+                .call(xComponent.axis);
+
+            // axis label
+            xAxisElement.append('text')
+                .classed('axis-unit', true)
+                .attr('transform', 'translate(' + containerElementSize.width + ',0)')
+                .attr('y', 0)
+                .attr('dy', '1.71em')
+                .style('text-anchor', 'end')
+                .text(xAxisLabel);
         }
 
         /**
@@ -278,23 +303,6 @@
         }
 
         /**
-         * Add new detections to graph.
-         *
-         * @param {Object} detections
-         */
-        function addDetection(detections){
-            // create list of path names from detections
-            _.each(detections, function (detection) {
-                // exclude a detection path name from the list
-                addDatapoint(d3MapDetections, detection);
-            });
-
-            findExpiredDetections(detections);
-
-            render();
-        }
-
-        /**
          * Find expired detections by comparing new detections list and existed.
          *
          * @param {Object} detections
@@ -326,7 +334,7 @@
         function removeExpiredDetection(dataset, datapoints) {
             _.each(datapoints, function (datapoint) {
                 // extract first datapoint
-            var expiredDetection = renderedDetections[datapoint].data.shift();
+                var expiredDetection = renderedDetections[datapoint].data.shift();
                 // and remove it
                 expiredDetection.pointElement.remove();
 
@@ -361,6 +369,49 @@
             };
         }
 
+        function updateClipPathHeight() {
+            graph
+                .select('#clipPath_' + config.containerElement.id + ' rect')
+                .attr('width', containerElementSize.width)
+                .attr('height', containerElementSize.height);
+        }
+
+        function updateLabelPosition() {
+            yAxisElement
+                .select('.axis-unit')
+                .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)');
+        }
+
+        /**
+         * Reconfigure Y-axis domain.
+         *
+         * @param {Date} simulationTime
+         */
+        function changeYAxisDomain(simulationTime) {
+            var time = simulationTime.getTime();
+
+            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
+            yAxisElement
+                .call(yAxisScale.axis);
+        }
+
+        /**
+         * Add new detections to graph.
+         *
+         * @param {Object} detections
+         */
+         function addDetection(detections){
+            // create list of path names from detections
+            _.each(detections, function (detection) {
+                // exclude a detection path name from the list
+                addDatapoint(d3MapDetections, detection);
+            });
+
+            findExpiredDetections(detections);
+
+            render();
+        }
+
         /**
          * Update graph height value and reconfigure Y-axis with a new range.
          *
@@ -374,48 +425,22 @@
             updateLabelPosition();
         }
 
-        function updateClipPathHeight() {
-            graph
-                .select('#clipPath_' + config.containerElement.id + ' rect')
-                .attr('width', containerElementSize.width)
-                .attr('height', containerElementSize.height);
-        }
-
-        function updateLabelPosition () {
-            yAxisElement
-                .select('.axis-unit')
-                .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)');
-        }
-
-        /**
-         * Change detections positions according to settings of axis.
-         *
-         */
-        function changeDetectionsPosition() {
-            _.each(renderedDetections, function (detection, key) {
-                var groupOffset = yAxisScale(detection.date);
-
-                // move group container
-                gMain.select('.' + key).
-                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
-
-                // move detections points within group
-                _.each(detection.data, function (element) {
-                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - config.initialTime)));
-                });
-            });
-        }
-
-        /**
-         * Return API functions.
-         */
         return {
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
             changeGraphHeight: changeGraphHeight
-        };
+        }
+    }
+
+    /**
+     * Create an instance of the Graph class.
+     *
+     * @param {Object} config
+     * @returns {Object} Graph class instance
+     */
+    Graph.build = function (config) {
+        return new Graph(config);
     };
 
-    exports.sonarGraph = sonarGraph;
-
-})(window);
+    return Graph;
+});
