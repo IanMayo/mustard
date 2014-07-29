@@ -267,7 +267,8 @@ angular.module('mustard.game.sonarGraph', [])
                     renderedDetections[name] = {
                         data: data,
                         group: group,
-                        date: detection.date
+                        date: detection.date,
+                        isExpired: false
                     };
 
                 } else {
@@ -314,13 +315,17 @@ angular.module('mustard.game.sonarGraph', [])
 
             _.each(existedDetections, function (detection) {
                 if (!_.contains(newDetections, detection)) {
+                    // a detection series disappeared
                     expiredDetections.push(detection);
                     renderedDetections[detection].isExpired = true;
+                } else {
+                    // a detection series appeared again
+                    renderedDetections[detection].isExpired = false;
                 }
             });
 
             if (expiredDetections.length) {
-                // if list still contains detections - just move the corresponded path
+                // expired series exist - analise them
                 removeExpiredDetection(d3MapDetections, expiredDetections);
             }
         }
