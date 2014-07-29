@@ -285,7 +285,7 @@ angular.module('mustard.game.sonarGraph', [])
 
                         if (yAxisScale.domain()[0].getTime() >
                             (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
-                            // time of detection point is higher then acceptable time
+                            // datapoint became "invisible" - its time is less then time axis domain lower value
 
                             // remove datapoint from collection
                             var expiredDetection = renderedDetections[name].data.shift();
@@ -338,19 +338,25 @@ angular.module('mustard.game.sonarGraph', [])
          */
         function removeExpiredDetection(dataset, datapoints) {
             _.each(datapoints, function (datapoint) {
-                // extract first datapoint
-                var expiredDetection = renderedDetections[datapoint].data.shift();
-                // and remove it
-                expiredDetection.pointElement.remove();
 
-                if (!renderedDetections[datapoint].data.length) {
-                    // if collection is empty
-                    // remove empty collection
-                    delete renderedDetections[datapoint];
-                    // remove detection collection respectively
-                    delete dataset[datapoint];
-                    // remove group wrapper element
-                    $('#' + config.containerElement.id + ' .' + datapoint).remove();
+                if (yAxisScale.domain()[0].getTime() >
+                    (_.first(renderedDetections[datapoint].data).date.getTime() + detectionExpireTime)) {
+                    // datapoint became "invisible" - its time is less then time axis domain lower value
+
+                    // extract first datapoint
+                    var expiredDetection = renderedDetections[datapoint].data.shift();
+                    // and remove it
+                    expiredDetection.pointElement.remove();
+
+                    if (!renderedDetections[datapoint].data.length) {
+                        // if collection is empty
+                        // remove empty collection
+                        delete renderedDetections[datapoint];
+                        // remove detection collection respectively
+                        delete dataset[datapoint];
+                        // remove group wrapper element
+                        $('#' + config.containerElement.id + ' .' + datapoint).remove();
+                    }
                 }
             });
         }
