@@ -57,8 +57,7 @@
   margin-top: -5px;
 }
 
-.line {
-  fill: blue;
+.detectionPath {
   stroke: rgb(170, 206, 0);
   stroke-width: 2px;
   /*shape-rendering: crispEdges;  *//* gives rough edges */

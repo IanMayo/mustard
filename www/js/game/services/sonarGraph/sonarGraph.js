@@ -244,13 +244,17 @@ angular.module('mustard.game.sonarGraph', [])
                     var data = [];
                     // add group element
                     var group = gMain.append('g')
-                        .attr('class', 'line ' + name);
+                        .attr('class', 'detectionPath')
+                        .attr('detection-name', name);
+
                     // bind click handler
                     group.on('click', function () {
                         var detectionName = '';
                         if(event.target.getAttribute) {
-                            detectionName = event.target.getAttribute('class');
+                            // <g> element selected
+                            detectionName = event.target.getAttribute('detection-name');
                         } else if (event.target.correspondingUseElement) {
+                            // <use> element selected
                             detectionName = event.target.correspondingUseElement.getAttribute('class');
                         } else {
                             alert('Can\'t get class attribute of the target');
