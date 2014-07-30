@@ -1,5 +1,8 @@
 /**
  * @module Plot Graphs
+ *
+ * Creates plot with one (live) sonar graph
+ * Or several graphs (live sonar plus sonars with time offset to show historical detections)
  */
 
 angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
