@@ -84,3 +84,8 @@ spatial-view .leaflet-container
   font-size: 21px;
 }
 
+.sonarBearing {
+  display: block;
+  height: 100%;
+}
+

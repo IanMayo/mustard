@@ -20,7 +20,8 @@ angular.module('mustard.game.simulator', [
     'mustard.game.messageList',
     'mustard.game.notificationIcon',
     'mustard.game.elementVisibility',
-    'mustard.app.user'
+    'mustard.app.user',
+    'mustard.game.sonarBearing'
 ])
 
 /**
@@ -515,9 +516,7 @@ angular.module('mustard.game.simulator', [
          *
          */
         var shareSonarDetections = function (detections) {
-            if (detections.length) {
-                $scope.$broadcast('addDetections', detections);
-            }
+            $scope.$broadcast('addDetections', detections, $scope.gameState.simulationTime);
 
             meters.sonar.tick();
         };
