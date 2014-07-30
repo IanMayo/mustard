@@ -244,7 +244,7 @@ angular.module('mustard.game.sonarGraph', [])
                     var data = [];
                     // add group element
                     var group = gMain.append('g')
-                        .attr('class', 'detectionPath')
+                        .attr('class', 'detectionPath ' + name)
                         .attr('detection-name', name);
 
                     // bind click handler
