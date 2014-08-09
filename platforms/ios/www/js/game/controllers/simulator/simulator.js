@@ -350,7 +350,9 @@ angular.module('mustard.game.simulator', [
                         text: 'Ok',
                         type: 'info',
                         handler: function () {
-                            $location.path('/mission/' + $scope.missionID)
+                            user.isGameAccomplished()
+                                ? $location.path('/final')
+                                : $location.path('/mission/' + $scope.missionID);
                         }
                     };
 

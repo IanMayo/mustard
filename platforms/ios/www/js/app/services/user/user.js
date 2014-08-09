@@ -136,6 +136,19 @@ angular.module('mustard.app.user', [
         return _.findWhere(getMissionsCollection(user), {id: missionId});
     };
 
+
+    /**
+     * Returns true if all missions are completed and vv.
+     * we use it to determine if game is done
+     *
+     * @returns {Boolean}
+     */
+    var isGameAccomplished = function (user) {
+        var missions = getMissionsCollection(user);
+
+        return missions.length === _.where(missions, {status: 'SUCCESS'}).length;
+    };
+
     /**
      * It's IMPORTANT variable which indicates if user is authorized in app
      *
@@ -327,6 +340,15 @@ angular.module('mustard.app.user', [
          */
         getMission: function (missionId) {
             return getMission(user, missionId);
+        },
+
+        /**
+         * Checks the missions statuses and make a decision if game is completed or still not
+         *
+         * @returns {Boolean}
+         */
+        isGameAccomplished: function () {
+            return isGameAccomplished(user);
         },
 
         /**
