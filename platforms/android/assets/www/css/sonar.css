@@ -1,0 +1,28 @@
+.vizSonar {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+
+.vizSonar .detectionPath {
+  fill: blue;
+  stroke: rgb(170, 206, 0);
+  stroke-width: 2px;
+}
+
+.vizSonar .axis path,
+.vizSonar .axis line {
+  fill: none;
+  stroke: #535353;
+  shape-rendering: crispEdges;
+}
+.vizSonar .axis text {
+  fill: #bcdf1b;
+}
+
+.visContainer {
+  display: block;
+  height: 100%;
+  position: relative;
+  background-color: #000000;
+}
+
