@@ -20,7 +20,8 @@ angular.module('mustard.game.simulator', [
     'mustard.game.messageList',
     'mustard.game.notificationIcon',
     'mustard.game.elementVisibility',
-    'mustard.app.user'
+    'mustard.app.user',
+    'mustard.game.sonarBearing'
 ])
 
 /**
@@ -345,71 +346,32 @@ angular.module('mustard.game.simulator', [
                     $scope.gameState.simulationTime = 0;
 
                     // hey was it success or failure?
+                    var okButton = {
+                        text: 'Ok',
+                        type: 'info',
+                        handler: function () {
+                            $location.path('/mission/' + $scope.missionID)
+                        }
+                    };
+
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
-                        var nextMission = user.getNextMission($scope.missionID);
 
                         message.finishMission({
-                            title: 'Mission Accomplished',
+                            title: 'Well done!',
                             icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
-                            buttons: [
-                                {
-                                    text: 'Main Menu',
-                                    type: 'default',
-                                    handler: function () {
-                                        $location.path('/main');
-                                    }
-                                },
-                                {
-                                    text: 'Review Mission',
-                                    type: 'warning',
-                                    handler: function () {
-                                        $location.path('/review/mission');
-                                    }
-                                },
-                                {
-                                    text: 'Next Mission',
-                                    type: 'success',
-                                    handler: function () {
-                                        nextMission
-                                            ? $location.path('/mission/' + nextMission.id)
-                                            : $location.path('/main')
-                                    }
-                                }
-                            ]
+                            buttons: [okButton]
                         });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
                         user.missionFailed($scope.missionID);
 
                         message.finishMission({
-                            title: 'Mission Failed',
+                            title: 'Failed!',
                             icon: 'glyphicon-remove',
                             achievements: $scope.reachedAchievements,
-                            buttons: [
-                                {
-                                    text: 'Main Menu',
-                                    type: 'default',
-                                    handler: function () {
-                                        $location.path('/main');
-                                    }
-                                },
-                                {
-                                    text: 'Restart Mission',
-                                    type: 'info',
-                                    handler: function () {
-                                        $location.path('/mission/' + $scope.missionID)
-                                    }
-                                },
-                                {
-                                    text: 'Review Mission',
-                                    type: 'warning',
-                                    handler: function () {
-                                        $location.path('/review/mission');
-                                    }
-                                },
-                            ]
+                            buttons: [okButton]
                         });
                     }
 
@@ -515,9 +477,7 @@ angular.module('mustard.game.simulator', [
          *
          */
         var shareSonarDetections = function (detections) {
-            if (detections.length) {
-                $scope.$broadcast('addDetections', detections);
-            }
+            $scope.$broadcast('addDetections', detections, $scope.gameState.simulationTime);
 
             meters.sonar.tick();
         };
