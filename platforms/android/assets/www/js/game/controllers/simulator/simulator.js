@@ -346,6 +346,11 @@ angular.module('mustard.game.simulator', [
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
 
+                        // add reached achievements to the user service
+                        angular.forEach($scope.reachedAchievements, function (achievement) {
+                            user.addAchievement(achievement.name);
+                        });
+
                         message.finishMission({
                             title: 'Well done!',
                             icon: 'glyphicon-ok',
@@ -354,11 +359,6 @@ angular.module('mustard.game.simulator', [
                                 text: 'Ok',
                                 type: 'info',
                                 handler: function () {
-                                    // add reached achievements to the user service
-                                    angular.forEach($scope.reachedAchievements, function (achievement) {
-                                        user.addAchievement(achievement.name);
-                                    });
-
                                     // make a decision where player will be redirected
                                     user.isGameAccomplished()
                                         ? $location.path('/final')
