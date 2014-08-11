@@ -322,8 +322,6 @@ angular.module('mustard.game.simulator', [
                             // has the user already earned it?
                             if (!user.isAchievementPresent(element.name)) {
                                 // ok, display it
-                                user.addAchievement(element.name);
-
                                 $scope.reachedAchievements.push(element);
 
                                 // TODO: Make a decision to show it as a popup or just a message in list
@@ -345,25 +343,28 @@ angular.module('mustard.game.simulator', [
                     // ok, stop the scenario
                     $scope.gameState.simulationTime = 0;
 
-                    // hey was it success or failure?
-                    var okButton = {
-                        text: 'Ok',
-                        type: 'info',
-                        handler: function () {
-                            user.isGameAccomplished()
-                                ? $location.path('/final')
-                                : $location.path('/mission/' + $scope.missionID);
-                        }
-                    };
-
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
+
+                        // add reached achievements to the user service
+                        angular.forEach($scope.reachedAchievements, function (achievement) {
+                            user.addAchievement(achievement.name);
+                        });
 
                         message.finishMission({
                             title: 'Well done!',
                             icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
-                            buttons: [okButton]
+                            buttons: [{
+                                text: 'Ok',
+                                type: 'info',
+                                handler: function () {
+                                    // make a decision where player will be redirected
+                                    user.isGameAccomplished()
+                                        ? $location.path('/final')
+                                        : $location.path('/mission/' + $scope.missionID);
+                                }
+                            }]
                         });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
@@ -372,8 +373,14 @@ angular.module('mustard.game.simulator', [
                         message.finishMission({
                             title: 'Failed!',
                             icon: 'glyphicon-remove',
-                            achievements: $scope.reachedAchievements,
-                            buttons: [okButton]
+                            achievements: [],
+                            buttons: [{
+                                text: 'Ok',
+                                type: 'info',
+                                handler: function () {
+                                    $location.path('/mission/' + $scope.missionID);
+                                }
+                            }]
                         });
                     }
 
