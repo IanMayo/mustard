@@ -125,6 +125,16 @@ angular.module('mustard.app.user', [
         return nextMission;
     };
 
+    /**
+     * Returns the mission by its id
+     *
+     * @param user
+     * @param missionId
+     * @returns {Object|Undefined}
+     */
+    var getMission = function (user, missionId) {
+        return _.findWhere(getMissionsCollection(user), {id: missionId});
+    };
 
     /**
      * It's IMPORTANT variable which indicates if user is authorized in app
@@ -307,6 +317,16 @@ angular.module('mustard.app.user', [
          */
         getNextMission: function (missionId) {
             return getNextAvailableMission(user, missionId);
+        },
+
+        /**
+         * Returns the specific mission by its id
+         *
+         * @param missionId
+         * @returns {Object}
+         */
+        getMission: function (missionId) {
+            return getMission(user, missionId);
         },
 
         /**

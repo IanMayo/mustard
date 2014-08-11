@@ -64,6 +64,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/modal-messages.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/profile.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/sonar.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers-2x.png \
@@ -3143,6 +3144,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/reviewTour \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipControls \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeDisplay \
@@ -3170,6 +3172,10 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipControls/shipControls.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState/shipState.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState/shipState.tpl.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing/demo \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing/sonarBearing.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing/demo/demo.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing/demo/index.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView/spatialView.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView/spatialView.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay/timeBearingDisplay.js \
@@ -3216,7 +3222,9 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarGraph \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/decision/decision.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/detection/detection.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/geoMath/geoMath.js \
@@ -3242,11 +3250,14 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives/objectives.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs/plotGraphs.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot/reviewSnapshot.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarGraph/sonarGraph.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/d3.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/fpsmeter.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/jquery.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Control.MousePosition.js \

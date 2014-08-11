@@ -36,6 +36,7 @@
   <link rel="stylesheet" type="text/css" href="css/stacked-tabs.css">
   <link rel="stylesheet" type="text/css" href="css/splash.css">
   <link rel="stylesheet" type="text/css" href="css/profile.css">
+  <link rel="stylesheet" type="text/css" href="css/sonar.css">
   <title>Mustard - ASW Trainer</title>
 </head>
 <body>
@@ -63,7 +64,7 @@
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
-
+<script type="text/javascript" src="lib/d3.min.js"></script>
 
 <!-- App -->
 <script type="text/javascript" src="js/app/index.js"></script>
@@ -107,6 +108,7 @@
 <script type="text/javascript" src="js/game/directives/clickRepeat/clickRepeat.js"></script>
 <script type="text/javascript" src="js/game/directives/elementVisibility/elementVisibility.js"></script>
 <script type="text/javascript" src="js/game/directives/messageList/messageList.js"></script>
+<script type="text/javascript" src="js/game/directives/sonarBearing/sonarBearing.js"></script>
 <script type="text/javascript" src="js/game/directives/notificationIcon/notificationIcon.js"></script>
 
 <!-- Game services -->
@@ -118,6 +120,8 @@
 <script type="text/javascript" src="js/game/services/movement/movement.js"></script>
 <script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
 <script type="text/javascript" src="js/game/services/message/message.js"></script>
+<script type="text/javascript" src="js/game/services/plotGraphs/plotGraphs.js"></script>
+<script type="text/javascript" src="js/game/services/sonarGraph/sonarGraph.js"></script>
 
 <script type="text/javascript">
   app.initialize();
