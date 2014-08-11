@@ -75,6 +75,12 @@ angular.module('mustard.app.debug', [
         user.missionFailed(missionId);
     };
 
+    $scope.endGame = function () {
+        _.each(user.getMissions(), function (mission) {
+            user.missionCompleted(mission.id);
+        });
+    };
+
     $scope.logout = function () {
         user.deauthorizeUser();
         $location.path('/login');

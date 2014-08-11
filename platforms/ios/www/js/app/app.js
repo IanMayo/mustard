@@ -12,6 +12,7 @@ angular.module('mustard', [
     'mustard.app.debug',
     'mustard.app.missionsIndex',
     'mustard.app.splashScreen',
+    'mustard.app.final',
     'mustard.game.simulator',
     'mustard.game.review',
     'ui.bootstrap',
@@ -90,6 +91,11 @@ angular.module('mustard', [
         .when('/credits', {
             controller: 'CreditsCtrl',
             templateUrl: 'js/app/controllers/credits/credits.tpl.html'
+        })
+
+        .when('/final', {
+            controller: 'FinalCtrl',
+            templateUrl: 'js/app/controllers/final/final.tpl.html'
         })
 
         .when('/game/mission/:scenario', {
