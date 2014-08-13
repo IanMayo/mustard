@@ -3,7 +3,6 @@ angular.module('mustard.game.review', [
     'mustard.game.timeDisplayDirective',
     'mustard.game.timeRemainingDirective',
     'mustard.game.shipStateDirective',
-    'mustard.game.timeBearingDisplayDirective',
     'mustard.game.objectiveListDirective',
     'mustard.game.reviewSnapshot',
     'mustard.game.eventPickerDirective',
@@ -304,15 +303,14 @@ angular.module('mustard.game.review', [
      * @param value the current slider value (millis)
      * @returns {string} a time-string representation of the value
      */
-    $scope.translate = function(value)
-    {
+    $scope.translate = function(value) {
       var date = new Date(value);
       return date.toLocaleTimeString();
-    }
+    };
 
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
-    }
+    };
 
     // show the markers, plus their routes
     showVesselRoutes();
