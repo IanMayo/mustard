@@ -129,6 +129,14 @@ angular.module('mustard.game.timeDisplayDirective', [])
                 }
             };
 
+            /**
+             * Callback when scope of the directive destroys
+             */
+            scope.$on('$destroy', function () {
+                // clear the interval object
+                $interval.cancel(simulationIntervalId);
+            });
+
             if (scope.steppingEnabled) {
                 watchSpeedChanges();
             } else {
