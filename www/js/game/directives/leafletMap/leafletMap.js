@@ -425,6 +425,14 @@ angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDire
                 });
             });
 
+            /**
+             * Callback when scope of the directive destroys
+             */
+            scope.$on('$destroy', function () {
+                // clean up the Leaflet map
+                map.remove();
+            });
+
             createMap();
             configureReviewTour();
         }
