@@ -31,6 +31,7 @@ angular.module('mustard.game.sonarGraph', [])
 
         var detectionExpireTime =  1 * 60 * 1000; // 1 minute
 
+        var svgContainer;
         var graph;
         var mainClipPath;
         var gMain;
@@ -100,15 +101,15 @@ angular.module('mustard.game.sonarGraph', [])
          * Add svg element and apply margin values.
          */
         function addSvgElement() {
-            var svg = d3.select(config.containerElement)
+            svgContainer = d3.select(config.containerElement)
                 .append('svg')
                 .attr('class', 'graph g-wrapper');
 
             // https://bugzilla.mozilla.org/show_bug.cgi?id=779368
             // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
-            svg.style({width: '100%', height: '100%'});
+            svgContainer.style({width: '100%', height: '100%'});
 
-            graph = svg
+            graph = svgContainer
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
         }
@@ -356,12 +357,14 @@ angular.module('mustard.game.sonarGraph', [])
 
                     if (!renderedDetections[datapoint].data.length) {
                         // if collection is empty
+                       // remove click event listener
+                        renderedDetections[datapoint].group.on('click', null);
+                        // remove group wrapper element
+                        renderedDetections[datapoint].group.remove();
                         // remove empty collection
                         delete renderedDetections[datapoint];
                         // remove detection collection respectively
                         delete dataset[datapoint];
-                        // remove group wrapper element
-                        $('#' + config.containerElement.id + ' .' + datapoint).remove();
                     }
                 }
             });
@@ -442,10 +445,21 @@ angular.module('mustard.game.sonarGraph', [])
             updateLabelPosition();
         }
 
+        /**
+         * Remove graph from DOM and remove handlers
+         */
+        function remove () {
+            _.each(renderedDetections, function (detection) {
+                detection.group.on('click', null);
+            });
+            svgContainer.remove();
+        }
+
         return {
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
-            changeGraphHeight: changeGraphHeight
+            changeGraphHeight: changeGraphHeight,
+            remove: remove
         }
     }
 

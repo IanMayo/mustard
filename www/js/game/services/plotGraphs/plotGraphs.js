@@ -118,11 +118,21 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
     };
 
     /**
+     * Remove Plot Graphs
+     */
+    this.remove = function () {
+        $(window).off('resize.plotGraph');
+        _.each(sonarGraphs, function (graph) {
+            graph.remove();
+        });
+    };
+
+    /**
      * Initialise service
      *
      */
     function init() {
-        $(window).on('resize', resizeWindowHandler);
+        $(window).on('resize.plotGraph', resizeWindowHandler);
     }
 
     /**

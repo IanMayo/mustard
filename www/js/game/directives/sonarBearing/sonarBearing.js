@@ -89,6 +89,10 @@ angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
 
                 plotGraphs.updatePlotTime(new Date(simulationTime));
             });
+
+            scope.$on('$destroy', function () {
+                plotGraphs.remove();
+            });
         }
     }
 }]);
