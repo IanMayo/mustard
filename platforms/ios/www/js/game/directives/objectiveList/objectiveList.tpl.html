@@ -1,0 +1,10 @@
+<div class="small" ng-repeat="objective in objectives">
+  <strong>{{ objective.name }}</strong>
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="obj in objective.children | filter:canSucceed">
+      <span ng-show="!obj.complete" class="glyphicon glyphicon-unchecked"></span>
+      <span ng-show="obj.complete" class="glyphicon glyphicon-check"></span>
+      {{ obj.name }}
+    </li>
+  </ul>
+</div>

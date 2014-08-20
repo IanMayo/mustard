@@ -1,0 +1,17 @@
+<div class="speed-container">
+  <button data-click-repeat="changeSpeed(-speedRate)" type="button" class="btn btn-round">-1</button>
+  <div class="speed-label-container">
+    <span>Speed</span>
+    <span class="label label-info label-speed">{{speed}} m/s</span>
+  </div>
+  <button data-click-repeat="changeSpeed(speedRate)" type="button" class="btn btn-round">+1</button>
+</div>
+
+<div class="course-container">
+  <button data-click-repeat="changeCourse(-courseRate)" type="button" class="btn btn-round">-5</button>
+  <div class="course-label-container">
+    <span>Course</span>
+    <span class="label label-info label-course">{{course}}&deg;</span>
+  </div>
+  <button data-click-repeat="changeCourse(courseRate)" type="button" class="btn btn-round">+5</button>
+</div>

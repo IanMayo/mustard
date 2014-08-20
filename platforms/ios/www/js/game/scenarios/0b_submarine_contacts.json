@@ -1,0 +1,295 @@
+{
+    "id": "0b",
+    "name": "Using ownship manoeuvres to determine ambiguous bearing",
+    "description": "Using ownship manoeuvres to determine bearing ambiguity",
+    "welcome": "Well, it's all very easy separating the true bearing from the ambiguous bearing when you've got radar contact with a target.  You're now going to learn how to do this with a dived target.  In this next scenario there is a dived and a surface contact. Start off by selecting the ownship track in the sonar",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.99,
+                            "lng": -8.19
+                        },
+                        {
+                            "lat": 50.0,
+                            "lng": -8.16
+                        }
+                        ,
+                        {
+                            "lat": 50.00,
+                            "lng": -8.12
+                        }
+                        ,
+                        {
+                            "lat": 50.02,
+                            "lng": -8.08
+                        }
+                        ,
+                        {
+                            "lat": 50.02,
+                            "lng": -8.04
+                        }
+                        ,
+                        {
+                            "lat": 50.04,
+                            "lng": -8.00
+                        }
+                        ,
+                        {
+                            "lat": 50.04,
+                            "lng": -7.98
+                        }
+                        ,
+                        {
+                            "lat": 50.06,
+                            "lng": -7.94
+                        }
+                        ,
+                        {
+                            "lat": 50.06,
+                            "lng": -7.90
+                        }
+                        ,
+                        {
+                            "lat": 50.08,
+                            "lng": -7.86
+                        }
+                        ,
+                        {
+                            "lat": 50.08,
+                            "lng": -7.82
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [  "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 49.99,
+                    "lng": -8.22
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.28,
+                            "lng": -7.98
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 104,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.92,
+                    "lng": -8.09
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 8,
+                "speed": 8,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "TargetB",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.03,
+                            "lng": -8.19
+                        },
+                        {
+                            "lat": 49.28,
+                            "lng": -8.31
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 105,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.06,
+                    "lng": -8.08
+                },
+                "course": 250,
+                "demCourse": 250,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Sonar Qualification",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Select ownship",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "clearAfterwards" : true,
+                    "target": "Ownship",
+                    "elapsed": 300,
+                    "success": "Ok, well that was obvious. Now, there's also a dived target out there. Wait to gain contact, then select any sonar track that represents it.  Oh, and while you're watching look out for how the two tracks on the surface contact change when ownship changes course.",
+                    "failure": "Sorry, you didn't click on the ownship track in time.  Look at the map and consider what the ownship heading is",
+                    "narrSuccess" : "Identified ownship track"
+                },
+                {
+                    "name": "Spot target track",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "targetSubString": "Target_",
+                    "success": "Ok, well done. Now you need to determine which is the true bearing to the dived target. Wait for an ownship manoeuvre, and all should become obvious",
+                    "failure": "This should have been easy, it's the track that appears from nowhere",
+                    "narrSuccess" : "Spotted any dived target track"
+                },
+                {
+                    "name": "Spot true bearing",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "clearAfterwards" : true,
+                    "elapsed": 180,
+                    "target": "Target_a",
+                    "success": "Ok, well done. Just to finish off, select the ambiguous bearing to the dived target",
+                    "failure": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
+                    "narrSuccess" : "Spotted True bearing to dived target"
+                },
+                {
+                    "name": "Spot ambiguous bearing",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "Target_b",
+                    "clearAfterwards" : true,
+                    "elapsed": 120,
+                    "success": "Ok, well done. You've now covered dived contacts.",
+                    "failure": "Oops, did you select the correct one? The ambiguous bearing is the one that 'jumps' after an ownship turn",
+                    "narrSuccess" : "Spotted Ambiguous bearing to dived target"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+
+        ]
+    }
+}

@@ -1,0 +1,96 @@
+{
+    "vessels": [
+        {
+            "name": "Some name",
+            "categories": [
+                "BLUE",
+                "SURFACE",
+                "WARSHIP"
+            ],
+            "state": {
+                "time": 0,
+                "location": {
+                    "lat": 12.2,
+                    "long": 44.3
+                },
+                "speed": 12.3,
+                "course": 0.12,
+                "demandedSpeed": 10,
+                "demandedCourse": 1,
+                "turnRate": 0.02
+            },
+            "behaviour": {
+                "name": "UserControlled",
+                "type": "USER_CONTROL"
+            },
+            "performance": {
+                "turnCircle": 1200,
+                "accelerationRate": 1,
+                "minSpeed": 4,
+                "maxSpeed": 40
+            },
+            "sensors": [{
+                "name": "towed Alpha",
+                "recogDiff": 1,
+                "offset": -1200
+            }]
+        },
+        {
+            "name": "Target Alpha",
+            "categories": [
+                "RED",
+                "SUBSURFACE",
+                "SUBMARINE"
+            ],
+            "initialState": {
+                "time": 0,
+                "location": {
+                    "lat": 14.2,
+                    "long": 42.3
+                },
+                "speed": 12.3,
+                "course": 3.14,
+                "demandedSpeed": 12.3,
+                "demandedCourse": 3.14,
+                "turnRate": 0.02,
+                "batteryLevel": 40
+            },
+            "behaviour": {
+                "name": "Target Walk",
+                "type": "RECTANGLE_WANDER",
+                "TL": {
+                    "lat": 13.2,
+                    "long": 21.3
+                },
+                "BR": {
+                    "lat": 10.9,
+                    "long": 24.3
+                },
+                "bltitude": -30
+            },
+            "performance": {
+                "turnCircle": 1200,
+                "accelerationRate": 1,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "batteryUsage": 1.03
+            },
+            "sensors": [{
+                "name": "towed Bravo",
+                "recogDiff": 1,
+                "offset": -1200
+            }]
+        }
+    ],
+    "objectives": [{
+        "name": "15 min safe trail",
+        "type": "sAFE_TRAIL",
+        "MINR": 5000,
+        "MAXR": 15000,
+        "PERIOD" : 900000
+    }],
+    "environment": {
+        "name":"btlantic Summer",
+        "seaState" : 4
+    }
+}

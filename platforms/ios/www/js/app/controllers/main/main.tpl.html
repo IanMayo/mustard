@@ -1,0 +1,41 @@
+<nav class="navbar navbar-mobile-top">
+  <div class="container-fluid text-right">
+    <span>{{ player.name }}</span>
+  </div>
+</nav>
+
+<div class="wrapper-mobile">
+  <div class="container-with-scroll-mobile">
+    <div class="container-fluid">
+      <div class="panel panel-info" ng-repeat="level in levels">
+        <div class="panel-heading panel-title text-center">
+          <h2>{{ level.id }} - {{ level.name }}</h2>
+        </div>
+        <div class="panel-body list-group mission-list">
+          <div ng-repeat="mission in level.missions" ng-click="moveToMission([mission.id])"
+            class="text-center list-group-item mission">
+            <div class="pull-right">
+              <span class="glyphicon mission-status" ng-class="glyphFor([mission.id])"></span>
+            </div>
+            <h4>{{ mission.id }} - {{ mission.name }}</h4>
+            <p>{{ mission.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-mobile-bottom">
+  <div class="container-fluid">
+    <a title="User profile" href="#/profile" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-user"></span>
+    </a>
+    <a title="Game credits" href="#/credits" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-film"></span>
+    </a>
+    <a title="Game options" href="#/options" class="btn btn-default btn-lg">
+      <span class="glyphicon glyphicon-cog"></span>
+    </a>
+  </div>
+</nav>

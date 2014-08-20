@@ -1,0 +1,89 @@
+<nav class="navbar navbar-mobile-top">
+  <div class="container-fluid text-right">
+    <span>{{ user.name }}</span>
+  </div>
+</nav>
+
+<div class="wrapper-mobile">
+  <div class="container-with-scroll-mobile">
+    <div class="container-fluid">
+      <h1>Debug console</h1>
+    </div>
+    <div class="container-fluid">
+      <h3>User in memory</h3>
+      <pre><code>{{ user }}</code></pre>
+
+      <h3>User in storage</h3>
+      <pre><code>{{ userInStorage }}</code></pre>
+
+      <div>
+        <h4>Add achievement</h4>
+        <button class="btn btn-default" ng-click="addMockAchievement('Newbie')">Newbie</button>
+        <button class="btn btn-default" ng-click="addMockAchievement('See wolf')">See wolf</button>
+        <button class="btn btn-default" ng-click="addMockAchievement('Bad ... sailor')">Bad ... sailor</button>
+        <button class="btn btn-default" ng-click="addMockAchievement('Commander')">Commander</button>
+        <button class="btn btn-default" ng-click="addMockAchievement('Poseidon')">Poseidon</button>
+      </div>
+
+      <div>
+        <h4>Add Options</h4>
+        <button class="btn btn-default" ng-click="addMockOption({sfx: 1})">1</button>
+        <button class="btn btn-default" ng-click="addMockOption({sfx: 2})">2</button>
+        <button class="btn btn-default" ng-click="addMockOption({sfx: 3})">3</button>
+        <button class="btn btn-default" ng-click="addMockOption({sfx: 4})">4</button>
+        <button class="btn btn-default" ng-click="addMockOption({sfx: 5})">5</button>
+      </div>
+
+      <div>
+        <h4>Complete missions</h4>
+        <button class="btn btn-success" ng-click="missionMockCompleted('1a')">1a</button>
+        <button class="btn btn-success" ng-click="missionMockCompleted('1b')">1b</button>
+        <button class="btn btn-success" ng-click="missionMockCompleted('1c')">1c</button>
+        <button class="btn btn-success" ng-click="missionMockCompleted('1d')">1d</button>
+        <button class="btn btn-success" ng-click="missionMockCompleted('1e')">1e</button>
+      </div>
+
+      <div>
+        <h4>Fail missions</h4>
+        <button class="btn btn-danger" ng-click="missionMockFailed('1a')">1a</button>
+        <button class="btn btn-danger" ng-click="missionMockFailed('1b')">1b</button>
+        <button class="btn btn-danger" ng-click="missionMockFailed('1c')">1c</button>
+        <button class="btn btn-danger" ng-click="missionMockFailed('1d')">1d</button>
+        <button class="btn btn-danger" ng-click="missionMockFailed('1e')">1e</button>
+      </div>
+
+      <div>
+        <h4>End Game</h4>
+        <button class="btn btn-danger btn-lg" ng-click="endGame()">Game Over!</button>
+      </div>
+
+      <div>
+        <h4>Server mock stuff</h4>
+        <button class="btn btn-primary btn-lg" ng-click="saveUser()">Save User</button>
+        <button class="btn btn-danger btn-lg" ng-click="logout()">LOGOUT</button>
+      </div>
+
+      <div>
+        <h4>Mock messages</h4>
+        <button class="btn btn-info btn-lg" ng-click="showModalMessage()">Modal Message</button>
+        <button class="btn btn-info btn-lg" ng-click="showModalMessageList()">Modal Message List</button>
+        <button class="btn btn-info btn-lg" ng-click="showModalConfirm()">Modal Confirm</button>
+        <button class="btn btn-info btn-lg" ng-click="showCompleteMission()">Complete mission</button>
+        <button class="btn btn-info btn-lg" ng-click="showFailedMission()">Failed mission</button>
+      </div>
+
+      <div>
+        <h4>Splash screen testing</h4>
+        <button class="btn btn-warning btn-lg" ng-click="showSplash()">Show Splash Screen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-mobile-bottom">
+  <div class="container-fluid">
+    <a href="#/main" class="btn btn-default btn-sm pull-left">
+      <i class="glyphicon glyphicon-arrow-left"></i> Back
+    </a>
+  </div>
+</nav>
