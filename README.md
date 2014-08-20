@@ -1,4 +1,4 @@
-Mustard
+SubTrack &#39;90
 =======
 
 Open Source (MIT License) mobile app to gamify Sonar best practices.
@@ -6,11 +6,7 @@ Open Source (MIT License) mobile app to gamify Sonar best practices.
 #Installation
 
 ```
-$ sudo npm install -g phonegap
-```
-
-```
-$ sudo npm install -g grunt-cli
+$ sudo npm install -g cordova
 ```
 
 ```
@@ -28,12 +24,14 @@ $ sudo npm install ios-sim -g
 ```
 
 ```
-$ phonegap run ios
+$ cordova emulate ios
 ```
 
 ###Android sdk and emulator installation
 
 First step is to install android sdk
+
+[https://developer.android.com/sdk/installing/index.html](https://developer.android.com/sdk/installing/index.html)
 
 [http://docs.phonegap.com/en/2.2.0/guide_getting-started_android_index.md.html](http://docs.phonegap.com/en/2.2.0/guide_getting-started_android_index.md.html)
 
@@ -52,10 +50,10 @@ $ android avd
 And try to run
 
 ```
-$ phonegap run android
+$ cordova emulate android
 ```
 
-You can bump with "ant" problem which is solved for OSX in such a way
+You can bump with "ant" problem on OSX, do the next to solve it
 
 ```
 $ brew update
@@ -67,8 +65,6 @@ $ brew install ant
 
 
 #Components
-[https://github.com/phonegap/phonegap-cli](https://github.com/phonegap/phonegap-cli)
-
-[https://github.com/phonegap/ios-sim](https://github.com/phonegap/ios-sim)
+[https://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html](https://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html)
 
 [https://github.com/thewildpendulum/gaps](https://github.com/thewildpendulum/gaps)
