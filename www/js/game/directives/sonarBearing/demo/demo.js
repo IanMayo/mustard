@@ -1,4 +1,4 @@
-angular.module('DemoApp', ['mustard.game.sonarBearing']);
+angular.module('DemoApp', ['subtrack90.game.sonarBearing']);
 
 function DemoCtrl($scope, $interval) {
 
