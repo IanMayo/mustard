@@ -7,7 +7,8 @@ angular.module('mustard.game.review', [
     'mustard.game.reviewSnapshot',
     'mustard.game.eventPickerDirective',
     'mustard.game.reviewTourDirective',
-    'mustard.game.geoMath'
+    'mustard.game.geoMath',
+    'mustard.game.sonarBearing'
 ])
 
 /**
@@ -161,6 +162,15 @@ angular.module('mustard.game.review', [
         return vessels;
     };
 
+    var sonarDetections = function () {
+        var index = $scope.reviewState.reviewTime / $scope.history.stepTime;
+        var detectionsSeries = $scope.history.detections[index];
+
+        if (detectionsSeries) {
+            $scope.$broadcast('addDetections', detectionsSeries.detections, $scope.reviewState.reviewTime, detectionsSeries.tracks);
+        }
+    };
+
     /**
      * Remove destroyed vessels if their track time are outside of simulation step.
      *
@@ -223,6 +233,7 @@ angular.module('mustard.game.review', [
      */
     var doUpdate = function () {
         var vessels = vesselsTracks();
+        sonarDetections();
 
         $scope.$broadcast('changeMarkers', $scope.vessels);
 

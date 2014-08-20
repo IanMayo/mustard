@@ -179,6 +179,8 @@ angular.module('mustard.game.simulator', [
 
         var trackHistory = {};
 
+        var detectionHistory = [];
+
         var startTime; // keep track of the start time, so we can pass the period to the history object.
 
         /**
@@ -442,7 +444,8 @@ angular.module('mustard.game.simulator', [
                         "stepTime": $scope.gameState.simulationTimeStep,
                         "center": $scope.ownShip.location(),
                         "mapFeatures": $scope.mapFeatures,
-                        "vessels": trackHistory
+                        "vessels": trackHistory,
+                        "detections": detectionHistory
                     })
                 }
             };
@@ -515,6 +518,12 @@ angular.module('mustard.game.simulator', [
 
                 // add this detection to the list
                 detections.push(thisB);
+            });
+
+            detectionHistory.push({
+                time: $scope.gameState.simulationTime,
+                detections: [detections],
+                tracks: [].concat(_.pluck($scope.ownShip.detections(), 'trackId'))
             });
 
             return detections;

@@ -60,9 +60,9 @@ angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
             plotGraphs.setup(options);
             plotGraphs.createPlot();
 
-            scope.$on('addDetections', function addDetectionsToPlots(event, detections, simulationTime) {
+            scope.$on('addDetections', function addDetectionsToPlots(event, detections, simulationTime, tracks) {
                 // extract track names from detections
-                var tracks = [].concat(_.pluck(scope.series, 'trackId'));
+                tracks = tracks || [].concat(_.pluck(scope.series, 'trackId'));
                 // replace default label names by track names
                 labels = _.map(labels, function mapLabels(label, index) {
                     return tracks[index] || label;
