@@ -2,8 +2,8 @@
  * @module mockUserBackend service
  */
 
-angular.module('mustard.app.mockUserBackend', [
-    'mustard.app.mockUserLevels'
+angular.module('subtrack90.app.mockUserBackend', [
+    'subtrack90.app.mockUserLevels'
 ])
 
 .factory('mockUserBackend', function ($http, $q, mockUserLevels) {

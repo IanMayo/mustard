@@ -1,7 +1,7 @@
-angular.module('mustard.app.debug', [
-    'mustard.app.user',
-    'mustard.app.splashScreen',
-    'mustard.game.message',
+angular.module('subtrack90.app.debug', [
+    'subtrack90.app.user',
+    'subtrack90.app.splashScreen',
+    'subtrack90.game.message',
     'LocalStorageModule'
 ])
 

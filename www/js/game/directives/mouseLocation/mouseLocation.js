@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.mouseLocation
+ * @module subtrack90.game.mouseLocation
  */
 
-angular.module('mustard.game.mouseLocation', [])
+angular.module('subtrack90.game.mouseLocation', [])
 
 .directive('mouseLocation', function () {
     return {

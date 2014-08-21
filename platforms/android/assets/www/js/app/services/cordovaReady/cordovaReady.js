@@ -1,4 +1,4 @@
-angular.module('mustard.cordova', [])
+angular.module('subtrack90.cordova', [])
 
 .factory('cordovaReady', [function () {
     return function (fn) {

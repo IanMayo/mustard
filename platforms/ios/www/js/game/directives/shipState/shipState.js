@@ -1,4 +1,4 @@
-angular.module('mustard.game.shipStateDirective', [])
+angular.module('subtrack90.game.shipStateDirective', [])
 
 .directive('shipState', function () {
     return {
