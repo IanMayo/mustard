@@ -8,7 +8,8 @@ angular.module('mustard.game.review', [
     'mustard.game.eventPickerDirective',
     'mustard.game.reviewTourDirective',
     'mustard.game.geoMath',
-    'mustard.game.sonarBearing'
+    'mustard.game.sonarBearing',
+    'ngQueue'
 ])
 
 /**
@@ -44,8 +45,8 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls',
-    function ($scope, $interval, $timeout, steppingControls) {
+.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls', '$queue',
+        function ($scope, $interval, $timeout, steppingControls, $queue) {
 
     /**
      * Apply filter to a vessel name.
@@ -71,6 +72,10 @@ angular.module('mustard.game.review', [
     };
 
     var lockedVessels = {};
+
+    var previousRequestedDetectionIndex = 0;
+
+    var detectionsRenderedToIndex = 0;
 
     /**
      * Add necessary properties to create a map marker
@@ -163,12 +168,48 @@ angular.module('mustard.game.review', [
     };
 
     var sonarDetections = function () {
-        var index = $scope.reviewState.reviewTime / $scope.history.stepTime;
-        var detectionsSeries = $scope.history.detections[index];
+        var requestedDetectionAtIndex = $scope.reviewState.reviewTime / $scope.history.stepTime;
+        var indexesRange = _.sortBy([previousRequestedDetectionIndex, requestedDetectionAtIndex]);
 
-        if (detectionsSeries) {
-            $scope.$broadcast('addDetections', detectionsSeries.detections, $scope.reviewState.reviewTime, detectionsSeries.tracks);
+        if (previousRequestedDetectionIndex > requestedDetectionAtIndex) {
+            // move time slider backward: detection points are rendered, just shift time axis in sonar
+            $scope.$broadcast('addDetections', null, $scope.reviewState.reviewTime);
+        } else if (indexesRange[1] < detectionsRenderedToIndex) {
+            // move time slider forward: detection points are rendered, just shift time axis in sonar
+            $scope.$broadcast('addDetections', null, $scope.reviewState.reviewTime);
+        } else {
+            // move time slider forward: detection points need to be added
+            addDetectionsForIndexes(indexesRange);
         }
+
+        previousRequestedDetectionIndex = requestedDetectionAtIndex;
+    };
+
+    /**
+     * Add detections to sonar.
+     * It is possible that a time gap can appear when User drags the time slider fast
+     * and it's needed to iterate detections within the gap.
+     *
+     * @param {Array} indexesRange
+     */
+    var addDetectionsForIndexes = function (indexesRange) {
+        var queue = $queue.queue(function broadcastDetections(detections) {
+            $scope.$broadcast('addDetections', detections.detections, $scope.reviewState.reviewTime, detections.tracks);
+        }, {delay: 1});
+
+        var items = [];
+
+        detectionsRenderedToIndex = indexesRange[1];
+
+        while (indexesRange[0] < indexesRange[1]) {
+            var item = $scope.history.detections[indexesRange[1]];
+            if (item) {
+                items.push(item);
+            }
+            indexesRange[1] -= 1;
+        }
+
+        queue.addEach(items);
     };
 
     /**
@@ -233,6 +274,7 @@ angular.module('mustard.game.review', [
      */
     var doUpdate = function () {
         var vessels = vesselsTracks();
+
         sonarDetections();
 
         $scope.$broadcast('changeMarkers', $scope.vessels);
@@ -322,6 +364,8 @@ angular.module('mustard.game.review', [
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
     };
+
+//    sonarDetections();
 
     // show the markers, plus their routes
     showVesselRoutes();
