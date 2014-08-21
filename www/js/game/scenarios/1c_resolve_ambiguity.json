@@ -1,5 +1,5 @@
 {
-    "id": "1c",
+    "id": "6c",
     "name": "Handling ambiguity",
     "description": "Intro to ambiguous bearings",
     "welcome": "Right, time to increase the complexity. The array will no longer do bearing resolution for you - the target could be to the left or right. So, head to the East, and gain your contact. You've got 15 minutes",

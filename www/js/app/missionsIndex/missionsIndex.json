@@ -1,18 +1,18 @@
 [
     {
-        "id": "0",
+        "id": "1",
         "name": "On board training",
         "description": "Initial training, against simulated targets",
         "missions": [
             {
-                "id": "0a",
+                "id": "1a",
                 "name": "Reading Surface Contacts on the sonar display",
                 "description": "Learn to read and interact with the sonar",
                 "url": "0a_surface_contacts",
                 "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
             },
             {
-                "id": "0b",
+                "id": "1b",
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
                 "url": "0b_submarine_contacts",
@@ -21,142 +21,132 @@
         ]
     },
     {
-        "id": "1",
+        "id": "2",
         "name": "Ship Control",
         "description": "Authority to control vessel course and speed during transit to deployment area",
+        "missions": []
+    },
+    {
+        "id": "3",
+        "name": "Advance to contact",
+        "description": "Engage with potential adversaries in relatively benign area of theatre",
+        "missions": []
+    },
+    {
+        "id": "4",
+        "name": "Task Group Operations",
+        "description": "Support High Value Units in complex environment",
+        "missions": []
+    },
+    {
+        "id": "5",
+        "name": "Developed Operations",
+        "description": "Complex tasking, occasionally against advanced targets",
+        "missions": []
+    },
+    {
+        "id": "6",
+        "name": "Special Weapons & Tactics",
+        "description": "Non-traditional Ops, under Limited Distribution",
         "missions": [
             {
-                "id": "1b",
+                "id": "6b",
                 "name": "Reading Bearings",
                 "description": "Learn to trail a bearing",
                 "url": "1b_read_bearings",
                 "guidanceUrl": "guidance/processed/1b_read_bearings.html"
             },
             {
-                "id": "1c",
+                "id": "6c",
                 "name": "Handling ambiguity",
                 "description": "Intro to ambiguous bearings",
                 "url": "1c_resolve_ambiguity",
                 "guidanceUrl": "guidance/processed/1c_resolve_ambiguity.html"
             },
             {
-                "id": "1d",
+                "id": "6d",
                 "name": "Advanced Ambiguity",
                 "description": "More advanced ambiguous bearings",
                 "url": "1d_resolve_ambiguity_2",
                 "guidanceUrl": "guidance/processed/1d_resolve_ambiguity_2.html"
-            }
-        ]
-    },
-    {
-        "id": "2",
-        "name": "Advance to contact",
-        "description": "Engage with potential adversaries in relatively benign area of theatre",
-        "missions": [
+            },
             {
-                "id": "2a",
+                "id": "6a",
                 "name": "Elementary Self Noise",
                 "description": "An introduction to self-noise",
                 "url": "2a_intro_self_noise",
                 "guidanceUrl": "guidance/processed/2a_intro_self_noise.html"
             },
             {
-                "id": "2b",
+                "id": "6b",
                 "name": "Full Self Noise",
                 "description": "Full self-noise characteristics",
                 "url": "2b_full_self_noise",
                 "guidanceUrl": "guidance/processed/2b_full_self_noise.html"
             },
             {
-                "id": "2c",
+                "id": "6c",
                 "name": "Advanced Self Noise",
                 "description": "Advanced Self Noise",
                 "url": "2c_adv_self_noise",
                 "guidanceUrl": "guidance/processed/2c_adv_self_noise.html"
             },
             {
-                "id": "2d",
+                "id": "6d",
                 "name": "Self Noise Extra",
                 "description": "More challenging self noise",
                 "url": "2d_more_self_noise",
                 "guidanceUrl": "guidance/processed/2d_more_self_noise.html"
-            }
-        ]
-    },
-    {
-        "id": "3",
-        "name": "Task Group Operations",
-        "description": "Support High Value Units in complex environment",
-        "missions": [
+            },
             {
-                "id": "3a",
+                "id": "6a",
                 "name": "Initial Ranging",
                 "description": "An introduction to passive ranging",
                 "url": "3a_initial_ranging",
                 "guidanceUrl": "guidance/processed/3a_initial_ranging.html"
             },
             {
-                "id": "3b",
+                "id": "6b",
                 "name": "Successive ranging",
                 "description": "Maintain a target solution using a series of ranging manoeuvres",
                 "url": "3b_successive_ranging",
                 "guidanceUrl": "guidance/processed/3b_successive_ranging.html"
             },
             {
-                "id": "3c",
+                "id": "6c",
                 "name": "Subtle turns",
                 "description": "Conducting ranging using small manoeuvres",
                 "url": "3c_subtle_turns",
                 "guidanceUrl": "guidance/processed/3c_subtle_turns.html"
             },
             {
-                "id": "3d",
+                "id": "6d",
                 "name": "Lay in wait",
                 "description": "Use passive tracking to predict target route",
                 "url": "3d_lay_in_wait",
                 "guidanceUrl": "guidance/processed/3d_lay_in_wait.html"
-            }
-        ]
-    },
-    {
-        "id": "4",
-        "name": "Developed Operations",
-        "description": "Complex tasking, occasionally against advanced targets",
-        "missions": [
+            },
             {
-                "id": "4a",
+                "id": "6a",
                 "name": "Fleeing Target",
                 "description": "Trailing a fleeing target",
                 "url": "4a_fleeing_target",
                 "guidanceUrl": "guidance/processed/4a_fleeing_target.html"
             },
             {
-                "id": "4b",
+                "id": "6b",
                 "name": "Attacking Target",
                 "description": "Evading an attacking target",
                 "url": "4b_attacking_target",
                 "guidanceUrl": "guidance/processed/4b_attacking_target.html"
             },
             {
-                "id": "4c",
+                "id": "6c",
                 "name": "Weapons Intro",
                 "description": "First use of weapons",
                 "url": "4c_weapons_intro",
                 "guidanceUrl": "guidance/processed/4c_weapons_intro.html"
-            }
-        ]
-    },
-    {
-        "id": "5",
-        "name": "Special Weapons & Tactics",
-        "description": "Non-traditional Ops, under Limited Distribution",
-        "missions": []
-    },
-    {
-        "id": "6",
-        "name": "Spare",
-        "description": "temporary storage for legacy missions",
-        "missions": [
+            },
             {
                 "id": "6a",
                 "name": "Learner Driver",
@@ -182,8 +172,8 @@
     },
     {
         "id": "7",
-        "name": "Development missions",
-        "description": "test cases used during scenario development",
+        "name": "Spare",
+        "description": "temporary storage for legacy missions",
         "missions": [
             {
                 "id": "7a",
@@ -214,5 +204,11 @@
                 "guidanceUrl": "guidance/processed/7d_placeholder.html"
             }
         ]
+    },
+    {
+        "id": "8",
+        "name": "Development missions",
+        "description": "test cases used during scenario development",
+        "missions": []
     }
 ]
