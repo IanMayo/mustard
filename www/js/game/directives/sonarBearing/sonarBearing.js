@@ -9,7 +9,8 @@ angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
         restrict: 'EA',
         scope: {
             series: '=',
-            initialTime: '@timer'
+            initialTime: '@timer',
+            persist: '='
         },
         template: '' +
             '<div id="viz-container" class="visContainer">' +
@@ -54,7 +55,8 @@ angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
 
             var options = _.extend({
                 initialTime: new Date(parseInt(scope.initialTime)),
-                detectionSelect: pointClickCallback
+                detectionSelect: pointClickCallback,
+                persist: scope.persist
             }, plotElements, colors);
 
             plotGraphs.setup(options);

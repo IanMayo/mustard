@@ -55,7 +55,8 @@ angular.module('mustard.game.sonarGraph', [])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            initialTime: new Date()
+            initialTime: new Date(),
+            removeOutdatedPoints: false
         };
 
         init(options);
@@ -289,7 +290,7 @@ angular.module('mustard.game.sonarGraph', [])
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
-                        if (yAxisScale.domain()[0].getTime() >
+                        if (config.removeOutdatedPoints && yAxisScale.domain()[0].getTime() >
                             (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
                             // datapoint became "invisible" - its time is less then time axis domain lower value
 
@@ -410,6 +411,12 @@ angular.module('mustard.game.sonarGraph', [])
             yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
             yAxisElement
                 .call(yAxisScale.axis);
+
+            _.each(renderedDetections, function (detection, key) {
+                // move group container
+                gMain.select('.' + key).
+                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+            });
         }
 
         /**

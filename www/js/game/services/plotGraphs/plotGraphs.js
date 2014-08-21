@@ -66,6 +66,7 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
                 yAxisLabel: graph.yAxisLabel,
                 showXAxis: graph.showXAxis,
                 margin: graph.margin,
+                removeOutdatedPoints: !config.persist,
                 elementSize: graphDimension(graph.element),
                 detectionSelect: config.detectionSelect,
                 initialTime: config.initialTime
