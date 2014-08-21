@@ -1,7 +1,8 @@
 [
     {
         "id": "0",
-        "name": "Sonar School",
+        "name": "On board training",
+        "description": "Initial training, against simulated targets",
         "missions": [
             {
                 "id": "0a",
@@ -22,14 +23,8 @@
     {
         "id": "1",
         "name": "Ship Control",
+        "description": "Authority to control vessel course and speed during transit to deployment area",
         "missions": [
-            {
-                "id": "1a",
-                "name": "Learner Driver",
-                "description": "Learn to drive, on the tracked range",
-                "url": "1a_drive_vessel",
-                "guidanceUrl": "guidance/processed/1a_drive_vessel.html"
-            },
             {
                 "id": "1b",
                 "name": "Reading Bearings",
@@ -55,7 +50,8 @@
     },
     {
         "id": "2",
-        "name": "Self Noise",
+        "name": "Advance to contact",
+        "description": "Engage with potential adversaries in relatively benign area of theatre",
         "missions": [
             {
                 "id": "2a",
@@ -89,7 +85,8 @@
     },
     {
         "id": "3",
-        "name": "Ranging Manoeuvres",
+        "name": "Task Group Operations",
+        "description": "Support High Value Units in complex environment",
         "missions": [
             {
                 "id": "3a",
@@ -123,7 +120,8 @@
     },
     {
         "id": "4",
-        "name": "Advanced Tactics & Weapons",
+        "name": "Developed Operations",
+        "description": "Complex tasking, occasionally against advanced targets",
         "missions": [
             {
                 "id": "4a",
@@ -149,9 +147,23 @@
         ]
     },
     {
+        "id": "5",
+        "name": "Special Weapons & Tactics",
+        "description": "Non-traditional Ops, under Limited Distribution",
+        "missions": []
+    },
+    {
         "id": "6",
-        "name": "Complex Operating Areas",
+        "name": "Spare",
+        "description": "temporary storage for legacy missions",
         "missions": [
+            {
+                "id": "6a",
+                "name": "Learner Driver",
+                "description": "Learn to drive, on the tracked range",
+                "url": "6a_drive_vessel",
+                "guidanceUrl": "guidance/processed/6a_drive_vessel.html"
+            },
             {
                 "id": "6a",
                 "name": "Merchant in area",
@@ -170,7 +182,8 @@
     },
     {
         "id": "7",
-        "name": "Complex Sonar",
+        "name": "Development missions",
+        "description": "test cases used during scenario development",
         "missions": [
             {
                 "id": "7a",
