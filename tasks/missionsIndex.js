@@ -108,6 +108,7 @@ module.exports = function(grunt) {
                 levelIndex.push({
                     id: level.id,
                     name: level.name,
+                    description: level.description,
                     missions: []
                 });
             });
