@@ -8,15 +8,15 @@
                 "id": "1a",
                 "name": "Reading Surface Contacts on the sonar display",
                 "description": "Learn to read and interact with the sonar",
-                "url": "0a_surface_contacts",
-                "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
+                "url": "1a_surface_contacts",
+                "guidanceUrl": "guidance/processed/1a_surface_contacts.html"
             },
             {
                 "id": "1b",
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
-                "url": "0b_submarine_contacts",
-                "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
+                "url": "1b_submarine_contacts",
+                "guidanceUrl": "guidance/processed/1b_submarine_contacts.html"
             }
         ]
     },
@@ -62,13 +62,6 @@
                 "description": "Intro to ambiguous bearings",
                 "url": "1c_resolve_ambiguity",
                 "guidanceUrl": "guidance/processed/1c_resolve_ambiguity.html"
-            },
-            {
-                "id": "6d",
-                "name": "Advanced Ambiguity",
-                "description": "More advanced ambiguous bearings",
-                "url": "1d_resolve_ambiguity_2",
-                "guidanceUrl": "guidance/processed/1d_resolve_ambiguity_2.html"
             },
             {
                 "id": "6a",
@@ -146,6 +139,13 @@
                 "description": "First use of weapons",
                 "url": "4c_weapons_intro",
                 "guidanceUrl": "guidance/processed/4c_weapons_intro.html"
+            },
+            {
+                "id": "6d",
+                "name": "Advanced Ambiguity",
+                "description": "More advanced ambiguous bearings",
+                "url": "6_1d_resolve_ambiguity_2",
+                "guidanceUrl": "guidance/processed/6_1d_resolve_ambiguity_2.html"
             },
             {
                 "id": "6a",
