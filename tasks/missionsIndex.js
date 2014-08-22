@@ -143,36 +143,37 @@ module.exports = function(grunt) {
 
                 // produce a trimmed down list of mission objectives, just containing the names and descriptions
                 var objectives = [];
-                mission.objectives.forEach(function(objective)
-                {
+                mission.objectives.forEach(function (objective) {
+
                     // declare this objective
-                    var thisO = {id: objective.id, name: objective.name, description: objective.description };
+                    var thisO = {
+                        id: objective.id,
+                        name: objective.name,
+                        description: objective.description
+                    };
 
                     // also sort out any children
-                    if(objective.children)
-                    {
+                    if (objective.children) {
                         var childList = [];
 
                         // loop through them
                         objective.children.forEach(function (childObj) {
-                                childList[childList.length] = {
-                                    name: childObj.name,
-                                    description: childObj.description,
-                                    type: childObj.type
-                                };
-                            }
-                        );
+                            childList[childList.length] = {
+                                name: childObj.name,
+                                description: childObj.description,
+                                type: childObj.type
+                            };
+                        });
                     }
 
                     // did we find any?
-                    if(childList) {
-                        thisO.children =  childList;
+                    if (childList) {
+                        thisO.children = childList;
                     }
 
                     // and store this new objective
                     objectives[objectives.length] = thisO;
-
-                })
+                });
 
                 missionsIndex[rootIndex].missions.push({
                     id: mission.id,
