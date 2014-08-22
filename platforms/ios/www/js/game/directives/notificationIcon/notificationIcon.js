@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.notificationIcon
+ * @module subtrack90.game.notificationIcon
  */
 
-angular.module('mustard.game.notificationIcon', [])
+angular.module('subtrack90.game.notificationIcon', [])
 
 /**
  * Notification icon directive

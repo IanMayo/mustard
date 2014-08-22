@@ -1,0 +1,13 @@
+2014-08-20 21:30:07.430 SubTrack 90[45433:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-20 21:30:07.501 SubTrack 90[45433:70b] Unlimited access to network resources
+2014-08-20 21:30:07.503 SubTrack 90[45433:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-08-20 21:30:08.959 SubTrack 90[45433:70b] [CDVTimer][splashscreen] 414.976001ms
+2014-08-20 21:30:08.960 SubTrack 90[45433:70b] [CDVTimer][TotalPluginStartup] 415.387034ms
+2014-08-20 21:30:09.169 SubTrack 90[45433:70b] Resetting plugins due to page load.
+2014-08-20 21:30:09.832 SubTrack 90[45433:70b] Finished load of: file:///Users/alexander/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/141000B5-22AE-4A69-81EC-3122F756F53E/SubTrack%2090.app/www/index.html#/main

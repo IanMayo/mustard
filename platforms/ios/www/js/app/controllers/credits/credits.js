@@ -1,4 +1,4 @@
-angular.module('mustard.app.credits', [])
+angular.module('subtrack90.app.credits', [])
 
 /**
  * @module credits - the credits page for the game

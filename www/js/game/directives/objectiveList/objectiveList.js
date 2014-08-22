@@ -1,4 +1,4 @@
-angular.module('mustard.game.objectiveListDirective', [])
+angular.module('subtrack90.game.objectiveListDirective', [])
 
 .directive('objectiveList', function () {
     return {
