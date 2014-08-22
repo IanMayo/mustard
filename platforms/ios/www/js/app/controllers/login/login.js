@@ -1,4 +1,4 @@
-angular.module('mustard.app.login', ['mustard.app.user'])
+angular.module('subtrack90.app.login', ['subtrack90.app.user'])
 
 /**
  * @module Login

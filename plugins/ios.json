@@ -29,7 +29,7 @@
     },
     "installed_plugins": {
         "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.phonegap.mustard"
+            "PACKAGE_NAME": "com.subtrack90"
         }
     },
     "dependent_plugins": {}

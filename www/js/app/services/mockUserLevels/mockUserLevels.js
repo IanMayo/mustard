@@ -2,8 +2,8 @@
  * @module mockUserLevels service
  */
 
-angular.module('mustard.app.mockUserLevels', [
-    'mustard.app.missionsIndex'
+angular.module('subtrack90.app.mockUserLevels', [
+    'subtrack90.app.missionsIndex'
 ])
 
 .factory('mockUserLevels', function ($q, missionsIndex) {

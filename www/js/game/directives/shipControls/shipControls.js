@@ -1,4 +1,4 @@
-angular.module('mustard.game.shipControlsDirective', [])
+angular.module('subtrack90.game.shipControlsDirective', [])
 
 .constant('shipControlsConfig', {
     courseRate: 5.00,
