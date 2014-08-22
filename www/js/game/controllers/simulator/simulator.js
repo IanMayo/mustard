@@ -652,9 +652,6 @@ angular.module('mustard.game.simulator', [
             // see if this mission is complete
             handleMissionEnd();
 
-            // see if we have a new objective to describe?
-            handleNewMessage($scope.gameState.objective);
-
             // and now for UI updates
             meters.model.tick();
             sonarUi.update();
@@ -662,23 +659,6 @@ angular.module('mustard.game.simulator', [
             /////////////////////////
             // GAME LOOP ENDS HERE
             /////////////////////////
-        };
-
-        var handleNewMessage = function(msg)
-        {
-            if(msg)
-            {
-                $scope.messages.add({
-                    title: 'New Objective',
-                    type: 'warning',
-                    text: msg,
-                    time: new Date().toLocaleTimeString()
-                });
-
-                // and delete the objective now that we have shown it
-                delete $scope.gameState.objective;
-            }
-
         };
 
         var showWelcome = function () {
