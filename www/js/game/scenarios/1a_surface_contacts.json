@@ -90,19 +90,19 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 97,
+                "baseLevel": 107,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 49.92,
-                    "lng": -8.12
+                    "lat": 49.83,
+                    "lng": -8.02
                 },
                 "course": 90,
                 "demCourse": 90,
                 "demSpeed": 10,
-                "speed": 10,
+                "speed": 12,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -236,7 +236,7 @@
                     "type": "FIND_TARGET",
                     "target": "TargetB_b",
                     "subject": "Ownship",
-                    "description" : "Select the ambiguous bearing to for the SE track",
+                    "description" : "Select the ambiguous bearing for the SE track",
                     "elapsedNot": 300,
                     "success": "Ok, well done. That's the surface contacts covered.",
                     "failure": "Oops, did you select the correct one? Try estimating the bearing to the target using the map, then you can work out which is the 'other' one.",
