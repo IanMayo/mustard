@@ -284,6 +284,7 @@ angular.module('mustard.game.simulator', [
         };
 
         var handleMissionEnd = function () {
+
             // do we need to pause/stop?
             if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
 
@@ -294,7 +295,7 @@ angular.module('mustard.game.simulator', [
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
                     $scope.messages.add({
-                        title: 'Success message',
+                        title: 'Objective Complete',
                         type: 'success',
                         text: $scope.gameState.successMessage,
                         time: new Date().toLocaleTimeString()
@@ -651,6 +652,9 @@ angular.module('mustard.game.simulator', [
             // see if this mission is complete
             handleMissionEnd();
 
+            // see if we have a new objective to describe?
+            handleNewMessage($scope.gameState.objective);
+
             // and now for UI updates
             meters.model.tick();
             sonarUi.update();
@@ -658,6 +662,23 @@ angular.module('mustard.game.simulator', [
             /////////////////////////
             // GAME LOOP ENDS HERE
             /////////////////////////
+        };
+
+        var handleNewMessage = function(msg)
+        {
+            if(msg)
+            {
+                $scope.messages.add({
+                    title: 'New Objective',
+                    type: 'warning',
+                    text: msg,
+                    time: new Date().toLocaleTimeString()
+                });
+
+                // and delete the objective now that we have shown it
+                delete $scope.gameState.objective;
+            }
+
         };
 
         var showWelcome = function () {
@@ -698,11 +719,13 @@ angular.module('mustard.game.simulator', [
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
 
+            // show the welcome message
+            showWelcome();
+
             $timeout(function () {
                 // trigger an initial update of locations
                 $scope.$broadcast('changeMarkers', $scope.vessels);
                 $scope.$broadcast('showFeatures', $scope.mapFeatures);
-                showWelcome();
             }, 300);
         };
 

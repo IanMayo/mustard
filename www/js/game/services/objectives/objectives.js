@@ -414,6 +414,20 @@ angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
                 }
             }
 
+            // do we have a description for this objective?
+            if(findTarget.description && ! findTarget.objectivePushed)
+            {
+                // ok, is this the current state objective description?
+                if(findTarget.description != gameState.objective)
+                {
+                    // ok, inject the description
+                    gameState.objective = findTarget.description;
+
+                    // remember that we've pushed the objective
+                    findTarget.objectivePushed = true;
+                }
+            }
+
             // see which vessel we're looking at
             var subjectName = findTarget.subject;
             if (!subjectName) {
