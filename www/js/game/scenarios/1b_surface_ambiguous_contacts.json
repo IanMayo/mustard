@@ -1,6 +1,6 @@
 {
-    "id": "1a",
-    "name": "Reading Surface Contacts on the sonar display",
+    "id": "1b",
+    "name": "Understanding bearing ambiguity in surface contacts",
     "description": "Early steps in reading and interacting with the sonar.",
     "situation" : "We've got a towed array configured for you, preset in training mode.  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar",

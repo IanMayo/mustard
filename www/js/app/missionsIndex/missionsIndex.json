@@ -6,17 +6,24 @@
         "missions": [
             {
                 "id": "1a",
-                "name": "Reading Surface Contacts on the sonar display",
-                "description": "Learn to read and interact with the sonar",
-                "url": "1a_surface_contacts",
-                "guidanceUrl": "guidance/processed/1a_surface_contacts.html"
+                "name": "Recognising Ownship & third party tracks",
+                "description": "Early steps in reading and interacting with the sonar.",
+                "url": "1a_recognise_ownship",
+                "guidanceUrl": "guidance/processed/1a_recognise_ownship.html"
             },
             {
                 "id": "1b",
+                "name": "Understanding bearing ambiguity in surface contacts",
+                "description": "Early steps in reading and interacting with the sonar.",
+                "url": "1b_surface_ambiguous_contacts",
+                "guidanceUrl": "guidance/processed/1b_surface_ambiguous_contacts.html"
+            },
+            {
+                "id": "1c",
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
-                "url": "1b_submarine_contacts",
-                "guidanceUrl": "guidance/processed/1b_submarine_contacts.html"
+                "url": "1c_submarine_contacts",
+                "guidanceUrl": "guidance/processed/1c_submarine_contacts.html"
             }
         ]
     },
