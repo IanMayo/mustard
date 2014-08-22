@@ -613,9 +613,7 @@ angular.module('mustard.game.simulator', [
                     }
                 } else {
                     storeState(vessel, $scope.gameState.simulationTime);
-
                 }
-
             });
 
             // can ownship drive itself?
@@ -648,6 +646,20 @@ angular.module('mustard.game.simulator', [
 
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
+
+            // do we have an initial objective description?
+            if($scope.gameState.firstObjective) {
+                $scope.messages.add({
+                    title: 'First objective!',
+                    type: 'warning',
+                    text: $scope.gameState.firstObjective,
+                    time: new Date().toLocaleTimeString()
+                });
+
+                // ok, we can now ditch it
+                delete $scope.gameState.firstObjective;
+
+            }
 
             // see if this mission is complete
             handleMissionEnd();
