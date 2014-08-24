@@ -2,7 +2,7 @@
  * @module subtrack90.game.messageList
  */
 
-angular.module('subtrack90.game.messageList', ['ngAnimate'])
+angular.module('subtrack90.game.messageList', ['ngAnimate', 'ngSanitize'])
 
 /**
  * Period when new element in list is highlighted
