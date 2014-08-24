@@ -1,0 +1,400 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Schema for Mustard Game Levels",
+    "type": "object",
+    "required": ["id", "name", "description", "vessels", "patrolArea", "environment", "objectives", "features"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "The unique identifier for this mission, beginning with the phase number"
+        },
+        "name": {
+            "type": "string",
+            "description": "Title for this mission"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of what is covered in this mission"
+        },
+        "welcome": {
+            "type": "string",
+            "description": "Text displayed at start of mission"
+        },
+        "vessels": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["name", "categories", "behaviours", "sonars", "radiatedNoise", "state", "perf"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of this vessel, 'Ownship' for player's vessel"
+                    },
+                    "categories": {
+                        "type": "object",
+                        "required": ["force", "environment", "type"],
+                        "properties": {
+                            "force": {
+                                "type": "string",
+                                "enum": ["BLUE", "RED", "WHITE"],
+                                "description": "Which force this vessel belongs to"
+                            },
+                            "environment": {
+                                "type": "string",
+                                "enum": ["SURFACE", "SUBSURFACE"],
+                                "description": "Where this vessel is found"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": ["WARSHIP", "SUBMARINE", "MERCHANT", "FISHING_VESSEL"],
+                                "description": "Type of vessel"
+                            }
+                        }
+                    },
+                    "unableToPerformRanging": {
+                        "type": "boolean",
+                        "description": "Whether this vessel is capable of performing ranging manoeuvres"
+                    },
+                    "behaviours": {
+                        "type": "array",
+                        "description" : "List of behaviours exhibited by this vessel",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "type"],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Unique name for this instance of this behaviour"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum" : ["RECTANGLE_WANDER","SNORT", "PATH", "EVADE", "ATTACK"],
+                                    "description": "General type of this behaviour"
+                                },
+                                "path": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "Route followed in Path behaviour",
+                                    "items": {
+                                        "type": "object",
+                                        "required": ["lat", "lng"],
+                                        "properties": {
+                                            "lat": {
+                                                "type": "number",
+                                                "minimum" : -90,
+                                                "maximum" : 90
+                                            },
+                                            "lng": {
+                                                "type": "number",
+                                                "minimum" : -180,
+                                                "maximum" : 180
+                                            }
+                                        }
+                                    }
+                                },
+                                "height": {
+                                    "type": "integer"
+                                },
+                                "repeat": {
+                                    "type": "boolean"
+                                },
+                                "forever": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "sonars": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "categories", "offset", "ArrayGain", "DT"],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "categories": {
+                                    "type": "array",
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "offset": {
+                                    "type": "integer"
+                                },
+                                "ArrayGain": {
+                                    "type": "integer"
+                                },
+                                "DT": {
+                                    "type": "integer"
+                                },
+                                "disabled": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "radiatedNoise": {
+                        "type": "object",
+                        "required": ["baseLevel", "speedPattern"],
+                        "properties": {
+                            "baseLevel": {
+                                "type": "integer"
+                            },
+                            "speedPattern": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "state": {
+                        "type": "object",
+                        "required": ["time", "categories", "location", "height", "course", "speed", "demCourse", "demSpeed", "demHeight" ],
+                        "properties": {
+                            "time": {
+                                "type": "integer"
+                            },
+                            "categories": {
+                                "type": "array",
+                                "minItems": 0,
+                                "uniqueItems": true,
+                                "items": {
+
+                                }
+                            },
+                            "location": {
+                                "type": "object",
+                                "required": ["lat", "lng"],
+                                "properties": {
+                                    "lat": {
+                                        "type": "number",
+                                        "minimum" : -90,
+                                        "maximum" : 90
+
+                                    },
+                                    "lng": {
+                                        "type": "number",
+                                        "minimum" : -180,
+                                        "maximum" : 180
+                                    }
+                                }
+                            },
+                            "height": {
+                                "type": "integer"
+                            },
+                            "course": {
+                                "type": "integer"
+                            },
+                            "speed": {
+                                "type": "integer"
+                            },
+                            "demCourse": {
+                                "type": "integer"
+                            },
+                            "demSpeed": {
+                                "type": "integer"
+                            },
+                            "demHeight": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "perf": {
+                        "type": "object",
+                        "required": ["turnRadius", "accelerationRate", "decelerationRate", "minSpeed", "maxSpeed", "climbRate", "diveRate" ],
+                        "properties": {
+                            "turnRadius": {
+                                "type": "number"
+                            },
+                            "accelerationRate": {
+                                "type": "number"
+                            },
+                            "decelerationRate": {
+                                "type": "number"
+                            },
+                            "minSpeed": {
+                                "type": "integer"
+                            },
+                            "maxSpeed": {
+                                "type": "integer"
+                            },
+                            "climbRate": {
+                                "type": "integer"
+                            },
+                            "diveRate": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "patrolArea": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "type": "number"
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "properties": {
+
+            }
+        },
+        "objectives": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["name", "type"],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "children": {
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "type"],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "subject": {
+                                    "type": "string"
+                                },
+                                "target": {
+                                    "type": "string"
+                                },
+                                "elapsed": {
+                                    "type": "integer"
+                                },
+                                "clearAfterwards": {
+                                    "type": "boolean"
+                                },
+                                "achievement": {
+                                    "type": "object",
+                                    "required": ["name", "message"],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "success": {
+                                    "type": "string"
+                                },
+                                "failureTime": {
+                                    "type": "string"
+                                },
+                                "failureSelection": {
+                                    "type": "string"
+                                },
+                                "narrSuccess": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "features": {
+            "type": "object",
+            "required": ["type", "features"],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "features": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["type", "properties", "geometry", "id"],
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "properties": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "geometry": {
+                                "type": "object",
+                                "required": ["type", "coordinates"],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "coordinates": {
+                                        "type": "array",
+
+                                        "items": [
+                                            {
+                                                "oneOf": [
+
+                                                    {
+                                                        "type": "number"
+                                                    },
+
+                                                    {
+                                                        "type": "array",
+                                                        "items": [
+                                                            {
+                                                                "type": "array",
+                                                                "items": [
+                                                                    {
+                                                                        "type": "number"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+
+                                        ]
+
+                                    }
+                                }
+                            },
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
