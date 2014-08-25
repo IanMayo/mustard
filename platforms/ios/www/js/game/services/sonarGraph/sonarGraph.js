@@ -4,7 +4,7 @@
  * Factory class to create a single sonar graph
  */
 
-angular.module('mustard.game.sonarGraph', [])
+angular.module('subtrack90.game.sonarGraph', [])
 
 /**
  * @module Sonar Graph

@@ -2,7 +2,7 @@
  * @module Message service
  */
 
-angular.module('mustard.game.message', [])
+angular.module('subtrack90.game.message', [])
 
 .factory('message', function ($modal) {
 

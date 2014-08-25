@@ -1,10 +1,10 @@
 /**
- * @module mustard.game.elementVisibility
+ * @module subtrack90.game.elementVisibility
  *
  * Set visibility mode for UI element depending on ownShip object state.
  */
 
-angular.module('mustard.game.elementVisibility', [])
+angular.module('subtrack90.game.elementVisibility', [])
 
 .directive('conditionalDisplay', ['$parse', function ($parse) {
 

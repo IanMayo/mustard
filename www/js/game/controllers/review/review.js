@@ -1,15 +1,14 @@
-angular.module('mustard.game.review', [
-    'mustard.game.spatialViewDirective',
-    'mustard.game.timeDisplayDirective',
-    'mustard.game.timeRemainingDirective',
-    'mustard.game.shipStateDirective',
-    'mustard.game.objectiveListDirective',
-    'mustard.game.reviewSnapshot',
-    'mustard.game.eventPickerDirective',
-    'mustard.game.reviewTourDirective',
-    'mustard.game.geoMath',
-    'mustard.game.sonarBearing',
-    'ngQueue'
+angular.module('subtrack90.game.review', [
+    'subtrack90.game.spatialViewDirective',
+    'subtrack90.game.timeDisplayDirective',
+    'subtrack90.game.timeRemainingDirective',
+    'subtrack90.game.shipStateDirective',
+    'subtrack90.game.objectiveListDirective',
+    'subtrack90.game.reviewSnapshot',
+    'subtrack90.game.eventPickerDirective',
+    'subtrack90.game.reviewTourDirective',
+    'subtrack90.game.geoMath',
+    'subtrack90.game.sonarBearing'
 ])
 
 /**
@@ -45,8 +44,8 @@ angular.module('mustard.game.review', [
  * @module Game
  * @class MissionCtrl (controller)
  */
-.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls', '$queue',
-        function ($scope, $interval, $timeout, steppingControls, $queue) {
+.controller('MissionReviewCtrl', ['$scope', '$interval', '$timeout', 'steppingControls',
+    function ($scope, $interval, $timeout, steppingControls) {
 
     /**
      * Apply filter to a vessel name.
@@ -72,10 +71,6 @@ angular.module('mustard.game.review', [
     };
 
     var lockedVessels = {};
-
-    var previousRequestedDetectionIndex = 0;
-
-    var detectionsRenderedToIndex = 0;
 
     /**
      * Add necessary properties to create a map marker
@@ -230,8 +225,6 @@ angular.module('mustard.game.review', [
     var doUpdate = function () {
         var vessels = vesselsTracks();
 
-        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime);
-
         $scope.$broadcast('changeMarkers', $scope.vessels);
 
         removeDestroyedVessels(vessels);
@@ -292,11 +285,6 @@ angular.module('mustard.game.review', [
 
     // create a wrapped ownship instance, for convenience
     $scope.ownShip = ownShipApi();
-
-    $timeout(function () {
-        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime, $scope.history.detections);
-        $scope.history.detections = null;
-    });
 
     $scope.$watch('reviewState.reviewTime', function (newVal) {
         if (newVal) {

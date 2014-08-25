@@ -1,4 +1,4 @@
-angular.module('mustard.app.mission', [])
+angular.module('subtrack90.app.mission', [])
 
 /**
  * @module Mission

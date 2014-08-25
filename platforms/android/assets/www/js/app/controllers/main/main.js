@@ -1,4 +1,4 @@
-angular.module('mustard.app.main', ['mustard.app.user'])
+angular.module('subtrack90.app.main', ['subtrack90.app.user'])
 
 /**
  * @module Main

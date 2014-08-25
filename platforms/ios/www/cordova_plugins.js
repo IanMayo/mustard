@@ -11,7 +11,7 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "org.apache.cordova.splashscreen": "0.3.1"
+    "org.apache.cordova.splashscreen": "0.3.2"
 }
 // BOTTOM OF METADATA
 });
