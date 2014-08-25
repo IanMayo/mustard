@@ -1,4 +1,4 @@
-angular.module('mustard.game.timeBearingDisplayDirective', ['mustard.game.spatialViewDirective'])
+angular.module('subtrack90.game.timeBearingDisplayDirective', ['subtrack90.game.spatialViewDirective'])
 
 .directive('timeBearingDisplay', ['$timeout', function ($timeout) {
     return {

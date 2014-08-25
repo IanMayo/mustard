@@ -1,4 +1,4 @@
-angular.module('mustard.app.options', ['mustard.app.user'])
+angular.module('subtrack90.app.options', ['subtrack90.app.user'])
 
 /**
  * @module Options

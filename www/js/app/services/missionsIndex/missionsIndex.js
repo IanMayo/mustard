@@ -2,7 +2,7 @@
  * @module missionsIndex service
  */
 
-angular.module('mustard.app.missionsIndex', [])
+angular.module('subtrack90.app.missionsIndex', [])
 
 .factory('missionsIndex', function ($http, $q) {
 

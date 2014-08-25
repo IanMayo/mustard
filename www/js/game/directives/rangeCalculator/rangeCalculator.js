@@ -1,4 +1,4 @@
-angular.module('mustard.game.rangeCalculatorDirective', ['mustard.game.geoMath'])
+angular.module('subtrack90.game.rangeCalculatorDirective', ['subtrack90.game.geoMath'])
 
 .constant('LEG_LENGTH', 60000)  // how long a leg must be averaged for
 

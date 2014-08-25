@@ -2,7 +2,7 @@
  * @module Detection
  */
 
-angular.module('mustard.game.detection', ['mustard.game.geoMath'])
+angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
 
 /**
  * @module Detection

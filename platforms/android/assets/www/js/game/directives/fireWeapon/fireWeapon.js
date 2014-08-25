@@ -1,4 +1,4 @@
-angular.module('mustard.game.fireWeaponDirective', [])
+angular.module('subtrack90.game.fireWeaponDirective', [])
 
 .directive('fireWeapon', ['$timeout', function ($timeout) {
     return {

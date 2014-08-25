@@ -1,4 +1,4 @@
-angular.module('mustard.app.final', [])
+angular.module('subtrack90.app.final', [])
 
 /**
  * @module Final

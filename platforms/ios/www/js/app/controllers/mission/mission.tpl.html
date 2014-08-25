@@ -1,20 +1,23 @@
 <div class="wrapper-mobile without-top-nav">
   <div class="container-with-scroll-mobile">
     <div class="container-fluid">
-      <h2>Mission #{{ mission.name }} <code ng-non-bindable>from {{mission.name}}</code></h2>
+      <h2>Mission {{ mission.id }} - {{ mission.name }}</h2>
       <accordion id="missionAccordion" close-others="true">
         <accordion-group heading="Mission" is-open="!failedMission()">
             <h4>Description</h4>
             {{mission.description}}
           <h4>Situation</h4>
-          Scenario back plot, why we are here <code ng-non-bindable>from {{mission.situation}}</code>
+            {{mission.situation}}
           <h4>Objectives</h4>
-          <code ng-non-bindable>from {{mission.situation}}</code>
-          <ul>
-            <li>Travel to rendez-vous with Intel Ship</li>
-            <li>Gain contact with TARGET DELTA</li>
-            <li>Follow TARGET DELTA to locate his supply vessel</li>
-          </ul>
+            <div ng-repeat="objective in mission.objectives">
+                <strong>{{ objective.name }}</strong>
+                <ul class="list-group small">
+                    <li class="list-group-item" ng-repeat="obj in objective.children | filter:canSucceed">
+                        <span class="glyphicon glyphicon-record"></span>
+                        {{ obj.name }}
+                    </li>
+                </ul>
+            </div>
         </accordion-group>
         <accordion-group heading="Guidance" is-open="failedMission()">
           <div ng-include="mission.guidanceUrl"></div>

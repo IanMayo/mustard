@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.sonarBearing
+ * @module subtrack90.game.sonarBearing
  */
 
-angular.module('mustard.game.sonarBearing', ['mustard.game.plotGraphs'])
+angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
 .directive('sonarBearing', ['$timeout', 'plotGraphs', function ($timeout, plotGraphs) {
     return {

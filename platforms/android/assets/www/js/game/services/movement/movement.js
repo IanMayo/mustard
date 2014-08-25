@@ -2,7 +2,7 @@
  * @module Movement
  */
 
-angular.module('mustard.game.movement', ['mustard.game.geoMath'])
+angular.module('subtrack90.game.movement', ['subtrack90.game.geoMath'])
 
 /**
  * @module Movement

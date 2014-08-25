@@ -1,11 +1,11 @@
 /**
- * @module mustard.game.messageList
+ * @module subtrack90.game.messageList
  */
 
-angular.module('mustard.game.messageList', ['ngAnimate'])
+angular.module('subtrack90.game.messageList', ['ngAnimate', 'ngSanitize'])
 
 /**
- * period for which the new element in the message list is highlighted
+ * Period when new element in list is highlighted
  */
 .constant('HIGHLIGHT_MILLIS', 3000)
 

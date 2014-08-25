@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.leafletMapDirective
+ * @module subtrack90.game.leafletMapDirective
  */
 
-angular.module('mustard.game.leafletMapDirective', ['mustard.game.reviewTourDirective'])
+angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTourDirective'])
 
 .constant('leafletMapConfig', {
     initialZoom: 11,
