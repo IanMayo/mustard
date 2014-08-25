@@ -1,13 +1,13 @@
-angular.module('mustard.game.review', [
-    'mustard.game.spatialViewDirective',
-    'mustard.game.timeDisplayDirective',
-    'mustard.game.timeRemainingDirective',
-    'mustard.game.shipStateDirective',
-    'mustard.game.objectiveListDirective',
-    'mustard.game.reviewSnapshot',
-    'mustard.game.eventPickerDirective',
-    'mustard.game.reviewTourDirective',
-    'mustard.game.geoMath'
+angular.module('subtrack90.game.review', [
+    'subtrack90.game.spatialViewDirective',
+    'subtrack90.game.timeDisplayDirective',
+    'subtrack90.game.timeRemainingDirective',
+    'subtrack90.game.shipStateDirective',
+    'subtrack90.game.objectiveListDirective',
+    'subtrack90.game.reviewSnapshot',
+    'subtrack90.game.eventPickerDirective',
+    'subtrack90.game.reviewTourDirective',
+    'subtrack90.game.geoMath'
 ])
 
 /**
@@ -303,14 +303,15 @@ angular.module('mustard.game.review', [
      * @param value the current slider value (millis)
      * @returns {string} a time-string representation of the value
      */
-    $scope.translate = function(value) {
+    $scope.translate = function(value)
+    {
       var date = new Date(value);
       return date.toLocaleTimeString();
-    };
+    }
 
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
-    };
+    }
 
     // show the markers, plus their routes
     showVesselRoutes();

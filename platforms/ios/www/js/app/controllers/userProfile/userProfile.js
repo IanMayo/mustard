@@ -1,5 +1,5 @@
-angular.module('mustard.app.userProfile', [
-    'mustard.app.user'
+angular.module('subtrack90.app.userProfile', [
+    'subtrack90.app.user'
 ])
 
 /**

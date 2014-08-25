@@ -2,8 +2,8 @@
  * @module User service
  */
 
-angular.module('mustard.app.user', [
-    'mustard.app.mockUserBackend',
+angular.module('subtrack90.app.user', [
+    'subtrack90.app.mockUserBackend',
     'LocalStorageModule'
 ])
 

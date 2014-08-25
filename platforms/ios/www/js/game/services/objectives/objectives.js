@@ -2,7 +2,7 @@
  * @module Objectives
  */
 
-angular.module('mustard.game.objectives', ['mustard.game.geoMath'])
+angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
 /**
  * @module Objectives

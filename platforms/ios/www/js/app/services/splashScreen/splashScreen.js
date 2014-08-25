@@ -2,7 +2,7 @@
  * @module Splash Screen service
  */
 
-angular.module('mustard.app.splashScreen', [])
+angular.module('subtrack90.app.splashScreen', [])
 
 /**
  * Splash time constant which is used in "desktop splash screen resolver"

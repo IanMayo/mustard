@@ -2,7 +2,7 @@
  * @module movementSimulation
  */
 
-angular.module('mustard.game.movementSimulation', [])
+angular.module('subtrack90.game.movementSimulation', [])
 
 /**
  * @module movementSimulation

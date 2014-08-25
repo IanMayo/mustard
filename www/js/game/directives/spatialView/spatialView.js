@@ -1,10 +1,10 @@
 /**
- * @module mustard.game.spatialViewDirective
+ * @module subtrack90.game.spatialViewDirective
  */
 
-angular.module('mustard.game.spatialViewDirective', [
-    'mustard.game.geoMath',
-    'mustard.game.leafletMapDirective'
+angular.module('subtrack90.game.spatialViewDirective', [
+    'subtrack90.game.geoMath',
+    'subtrack90.game.leafletMapDirective'
 ])
 
 .constant('spatialViewConfig', {

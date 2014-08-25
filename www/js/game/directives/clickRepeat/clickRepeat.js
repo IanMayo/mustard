@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.clickRepeat
+ * @module subtrack90.game.clickRepeat
  */
 
-angular.module('mustard.game.clickRepeat', [])
+angular.module('subtrack90.game.clickRepeat', [])
 
 /**
  * Click & Repeat directive
