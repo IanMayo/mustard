@@ -28,6 +28,10 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
     var $sonarElement = null;
     var sonarGraphs;
 
+    var dataSeriesCache = [];
+
+    var prevIndexesRange = [0, 0];
+
     init();
 
     /**
@@ -66,7 +70,7 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
                 yAxisLabel: graph.yAxisLabel,
                 showXAxis: graph.showXAxis,
                 margin: graph.margin,
-                removeOutdatedPoints: !config.persist,
+                serialRenderingMode: !config.reviewMode,
                 elementSize: graphDimension(graph.element),
                 detectionSelect: config.detectionSelect,
                 initialTime: config.initialTime
@@ -115,6 +119,41 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
     this.updatePlotTime = function (time) {
         _.each(sonarGraphs, function (sonar) {
             sonar.changeYAxisDomain(time);
+        });
+    };
+
+    /**
+     * Update plot.
+     * Used in review mode.
+     *
+     * @param {Date} reviewTime
+     * @param {Array} dataSeries
+     */
+    this.updateReviewPlot = function (reviewTime, dataSeries) {
+
+        if (dataSeries) {
+            dataSeriesCache = dataSeries;
+        }
+
+        this.updatePlotTime(reviewTime);
+
+        _.each(sonarGraphs, function (sonar) {
+            var indexesRange = _.map(sonar.visibleDomain(), function (item) {
+                    var time = item.getTime() / 2000;
+                    if (time > 0) {
+                        return time;
+                    }
+                    return 0;
+                });
+
+                var newRange = rangeBoundaries(indexesRange);
+                var partialSeries = Array.prototype.slice.apply(dataSeriesCache, newRange);
+
+
+            _.each(partialSeries, function (series) {
+                var detections = config.dataSeriesHandler(series);
+                sonar.addDetection(detections);
+            });
         });
     };
 
@@ -173,4 +212,31 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
             sonar.changeGraphHeight(graphDimension(config.graphs[index].element));
         });
     }
+
+    /**
+     * Create boundaries for a new data series
+     *
+     * @param {Array} indexesRange
+     * @returns {Array}
+     */
+    function rangeBoundaries(indexesRange) {
+        var start = 0, end = 0;
+
+        if (prevIndexesRange[0] > indexesRange[0] || prevIndexesRange[1] > indexesRange[1]) {
+            // draw points in chronological order
+            if (prevIndexesRange[0] > 0) {
+                start = indexesRange[0];
+                end = prevIndexesRange[0];
+            }
+        } else {
+            // draw points in reverse order
+            start = prevIndexesRange[1];
+            end = indexesRange[1];
+        }
+
+        prevIndexesRange = indexesRange;
+
+        return [start, end];
+    }
+
 }]);

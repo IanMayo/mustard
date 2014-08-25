@@ -167,51 +167,6 @@ angular.module('mustard.game.review', [
         return vessels;
     };
 
-    var sonarDetections = function () {
-        var requestedDetectionAtIndex = $scope.reviewState.reviewTime / $scope.history.stepTime;
-        var indexesRange = _.sortBy([previousRequestedDetectionIndex, requestedDetectionAtIndex]);
-
-        if (previousRequestedDetectionIndex > requestedDetectionAtIndex) {
-            // move time slider backward: detection points are rendered, just shift time axis in sonar
-            $scope.$broadcast('addDetections', null, $scope.reviewState.reviewTime);
-        } else if (indexesRange[1] < detectionsRenderedToIndex) {
-            // move time slider forward: detection points are rendered, just shift time axis in sonar
-            $scope.$broadcast('addDetections', null, $scope.reviewState.reviewTime);
-        } else {
-            // move time slider forward: detection points need to be added
-            addDetectionsForIndexes(indexesRange);
-        }
-
-        previousRequestedDetectionIndex = requestedDetectionAtIndex;
-    };
-
-    /**
-     * Add detections to sonar.
-     * It is possible that a time gap can appear when User drags the time slider fast
-     * and it's needed to iterate detections within the gap.
-     *
-     * @param {Array} indexesRange
-     */
-    var addDetectionsForIndexes = function (indexesRange) {
-        var queue = $queue.queue(function broadcastDetections(detections) {
-            $scope.$broadcast('addDetections', detections.detections, $scope.reviewState.reviewTime, detections.tracks);
-        }, {delay: 1});
-
-        var items = [];
-
-        detectionsRenderedToIndex = indexesRange[1];
-
-        while (indexesRange[0] < indexesRange[1]) {
-            var item = $scope.history.detections[indexesRange[1]];
-            if (item) {
-                items.push(item);
-            }
-            indexesRange[1] -= 1;
-        }
-
-        queue.addEach(items);
-    };
-
     /**
      * Remove destroyed vessels if their track time are outside of simulation step.
      *
@@ -275,7 +230,7 @@ angular.module('mustard.game.review', [
     var doUpdate = function () {
         var vessels = vesselsTracks();
 
-        sonarDetections();
+        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime);
 
         $scope.$broadcast('changeMarkers', $scope.vessels);
 
@@ -338,6 +293,11 @@ angular.module('mustard.game.review', [
     // create a wrapped ownship instance, for convenience
     $scope.ownShip = ownShipApi();
 
+    $timeout(function () {
+        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime, $scope.history.detections);
+        $scope.history.detections = null;
+    });
+
     $scope.$watch('reviewState.reviewTime', function (newVal) {
         if (newVal) {
             doUpdate();
@@ -364,8 +324,6 @@ angular.module('mustard.game.review', [
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
     };
-
-//    sonarDetections();
 
     // show the markers, plus their routes
     showVesselRoutes();

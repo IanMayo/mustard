@@ -497,11 +497,12 @@ angular.module('mustard.game.simulator', [
         /**
          * collate current ownship sonar detections.
          *
-         * @returns {Array}
+         * @returns {Object}
          */
         var collateCurrentSonarDetections = function () {
             var detections = [];
             var thisB;
+            var detectionsWithTracks = {};
 
             _.each($scope.ownShip.detections(), function (detection) {
                 // is this the first item?
@@ -520,13 +521,15 @@ angular.module('mustard.game.simulator', [
                 detections.push(thisB);
             });
 
-            detectionHistory.push({
+            detectionsWithTracks = {
                 time: $scope.gameState.simulationTime,
-                detections: [detections],
+                detections: detections,
                 tracks: [].concat(_.pluck($scope.ownShip.detections(), 'trackId'))
-            });
+            };
 
-            return detections;
+            detectionHistory.push(detectionsWithTracks);
+
+            return detectionsWithTracks;
         };
 
 
@@ -566,7 +569,7 @@ angular.module('mustard.game.simulator', [
                     cache = params.dataProvider();
 
                     // did we get any data?
-                    if (cache  && cache.length > 0) {
+                    if (cache  && (cache.length > 0 || _.isObject(cache))) {
                         cacheStorage.push(cache);
                     }
                 }
