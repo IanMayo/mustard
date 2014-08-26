@@ -1,56 +1,57 @@
-<div data-ng-controller="MissionReviewCtrl" data-review-tour>
-  <table width="100%">
-    <tr>
-      <td width="40%" style="padding: 10px">
-        <time-bearing-display data-series="ownShip.newDetections"></time-bearing-display>
-      </td>
-      <td width="60%" style="padding: 10px">
-        <spatial-view></spatial-view>
-        <div class="timeSlider">
-          <rzslider data-break-review-tour
+<div data-ng-controller="MissionReviewCtrl" class="mission-simulator" data-review-tour>
+  <div class="container-fluid time-bearing-spatial-container">
+    <div class="col-xs-5 col-md-5 time-bearing-container">
+      <sonar-bearing class="sonarBearing" class="time-bearing-display"
+        data-timer="{{reviewState.reviewTime}}"
+        data-time-step="{{reviewState.reviewTimeStep}}" data-review-mode></sonar-bearing>
+    </div>
+    <div class="col-xs-7 col-md-7 spatial-container">
+      <spatial-view></spatial-view>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="simulation-event-slider">
+      <div class="timeSlider">
+        <rzslider data-break-review-tour
                   rz-slider-floor="reviewState.reviewTime"
                   rz-slider-ceil="simulationTimeEnd()"
                   rz-slider-model="reviewState.reviewTime"
                   rz-slider-step="{{reviewState.reviewTimeStep}}"
                   rz-slider-translate="translate"></rzslider>
-          <event-picker data-vessels="vessels"
-                        data-time="{{simulationTimeEnd()}}"
-                        data-timer="reviewState.reviewTime"
-                        data-history="history"></event-picker>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <ul class="list-inline mission-controls">
-          <li>
-            <time-display class="form-group" data-time-step="reviewState.reviewTimeStep"
-                          data-timer="reviewState.reviewTime"></time-display>
-          </li>
-          <li>
-            <ship-state data-course="vessels.Ownship.state.course"
-                        data-speed="vessels.Ownship.state.speed"></ship-state>
-            <ship-state data-course="vessels.Target.state.course"
-                        data-speed="vessels.Target.state.speed"></ship-state>
-          </li>
-          <li>
-            <objective-list data-objectives="history.objectives"></objective-list>
-          </li>
-          <li>
-            <h3>Narrative</h3>
-            <button data-ng-click="showNarrative()" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-film"> Replay</span>
-            </button>
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-  <nav class="navbar navbar-mobile-bottom">
-    <div class="container-fluid">
-       <button data-ng-click="goBack()" type="button" class="btn btn-default btn-sm btn-back">
-          <i class="glyphicon glyphicon-arrow-left"></i> Back
-       </button>
+        <event-picker data-vessels="vessels"
+                      data-time="{{simulationTimeEnd()}}"
+                      data-timer="reviewState.reviewTime"
+                      data-history="history"></event-picker>
+      </div>
     </div>
-  </nav>
+  </div>
+  <div class="controls-container">
+    <ul class="list-inline mission-controls">
+      <li class="pull-left">
+        <button data-ng-click="goBack()" type="button" class="btn btn-default btn-sm btn-back">
+          <i class="glyphicon glyphicon-arrow-left"></i> Back
+        </button>
+      </li>
+      <li class="pull-left">
+        <div class="ship-state-info-container">
+          <ship-state data-name="{{vessels.Ownship.name}}"
+                      data-course="vessels.Ownship.state.course"
+                      data-speed="vessels.Ownship.state.speed"></ship-state>
+          <ship-state data-name="{{vessels.Target.name}}"
+                      data-course="vessels.Target.state.course"
+                      data-speed="vessels.Target.state.speed"></ship-state>
+        </div>
+      </li>
+      <li class="pull-left">
+        <div class="narrative-info-container">
+          <div>
+            <strong>Narrative</strong>
+          </div>
+          <button data-ng-click="showNarrative()" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-film"> Replay</span>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
