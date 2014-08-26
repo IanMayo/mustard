@@ -152,8 +152,10 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
 
 
             _.each(partialTrackSeries, function (series) {
-                var detections = config.dataSeriesHandler(series);
-                sonar.addDetection(detections);
+                if (series.detections.length) {
+                    var detections = config.dataSeriesHandler(series);
+                    sonar.addDetection(detections);
+                }
             });
         });
     };

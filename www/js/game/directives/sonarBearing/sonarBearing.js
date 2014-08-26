@@ -79,8 +79,10 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
             scope.$on('addDetections', function addDetectionsToPlots(event, detectionSeries, simulationTime) {
                 _.each(detectionSeries, function (series) {
-                    var detections = assignDetectionsPointsToNames(series);
-                    plotGraphs.addDetection(detections);
+                    if (series.detections.length) {
+                        var detections = assignDetectionsPointsToNames(series);
+                        plotGraphs.addDetection(detections);
+                    }
                 });
 
                 plotGraphs.updatePlotTime(new Date(simulationTime));
