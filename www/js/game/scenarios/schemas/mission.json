@@ -152,33 +152,32 @@
                     },
                     "radiatedNoise": {
                         "type": "object",
+                        "description": "How noisy this vessel is",
                         "required": ["baseLevel", "speedPattern"],
                         "properties": {
                             "baseLevel": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Core noise level (at stationary)"
                             },
                             "speedPattern": {
-                                "type": "string"
+                                "type": "string",
+                                "enum" : ["Uniform"],
+                                "description": "How the noise increases with speed"
                             }
                         }
                     },
                     "state": {
                         "type": "object",
+                        "description": "Initial state of this vessel",
                         "required": ["time", "categories", "location", "height", "course", "speed", "demCourse", "demSpeed", "demHeight" ],
                         "properties": {
                             "time": {
-                                "type": "integer"
-                            },
-                            "categories": {
-                                "type": "array",
-                                "minItems": 0,
-                                "uniqueItems": true,
-                                "items": {
-
-                                }
+                                "type": "integer",
+                                "description": "Time at which this state is valid (secs)"
                             },
                             "location": {
                                 "type": "object",
+                                "description": "Location of this vessel",
                                 "required": ["lat", "lng"],
                                 "properties": {
                                     "lat": {
@@ -195,49 +194,63 @@
                                 }
                             },
                             "height": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "Altitude of this vessel (-ve for underwater) (m)"
                             },
                             "course": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "Current course of this vessel (degs)"
                             },
                             "speed": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "Current speed of this vessel (m/s)"
                             },
                             "demCourse": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "Demanded course of this vessel (degs)"
                             },
                             "demSpeed": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "Demanded speed of this vessel (m/s)"
                             },
                             "demHeight": {
-                                "type": "number"
+                                "type": "number",
+                                "description": "Demanded height of this vessel (m)"
                             }
                         }
                     },
                     "perf": {
                         "type": "object",
+                        "description": "Movement characteristics of this vessel",
                         "required": ["turnRadius", "accelerationRate", "decelerationRate", "minSpeed", "maxSpeed", "climbRate", "diveRate" ],
                         "properties": {
                             "turnRadius": {
-                                "type": "number"
+                                "type": "number",
+                                "description": "m"
                             },
                             "accelerationRate": {
-                                "type": "number"
+                                "type": "number",
+                                "description": "m/s/s"
                             },
                             "decelerationRate": {
-                                "type": "number"
+                                "type": "number",
+                                "description": "m/s/s"
                             },
                             "minSpeed": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "m/s"
                             },
                             "maxSpeed": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "m/s"
                             },
                             "climbRate": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "m/s"
                             },
                             "diveRate": {
-                                "type": "integer"
+                                "type": "number",
+                                "description": "m/s"
                             }
                         }
                     }
@@ -246,10 +259,12 @@
         },
         "patrolArea": {
             "type": "array",
+            "description": "Rough bounds of area for this operation",
             "minItems": 1,
             "uniqueItems": true,
             "items": {
                 "type": "array",
+                "description": "Series of x/y coordinates representing rectangle",
                 "minItems": 1,
                 "uniqueItems": true,
                 "items": {
@@ -259,23 +274,33 @@
         },
         "environment": {
             "type": "object",
+            "description": "Customisable environment description",
             "properties": {
 
             }
         },
+
+
+
         "objectives": {
             "type": "array",
+            "description": "Elements that watch the scenario unfold, including success/failure tests",
             "minItems": 1,
             "uniqueItems": true,
             "items": {
                 "type": "object",
+                "description": "List of elements",
                 "required": ["name", "type"],
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Unique name for this objective"
                     },
                     "type": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Type of objective",
+                        "enum" : ["SEQUENCE","PROXIMITY","DISTANCE","FIND_TARGET","GAIN_CONTACT","MAINTAIN_CONTACT","ELAPSED","DESTROY_TARGET","OBTAIN_SOLUTION"
+                        ]
                     },
                     "children": {
                         "type": "array",
@@ -335,6 +360,7 @@
         },
         "features": {
             "type": "object",
+            "description": "Collection of geographic features to draw on the Map control",
             "required": ["type", "features"],
             "properties": {
                 "type": {
