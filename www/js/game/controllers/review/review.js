@@ -225,8 +225,6 @@ angular.module('subtrack90.game.review', [
     var doUpdate = function () {
         var vessels = vesselsTracks();
 
-        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime);
-
         $scope.$broadcast('changeMarkers', $scope.vessels);
 
         removeDestroyedVessels(vessels);
@@ -287,11 +285,6 @@ angular.module('subtrack90.game.review', [
 
     // create a wrapped ownship instance, for convenience
     $scope.ownShip = ownShipApi();
-
-    $timeout(function () {
-        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime, $scope.history.detections);
-        $scope.history.detections = null;
-    });
 
     $scope.$watch('reviewState.reviewTime', function (newVal) {
         if (newVal) {
