@@ -1,9 +1,9 @@
 {
     "id": "1b",
     "name": "Understanding bearing ambiguity in surface contacts",
-    "description": "Early steps in reading and interacting with the sonar.",
-    "situation" : "We've got a towed array configured for you, preset in training mode.  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
-    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar",
+    "description": "Using easy surface contacts to highlight bearing ambiguity",
+    "situation" : "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
+    "welcome": "Back on the training vessel. Let's carry on learning.",
     "vessels": [
         {
             "name": "Ownship",

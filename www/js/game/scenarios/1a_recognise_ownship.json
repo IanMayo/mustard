@@ -2,7 +2,7 @@
     "id": "1a",
     "name": "Recognising Ownship & third party tracks",
     "description": "Early steps in reading and interacting with the sonar.",
-    "situation" : "We've got a towed array configured for you, preset in training mode.  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
+    "situation" : "We've got a towed array configured for you, preset auto-resolve mode (so you won't be seeing ambiguous bearing).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar",
     "vessels": [
         {
@@ -206,25 +206,27 @@
                     "narrSuccess" : "Identified Ownship track"
                 },
                 {
-                    "name": "Identify NW target track",
+                    "name": "Identify surface vessel track",
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "clearAfterwards" : true,
                     "target": "TargetA",
                     "description" : "Select the noise trace for the vessel to the South West of you.",
-                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere.",
-                    "failure": "This should have been easy - it's the only other bearing on there.",
+                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
+                    "failure": "This should have been easy - it's the only other bearing on there!",
                     "narrSuccess" : "Spotted surface track"
                 },
                 {
-                    "name": "Identify dived track",
+                    "name": "Identify dived submarine track",
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
                     "target": "TargetB",
+                    "elapsed": 1200,
                     "subject": "Ownship",
                     "description" : "Select the noise trace for the dived track",
                     "success": "Ok, well done. That's the first steps covered.",
-                    "failure": "Oh dear, this may take some time",
+                    "failure": "Oh dear, you clicked the wrong track. This may take some time",
+                    "failureTime": "Sorry, you didn't click on the dived track in time. Are you concentrating?",
                     "narrSuccess" : "Spotted dived track"
                 }
             ]

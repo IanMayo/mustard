@@ -2,7 +2,8 @@
     "id": "1c",
     "name": "Using ownship manoeuvres to determine ambiguous bearing",
     "description": "Using ownship manoeuvres to determine bearing ambiguity",
-    "welcome": "Well, it's all very easy separating the true bearing from the ambiguous bearing when you've got radar contact with a target.  You're now going to learn how to do this with a dived target.  In this next scenario there is a dived and a surface contact. Start off by selecting the ownship track in the sonar",
+    "situation" : "Your sonar is still showing ambiguous contacts, you need to start experimenting against dived targets - where visual sightings aren't available",
+    "welcome": "Well, it's all very easy separating the true bearing from the ambiguous bearing when you've got radar contact with a target.  You're now going to learn how to do this with a dived target.  In this next scenario there is a dived and a surface contact",
     "vessels": [
         {
             "name": "Ownship",
@@ -247,6 +248,7 @@
                     "clearAfterwards" : true,
                     "target": "Ownship",
                     "elapsed": 300,
+                    "description" : "Start off by selecting the ownship track in the sonar",
                     "success": "Ok, well that was obvious. Now, there's also a dived target out there. Wait to gain contact, then select any sonar track that represents it.  Oh, and while you're watching look out for how the two tracks on the surface contact change when ownship changes course.",
                     "failure": "Sorry, you didn't click on the ownship track in time.  Look at the map and consider what the ownship heading is",
                     "narrSuccess" : "Identified ownship track"
@@ -256,8 +258,9 @@
                     "type": "FIND_TARGET",
                     "clearAfterwards" : true,
                     "subject": "Ownship",
+                    "description" : "Select any sonar track that represents the dived target",
                     "targetSubString": "Target_",
-                    "success": "Ok, well done. Now you need to determine which is the true bearing to the dived target. Wait for an ownship manoeuvre, and all should become obvious",
+                    "success": "Ok, well done.  Watch out for an ownship manoeuvre, that will highlight which is the true bearing.",
                     "failure": "This should have been easy, it's the track that appears from nowhere",
                     "narrSuccess" : "Spotted any dived target track"
                 },
@@ -267,8 +270,9 @@
                     "subject": "Ownship",
                     "clearAfterwards" : true,
                     "elapsed": 180,
+                    "description" : "Select the true bearing to the dived target",
                     "target": "Target_a",
-                    "success": "Ok, well done. Just to finish off, select the ambiguous bearing to the dived target",
+                    "success": "Ok, well done. ",
                     "failure": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
                     "narrSuccess" : "Spotted True bearing to dived target"
                 },
@@ -277,6 +281,7 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "target": "Target_b",
+                    "description" : "Select the ambiguous bearing to the dived target",
                     "clearAfterwards" : true,
                     "elapsed": 120,
                     "success": "Ok, well done. You've now covered dived contacts.",
