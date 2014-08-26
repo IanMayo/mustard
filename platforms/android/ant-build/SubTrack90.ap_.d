@@ -3253,6 +3253,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular-animate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular-local-storage.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular-route.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular-sanitize.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular-touch.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular/angular.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-leaflet/bower.json \
