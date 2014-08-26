@@ -70,7 +70,8 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 initialTime: new Date(parseInt(scope.initialTime)),
                 detectionSelect: pointClickCallback,
                 dataSeriesHandler: assignDetectionsPointsToNames,
-                reviewMode: !_.isUndefined(attrs.reviewMode)
+                reviewMode: !_.isUndefined(attrs.reviewMode),
+                trackTimeStep: attrs.timeStep
             }, plotElements, colors);
 
             plotGraphs.setup(options);

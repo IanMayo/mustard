@@ -483,13 +483,20 @@ angular.module('subtrack90.game.sonarGraph', [])
             updateLabelPosition();
         }
 
+        /**
+         * Return current boundaries of Y axis.
+         *
+         * @returns {Array}
+         */
+        function visibleDomain() {
+            return yAxisScale.domain();
+        }
+
         return {
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
             changeGraphHeight: changeGraphHeight,
-            visibleDomain: function () {
-                return yAxisScale.domain();
-            }
+            timeAxisBoundaries: visibleDomain
         }
     }
 

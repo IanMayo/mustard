@@ -138,19 +138,20 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
         this.updatePlotTime(reviewTime);
 
         _.each(sonarGraphs, function (sonar) {
-            var indexesRange = _.map(sonar.visibleDomain(), function (item) {
-                    var time = item.getTime() / 2000;
+            // Current indexes of tracks according to current time axis boundaries
+            var currentIndexesRange = _.map(sonar.timeAxisBoundaries(), function (item) {
+                    var time = item.getTime() / parseInt(config.trackTimeStep);
                     if (time > 0) {
                         return time;
                     }
                     return 0;
                 });
 
-                var newRange = rangeBoundaries(indexesRange);
-                var partialSeries = Array.prototype.slice.apply(dataSeriesCache, newRange);
+                var newIndexesRange = rangeBoundaries(currentIndexesRange);
+                var partialTrackSeries = Array.prototype.slice.apply(dataSeriesCache, newIndexesRange);
 
 
-            _.each(partialSeries, function (series) {
+            _.each(partialTrackSeries, function (series) {
                 var detections = config.dataSeriesHandler(series);
                 sonar.addDetection(detections);
             });
