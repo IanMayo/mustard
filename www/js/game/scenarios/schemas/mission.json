@@ -97,13 +97,16 @@
                                     }
                                 },
                                 "height": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Height (or -ve for depth) to travel at in assorted behaviours"
                                 },
                                 "repeat": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Once this PATH behaviour is complete, should we repeat the steps in reverse order"
                                 },
                                 "forever": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Once this PATH behaviour is complete, shall we just continue looping through the points?"
                                 }
                             }
                         }
@@ -111,8 +114,10 @@
                     "sonars": {
                         "type": "array",
                         "uniqueItems": true,
+                        "description": "List of sonars carried by this vessel",
                         "items": {
                             "type": "object",
+                            "description": "Individual sonar",
                             "required": ["name", "categories", "offset", "ArrayGain", "DT"],
                             "properties": {
                                 "name": {
@@ -122,20 +127,25 @@
                                     "type": "array",
                                     "uniqueItems": true,
                                     "items": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum" : ["NO_STEADY_TIME","NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_BOW_NULL", "NO_AMBIGUOUS"]
                                     }
                                 },
                                 "offset": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Distance from centre of ownship back to centre of towed array (m)"
                                 },
                                 "ArrayGain": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Effectiveness of the sonar (dB)"
                                 },
                                 "DT": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Detection threshold - the minimum SNR required to make detection"
                                 },
                                 "disabled": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Whether this sonar is active"
                                 }
                             }
                         }
