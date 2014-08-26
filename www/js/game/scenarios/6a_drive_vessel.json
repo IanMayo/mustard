@@ -119,7 +119,7 @@
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
-                "type": "FISHERMAN"
+                "type": "FISHING_VESSEL"
             },
             "behaviours": [
                 {
