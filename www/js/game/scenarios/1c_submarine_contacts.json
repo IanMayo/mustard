@@ -2,7 +2,7 @@
     "id": "1c",
     "name": "Using ownship manoeuvres to determine ambiguous bearing",
     "description": "Using ownship manoeuvres to determine bearing ambiguity",
-    "situation" : "Your sonar is still showing ambiguous contacts, you need to start experimenting against dived targets - where visual sightings aren't available",
+    "situation" : "Your sonar is still showing ambiguous contacts.  You now need to start practicing against dived targets - where visual sightings aren't available",
     "welcome": "Well, it's all very easy separating the true bearing from the ambiguous bearing when you've got radar contact with a target.  You're now going to learn how to do this with a dived target.  In this next scenario there is a dived and a surface contact",
     "vessels": [
         {
@@ -254,7 +254,18 @@
                     "narrSuccess" : "Identified ownship track"
                 },
                 {
-                    "name": "Spot target track",
+                    "name": "Spot Merchant track",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "description" : "Select any sonar track that represents the merchant to the North of you",
+                    "targetSubString": "TargetB_",
+                    "success": "That was easy",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "narrSuccess" : "Identified merchant track"
+                },
+                {
+                    "name": "Identify target track",
                     "type": "FIND_TARGET",
                     "clearAfterwards" : true,
                     "subject": "Ownship",

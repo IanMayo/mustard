@@ -232,7 +232,7 @@
                     "narrSuccess" : "Spotted True bearing of NW"
                 },
                 {
-                    "name": "Select ambiguous bearing on E track",
+                    "name": "Select ambiguous bearing on SE track",
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
                     "target": "TargetB_b",

@@ -211,7 +211,7 @@
                     "subject": "Ownship",
                     "clearAfterwards" : true,
                     "target": "TargetA",
-                    "description" : "Select the noise trace for the vessel to the West of you.",
+                    "description" : "Select the noise trace for the vessel to the South West of you.",
                     "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
                     "failure": "This should have been easy - it's the only other bearing on there!",
                     "narrSuccess" : "Spotted surface track"
