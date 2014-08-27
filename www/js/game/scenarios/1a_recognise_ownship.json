@@ -2,7 +2,7 @@
     "id": "1a",
     "name": "Recognising Ownship & third party tracks",
     "description": "Early steps in reading and interacting with the sonar.",
-    "situation" : "We've got a towed array configured for you, preset auto-resolve mode (so you won't be seeing ambiguous bearing).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
+    "situation" : "We've got a towed array configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar",
     "vessels": [
         {
@@ -193,7 +193,7 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "target": "Ownship",
-                    "description" : "Select the ownship noise trace in the sonar display.  Just click on the green blurry line",
+                    "description" : "Select the ownship noise trace in the sonar display.",
                     "clearAfterwards" : true,
                     "elapsed": 600,
                     "achievement": {
@@ -201,7 +201,7 @@
                         "message": "You've started your first mission, well done!"
                     },
                     "success": "Ok, well that was obvious. Now, wait until you pick up the Merchant to your West",
-                    "failureTime": "Sorry, you didn't click on the ownship track in time.  You can slow down the simulation, if you wish",
+                    "failureTime": "Sorry, you didn't click on the ownship track in time.  You can slow down the simulation, if you wish. You just had to click on that blurry line!",
                     "failureSelection": "Sorry, you didn't click on the ownship track.  Have a think about the ownship heading",
                     "narrSuccess" : "Identified Ownship track"
                 },
@@ -211,7 +211,7 @@
                     "subject": "Ownship",
                     "clearAfterwards" : true,
                     "target": "TargetA",
-                    "description" : "Select the noise trace for the vessel to the South West of you.",
+                    "description" : "Select the noise trace for the vessel to the West of you.",
                     "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
                     "failure": "This should have been easy - it's the only other bearing on there!",
                     "narrSuccess" : "Spotted surface track"
