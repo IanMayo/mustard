@@ -8,23 +8,23 @@
                 "id": "1a",
                 "name": "Recognising Ownship & third party tracks",
                 "description": "Early steps in reading and interacting with the sonar.",
-                "situation": "We've got a towed array configured for you, preset auto-resolve mode (so you won't be seeing ambiguous bearing).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
+                "situation": "We've got a towed array configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
                         "children": [
                             {
                                 "name": "Select ownship track",
-                                "description": "Select the ownship noise trace in the sonar display.  Just click on the green blurry line",
+                                "description": "Select the ownship noise trace in the sonar display.",
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Identify NW target track",
+                                "name": "Identify surface vessel track",
                                 "description": "Select the noise trace for the vessel to the South West of you.",
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Identify dived track",
+                                "name": "Identify dived submarine track",
                                 "description": "Select the noise trace for the dived track",
                                 "type": "FIND_TARGET"
                             }
@@ -59,7 +59,7 @@
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Select ambiguous bearing on E track",
+                                "name": "Select ambiguous bearing on SE track",
                                 "description": "Select the ambiguous bearing for the SE track",
                                 "type": "FIND_TARGET"
                             }
@@ -73,25 +73,34 @@
                 "id": "1c",
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
-                "situation": "Your sonar is still showing ambiguous contacts, you need to start experimenting against dived targets - where visual sightings aren't available",
+                "situation": "Your sonar is still showing ambiguous contacts.  You now need to start practicing against dived targets - where visual sightings aren't available",
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
                         "children": [
                             {
                                 "name": "Select ownship",
+                                "description": "Start off by selecting the ownship track in the sonar",
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Spot target track",
+                                "name": "Spot Merchant track",
+                                "description": "Select any sonar track that represents the merchant to the North of you",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Identify target track",
+                                "description": "Select any sonar track that represents the dived target",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Spot true bearing",
+                                "description": "Select the true bearing to the dived target",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Spot ambiguous bearing",
+                                "description": "Select the ambiguous bearing to the dived target",
                                 "type": "FIND_TARGET"
                             }
                         ]
@@ -99,6 +108,51 @@
                 ],
                 "url": "1c_submarine_contacts",
                 "guidanceUrl": "guidance/processed/1c_submarine_contacts.html"
+            },
+            {
+                "id": "1d",
+                "name": "Understanding noise levels",
+                "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
+                "situation": "The simulated tracks you're encountering here will now start making speed changes",
+                "objectives": [
+                    {
+                        "name": "Sonar Qualification",
+                        "children": [
+                            {
+                                "name": "Spot Merchant truth track",
+                                "description": "Start off by selecting the truth track for the Merchant",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Spot Merchant side lobe",
+                                "description": "Select a side-lobe on the Merchant's truth track.",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Spot Merchant main track",
+                                "description": "Select the main trace for the Merchant's truth track",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Spot ambiguous side-lobe on Merchant",
+                                "description": "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select Ownship track",
+                                "description": "Select the ownship track, once the merchant disappears in the bow null",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select disappearing Merchant",
+                                "description": "Select any trace on the merchant track once its noise lobes have been lost",
+                                "type": "FIND_TARGET"
+                            }
+                        ]
+                    }
+                ],
+                "url": "1d_noise_lobes",
+                "guidanceUrl": "guidance/processed/1d_noise_lobes.html"
             }
         ]
     },
@@ -131,54 +185,6 @@
         "name": "Special Weapons & Tactics",
         "description": "Non-traditional Ops, under Limited Distribution",
         "missions": [
-            {
-                "id": "6b",
-                "name": "Reading Bearings",
-                "description": "Learn to trail a bearing",
-                "objectives": [
-                    {
-                        "name": "Gain & keep contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact on the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
-                            }
-                        ]
-                    }
-                ],
-                "url": "1b_read_bearings",
-                "guidanceUrl": "guidance/processed/1b_read_bearings.html"
-            },
-            {
-                "id": "6c",
-                "name": "Handling ambiguity",
-                "description": "Intro to ambiguous bearings",
-                "objectives": [
-                    {
-                        "name": "Gain & keep contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target within 15 minutes",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact with the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
-                            }
-                        ]
-                    }
-                ],
-                "url": "1c_resolve_ambiguity",
-                "guidanceUrl": "guidance/processed/1c_resolve_ambiguity.html"
-            },
             {
                 "id": "6a",
                 "name": "Elementary Self Noise",
@@ -551,6 +557,54 @@
                 ],
                 "url": "6b_merchant_and_fisherman",
                 "guidanceUrl": "guidance/processed/6b_merchant_and_fisherman.html"
+            },
+            {
+                "id": "6b",
+                "name": "Reading Bearings",
+                "description": "Learn to trail a bearing",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6b_read_bearings",
+                "guidanceUrl": "guidance/processed/6b_read_bearings.html"
+            },
+            {
+                "id": "6c",
+                "name": "Handling ambiguity",
+                "description": "Intro to ambiguous bearings",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target within 15 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact with the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6c_resolve_ambiguity",
+                "guidanceUrl": "guidance/processed/6c_resolve_ambiguity.html"
             }
         ]
     },
