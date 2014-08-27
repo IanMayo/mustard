@@ -121,6 +121,16 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
             path.current = 1;
         }
 
+        // does this path have a speed?
+        if(path.speed)
+        {
+            // ok, remember the old dem speed, for once we are complete
+            path.oldDemSpeed = myState.demSpeed;
+
+            // and set the speed for this path
+            res.demSpeed = path.speed;
+        }
+
         // ok, what's the current location
         var dest = path.path[path.current - 1];
 
@@ -174,6 +184,12 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
                     else {
                         // ok, we're done.
                         path.complete = true;
+
+                        // do we have a previous demanded speed?
+                        if(path.oldDemSpeed)
+                        {
+                            res.demSpeed = path.oldDemSpeed;
+                        }
                     }
                 }
             }
