@@ -106,7 +106,6 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 if (gameState.successMessage && objective.complete) {
                     // ok, is there a success action?
                     if (objective.successAction) {
-                        console.log("doing action!!" + objective.name);
                         handleAction(gameState, vessels, objective.successAction);
                     }
                 }
@@ -489,7 +488,6 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                     // is there a time test?
                     if (findTarget.after) {
-                        console.log("game:" + gameState.simulationTime + " after:" + findTarget.after)
                         if (gameState.simulationTime < findTarget.after * 1000) {
                             inTime = false;
                         }
