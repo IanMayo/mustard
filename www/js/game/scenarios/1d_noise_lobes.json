@@ -234,20 +234,22 @@
                 "clearAfterwards" : true,
                 "subject": "Ownship",
                 "description" : "Select a side-lobe on the Merchant's truth track.",
-                "targetSubString": "TargetA_side",
+                "targetSubString": "TargetA_side[12]_a",
                 "success": "That was easy. After a while, we're sure he will slow down again. You get ready for it.",
                 "failure": "Come on, it's not a very cluttered track",
                 "narrSuccess" : "Identified merchant side lobe"
             },
             {
-                "name": "Spot Merchant main track",
+                "name": "Spot quieter Merchant main track",
                 "type": "FIND_TARGET",
                 "clearAfterwards" : true,
                 "subject": "Ownship",
                 "target": "TargetA_a",
-                "description" : "Select the main trace for the Merchant's truth track",
-                "success": "Well done.  As the merchant turns towards, look out for side-lobes appearing as the received noise increases",
+                "after": 525,
+                "description" : "Select the main trace for the Merchant's truth track, after the side-lobes are lost",
+                "success": "Well done.  As the merchant turns towards and closes on Ownship, look out for side-lobes appearing as the received noise increases",
                 "failure": "Come on, it's not a very cluttered track",
+                "failureEarly": "No, you made the selection before the side-lobes disappeared",
                 "narrSuccess" : "Identified merchant track"
             },
             {
@@ -255,8 +257,8 @@
                 "type": "FIND_TARGET",
                 "clearAfterwards" : true,
                 "subject": "Ownship",
-                "targetSubString": "TargetA_side",
-                "description" : "Select a side lobe on the merchant track as it gets closer",
+                "targetSubString": "TargetA_side[12]_b",
+                "description" : "Select a side lobe on the merchan's ambiguous track as it gets closer",
                 "success": "That was easy. Soon, Ownship is going to make a sharp turn to Starboard.  Notice how the Merchant disappears in the Ownship bow null.",
                 "failure": "Come on, it's not a very cluttered track",
                 "narrSuccess" : "Identified merchant track"
@@ -266,9 +268,11 @@
                 "type": "FIND_TARGET",
                 "clearAfterwards" : true,
                 "subject": "Ownship",
+                "after": 1710,
                 "targetSubString": "Ownship",
                 "description" : "Select the ownship track, once the merchant disappears in the bow null",
                 "success": "Well done. Once ownship is back on the original course, he will accelerate, notice how the merchant side lobes disappear.",
+                "failureEarly": "No, you selected Ownship before the merchant disappered into the bow null.",
                 "failure": "Come on, it's not a very cluttered track",
                 "narrSuccess" : "Identified merchant track"
             },
@@ -277,9 +281,11 @@
                 "type": "FIND_TARGET",
                 "clearAfterwards" : true,
                 "subject": "Ownship",
-                "targetSubString": "TargetA",
-                "description" : "Select any trace on the merchant track once the noise lobes have been lost",
+                "after" : 2910,
+                "targetSubString": "TargetA_[ab]",
+                "description" : "Select any trace on the merchant track once its side lobes have been lost",
                 "success": "That was easy",
+                "failureEarly": "No, you selected a Merchant track before the side lobes were lost",
                 "failure": "Come on, it's not a very cluttered track",
                 "narrSuccess" : "Identified merchant track"
             }
