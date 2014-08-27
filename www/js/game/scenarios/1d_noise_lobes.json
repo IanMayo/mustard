@@ -3,7 +3,7 @@
     "name": "Understanding noise levels",
     "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
     "situation" : "The simulated tracks you're encountering here will now start making speed changes",
-    "welcome": "You've mastered most of the elementary sonar techniques, time to step it up a little.",
+    "welcome": "You've mastered most of the elementary sonar techniques, time to step it up a little. The sonar is going to end up very cluttered, so be sure to keep a close eye on it",
     "vessels": [
         {
             "name": "Ownship",
@@ -14,6 +14,19 @@
             },
             "unableToPerformRanging": true,
             "behaviours": [
+                {
+                    "name": "Quick turn",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.11,
+                            "lng": -8.23
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
                 {
                     "name": "Slow legs",
                     "type": "PATH",
@@ -64,13 +77,13 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.11,
+                    "lat": 50.12,
                     "lng": -8.25
                 },
                 "height": 0,
-                "course": 90,
+                "course": 160,
                 "speed": 10,
-                "demCourse": 90,
+                "demCourse": 160,
                 "demSpeed": 10,
                 "demHeight": -10.0
             },
@@ -199,7 +212,80 @@
         [49.85, -7.75]
     ],
     "environment": {},
-    "objectives": [
+    "objectives": [        {
+        "name": "Sonar Qualification",
+        "type": "SEQUENCE",
+        "children": [
+            {
+                "name": "Spot Merchant truth track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "description" : "Start off by selecting the truth track for the Merchant",
+                "target": "TargetA_a",
+                "elapsed": 300,
+                "success": "That was easy.  The merchant is going to accelerate soon, keep an eye out for the new side lobes.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Spot Merchant side lobe",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "description" : "Select a side-lobe on the Merchant's truth track.",
+                "targetSubString": "TargetA_side",
+                "success": "That was easy. After a while, we're sure he will slow down again. You get ready for it.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant side lobe"
+            },
+            {
+                "name": "Spot Merchant main track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "target": "TargetA_a",
+                "description" : "Select the main trace for the Merchant's truth track",
+                "success": "Well done.  As the merchant turns towards, look out for side-lobes appearing as the received noise increases",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Spot ambiguous side-lobe on Merchant",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "targetSubString": "TargetA_side",
+                "description" : "Select a side lobe on the merchant track as it gets closer",
+                "success": "That was easy. Soon, Ownship is going to make a sharp turn to Starboard.  Notice how the Merchant disappears in the Ownship bow null.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Select Ownship track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "targetSubString": "Ownship",
+                "description" : "Select the ownship track, once the merchant disappears in the bow null",
+                "success": "Well done. Once ownship is back on the original course, he will accelerate, notice how the merchant side lobes disappear.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Select disappearing Merchant",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "targetSubString": "TargetA",
+                "description" : "Select any trace on the merchant track once the noise lobes have been lost",
+                "success": "That was easy",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            }
+        ]
+    }
+
     ],
     "features": {
         "type": "FeatureCollection",
