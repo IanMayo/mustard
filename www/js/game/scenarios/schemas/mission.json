@@ -48,7 +48,7 @@
                             },
                             "type": {
                                 "type": "string",
-                                "enum": ["WARSHIP", "SUBMARINE", "MERCHANT", "FISHING_VESSEL"],
+                                "enum": ["WARSHIP", "SUBMARINE", "MERCHANT", "FISHERMAN"],
                                 "description": "Type of vessel"
                             }
                         }
@@ -330,7 +330,6 @@
                                 },
                                 "achievement": {
                                     "type": "object",
-                                    "required": ["name", "message"],
                                     "properties": {
                                         "name": {
                                             "type": "string"
