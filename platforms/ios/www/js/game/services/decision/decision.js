@@ -2,7 +2,7 @@
  * @module Decision
  */
 
-angular.module('mustard.game.decision', ['mustard.game.geoMath'])
+angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
 
 /**
  * @module Decision

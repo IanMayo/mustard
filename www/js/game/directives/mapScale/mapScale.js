@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.mapScale
+ * @module subtrack90.game.mapScale
  */
 
-angular.module('mustard.game.mapScale', [])
+angular.module('subtrack90.game.mapScale', [])
 
 .directive('mapScale', function () {
     return {

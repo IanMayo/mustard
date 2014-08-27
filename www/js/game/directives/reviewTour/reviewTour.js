@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.reviewTourDirective
+ * @module subtrack90.game.reviewTourDirective
  */
 
-angular.module('mustard.game.reviewTourDirective', ['mustard.game.leafletMapDirective'])
+angular.module('subtrack90.game.reviewTourDirective', ['subtrack90.game.leafletMapDirective'])
 
 .directive('reviewTour', ['$timeout', function ($timeout) {
     return {

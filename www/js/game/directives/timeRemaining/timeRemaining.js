@@ -1,4 +1,4 @@
-angular.module('mustard.game.timeRemainingDirective', [])
+angular.module('subtrack90.game.timeRemainingDirective', [])
 
 .directive('timeRemaining',  function () {
     return {

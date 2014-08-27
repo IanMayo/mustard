@@ -1,11 +1,12 @@
-angular.module('mustard.game.shipStateDirective', [])
+angular.module('subtrack90.game.shipStateDirective', [])
 
 .directive('shipState', function () {
     return {
         restrict: 'EA',
         scope: {
             course: '=',
-            speed: '='
+            speed: '=',
+            name: '@'
         },
         templateUrl: 'js/game/directives/shipState/shipState.tpl.html',
         link: function (scope) {

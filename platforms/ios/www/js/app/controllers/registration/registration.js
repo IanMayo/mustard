@@ -1,4 +1,4 @@
-angular.module('mustard.app.registration', [])
+angular.module('subtrack90.app.registration', [])
 
 /**
  * @module Registration

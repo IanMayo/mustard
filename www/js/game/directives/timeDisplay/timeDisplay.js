@@ -1,4 +1,4 @@
-angular.module('mustard.game.timeDisplayDirective', [])
+angular.module('subtrack90.game.timeDisplayDirective', [])
 
 .constant('timeDisplayConfig', {
     initialSimulationSpeed: 1, // 1x,

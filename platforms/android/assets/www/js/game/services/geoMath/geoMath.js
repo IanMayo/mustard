@@ -2,7 +2,7 @@
  * @module Geo Math
  */
 
-angular.module('mustard.game.geoMath', [])
+angular.module('subtrack90.game.geoMath', [])
 
 /**
  * @module Geo Math

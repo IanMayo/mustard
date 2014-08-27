@@ -5,7 +5,7 @@
  * Or several graphs (live sonar plus sonars with time offset to show historical detections)
  */
 
-angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
+angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
 
 /**
  * @module Plot Graphs
@@ -27,6 +27,10 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
 
     var $sonarElement = null;
     var sonarGraphs;
+
+    var dataSeriesCache = [];
+
+    var prevIndexesRange = [0, 0];
 
     init();
 
@@ -66,6 +70,7 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
                 yAxisLabel: graph.yAxisLabel,
                 showXAxis: graph.showXAxis,
                 margin: graph.margin,
+                serialRenderingMode: !config.reviewMode,
                 elementSize: graphDimension(graph.element),
                 detectionSelect: config.detectionSelect,
                 initialTime: config.initialTime
@@ -114,6 +119,44 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
     this.updatePlotTime = function (time) {
         _.each(sonarGraphs, function (sonar) {
             sonar.changeYAxisDomain(time);
+        });
+    };
+
+    /**
+     * Update plot.
+     * Used in review mode.
+     *
+     * @param {Date} reviewTime
+     * @param {Array} dataSeries
+     */
+    this.updateReviewPlot = function (reviewTime, dataSeries) {
+
+        if (dataSeries) {
+            dataSeriesCache = dataSeries;
+        }
+
+        this.updatePlotTime(reviewTime);
+
+        _.each(sonarGraphs, function (sonar) {
+            // Current indexes of tracks according to current time axis boundaries
+            var currentIndexesRange = _.map(sonar.timeAxisBoundaries(), function (item) {
+                    var time = item.getTime() / parseInt(config.trackTimeStep);
+                    if (time > 0) {
+                        return time;
+                    }
+                    return 0;
+                });
+
+                var newIndexesRange = rangeBoundaries(currentIndexesRange);
+                var partialTrackSeries = Array.prototype.slice.apply(dataSeriesCache, newIndexesRange);
+
+
+            _.each(partialTrackSeries, function (series) {
+                if (series.detections.length) {
+                    var detections = config.dataSeriesHandler(series);
+                    sonar.addDetection(detections);
+                }
+            });
         });
     };
 
@@ -182,4 +225,31 @@ angular.module('mustard.game.plotGraphs', ['mustard.game.sonarGraph'])
             sonar.changeGraphHeight(graphDimension(config.graphs[index].element));
         });
     }
+
+    /**
+     * Create boundaries for a new data series
+     *
+     * @param {Array} indexesRange
+     * @returns {Array}
+     */
+    function rangeBoundaries(indexesRange) {
+        var start = 0, end = 0;
+
+        if (prevIndexesRange[0] > indexesRange[0] || prevIndexesRange[1] > indexesRange[1]) {
+            // draw points in chronological order
+            if (prevIndexesRange[0] > 0) {
+                start = indexesRange[0];
+                end = prevIndexesRange[0];
+            }
+        } else {
+            // draw points in reverse order
+            start = prevIndexesRange[1];
+            end = indexesRange[1];
+        }
+
+        prevIndexesRange = indexesRange;
+
+        return [start, end];
+    }
+
 }]);

@@ -1,4 +1,4 @@
-angular.module('mustard.game.eventPickerDirective', [])
+angular.module('subtrack90.game.eventPickerDirective', [])
 
     .directive('eventPicker', function () {
         return {

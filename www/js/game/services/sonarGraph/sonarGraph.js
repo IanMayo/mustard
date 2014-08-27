@@ -4,7 +4,7 @@
  * Factory class to create a single sonar graph
  */
 
-angular.module('mustard.game.sonarGraph', [])
+angular.module('subtrack90.game.sonarGraph', [])
 
 /**
  * @module Sonar Graph
@@ -56,7 +56,8 @@ angular.module('mustard.game.sonarGraph', [])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            initialTime: new Date()
+            initialTime: new Date(),
+            serialRenderingMode: false
         };
 
         init(options);
@@ -290,7 +291,7 @@ angular.module('mustard.game.sonarGraph', [])
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
-                        if (yAxisScale.domain()[0].getTime() >
+                        if (config.serialRenderingMode && yAxisScale.domain()[0].getTime() >
                             (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
                             // datapoint became "invisible" - its time is less then time axis domain lower value
 
@@ -333,7 +334,7 @@ angular.module('mustard.game.sonarGraph', [])
 
             if (expiredDetections.length) {
                 // expired series exist - analise them
-                removeExpiredDetection(d3MapDetections, expiredDetections);
+                removeExpiredDetection(expiredDetections);
             }
         }
 
@@ -343,7 +344,7 @@ angular.module('mustard.game.sonarGraph', [])
          * @param {Object} dataset
          * @param {Object} datapoints
          */
-        function removeExpiredDetection(dataset, datapoints) {
+        function removeExpiredDetection(datapoints) {
             _.each(datapoints, function (datapoint) {
 
                 if (yAxisScale.domain()[0].getTime() >
@@ -355,17 +356,7 @@ angular.module('mustard.game.sonarGraph', [])
                     // and remove it
                     expiredDetection.pointElement.remove();
 
-                    if (!renderedDetections[datapoint].data.length) {
-                        // if collection is empty
-                       // remove click event listener
-                        renderedDetections[datapoint].group.on('click', null);
-                        // remove group wrapper element
-                        renderedDetections[datapoint].group.remove();
-                        // remove empty collection
-                        delete renderedDetections[datapoint];
-                        // remove detection collection respectively
-                        delete dataset[datapoint];
-                    }
+                    removeExpiredDatapointGroup(datapoint);
                 }
             });
         }
@@ -413,6 +404,53 @@ angular.module('mustard.game.sonarGraph', [])
             yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
             yAxisElement
                 .call(yAxisScale.axis);
+
+            _.each(renderedDetections, function (detection, key) {
+                // move group container
+                gMain.select('.' + key).
+                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+            });
+
+            if (!config.serialRenderingMode) {
+                removeAllExpiredDetections();
+            }
+        }
+
+        /**
+         * Remove all expired detections.
+         * Used in review mode
+         */
+        function removeAllExpiredDetections() {
+            _.each(d3MapDetections, function (detection, name) {
+                if (renderedDetections[name].data.length) {
+                    _.each(renderedDetections[name].data, function (item, index) {
+                        if (item.date.getTime() >= yAxisScale.domain()[1].getTime() ||
+                            item.date.getTime() <= yAxisScale.domain()[0].getTime()) {
+                            var expiredDetection = renderedDetections[name].data.splice(index, 1).pop();
+                            expiredDetection.pointElement.remove();
+
+                            removeExpiredDatapointGroup(name);
+                        }
+                    });
+                }
+            });
+        }
+
+        /**
+         * Remove group wrapper element of detections.
+         *
+         * @param {String} name
+         */
+        function removeExpiredDatapointGroup (name) {
+            if (!renderedDetections[name].data.length) {
+                // if collection is empty
+                // remove empty collection
+                delete renderedDetections[name];
+                // remove detection collection respectively
+                delete d3MapDetections[name];
+                // remove group wrapper element
+                $('#' + config.containerElement.id + ' .' + name).remove();
+            }
         }
 
         /**
@@ -421,6 +459,7 @@ angular.module('mustard.game.sonarGraph', [])
          * @param {Object} detections
          */
          function addDetection(detections){
+//            console.log('detections', detections);
             // create list of path names from detections
             _.each(detections, function (detection) {
                 // exclude a detection path name from the list
@@ -446,6 +485,15 @@ angular.module('mustard.game.sonarGraph', [])
         }
 
         /**
+         * Return current boundaries of Y axis.
+         *
+         * @returns {Array}
+         */
+        function visibleDomain() {
+            return yAxisScale.domain();
+        }
+
+        /**
          * Remove graph from DOM and remove handlers
          */
         function remove () {
@@ -459,6 +507,7 @@ angular.module('mustard.game.sonarGraph', [])
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
             changeGraphHeight: changeGraphHeight,
+            timeAxisBoundaries: visibleDomain,
             remove: remove
         }
     }

@@ -1,27 +1,27 @@
-angular.module('mustard.game.simulator', [
-    'mustard.game.movementSimulation',
-    'mustard.game.spatialViewDirective',
-    'mustard.game.timeDisplayDirective',
-    'mustard.game.timeRemainingDirective',
-    'mustard.game.rangeCalculatorDirective',
-    'mustard.game.shipControlsDirective',
-    'mustard.game.fireWeaponDirective',
-    'mustard.game.shipStateDirective',
-    'mustard.game.timeBearingDisplayDirective',
-    'mustard.game.objectiveListDirective',
-    'mustard.game.decision',
-    'mustard.game.detection',
-    'mustard.game.reviewSnapshot',
-    'mustard.game.geoMath',
-    'mustard.game.movement',
-    'mustard.game.objectives',
-    'mustard.game.clickRepeat',
-    'mustard.game.message',
-    'mustard.game.messageList',
-    'mustard.game.notificationIcon',
-    'mustard.game.elementVisibility',
-    'mustard.app.user',
-    'mustard.game.sonarBearing'
+angular.module('subtrack90.game.simulator', [
+    'subtrack90.game.movementSimulation',
+    'subtrack90.game.spatialViewDirective',
+    'subtrack90.game.timeDisplayDirective',
+    'subtrack90.game.timeRemainingDirective',
+    'subtrack90.game.rangeCalculatorDirective',
+    'subtrack90.game.shipControlsDirective',
+    'subtrack90.game.fireWeaponDirective',
+    'subtrack90.game.shipStateDirective',
+    'subtrack90.game.timeBearingDisplayDirective',
+    'subtrack90.game.objectiveListDirective',
+    'subtrack90.game.decision',
+    'subtrack90.game.detection',
+    'subtrack90.game.reviewSnapshot',
+    'subtrack90.game.geoMath',
+    'subtrack90.game.movement',
+    'subtrack90.game.objectives',
+    'subtrack90.game.clickRepeat',
+    'subtrack90.game.message',
+    'subtrack90.game.messageList',
+    'subtrack90.game.notificationIcon',
+    'subtrack90.game.elementVisibility',
+    'subtrack90.app.user',
+    'subtrack90.game.sonarBearing'
 ])
 
 /**
@@ -178,6 +178,8 @@ angular.module('mustard.game.simulator', [
         };
 
         var trackHistory = {};
+
+        var detectionHistory = [];
 
         var startTime; // keep track of the start time, so we can pass the period to the history object.
 
@@ -442,7 +444,8 @@ angular.module('mustard.game.simulator', [
                         "stepTime": $scope.gameState.simulationTimeStep,
                         "center": $scope.ownShip.location(),
                         "mapFeatures": $scope.mapFeatures,
-                        "vessels": trackHistory
+                        "vessels": trackHistory,
+                        "detections": detectionHistory
                     })
                 }
             };
@@ -494,11 +497,12 @@ angular.module('mustard.game.simulator', [
         /**
          * collate current ownship sonar detections.
          *
-         * @returns {Array}
+         * @returns {Object}
          */
         var collateCurrentSonarDetections = function () {
             var detections = [];
             var thisB;
+            var detectionsWithTracks = {};
 
             _.each($scope.ownShip.detections(), function (detection) {
                 // is this the first item?
@@ -517,7 +521,15 @@ angular.module('mustard.game.simulator', [
                 detections.push(thisB);
             });
 
-            return detections;
+            detectionsWithTracks = {
+                time: $scope.gameState.simulationTime,
+                detections: detections,
+                tracks: [].concat(_.pluck($scope.ownShip.detections(), 'trackId'))
+            };
+
+            detectionHistory.push(detectionsWithTracks);
+
+            return detectionsWithTracks;
         };
 
 
@@ -557,7 +569,7 @@ angular.module('mustard.game.simulator', [
                     cache = params.dataProvider();
 
                     // did we get any data?
-                    if (cache  && cache.length > 0) {
+                    if (cache  && (cache.length > 0 || _.isObject(cache))) {
                         cacheStorage.push(cache);
                     }
                 }

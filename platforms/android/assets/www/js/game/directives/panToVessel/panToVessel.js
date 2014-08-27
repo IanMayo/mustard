@@ -1,8 +1,8 @@
 /**
- * @module mustard.game.panToVesselDirective
+ * @module subtrack90.game.panToVesselDirective
  */
 
-angular.module('mustard.game.panToVesselDirective', [])
+angular.module('subtrack90.game.panToVesselDirective', [])
 
 .directive('panToVesselPosition', [function () {
     return {

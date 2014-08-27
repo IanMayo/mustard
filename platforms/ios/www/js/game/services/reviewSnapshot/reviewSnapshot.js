@@ -2,7 +2,7 @@
  * @module Review Snapshot - store a package of data, for the review stage
  */
 
-angular.module('mustard.game.reviewSnapshot', [])
+angular.module('subtrack90.game.reviewSnapshot', [])
 
 /**
  * @module Decision
