@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     to: 'src="guidance/img/'
                 }]
             }
-        }
+        },
 
 	/**
 	 * It validates all the scenario files against the schema.
