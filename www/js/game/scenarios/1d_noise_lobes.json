@@ -1,0 +1,153 @@
+{
+    "id": "1d",
+    "name": "Understanding noise levels",
+    "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
+    "situation" : "The simulated tracks you're encountering here will now start making speed changes",
+    "welcome": "You've mastered most of the elementary sonar techniques, time to step it up a little.",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.15,
+                            "lng": -8.02
+                        },
+                        {
+                            "lat": 50.09,
+                            "lng": -8.0
+                        },
+                        {
+                            "lat": 50.10,
+                            "lng": -7.75
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [  "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50.15,
+                    "lng": -8.25
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "TargetA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.16
+                        },
+                        {
+                            "lat": 50.0,
+                            "lng": -8.12
+                        },
+                        {
+                            "lat": 50.05,
+                            "lng": -7.7
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 115,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.9,
+                    "lng": -8.23
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 13,
+                "speed": 13,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+        ]
+    }
+}
