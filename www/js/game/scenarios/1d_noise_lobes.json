@@ -15,31 +15,41 @@
             "unableToPerformRanging": true,
             "behaviours": [
                 {
-                    "name": "Search Route",
+                    "name": "Slow legs",
                     "type": "PATH",
                     "path": [
                         {
-                            "lat": 50.15,
-                            "lng": -8.02
+                            "lat": 50.11,
+                            "lng": -8.04
                         },
                         {
-                            "lat": 50.09,
-                            "lng": -8.0
-                        },
+                            "lat": 50.05,
+                            "lng": -8.06
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Fast legs",
+                    "type": "PATH",
+                    "path": [
                         {
-                            "lat": 50.10,
+                            "lat": 50.07,
                             "lng": -7.75
                         }
                     ],
                     "height": 0,
-                    "repeat": true,
-                    "forever": true
+                    "speed": 16,
+                    "repeat": false,
+                    "forever": false
                 }
             ],
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": [  "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME"],
+                    "categories": ["NO_STEADY_TIME"],
                     "offset": -1000,
                     "ArrayGain": 12,
                     "DT": -8,
@@ -54,7 +64,7 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.15,
+                    "lat": 50.11,
                     "lng": -8.25
                 },
                 "height": 0,
@@ -83,43 +93,89 @@
             },
             "behaviours": [
                 {
-                    "name": "Search Route",
+                    "name": "Route One",
                     "type": "PATH",
                     "path": [
                         {
                             "lat": 49.91,
-                            "lng": -8.16
-                        },
+                            "lng": -8.20
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route One",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.14
+                        }
+                    ],
+                    "height": 0,
+                    "speed" : 16,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route One",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.12
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route Two",
+                    "type": "PATH",
+                    "path": [
                         {
                             "lat": 50.0,
-                            "lng": -8.12
-                        },
+                            "lng": -8.08
+                        }
+                    ],
+                    "height": 0,
+                    "speed" : 9.3,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route Three",
+                    "type": "PATH",
+                    "path": [
                         {
-                            "lat": 50.05,
+                            "lat": 49.90,
                             "lng": -7.7
                         }
                     ],
                     "height": 0,
-                    "repeat": true,
-                    "forever": true
+                    "repeat": false,
+                    "forever": false
                 }
             ],
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 115,
+                "baseLevel": 121,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 49.9,
+                    "lat": 49.91,
                     "lng": -8.23
                 },
                 "course": 90,
                 "demCourse": 90,
-                "demSpeed": 13,
-                "speed": 13,
+                "demSpeed": 9,
+                "speed": 9,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -127,10 +183,10 @@
             },
             "perf": {
                 "turnRadius": 1200.0,
-                "accelerationRate": 0.3,
+                "accelerationRate": 0.06,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 25,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
