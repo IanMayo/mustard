@@ -245,5 +245,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+        ]
+    }
 }
