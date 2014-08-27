@@ -279,13 +279,10 @@
 
             }
         },
-
-
-
         "objectives": {
             "type": "array",
             "description": "Elements that watch the scenario unfold, including success/failure tests",
-            "minItems": 1,
+            "minItems": 0,
             "uniqueItems": true,
             "items": {
                 "type": "object",
@@ -330,6 +327,7 @@
                                 },
                                 "achievement": {
                                     "type": "object",
+                                    "required" : ["name", "message"],
                                     "properties": {
                                         "name": {
                                             "type": "string"
