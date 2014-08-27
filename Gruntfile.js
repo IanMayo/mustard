@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-json-schema');
     grunt.loadTasks('./tasks');
 
     grunt.initConfig({
@@ -39,7 +40,24 @@ module.exports = function(grunt) {
                 }]
             }
         }
+
+	/**
+	 * It validates all the scenario files against the schema.
+	 */
+	json_schema: {
+	    test: {
+		options: {
+		    validateFormatsStrict: true
+		},
+		files: {
+		    'www/js/game/scenarios/schemas/mission.json': 
+		    ['www/js/game/scenarios/*_*.json']
+		}
+	    }
+	}
+
     });
 
     grunt.registerTask('build', ['missionsIndex', 'replace:guidance']);
+    grunt.registerTask('validate', ['json_schema:test']);
 };
