@@ -209,10 +209,13 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
 
                         // does this sonar have complex self-noise?
                         if (!geoMath.hasCategory("NO_COMPLEX_SELF_NOISE", sonar.categories)) {
-                            var offsetBearing = theSelfBrg + 15;
-                            insertDetections(newDetections, tNow, origin, myVessel.state.course,
-                                offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR,
-                                LN, 0, thisV.state.location);
+                            // hey, just check if we're "roaring" along.
+                            if (speed >= 12) {
+                                var offsetBearing = theSelfBrg + 15;
+                                insertDetections(newDetections, tNow, origin, myVessel.state.course,
+                                    offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR,
+                                    LN, 0, thisV.state.location);
+                            }
 
                             // hey, just check if we're "roaring" along.
                             if (speed >= 15) {
