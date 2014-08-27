@@ -2,8 +2,8 @@
     "id": "1e",
     "name": "Unsteady Array",
     "description": "The effects of the array being unsteady",
-    "situation": "Oh, the heading sensor module is down, your array will go unsteady after turns",
-    "welcome": "Ok, you've got the hang of self-noise side-lobes. In this scenario the target is travelling more quickly, so you'll have to as well - about 15 knots. Oh, and your sonar now has a bow-null - so you're blind ahead. Again, locate the target to the South-East of you, within 15 minutes",
+    "situation" : "Ok, you're ready for a real puzzler. We're going to switch off the array heading sensors, so you will lose contact during and after each Ownship turn.  There's a dived target in the scenario, and we want you to track it.",
+    "welcome": "Ok, keep track on the dived target as ownship goes through a series of manoeuvres",
     "vessels": [
         {
             "name": "Ownship",
@@ -12,6 +12,7 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
+            "unableToPerformRanging": true,
             "behaviours": [
                 {
                     "name": "Quick turn",
@@ -142,6 +143,63 @@
     ],
     "environment": {},
     "objectives": [
+        {
+            "name": "Sonar Qualification",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Select dived target track [Leg 1]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "description" : "Start off by selecting the truth track for the submarine to the West of you",
+                    "target": "Target_a",
+                    "elapsed": 300,
+                    "success": "Well done initial target track spotted",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "narrSuccess" : "Identified Leg 1"
+                },
+                {
+                    "name": "Select dived target track [Leg 2]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 330,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "Well done Second Leg target track spotted.  Keep watching the truth track, ready to predict its path",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 2"
+                },
+                {
+                    "name": "Select dived target track [Leg 3]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 870,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "That's the Third Leg target track spotted.  Keep watching the truth track, ready to predict its path",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 3"
+                },
+                {
+                    "name": "Select dived target track [Leg 4]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 1380,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "That's the all of the legs spotted. Well done.",
+                    "failure": "Go on, give it another go.",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 4"
+                }
+            ]
+        }
     ],
     "features": {
         "type": "FeatureCollection",
