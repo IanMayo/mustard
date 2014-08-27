@@ -1,7 +1,8 @@
 {
-    "id": "7a",
+    "id": "1e",
     "name": "Unsteady Array",
     "description": "The effects of the array being unsteady",
+    "situation": "Oh, the heading sensor module is down, your array will go unsteady after turns",
     "welcome": "Ok, you've got the hang of self-noise side-lobes. In this scenario the target is travelling more quickly, so you'll have to as well - about 15 knots. Oh, and your sonar now has a bow-null - so you're blind ahead. Again, locate the target to the South-East of you, within 15 minutes",
     "vessels": [
         {
@@ -11,11 +12,41 @@
                 "environment": "SURFACE",
                 "type": "WARSHIP"
             },
-            "behaviours": [],
+            "behaviours": [
+                {
+                    "name": "Quick turn",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.9,
+                            "lng": -7.97
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -8.01
+                        },
+                        {
+                            "lat": 49.98,
+                            "lng": -8.01
+                        },
+                        {
+                            "lat": 50.07,
+                            "lng": -7.8
+                        },
+                        {
+                            "lat": 60.96,
+                            "lng": -7.95
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                }
+            ],
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": [],
+                    "categories": ["NO_COMPLEX_SELF_NOISE","NO_BOW_NULL"],
                     "offset": -1000,
                     "ArrayGain": 18,
                     "DT": -8
@@ -29,13 +60,13 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.1,
-                    "lng": -8.1
+                    "lat": 49.87,
+                    "lng": -7.98
                 },
                 "height": 0,
-                "course": 130,
+                "course": 15,
                 "speed": 10,
-                "demCourse": 130,
+                "demCourse": 0,
                 "demSpeed": 10,
                 "demHeight": -10.0
             },
@@ -61,24 +92,17 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 50.15,
-                        "lng": -8.25
+                        "lat": 50.02,
+                        "lng": -8
                     },
                     "br": {
-                        "lat": 49.85,
+                        "lat": 49.94,
                         "lng": -7.75
                     },
                     "height": -30
                 }
             ],
             "sonars": [
-                {
-                    "name": "BASIC_HULL",
-                    "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "offset": 0,
-                    "ArrayGain": 28,
-                    "DT": -8
-                }
             ],
             "radiatedNoise": {
                 "baseLevel": 104,
@@ -88,14 +112,14 @@
                 "categories": [],
                 "time": 0,
                 "location": {
-                    "lat": 50.04,
-                    "lng": -7.92
+                    "lat": 49.9,
+                    "lng": -8.15
                 },
                 "height": 0,
-                "course": 240,
-                "speed": 13,
-                "demCourse": 240,
-                "demSpeed": 13,
+                "course": 45,
+                "speed": 14,
+                "demCourse": 45,
+                "demSpeed": 14,
                 "demHeight": 0.0,
                 "batteryLevel": 60
             },
@@ -118,29 +142,6 @@
     ],
     "environment": {},
     "objectives": [
-        {
-            "name": "Gain & maintain contact",
-            "type": "SEQUENCE",
-            "children": [
-                {
-                    "name": "Gain contact",
-                    "description": "Gain contact on the training target",
-                    "type": "GAIN_CONTACT",
-                    "elapsed": 900,
-                    "success": "Ok, you may not realise it, but he's now marking in your beams. Now trail him continuously for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading South-East!"
-                },
-                {
-                    "name": "Locate it",
-                    "description": "Get within 500m of Target vessel",
-                    "type": "PROXIMITY",
-                    "target": "Target",
-                    "range": 500,
-                    "success": "Well done, that was tricky. "
-                }
-            ]
-        }
-
     ],
     "features": {
         "type": "FeatureCollection",
