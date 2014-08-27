@@ -469,7 +469,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                 var matched = false;
                 if (findTarget.targetSubString) {
-                    matched = curSelection.indexOf(findTarget.targetSubString) >= 0;
+                    // ok, we have to do a regexp match here
+                    var reg = new RegExp(findTarget.targetSubString,"i");
+                    matched = reg.exec(curSelection);
                 }
                 else if (findTarget.target) {
                     matched = curSelection == findTarget.target;
@@ -480,24 +482,54 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     delete subject.selectedTrack;
                 }
 
-
                 // does it match the target
                 if (matched) {
-                    // correct track selected
-                    findTarget.complete = true;
 
-                    // cool,handle the success
-                    gameState.successMessage = findTarget.success;
-                    gameState.state = "DO_STOP";
+                    var inTime = true;
 
-                    // clear the flag
-                    delete findTarget.stopTime;
+                    // is there a time test?
+                    if (findTarget.after) {
+                        console.log("game:" + gameState.simulationTime + " after:" + findTarget.after)
+                        if (gameState.simulationTime < findTarget.after * 1000) {
+                            inTime = false;
+                        }
+                    }
 
-                    // and store any achievements
-                    processAchievements(findTarget.achievement, gameState);
+                    if (inTime)
+                    {
+                        // correct track selected
+                        findTarget.complete = true;
 
-                    var narrMessage = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
-                    insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage);
+                        // cool,handle the success
+                        gameState.successMessage = findTarget.success;
+                        gameState.state = "DO_STOP";
+
+                        // clear the flag
+                        delete findTarget.stopTime;
+
+                        // and store any achievements
+                        processAchievements(findTarget.achievement, gameState);
+
+                        var narrMessage = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
+                        insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage);
+                    }
+                    else
+                    {
+                        // ok, the user has made the selection too early
+                        // ok, game failure
+                        findTarget.complete = true;
+
+                        var failureMessage = findTarget.failureEarly ? findTarget.failureEarly : findTarget.failure;
+                        gameState.failureMessage = failureMessage;
+                        gameState.state = "DO_STOP";
+
+                        // clear the flag
+                        var narrMessage = findTarget.narrFailure ? findTarget.narrFailure : "Selected track too early";
+
+                        insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                            narrMessage);
+
+                    }
                 }
                 else {
 
