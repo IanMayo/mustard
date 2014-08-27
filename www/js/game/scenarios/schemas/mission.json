@@ -1,0 +1,436 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Schema for Mustard Game Levels",
+    "type": "object",
+    "required": ["id", "name", "description", "vessels", "patrolArea", "environment", "objectives", "features"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "The unique identifier for this mission, beginning with the phase number"
+        },
+        "name": {
+            "type": "string",
+            "description": "Title for this mission"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of what is covered in this mission"
+        },
+        "welcome": {
+            "type": "string",
+            "description": "Text displayed at start of mission"
+        },
+        "vessels": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["name", "categories", "behaviours", "sonars", "radiatedNoise", "state", "perf"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of this vessel, 'Ownship' for player's vessel"
+                    },
+                    "categories": {
+                        "type": "object",
+                        "required": ["force", "environment", "type"],
+                        "properties": {
+                            "force": {
+                                "type": "string",
+                                "enum": ["BLUE", "RED", "WHITE"],
+                                "description": "Which force this vessel belongs to"
+                            },
+                            "environment": {
+                                "type": "string",
+                                "enum": ["SURFACE", "SUBSURFACE"],
+                                "description": "Where this vessel is found"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": ["WARSHIP", "SUBMARINE", "MERCHANT", "FISHING_VESSEL"],
+                                "description": "Type of vessel"
+                            }
+                        }
+                    },
+                    "unableToPerformRanging": {
+                        "type": "boolean",
+                        "description": "Whether this vessel is capable of performing ranging manoeuvres"
+                    },
+                    "behaviours": {
+                        "type": "array",
+                        "description" : "List of behaviours exhibited by this vessel",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "type"],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Unique name for this instance of this behaviour"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum" : ["RECTANGLE_WANDER","SNORT", "PATH", "EVADE", "ATTACK"],
+                                    "description": "General type of this behaviour"
+                                },
+                                "path": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "Route followed in Path behaviour",
+                                    "items": {
+                                        "type": "object",
+                                        "required": ["lat", "lng"],
+                                        "properties": {
+                                            "lat": {
+                                                "type": "number",
+                                                "minimum" : -90,
+                                                "maximum" : 90
+                                            },
+                                            "lng": {
+                                                "type": "number",
+                                                "minimum" : -180,
+                                                "maximum" : 180
+                                            }
+                                        }
+                                    }
+                                },
+                                "height": {
+                                    "type": "integer",
+                                    "description": "Height (or -ve for depth) to travel at in assorted behaviours"
+                                },
+                                "repeat": {
+                                    "type": "boolean",
+                                    "description": "Once this PATH behaviour is complete, should we repeat the steps in reverse order"
+                                },
+                                "forever": {
+                                    "type": "boolean",
+                                    "description": "Once this PATH behaviour is complete, shall we just continue looping through the points?"
+                                }
+                            }
+                        }
+                    },
+                    "sonars": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "description": "List of sonars carried by this vessel",
+                        "items": {
+                            "type": "object",
+                            "description": "Individual sonar",
+                            "required": ["name", "categories", "offset", "ArrayGain", "DT"],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "categories": {
+                                    "type": "array",
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "string",
+                                        "enum" : ["NO_STEADY_TIME","NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_BOW_NULL", "NO_AMBIGUOUS"]
+                                    }
+                                },
+                                "offset": {
+                                    "type": "integer",
+                                    "description": "Distance from centre of ownship back to centre of towed array (m)"
+                                },
+                                "ArrayGain": {
+                                    "type": "integer",
+                                    "description": "Effectiveness of the sonar (dB)"
+                                },
+                                "DT": {
+                                    "type": "integer",
+                                    "description": "Detection threshold - the minimum SNR required to make detection"
+                                },
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Whether this sonar is active"
+                                }
+                            }
+                        }
+                    },
+                    "radiatedNoise": {
+                        "type": "object",
+                        "description": "How noisy this vessel is",
+                        "required": ["baseLevel", "speedPattern"],
+                        "properties": {
+                            "baseLevel": {
+                                "type": "integer",
+                                "description": "Core noise level (at stationary)"
+                            },
+                            "speedPattern": {
+                                "type": "string",
+                                "enum" : ["Uniform"],
+                                "description": "How the noise increases with speed"
+                            }
+                        }
+                    },
+                    "state": {
+                        "type": "object",
+                        "description": "Initial state of this vessel",
+                        "required": ["time", "categories", "location", "height", "course", "speed", "demCourse", "demSpeed", "demHeight" ],
+                        "properties": {
+                            "time": {
+                                "type": "integer",
+                                "description": "Time at which this state is valid (secs)"
+                            },
+                            "location": {
+                                "type": "object",
+                                "description": "Location of this vessel",
+                                "required": ["lat", "lng"],
+                                "properties": {
+                                    "lat": {
+                                        "type": "number",
+                                        "minimum" : -90,
+                                        "maximum" : 90
+
+                                    },
+                                    "lng": {
+                                        "type": "number",
+                                        "minimum" : -180,
+                                        "maximum" : 180
+                                    }
+                                }
+                            },
+                            "height": {
+                                "type": "number",
+                                "description": "Altitude of this vessel (-ve for underwater) (m)"
+                            },
+                            "course": {
+                                "type": "number",
+                                "description": "Current course of this vessel (degs)"
+                            },
+                            "speed": {
+                                "type": "number",
+                                "description": "Current speed of this vessel (m/s)"
+                            },
+                            "demCourse": {
+                                "type": "number",
+                                "description": "Demanded course of this vessel (degs)"
+                            },
+                            "demSpeed": {
+                                "type": "number",
+                                "description": "Demanded speed of this vessel (m/s)"
+                            },
+                            "demHeight": {
+                                "type": "number",
+                                "description": "Demanded height of this vessel (m)"
+                            }
+                        }
+                    },
+                    "perf": {
+                        "type": "object",
+                        "description": "Movement characteristics of this vessel",
+                        "required": ["turnRadius", "accelerationRate", "decelerationRate", "minSpeed", "maxSpeed", "climbRate", "diveRate" ],
+                        "properties": {
+                            "turnRadius": {
+                                "type": "number",
+                                "description": "m"
+                            },
+                            "accelerationRate": {
+                                "type": "number",
+                                "description": "m/s/s"
+                            },
+                            "decelerationRate": {
+                                "type": "number",
+                                "description": "m/s/s"
+                            },
+                            "minSpeed": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "maxSpeed": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "climbRate": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "diveRate": {
+                                "type": "number",
+                                "description": "m/s"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "patrolArea": {
+            "type": "array",
+            "description": "Rough bounds of area for this operation",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "array",
+                "description": "Series of x/y coordinates representing rectangle",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "type": "number"
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "description": "Customisable environment description",
+            "properties": {
+
+            }
+        },
+
+
+
+        "objectives": {
+            "type": "array",
+            "description": "Elements that watch the scenario unfold, including success/failure tests",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "description": "List of elements",
+                "required": ["name", "type"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Unique name for this objective"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of objective",
+                        "enum" : ["SEQUENCE","PROXIMITY","DISTANCE","FIND_TARGET","GAIN_CONTACT","MAINTAIN_CONTACT","ELAPSED","DESTROY_TARGET","OBTAIN_SOLUTION"
+                        ]
+                    },
+                    "children": {
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "type"],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "subject": {
+                                    "type": "string"
+                                },
+                                "target": {
+                                    "type": "string"
+                                },
+                                "elapsed": {
+                                    "type": "integer"
+                                },
+                                "clearAfterwards": {
+                                    "type": "boolean"
+                                },
+                                "achievement": {
+                                    "type": "object",
+                                    "required": ["name", "message"],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "success": {
+                                    "type": "string"
+                                },
+                                "failureTime": {
+                                    "type": "string"
+                                },
+                                "failureSelection": {
+                                    "type": "string"
+                                },
+                                "narrSuccess": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "features": {
+            "type": "object",
+            "description": "Collection of geographic features to draw on the Map control",
+            "required": ["type", "features"],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "features": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["type", "properties", "geometry", "id"],
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "properties": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "geometry": {
+                                "type": "object",
+                                "required": ["type", "coordinates"],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "coordinates": {
+                                        "type": "array",
+
+                                        "items": [
+                                            {
+                                                "oneOf": [
+
+                                                    {
+                                                        "type": "number"
+                                                    },
+
+                                                    {
+                                                        "type": "array",
+                                                        "items": [
+                                                            {
+                                                                "type": "array",
+                                                                "items": [
+                                                                    {
+                                                                        "type": "number"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+
+                                        ]
+
+                                    }
+                                }
+                            },
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

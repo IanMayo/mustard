@@ -1,5 +1,5 @@
 {
-    "id": "1a",
+    "id": "6a",
     "name": "Learner Driver",
     "description": "Learn to drive, on the tracked range",
     "welcome": "<p>Let's start this off in a leisurely fashion on the tracked range.</p> <p>We've got a training array for you, but first we need go through your noise checks. To do this, travel within 2 km of the Survey Vessel (directly East of you). You may wish to change the Time Factor, using the buttons to slow down or speed up the time.</p> <p>You will also have to steer to the correct course using the 'Demanded' course control (+5/-5). Hold it down for a longer turn.</p>",
@@ -119,7 +119,7 @@
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
-                "type": "FISHERMAN"
+                "type": "FISHING_VESSEL"
             },
             "behaviours": [
                 {

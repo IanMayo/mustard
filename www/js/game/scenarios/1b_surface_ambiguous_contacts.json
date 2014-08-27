@@ -1,0 +1,249 @@
+{
+    "id": "1b",
+    "name": "Understanding bearing ambiguity in surface contacts",
+    "description": "Using easy surface contacts to highlight bearing ambiguity",
+    "situation" : "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
+    "welcome": "Back on the training vessel. Let's carry on learning.",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.0,
+                            "lng": -7.82
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [  "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.21
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "TargetB",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.28,
+                            "lng": -7.98
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.83,
+                    "lng": -8.02
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "speed": 12,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+        ,
+        {
+            "name": "TargetA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Search Route",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.10,
+                            "lng": -7.48
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 105,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.05,
+                    "lng": -8.44
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 13,
+                "speed": 13,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Sonar Qualification",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Select ownship track",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "Ownship",
+                    "elapsed": 300,
+                    "description" : "Select the ownship noise trace in the sonar display",
+                    "clearAfterwards" : true,
+                    "achievement": {
+                        "name": "Newbie",
+                        "message": "You've started your first mission, well done!"
+                    },
+                    "success": "Ok, well that was obvious. There are two other targets shown on the map display, though only one may be visible on the sonar",
+                    "failureTime": "Sorry, you didn't click on the ownship track in time.  You can slow down the simulation, if you wish",
+                    "failureSelection": "Sorry, you didn't click on the ownship track.  Have a think about the ownship heading",
+                    "narrSuccess" : "Identified Ownship track"
+                },
+                {
+                    "name": "Identify NW target track",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "clearAfterwards" : true,
+                    "targetSubString": "TargetA_",
+                    "elapsed": 180,
+                    "description" : "Select any bearing that represents the target to the North West of you.",
+                    "success": "Ok, well done. Now you need to determine which is the true bearing to the target. Use the map to estimate the bearing to the NW target, then select the sonar track that represents it.",
+                    "failureTime": "Sorry, you didn't click on the NW target track in time.  You can slow down the simulation, if you wish",
+                    "failure": "This should have been easy - it's any bearing other than the ownship one",
+                    "narrSuccess" : "Spotted NW target track"
+                },
+                {
+                    "name": "Spot true bearing on NW Target",
+                    "type": "FIND_TARGET",
+                    "subject": "Ownship",
+                    "target": "TargetA_a",
+                    "clearAfterwards" : true,
+                    "elapsed": 180,
+                    "description" : "Select a sonar track that represents the True bearing for the target to the North West of you.",
+                    "success": "Ok, well done. After a couple of minutes the contact to the SE of you will start marking in your sonar",
+                    "failureTime": "Sorry, you didn't click on the true bearing of the NW track in time.  You can slow down the simulation, if you wish",
+                    "failureSelection": "Oops, did you select the correct one? The true bearing is the one that keeps a steady bearing rate after an ownship turn",
+                    "narrSuccess" : "Spotted True bearing of NW"
+                },
+                {
+                    "name": "Select ambiguous bearing on E track",
+                    "clearAfterwards" : true,
+                    "type": "FIND_TARGET",
+                    "target": "TargetB_b",
+                    "subject": "Ownship",
+                    "description" : "Select the ambiguous bearing for the SE track",
+                    "elapsedNot": 300,
+                    "success": "Ok, well done. That's the surface contacts covered.",
+                    "failure": "Oops, did you select the correct one? Try estimating the bearing to the target using the map, then you can work out which is the 'other' one.",
+                    "narrSuccess" : "Spotted Ambiguous bearing"
+                }
+            ]
+        }
+    ]
+}

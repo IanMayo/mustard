@@ -286,6 +286,7 @@ angular.module('subtrack90.game.simulator', [
         };
 
         var handleMissionEnd = function () {
+
             // do we need to pause/stop?
             if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
 
@@ -296,7 +297,7 @@ angular.module('subtrack90.game.simulator', [
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
                     $scope.messages.add({
-                        title: 'Success message',
+                        title: 'Objective Complete',
                         type: 'success',
                         text: $scope.gameState.successMessage,
                         time: new Date().toLocaleTimeString()
@@ -624,9 +625,7 @@ angular.module('subtrack90.game.simulator', [
                     }
                 } else {
                     storeState(vessel, $scope.gameState.simulationTime);
-
                 }
-
             });
 
             // can ownship drive itself?
@@ -659,6 +658,20 @@ angular.module('subtrack90.game.simulator', [
 
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
+
+            // do we have an initial objective description?
+            if($scope.gameState.firstObjective) {
+                $scope.messages.add({
+                    title: 'First objective!',
+                    type: 'warning',
+                    text: $scope.gameState.firstObjective,
+                    time: new Date().toLocaleTimeString()
+                });
+
+                // ok, we can now ditch it
+                delete $scope.gameState.firstObjective;
+
+            }
 
             // see if this mission is complete
             handleMissionEnd();
@@ -709,6 +722,7 @@ angular.module('subtrack90.game.simulator', [
 
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
+
 
             $timeout(function () {
                 // trigger an initial update of locations

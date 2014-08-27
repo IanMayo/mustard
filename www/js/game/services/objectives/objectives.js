@@ -168,6 +168,22 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // get the next child
                 var child = sequence.children[thisId];
 
+                // ok, special case: we need to push the message for the first objective,
+                // if it has one
+                // is this the first objective?
+                if(thisId == 0)
+                {
+                    // does it have an un-shared description?
+                    if(child.description && !child.descriptionPushed)
+                    {
+                        // ok - pass on the message
+                        gameState.firstObjective = "<b>" + child.description + "</b>";
+
+                        // and remember the fact that we've pushed the description
+                        child.descriptionPushed = true;
+                    }
+                }
+
                 // is this one complete?
                 if (!(child.complete)) {
 
@@ -188,6 +204,17 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         }
                         else {
                             gameState.state = "DO_PAUSE";
+
+                            // ok, we have another child.
+                            var nextChild = sequence.children[thisId + 1];
+
+                            // does it have an un-shared description?
+                            if(nextChild.description && !nextChild.descriptionPushed)
+                            {
+                                // yes - append this description to the previous success message
+                                gameState.successMessage += "<br/><b>" + nextChild.description + "</b>";
+                                nextChild.descriptionPushed = true;
+                            }
                         }
                     }
                     else {
@@ -411,6 +438,20 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             if (findTarget.elapsed) {
                 if (!findTarget.stopTime) {
                     findTarget.stopTime = gameState.simulationTime + findTarget.elapsed * 1000;
+                }
+            }
+
+            // do we have a description for this objective?
+            if(findTarget.description && ! findTarget.objectivePushed)
+            {
+                // ok, is this the current state objective description?
+                if(findTarget.description != gameState.objective)
+                {
+                    // ok, inject the description
+                    gameState.objective = findTarget.description;
+
+                    // remember that we've pushed the objective
+                    findTarget.objectivePushed = true;
                 }
             }
 

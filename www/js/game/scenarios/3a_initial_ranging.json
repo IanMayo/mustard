@@ -1,5 +1,5 @@
 {
-    "id": "3a",
+    "id": "6a",
     "name": "Initial Ranging",
     "description": "An introduction to passive ranging",
     "welcome": "Your vessel now has a passive Range Calculator.  \n\nInitiate a ranging manoeuvre by selecting a sonar track.  Then, press the 'Start' button, let the caculator average the bearing rate for a minute, then make a turn, then wait another minute.\n\nThe solution will be shown on the map.",
