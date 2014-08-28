@@ -60,6 +60,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "SEQUENCE":
                     handleSequence(gameState, objective, vessels, deadVessels);
                     break;
+                case "OR":
+                    handleOr(gameState, objective, vessels, deadVessels);
+                    break;
                 case "PROXIMITY":
                     handleProximity(gameState, objective, vessels);
                     break;
@@ -88,7 +91,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
 
             // if the objective type isn't an "organisational" one, set the remaining time, if present
-            if (objective.type != "SEQUENCE") {
+            if ((objective.type != "SEQUENCE") && (objective.type != "OR")) {
                 // just do a check for time remaining
                 if (objective.stopTime) {
                     // ok, how long is remaiing?
@@ -102,7 +105,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
             // was the action successful?
             // if the objective type isn't an "organisational" one, set the remaining time, if present
-            if (objective.type != "SEQUENCE") {
+            if ((objective.type != "SEQUENCE") && (objective.type != "OR")) {
                 if (gameState.successMessage && objective.complete) {
                     // ok, is there a success action?
                     if (objective.successAction) {
@@ -157,6 +160,42 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         };
 
 
+        /** process all of these objectives, finish if any child completes
+         *
+         * @param gameState
+         * @param sequence
+         * @param vessels
+         * @param deadVessels
+         */
+
+        var handleOr = function (gameState, any, vessels, deadVessels) {
+            var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
+
+            // loop through all, or until we don't get a result object
+            for(var thisId = 0;thisId < any.children.length; thisId ++) {
+                // get the next child
+                var child = any.children[thisId];
+
+                // ok, run it
+                handleThis(gameState, child, vessels, deadVessels);
+
+                // did it finish?
+                if (child.complete) {
+
+                    // ok, drop out - we're done
+                    return;
+                }
+            }
+        };
+
+
+        /** process all of these objectives in turn
+         *
+         * @param gameState
+         * @param sequence
+         * @param vessels
+         * @param deadVessels
+         */
         var handleSequence = function (gameState, sequence, vessels, deadVessels) {
             var thisId = 0;
             var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
@@ -230,7 +269,6 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             }
             while ((thisId < sequence.children.length) && (!STOP_CHECKING));
         };
-
 
         var handleObtainSolution = function (gameState, obtain, vessels) {
             var subjectName = obtain.subject;
@@ -647,6 +685,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     if (courseError > proximity.courseError) {
                         failed = true;
                     }
+
                 }
 
                 // ok, have we failed?
@@ -680,6 +719,8 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                     insertNarrative(gameState, gameState.simulationTime, subject.state.location,
                         "Reached proximity threshold");
+
+                    console.log("PROXIMITY PASSED!")
 
                 }
             }
