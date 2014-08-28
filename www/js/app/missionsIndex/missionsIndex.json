@@ -129,8 +129,8 @@
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Spot Merchant main track",
-                                "description": "Select the main trace for the Merchant's truth track",
+                                "name": "Spot quieter Merchant main track",
+                                "description": "Select the main trace for the Merchant's truth track, after the side-lobes are lost",
                                 "type": "FIND_TARGET"
                             },
                             {
@@ -145,7 +145,7 @@
                             },
                             {
                                 "name": "Select disappearing Merchant",
-                                "description": "Select any trace on the merchant track once its noise lobes have been lost",
+                                "description": "Select any trace on the merchant track once its side lobes have been lost",
                                 "type": "FIND_TARGET"
                             }
                         ]
@@ -153,6 +153,41 @@
                 ],
                 "url": "1d_noise_lobes",
                 "guidanceUrl": "guidance/processed/1d_noise_lobes.html"
+            },
+            {
+                "id": "1e",
+                "name": "Unsteady Array",
+                "description": "The effects of the array being unsteady",
+                "situation": "Ok, you're ready for a real puzzler. We're going to switch off the array heading sensors, so you will lose contact during and after each Ownship turn.  There's a dived target in the scenario, and we want you to track it.",
+                "objectives": [
+                    {
+                        "name": "Sonar Qualification",
+                        "children": [
+                            {
+                                "name": "Select dived target track [Leg 1]",
+                                "description": "Start off by selecting the truth track for the submarine to the West of you",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 2]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 3]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 4]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            }
+                        ]
+                    }
+                ],
+                "url": "1e_array_unsteady",
+                "guidanceUrl": "guidance/processed/1e_array_unsteady.html"
             }
         ]
     },
@@ -613,30 +648,6 @@
         "name": "Spare",
         "description": "temporary storage for legacy missions",
         "missions": [
-            {
-                "id": "7a",
-                "name": "Unsteady Array",
-                "description": "The effects of the array being unsteady",
-                "objectives": [
-                    {
-                        "name": "Gain & maintain contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Locate it",
-                                "description": "Get within 500m of Target vessel",
-                                "type": "PROXIMITY"
-                            }
-                        ]
-                    }
-                ],
-                "url": "7a_array_unsteady",
-                "guidanceUrl": "guidance/processed/7a_array_unsteady.html"
-            },
             {
                 "id": "7b",
                 "name": "Quick win",
