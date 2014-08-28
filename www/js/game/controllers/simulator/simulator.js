@@ -635,7 +635,7 @@ angular.module('subtrack90.game.simulator', [
                 // no, set the demanded states from the relevant control
                 $scope.ownShip.updateState({
                     demCourse: parseInt($scope.demandedState.course),
-                    demSpeed: parseInt($scope.demandedState.speed)
+                    demSpeed: parseFloat($scope.demandedState.speed)
                 });
             }
 
@@ -705,7 +705,7 @@ angular.module('subtrack90.game.simulator', [
             initializeTargetShips();
 
             $scope.demandedState.course = parseInt($scope.ownShip.state().demCourse);
-            $scope.demandedState.speed = parseInt($scope.ownShip.state().demSpeed);
+            $scope.demandedState.speed = parseFloat($scope.ownShip.state().demSpeed);
 
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
