@@ -269,7 +269,7 @@
                     "type": {
                         "type": "string",
                         "description": "Type of objective",
-                        "enum": ["SEQUENCE", "PROXIMITY", "DISTANCE", "FIND_TARGET", "GAIN_CONTACT", "MAINTAIN_CONTACT", "ELAPSED", "DESTROY_TARGET", "OBTAIN_SOLUTION"
+                        "enum": ["SEQUENCE", "PROXIMITY", "DISTANCE", "FIND_TARGET", "GAIN_CONTACT", "MAINTAIN_CONTACT", "ELAPSED", "DESTROY_TARGET", "OBTAIN_SOLUTION", "OR"
                         ]
                     },
                     "children": {
@@ -284,7 +284,10 @@
                                     "type": "string"
                                 },
                                 "type": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Type of objective",
+                                    "enum": ["SEQUENCE", "PROXIMITY", "DISTANCE", "FIND_TARGET", "GAIN_CONTACT", "MAINTAIN_CONTACT", "ELAPSED", "DESTROY_TARGET", "OBTAIN_SOLUTION", "OR", "DISTANCE_TO_CATEGORY", "STAY_IN_AREA"
+                                    ]
                                 },
                                 "subject": {
                                     "type": "string"
