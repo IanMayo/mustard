@@ -259,17 +259,17 @@
             "uniqueItems": true,
             "items": {
                 "type": "object",
-                "description": "List of elements",
+                "description": "List of organisational-level structures",
                 "required": ["name", "type"],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "description": "Unique name for this objective"
+                        "description": "Name of this goruping"
                     },
                     "type": {
                         "type": "string",
                         "description": "Type of objective",
-                        "enum": ["SEQUENCE", "PROXIMITY", "DISTANCE", "FIND_TARGET", "GAIN_CONTACT", "MAINTAIN_CONTACT", "ELAPSED", "DESTROY_TARGET", "OBTAIN_SOLUTION", "OR"
+                        "enum": ["SEQUENCE", "OR"
                         ]
                     },
                     "children": {
