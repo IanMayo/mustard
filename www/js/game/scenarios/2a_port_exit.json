@@ -364,9 +364,8 @@
     "objectives": [
         {
             "name": "Ship Control exam",
-            "type": "SEQUENCE",
+            "type": "OR",
             "children": [
-
                 {
                     "name": "R/V with support barge",
                     "description": "RAS next to Tactical Support Barge, Northerly Course at less than 3 kts",
@@ -375,7 +374,7 @@
                         "lat": 49.98,
                         "lng": -7.8
                     },
-                    "range": 1000,
+                    "range": 100000,
                     "elapsed": 2400,
                     "course": 0,
                     "courseError": 10,
@@ -391,9 +390,50 @@
                         "name": "Driver",
                         "message": "You're now a qualified driver. Well done."
                     }
+                },
+                {
+                    "name": "Avoid fishing vessel A",
+                    "description": "Stay outside 4000m of fishing vessels",
+                    "type": "DISTANCE",
+                    "target": "FisherA",
+                    "subject": "Ownship",
+                    "range": 4000,
+                    "success": "Well done, that was tricky.",
+                    "failure": "We're caught, she's breaking up!"
+                },
+                {
+                    "name": "Avoid fishing vessel B",
+                    "description": "Stay outside 4000m of fishing vessels",
+                    "type": "DISTANCE",
+                    "target": "FisherB",
+                    "subject": "Ownship",
+                    "range": 4000,
+                    "success": "Well done, that was tricky.",
+                    "failure": "We're caught, she's breaking up!"
+                },
+                {
+                    "name": "Avoid fishing vessel C",
+                    "description": "Stay outside 4000m of fishing vessels",
+                    "type": "DISTANCE",
+                    "target": "FisherC",
+                    "subject": "Ownship",
+                    "range": 4000,
+                    "success": "Well done, that was tricky.",
+                    "failure": "We're caught, she's breaking up!"
+                },
+                {
+                    "name": "Avoid fishing vessel D",
+                    "description": "Stay outside 4000m of fishing vessels",
+                    "type": "DISTANCE",
+                    "target": "FisherD",
+                    "subject": "Ownship",
+                    "range": 4000,
+                    "success": "Well done, that was tricky.",
+                    "failure": "We're caught, she's breaking up!"
                 }
             ]
         }
+
     ],
     "features": {
         "type": "FeatureCollection",
