@@ -84,6 +84,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "DESTROY_TARGET":
                     handleDestroyTarget(gameState, objective, vessels, deadVessels);
                     break;
+                case "STAY_IN_AREA":
+                    handleStayInArea(gameState, objective, vessels);
+                    break;
                 case "OBTAIN_SOLUTION":
                     handleObtainSolution(gameState, objective, vessels);
                     break;
@@ -836,6 +839,40 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             }
         };
 
+
+        var handleStayInArea = function(gameState, stayInArea, vessels) {
+
+            var subject = vessels[stayInArea.subject];
+
+            if (!subject) {
+                return;
+            }
+
+            var dest = null;
+
+            // have we constructed the bounding polygon?
+            if (!stayInArea.boundsObj) {
+                // ok, inject the bounds
+                var tl = L.latLng(stayInArea.tl.lat, stayInArea.tl.lng);
+                var br = L.latLng(stayInArea.br.lat, stayInArea.br.lng);
+                var bounds = L.latLngBounds(tl, br);
+                stayInArea.boundsObj = bounds;
+            }
+
+            // ok, have we left it?
+            // are we in the patrol area?
+            var location = subject.state.location;
+
+            var myLoc = L.latLng(location.lat, location.lng);
+            if (!(stayInArea.boundsObj.contains(myLoc))) {
+
+                // ok, we've left the area. game over!
+                gameState.failureMessage = stayInArea.failure;
+                gameState.state = "DO_STOP";
+                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                    "Failed to stay outside the necessary range");
+            }
+        };
 
         var handleDestroyTarget = function (gameState, destroy, vessels, deadVessels) {
 
