@@ -756,6 +756,12 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         };
 
 
+        /** fail if subject vessel passes inside set range of a whole category of vessels
+         *
+         * @param gameState the current state of the game
+         * @param distance this objective
+         * @param vessels the list of vessels
+         */
         var handleDistanceToCategory = function (gameState, distance, vessels) {
 
             // get the subject vessel, we don't want to test against it
@@ -767,17 +773,21 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // check it's not us
                 if(thisV != subject){
 
-                    // check it's categories
+                    // verify the categories
                     if((thisV.categories.force == distance.category)
                     ||(thisV.categories.environment == distance.category)
                     || (thisV.categories.type == distance.category)){
 
                         // ok, matching vessel what's his location?
                         var hisLoc = thisV.state.location;
+
+                        // and what's my location?
                         var myLoc = subject.state.location;
 
+                        // what's the range?
                         var range = geoMath.rhumbDistanceFromTo(hisLoc, myLoc);
 
+                        // is it beyond the acceptable limit?
                         if(range < distance.range)
                         {
                             // ok, the target has encroached on the distance. failed.
