@@ -91,6 +91,10 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
             scope.$on('updateReviewPlot', function (event, time, detections) {
                 plotGraphs.updateReviewPlot(new Date(time), detections);
             });
+
+            scope.$on('$destroy', function () {
+                plotGraphs.remove();
+            });
         }
     }
 }]);
