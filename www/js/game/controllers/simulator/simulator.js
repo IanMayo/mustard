@@ -777,6 +777,7 @@ angular.module('subtrack90.game.simulator', [
         $scope.$on('sonarTrackSelected', function (event, theTrackName) {
             $scope.ownShip.vessel().selectedTrack = theTrackName;
             $scope.$broadcast('shareSelectedTrack', theTrackName)
+            console.log("+++SELECTION:" + theTrackName);
         });
 
         $scope.goBack = function () {
