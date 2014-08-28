@@ -69,6 +69,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "DISTANCE":
                     handleDistance(gameState, objective, vessels);
                     break;
+                case "DISTANCE_TO_CATEGORY":
+                    handleDistanceToCategory(gameState, objective, vessels);
+                    break;
                 case "FIND_TARGET":
                     handleFindTarget(gameState, objective, vessels);
                     break;
@@ -751,6 +754,47 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 }
             }
         };
+
+
+        var handleDistanceToCategory = function (gameState, distance, vessels) {
+
+            // get the subject vessel, we don't want to test against it
+            var subject = vessels[distance.subject];
+
+            // ok, loop through the vessels
+            _.each(vessels, function (thisV) {
+
+                // check it's not us
+                if(thisV != subject){
+
+                    // check it's categories
+                    if((thisV.categories.force == distance.category)
+                    ||(thisV.categories.environment == distance.category)
+                    || (thisV.categories.type == distance.category)){
+
+                        // ok, matching vessel what's his location?
+                        var hisLoc = thisV.state.location;
+                        var myLoc = subject.state.location;
+
+                        var range = geoMath.rhumbDistanceFromTo(hisLoc, myLoc);
+
+                        if(range < distance.range)
+                        {
+                            // ok, the target has encroached on the distance. failed.
+                            distance.complete = true;
+                            gameState.failureMessage = distance.failure;
+                            gameState.state = "DO_STOP";
+                            insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                                "Failed to stay outside the necessary range");
+
+                            return;
+                        }
+                    }
+                }
+            });
+
+        };
+
 
         var handleDistance = function (gameState, distance, vessels) {
 

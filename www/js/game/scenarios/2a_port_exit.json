@@ -314,6 +314,65 @@
             }
         },
         {
+            "name": "FisherE",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.996,
+                            "lng": -8.082
+                        },
+                        {
+                            "lat": 50.01,
+                            "lng": -8.09
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.005,
+                    "lng": -8.12
+                },
+                "course": 122,
+                "demCourse": 122,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
             "name": "Support Platform",
             "categories": {
                 "force": "BLUE",
@@ -392,40 +451,10 @@
                     }
                 },
                 {
-                    "name": "Avoid fishing vessel A",
+                    "name": "Avoid fishing vessels",
                     "description": "Stay outside 4000m of fishing vessels",
-                    "type": "DISTANCE",
-                    "target": "FisherA",
-                    "subject": "Ownship",
-                    "range": 4000,
-                    "success": "Well done, that was tricky.",
-                    "failure": "We're caught, she's breaking up!"
-                },
-                {
-                    "name": "Avoid fishing vessel B",
-                    "description": "Stay outside 4000m of fishing vessels",
-                    "type": "DISTANCE",
-                    "target": "FisherB",
-                    "subject": "Ownship",
-                    "range": 4000,
-                    "success": "Well done, that was tricky.",
-                    "failure": "We're caught, she's breaking up!"
-                },
-                {
-                    "name": "Avoid fishing vessel C",
-                    "description": "Stay outside 4000m of fishing vessels",
-                    "type": "DISTANCE",
-                    "target": "FisherC",
-                    "subject": "Ownship",
-                    "range": 4000,
-                    "success": "Well done, that was tricky.",
-                    "failure": "We're caught, she's breaking up!"
-                },
-                {
-                    "name": "Avoid fishing vessel D",
-                    "description": "Stay outside 4000m of fishing vessels",
-                    "type": "DISTANCE",
-                    "target": "FisherD",
+                    "type": "DISTANCE_TO_CATEGORY",
+                    "category": "FISHERMAN",
                     "subject": "Ownship",
                     "range": 4000,
                     "success": "Well done, that was tricky.",
