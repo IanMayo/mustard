@@ -110,10 +110,6 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
 
     var processThisVessel = function (tNow, myVessel, allVessels) {
 
-        // how much random error to apply to sensor cuts
-        const SENSOR_ERROR = 2;
-        /* degs */
-
         // how much turn rate leads to array unsteady
         const TURN_THRESHOLD = 0.1;
         /* degs / sec */
@@ -194,6 +190,26 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
             // oh dear, are twe unsteady?
             if (!sonar.isUnsteady) {
                 _.each(allVessels, function (thisV) {
+
+                    // ok, sort out the sensor error for this vessel type
+                    var sensorError;  /* degs */
+
+                    switch(thisV.categories.type)
+                    {
+                        case "WARSHIP":
+                            sensorError = 1.5;
+                            break;
+                        case "SUBMARINE":
+                            sensorError = 1;
+                            break;
+                        case "MERCHANT":
+                            sensorError = 2.5;
+                            break;
+                        case "FISHERMAN":
+                            sensorError = 2;
+                            break;
+                    }
+
                     // is this me?
                     if (thisV == myVessel) {
                     // yes, sort out self-noise
@@ -204,7 +220,7 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
                         // does this sonar have simple self-noise?
                         if (!geoMath.hasCategory("NO_SIMPLE_SELF_NOISE", sonar.categories)) {
                             insertDetections(newDetections, tNow, origin, myVessel.state.course,
-                                theSelfBrg, thisV.name, thisV.name, false, SENSOR_ERROR, LN, 0, thisV.state.location);
+                                theSelfBrg, thisV.name, thisV.name, false, sensorError, LN, 0, thisV.state.location);
                         }
 
                         // does this sonar have complex self-noise?
@@ -213,7 +229,7 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
                             if (speed >= 12) {
                                 var offsetBearing = theSelfBrg + 15;
                                 insertDetections(newDetections, tNow, origin, myVessel.state.course,
-                                    offsetBearing, thisV.name, thisV.name + "_side1", true, SENSOR_ERROR,
+                                    offsetBearing, thisV.name, thisV.name + "_side1", true, sensorError,
                                     LN, 0, thisV.state.location);
                             }
 
@@ -221,7 +237,7 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
                             if (speed >= 15) {
                                 offsetBearing = theSelfBrg + 25;
                                 insertDetections(newDetections, tNow, origin, myVessel.state.course, offsetBearing,
-                                    thisV.name, thisV.name + "_side2", true, SENSOR_ERROR, LN, 0, thisV.state.location);
+                                    thisV.name, thisV.name + "_side2", true, sensorError, LN, 0, thisV.state.location);
                             }
                         }
                     } else {
@@ -314,18 +330,18 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
 
                                 // ok, insert the core detection
                                 insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg,
-                                    thisV.name, thisV.name, doAmbiguous, SENSOR_ERROR, SE, bDot, thisV.state.location);
+                                    thisV.name, thisV.name, doAmbiguous, sensorError, SE, bDot, thisV.state.location);
 
                                 // show extra side lobes if he's really noisy
                                 if (SE > 25) {
                                     // first the right-hand side lobe
                                     insertDetections(newDetections, tNow, origin, myVessel.state.course,
                                         theBrg + 15, thisV.name, thisV.name + "_side1", doAmbiguous,
-                                        SENSOR_ERROR, SE, bDot, thisV.state.location);
+                                        sensorError, SE, bDot, thisV.state.location);
 
                                     // and now the left-hand side lobe
                                     insertDetections(newDetections, tNow, origin, myVessel.state.course, theBrg - 15,
-                                        thisV.name, thisV.name + "_side2", doAmbiguous, SENSOR_ERROR, SE, bDot,
+                                        thisV.name, thisV.name + "_side2", doAmbiguous, sensorError, SE, bDot,
                                         thisV.state.location);
                                 }
                             }
