@@ -72,6 +72,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "DISTANCE_TO_CATEGORY":
                     handleDistanceToCategory(gameState, objective, vessels);
                     break;
+                case "DISTANCE_FROM_CATEGORY":
+                    handleDistanceFromCategory(gameState, objective, vessels);
+                    break;
                 case "FIND_TARGET":
                     handleFindTarget(gameState, objective, vessels);
                     break;
@@ -805,6 +808,79 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
         };
 
+
+        /** fail if subject vessel passes outside set range of a whole category of vessels. Optional elapsed time factor for success
+         *
+         * @param gameState the current state of the game
+         * @param distance this objective
+         * @param vessels the list of vessels
+         */
+        var handleDistanceFromCategory = function (gameState, distance, vessels) {
+
+            // get the subject vessel, we don't want to test against it
+            var subject = vessels[distance.subject];
+
+            // ok, loop through the vessels
+            _.each(vessels, function (thisV) {
+
+                // check it's not us
+                if(thisV != subject){
+
+                    // verify the categories
+                    if((thisV.categories.force == distance.category)
+                        ||(thisV.categories.environment == distance.category)
+                        || (thisV.categories.type == distance.category)){
+
+                        // ok, matching vessel what's his location?
+                        var hisLoc = thisV.state.location;
+
+                        // and what's my location?
+                        var myLoc = subject.state.location;
+
+                        // what's the range?
+                        var range = geoMath.rhumbDistanceFromTo(hisLoc, myLoc);
+
+                        // is it beyond the acceptable limit?
+                        if(range > distance.range)
+                        {
+                            // ok, the target has encroached on the distance. failed.
+                            distance.complete = true;
+                            gameState.failureMessage = distance.failure;
+                            gameState.state = "DO_STOP";
+                            insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                                "Failed to stay insidethe necessary range");
+
+                            return;
+                        }
+                    }
+                }
+            });
+
+            // do we have a time for which we have to maintain contact?
+            if(distance.elapsed) {
+
+                // yes- is this our first pass?
+                if (!distance.stopTime) {
+                    distance.stopTime = gameState.simulationTime + (distance.elapsed * 1000);
+                }
+
+                // have we held contact for long enough?
+                if (gameState.simulationTime >= distance.stopTime) {
+
+                    // cool,handle the success
+                    gameState.successMessage = distance.success;
+                    gameState.state = "DO_STOP";
+                    // great - we're done.
+                    distance.complete = true;
+
+                    // clear the flag
+                    delete distance.stopTime;
+
+                    // and store any achievements
+                    processAchievements(distance.achievement, gameState);
+                }
+            }
+        };
 
         var handleDistance = function (gameState, distance, vessels) {
 
