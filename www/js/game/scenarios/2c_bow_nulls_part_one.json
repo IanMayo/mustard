@@ -33,8 +33,8 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50.02,
-                    "lng": -8.01
+                    "lat": 49.9,
+                    "lng": -8.13
                 },
                 "height": 0,
                 "course": 90,
@@ -65,32 +65,85 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 50.02,
-                        "lng": -8.05
+                        "lat": 49.95,
+                        "lng": -7.85
                     },
                     "br": {
-                        "lat": 49.94,
-                        "lng": -7.92
-                    },
-                    "height": -30
+                        "lat": 49.86,
+                        "lng": -7.76
+                    }
                 }
             ],
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 109,
+                "baseLevel": 99,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 49.98,
-                    "lng": -7.92
+                    "lat": 49.91,
+                    "lng": -7.82
                 },
                 "course": 160,
                 "demCourse": 160,
-                "demSpeed": 8,
-                "speed": 8,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "SubTarget",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 49.95,
+                        "lng": -7.85
+                    },
+                    "br": {
+                        "lat": 49.86,
+                        "lng": -7.76
+                    }
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 99,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.91,
+                    "lng": -7.82
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 10,
+                "speed": 10,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -120,20 +173,21 @@
             "type": "SEQUENCE",
             "children": [
                 {
-                    "name": "Maintain contact on surface target",
-                    "description": "Maintain contact on the training target for one hour",
-                    "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
-                    "subject": "Ownship",
-                    "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
+                    "name": "Gain contact with Fishing Vessel",
+                    "description": "Gain contact on the fishing vessel West of yo within 35 minutes",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 2100,
+                    "target" : "FisherA",
+                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
-                    "name": "Maintain contact on dived target",
-                    "description": "Maintain contact on the training target for one hour",
+                    "name": "Maintain contact on surface target",
+                    "description": "Maintain contact on the training target for 45 minutes",
                     "type": "MAINTAIN_CONTACT",
-                    "elapsed": 3600,
+                    "elapsed": 2700,
                     "subject": "Ownship",
+                    "target" : "FisherA",
                     "success": "Well done, you've held contact for one hour",
                     "failure": "More practice needed, you only held contact for [time] minutes."
                 }

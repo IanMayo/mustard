@@ -341,9 +341,6 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
             var inContact;
 
-
-            // Todo: INTRODUCE SUPPORT FOR BEING ABLE TO SPECIFY THE TARGET NAME
-
             if (detections && detections.length > 0) {
 
                 // ok, are any from a target?
@@ -352,25 +349,29 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                     if (thisD.source != subject.name) {
 
-                        inContact = true;
+                        if ((!maintainContact.target) || (maintainContact.target == thisD.source)) {
+                            inContact = true;
 
-                        // is this our first one?
-                        if (!maintainContact.stopTime) {
-                            maintainContact.stopTime = gameState.simulationTime + (maintainContact.elapsed * 1000);
+                            console.log("GAINED CONTACT WITH:" + thisD.source);
 
-                            insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                                "Gained contact with target, now maintaining");
-                        }
+                            // is this our first one?
+                            if (!maintainContact.stopTime) {
+                                maintainContact.stopTime = gameState.simulationTime + (maintainContact.elapsed * 1000);
 
-                        // have we held contact for long enough
-                        if (gameState.simulationTime >= maintainContact.stopTime) {
-                            // great - we're done.
-                            maintainContact.complete = true;
+                                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                                    "Gained contact with target, now maintaining");
+                            }
 
-                            // clear the flag
-                            delete maintainContact.stopTime;
+                            // have we held contact for long enough
+                            if (gameState.simulationTime >= maintainContact.stopTime) {
+                                // great - we're done.
+                                maintainContact.complete = true;
 
-                            break;
+                                // clear the flag
+                                delete maintainContact.stopTime;
+
+                                break;
+                            }
                         }
                     }
                 }
