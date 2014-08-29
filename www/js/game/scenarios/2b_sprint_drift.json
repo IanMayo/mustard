@@ -3,7 +3,7 @@
     "name": "Handling ownship noise levels",
     "description": "Track a quiet but relatively fast moving friendly dived target.",
     "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
-    "welcome": "A friendly SSN has just left the North East marker, keep within 5 km of him for the next 40 minutes",
+    "welcome": "A friendly SSN has just left the North East marker, keep within 5 km of him for the next 50 minutes",
     "vessels": [
         {
             "name": "Ownship",
@@ -33,14 +33,14 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 50,
+                    "lat": 50.09,
                     "lng": -8.21
                 },
                 "height": 0,
                 "course": 90,
-                "speed": 10,
+                "speed": 8,
                 "demCourse": 90,
-                "demSpeed": 10,
+                "demSpeed": 8,
                 "demHeight": -10.0
             },
             "perf": {
@@ -66,16 +66,16 @@
                     "type": "PATH",
                     "path": [
                         {
-                            "lat": 50.01,
-                            "lng": -7.98
+                            "lat": 49.96,
+                            "lng": -7.79
                         },
                         {
-                            "lat": 49.94,
-                            "lng": -7.98
+                            "lat": 49.89,
+                            "lng": -7.81
                         },
                         {
-                            "lat": 50.0,
-                            "lng": -8.03
+                            "lat": 49.96,
+                            "lng": -7.95
                         }
                     ],
                     "height": 0,
@@ -86,14 +86,14 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 107,
+                "baseLevel": 109,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 50.08,
-                    "lng": -8.02
+                    "lat": 49.98,
+                    "lng": -7.92
                 },
                 "course": 160,
                 "demCourse": 160,
@@ -119,7 +119,7 @@
         {
             "name": "Friendly",
             "categories": {
-                "force": "BLUE",
+                "force": "RED",
                 "environment": "SUBSURFACE",
                 "type": "SUBMARINE"
             },
@@ -129,7 +129,7 @@
                     "type": "PATH",
                     "path": [
                         {
-                            "lat": 50.05,
+                            "lat": 50.02,
                             "lng": -7.9
                         },
                         {
@@ -145,7 +145,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 107,
+                "baseLevel": 84,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -156,8 +156,8 @@
                 },
                 "course": 122,
                 "demCourse": 122,
-                "demSpeed": 14,
-                "speed": 14,
+                "demSpeed": 13,
+                "speed": 13,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -183,37 +183,26 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Ship Control exam",
-            "type": "OR",
+            "name": "Spring Drift Training",
+            "type": "SEQUENCE",
             "children": [
                 {
-                    "name": "R/V with support barge",
-                    "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
-                    "type": "PROXIMITY",
-                    "location": {
-                        "lat": 49.98,
-                        "lng": -7.8
-                    },
-                    "range": 1000,
-                    "elapsed": 3600,
-                    "course": 0,
-                    "courseError": 10,
-                    "bonusAchievementTime": 2100,
-                    "bonusAchievement": {
-                        "name": "Speed Demon",
-                        "message": "Hey, you beat 35 minutes, Good driving!"
-                    },
-                    "maxSpeed": 1.54,
-                    "success": "Well done, you made it. Let's get the special weapons loaded and continue with the transit.",
-                    "failure": "Sorry, you didn't make it in time, and we missed our window.",
+                    "name": "Stay near dived target",
+                    "description": "Stay within 5km of dived target",
+                    "type": "DISTANCE_FROM_CATEGORY",
+                    "category": "SUBMARINE",
+                    "subject": "Ownship",
+                    "range": 5000,
+                    "failure": "We've drifted too far from the dived target",
+                    "success": "We've loosely tracked the target for 50 minutes.",
                     "achievement": {
-                        "name": "Driver",
-                        "message": "You're now a qualified driver. Well done."
-                    }
+                        "name": "Loose trail",
+                        "message": "You can keep track of a target, even without continuous contact."
+                    },
+                    "elapsed" : 3000
                 }
             ]
         }
-
     ],
     "features": {
         "type": "FeatureCollection",
@@ -236,6 +225,18 @@
                     ]
                 },
                 "id": "OpsArea"
+            },
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Initial contact",
+                    "amenity": "Baseball Stadium",
+                    "popupContent": "This is where the Rockies play!"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.2, 50.13]
+                }
             }
         ]
     }}
