@@ -152,10 +152,10 @@ angular.module('subtrack90.game.simulator', [
 * @module Game
 * @class MissionCtrl (controller)
 */
-.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$interval', '$q', 'geoMath',
+.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$q', 'geoMath',
         'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
         '$timeout', 'steppingControls', 'message',
-    function ($scope, $location, $route, $interval, $q, geoMath, movement, decision, objectives, detection,
+    function ($scope, $location, $route, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
         /**
@@ -634,7 +634,7 @@ angular.module('subtrack90.game.simulator', [
                 // no, set the demanded states from the relevant control
                 $scope.ownShip.updateState({
                     demCourse: parseInt($scope.demandedState.course),
-                    demSpeed: parseInt($scope.demandedState.speed)
+                    demSpeed: parseFloat($scope.demandedState.speed)
                 });
             }
 
@@ -718,7 +718,7 @@ angular.module('subtrack90.game.simulator', [
             initializeTargetShips();
 
             $scope.demandedState.course = parseInt($scope.ownShip.state().demCourse);
-            $scope.demandedState.speed = parseInt($scope.ownShip.state().demSpeed);
+            $scope.demandedState.speed = parseFloat($scope.ownShip.state().demSpeed);
 
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
@@ -801,6 +801,16 @@ angular.module('subtrack90.game.simulator', [
          * save simulation state to the review history
          */
         $scope.$on("$routeChangeStart", storeHistory);
+
+        /**
+         * Callback when scope of the controller destroys
+         */
+        $scope.$on('$destroy', function () {
+            // destroy FPS meters
+            _.each(meters, function (meter) {
+                meter.destroy();
+            });
+        });
 
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);

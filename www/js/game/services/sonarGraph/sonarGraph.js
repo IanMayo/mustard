@@ -31,6 +31,7 @@ angular.module('subtrack90.game.sonarGraph', [])
 
         var detectionExpireTime =  1 * 60 * 1000; // 1 minute
 
+        var svgContainer;
         var graph;
         var mainClipPath;
         var gMain;
@@ -101,15 +102,15 @@ angular.module('subtrack90.game.sonarGraph', [])
          * Add svg element and apply margin values.
          */
         function addSvgElement() {
-            var svg = d3.select(config.containerElement)
+            svgContainer = d3.select(config.containerElement)
                 .append('svg')
                 .attr('class', 'graph g-wrapper');
 
             // https://bugzilla.mozilla.org/show_bug.cgi?id=779368
             // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
-            svg.style({width: '100%', height: '100%'});
+            svgContainer.style({width: '100%', height: '100%'});
 
-            graph = svg
+            graph = svgContainer
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
         }
@@ -492,11 +493,22 @@ angular.module('subtrack90.game.sonarGraph', [])
             return yAxisScale.domain();
         }
 
+        /**
+         * Remove graph from DOM and remove handlers
+         */
+        function remove () {
+            _.each(renderedDetections, function (detection) {
+                detection.group.on('click', null);
+            });
+            svgContainer.remove();
+        }
+
         return {
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
             changeGraphHeight: changeGraphHeight,
-            timeAxisBoundaries: visibleDomain
+            timeAxisBoundaries: visibleDomain,
+            remove: remove
         }
     }
 
