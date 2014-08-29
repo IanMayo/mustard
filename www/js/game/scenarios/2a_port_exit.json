@@ -1,9 +1,9 @@
 {
     "id": "2a",
     "name": "Learning ship control, the hard way",
-    "description": "Now that you have provisional ship control privilege, you're going to be tested with a challenging transit.",
-    "situation" : "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Get to the static support vessel to the West of you without getting within 600m of any fishing vessels.  Oh, and please don't exit your allocated water (the blue rectangle)",
-    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you have 40 minutes.",
+    "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+    "situation" : "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you have 40 minutes to come within 1km of the support barge, on a Northerly course at less than 3 kts",
     "vessels": [
         {
             "name": "Ownship",
@@ -22,7 +22,7 @@
                     "offset": -1000,
                     "ArrayGain": 12,
                     "DT": -8,
-                    "disabled": true
+                    "disabled": false
                 }
             ],
             "radiatedNoise": {
@@ -432,15 +432,13 @@
                     "category": "FISHERMAN",
                     "subject": "Ownship",
                     "range": 4000,
-                    "success": "Well done, that was tricky.",
                     "failure": "We're caught, she's breaking up!"
                 },
                 {
-                    "name": "Remain in patrol area",
+                    "name": "Remain in allocated water",
                     "description": "Stay within operating area",
                     "type": "STAY_IN_AREA",
                     "subject": "Ownship",
-                    "success": "Well done, that was tricky.",
                     "tl": {
                         "lat": 50.08,
                         "lng": -8.25
@@ -449,18 +447,18 @@
                         "lat": 49.92,
                         "lng": -7.75
                     },
-                    "failure": "END-EX, you've left the operating area!"
+                    "failure": "END-EX, you've left the allocated water!"
                 },
                 {
                     "name": "R/V with support barge",
-                    "description": "RAS next to Tactical Support Barge, Northerly Course at less than 3 kts",
+                    "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
                     "type": "PROXIMITY",
                     "location": {
                         "lat": 49.98,
                         "lng": -7.8
                     },
                     "range": 1000,
-                    "elapsed": 2400,
+                    "elapsed": 3600,
                     "course": 0,
                     "courseError": 10,
                     "bonusAchievementTime": 2100,
@@ -486,7 +484,7 @@
             {
                 "type": "Feature",
                 "properties": {
-                    "name": "Ops Area"
+                    "name": "Allocated Water"
                 },
                 "geometry": {
                     "type": "Polygon",
