@@ -1,0 +1,241 @@
+{
+    "id": "2b",
+    "name": "Handling ownship noise levels",
+    "description": "Track a quiet but relatively fast moving friendly dived target.",
+    "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+    "welcome": "A friendly SSN has just left the North East marker, keep within 5 km of him for the next 40 minutes",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.21
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.01,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 50.0,
+                            "lng": -8.03
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.08,
+                    "lng": -8.02
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 8,
+                "speed": 8,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Friendly",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.05,
+                            "lng": -7.9
+                        },
+                        {
+                            "lat": 49.85,
+                            "lng": -7.88
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.13,
+                    "lng": -8.2
+                },
+                "course": 122,
+                "demCourse": 122,
+                "demSpeed": 14,
+                "speed": 14,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Ship Control exam",
+            "type": "OR",
+            "children": [
+                {
+                    "name": "R/V with support barge",
+                    "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
+                    "type": "PROXIMITY",
+                    "location": {
+                        "lat": 49.98,
+                        "lng": -7.8
+                    },
+                    "range": 1000,
+                    "elapsed": 3600,
+                    "course": 0,
+                    "courseError": 10,
+                    "bonusAchievementTime": 2100,
+                    "bonusAchievement": {
+                        "name": "Speed Demon",
+                        "message": "Hey, you beat 35 minutes, Good driving!"
+                    },
+                    "maxSpeed": 1.54,
+                    "success": "Well done, you made it. Let's get the special weapons loaded and continue with the transit.",
+                    "failure": "Sorry, you didn't make it in time, and we missed our window.",
+                    "achievement": {
+                        "name": "Driver",
+                        "message": "You're now a qualified driver. Well done."
+                    }
+                }
+            ]
+        }
+
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Allocated Water"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }}
