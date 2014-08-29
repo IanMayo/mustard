@@ -17,7 +17,7 @@ angular.module('subtrack90.game.shipStateDirective', ['subtrack90.game.shipContr
              * @returns {Number} speed in knots
              */
             scope.knotsSpeed = function () {
-                return parseInt(scope.speed * KNOTS_IN_MPS);
+                return scope.speed * KNOTS_IN_MPS;
             }
         }
     };
