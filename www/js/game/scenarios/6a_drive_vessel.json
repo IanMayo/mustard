@@ -225,6 +225,7 @@
             "children": [
                 {
                     "name": "Newbie achievement",
+                    "description": "Get started with missions",
                     "type": "ELAPSED",
                     "time": 30,
                     "achievement": {
@@ -271,6 +272,7 @@
                 {
                     "name": "Array Handling Experience",
                     "type": "ELAPSED",
+                    "description": "Get used to towed array",
                     "time": 240,
                     "success": "Stop!\n\nIntruder in training ground!\n\nYou haven't got any weapons loaded, but we really need to capture him.  The best we can offer is that you'll have to ram him and bring him to the surface. Once you have detected him, chase down the bearing (as shown on the sonar display), and destroy the b*stard!  You may have to increase speed to catch him, but if you go too fast you won't be able to hear him.",
                     "successAction": {
