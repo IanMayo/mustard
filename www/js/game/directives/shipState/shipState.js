@@ -5,7 +5,8 @@ angular.module('subtrack90.game.shipStateDirective', [])
         restrict: 'EA',
         scope: {
             course: '=',
-            speed: '='
+            speed: '=',
+            name: '@'
         },
         templateUrl: 'js/game/directives/shipState/shipState.tpl.html',
         link: function (scope) {
