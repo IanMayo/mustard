@@ -199,8 +199,8 @@
             {
                 "id": "2a",
                 "name": "Learning ship control, the hard way",
-                "description": "Now that you have provisional ship control privilege, you're going to be tested with a challenging transit.",
-                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Get to the static support vessel to the West of you without getting within 600m of any fishing vessels.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the West of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
                 "objectives": [
                     {
                         "name": "Ship Control exam",
@@ -211,13 +211,13 @@
                                 "type": "DISTANCE_TO_CATEGORY"
                             },
                             {
-                                "name": "Remain in patrol area",
+                                "name": "Remain in allocated water",
                                 "description": "Stay within operating area",
                                 "type": "STAY_IN_AREA"
                             },
                             {
                                 "name": "R/V with support barge",
-                                "description": "RAS next to Tactical Support Barge, Northerly Course at less than 3 kts",
+                                "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
                                 "type": "PROXIMITY"
                             }
                         ]
