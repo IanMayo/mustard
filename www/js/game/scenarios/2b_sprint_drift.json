@@ -227,11 +227,10 @@
                 "id": "OpsArea"
             },
             {
+                "id": "Start Marker",
                 "type": "Feature",
                 "properties": {
-                    "name": "Initial contact",
-                    "amenity": "Baseball Stadium",
-                    "popupContent": "This is where the Rockies play!"
+                    "name": "Marker for dived contact start point"
                 },
                 "geometry": {
                     "type": "Point",
