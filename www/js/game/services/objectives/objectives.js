@@ -341,6 +341,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
             var inContact;
 
+
+            // Todo: INTRODUCE SUPPORT FOR BEING ABLE TO SPECIFY THE TARGET NAME
+
             if (detections && detections.length > 0) {
 
                 // ok, are any from a target?

@@ -245,6 +245,26 @@
                 ],
                 "url": "2b_sprint_drift",
                 "guidanceUrl": "guidance/processed/2b_sprint_drift.html"
+            },
+            {
+                "id": "2c",
+                "name": "Handling bow null",
+                "description": "Track a quiet but relatively fast moving friendly dived target.",
+                "situation": "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+                "objectives": [
+                    {
+                        "name": "Spring Drift Training",
+                        "children": [
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain conta,ct on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "2c_bow_nulls_part_one",
+                "guidanceUrl": "guidance/processed/2c_bow_nulls_part_one.html"
             }
         ]
     },

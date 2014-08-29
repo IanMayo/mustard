@@ -1,0 +1,177 @@
+{
+    "id": "2c",
+    "name": "Handling bow null",
+    "description": "Track a quiet but relatively fast moving friendly dived target.",
+    "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+    "welcome": "A friendly SSN has just left the North East marker, keep within 5 km of him for the next 50 minutes",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50.02,
+                    "lng": -8.01
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 8,
+                "demCourse": 90,
+                "demSpeed": 8,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 50.02,
+                        "lng": -8.05
+                    },
+                    "br": {
+                        "lat": 49.94,
+                        "lng": -7.92
+                    },
+                    "height": -30
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 109,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.98,
+                    "lng": -7.92
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 8,
+                "speed": 8,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Spring Drift Training",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Maintain contact on surface target",
+                    "description": "Maintain contact on the training target for one hour",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 3600,
+                    "subject": "Ownship",
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes."
+                },
+                {
+                    "name": "Maintain contact on dived target",
+                    "description": "Maintain contact on the training target for one hour",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 3600,
+                    "subject": "Ownship",
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes."
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Allocated Water"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            },
+            {
+                "id": "Start Marker",
+                "type": "Feature",
+                "properties": {
+                    "name": "Marker for dived contact start point"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.2, 50.13]
+                }
+            }
+        ]
+    }}
