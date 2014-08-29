@@ -390,6 +390,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // and store any achievements
                 processAchievements(maintainContact.achievement, gameState);
 
+                insertNarrative(gameState, gameState.simulationTime, subject.state.location, "Finished tracking target");
             }
 
             if (!maintainContact.complete
