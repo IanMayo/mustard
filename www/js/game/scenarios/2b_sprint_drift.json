@@ -193,7 +193,7 @@
                     "category": "SUBMARINE",
                     "subject": "Ownship",
                     "range": 5000,
-                    "failure": "We've drifted too far from the dived target",
+                    "failure": "We've drifted too far from the dived target. Why not try sprinting to catch up with the target then slowing down to regain contact?",
                     "success": "We've loosely tracked the target for 50 minutes.",
                     "achievement": {
                         "name": "Loose trail",

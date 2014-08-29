@@ -200,7 +200,7 @@
                 "id": "2a",
                 "name": "Learning ship control, the hard way",
                 "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
-                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the West of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
                 "objectives": [
                     {
                         "name": "Ship Control exam",
@@ -225,6 +225,26 @@
                 ],
                 "url": "2a_port_exit",
                 "guidanceUrl": "guidance/processed/2a_port_exit.html"
+            },
+            {
+                "id": "2b",
+                "name": "Handling ownship noise levels",
+                "description": "Track a quiet but relatively fast moving friendly dived target.",
+                "situation": "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+                "objectives": [
+                    {
+                        "name": "Spring Drift Training",
+                        "children": [
+                            {
+                                "name": "Stay near dived target",
+                                "description": "Stay within 5km of dived target",
+                                "type": "DISTANCE_FROM_CATEGORY"
+                            }
+                        ]
+                    }
+                ],
+                "url": "2b_sprint_drift",
+                "guidanceUrl": "guidance/processed/2b_sprint_drift.html"
             }
         ]
     },
@@ -724,8 +744,14 @@
                         ]
                     },
                     {
-                        "name": "Destroy target",
-                        "description": "Destroy the target, with torpedoes within one hour"
+                        "name": "Destroy the target",
+                        "children": [
+                            {
+                                "name": "Destroy target",
+                                "description": "Destroy the target, with torpedoes within one hour",
+                                "type": "DESTROY_TARGET"
+                            }
+                        ]
                     }
                 ],
                 "url": "7c_quick_fail",
