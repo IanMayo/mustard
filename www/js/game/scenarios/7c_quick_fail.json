@@ -226,14 +226,20 @@
             ]
         },
         {
-            "name": "Destroy target",
-            "description": "Destroy the target, with torpedoes within one hour",
-            "type": "DESTROY_TARGET",
-            "target": "Target",
-            "subject": "Ownship",
-            "elapsed": 3600,
-            "success": "Well done, got the sucker",
-            "failure": "More practice needed, try again."
+            "name": "Destroy the target",
+            "type": "OR",
+            "children": [
+                {
+                    "name": "Destroy target",
+                    "description": "Destroy the target, with torpedoes within one hour",
+                    "type": "DESTROY_TARGET",
+                    "target": "Target",
+                    "subject": "Ownship",
+                    "elapsed": 3600,
+                    "success": "Well done, got the sucker",
+                    "failure": "More practice needed, try again."
+                }
+            ]
         }
     ],
     "features": {
