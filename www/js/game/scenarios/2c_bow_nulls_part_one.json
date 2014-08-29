@@ -2,8 +2,8 @@
     "id": "2c",
     "name": "Handling bow null",
     "description": "Track a quiet but relatively fast moving friendly dived target.",
-    "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
-    "welcome": "A friendly SSN has just left the North East marker, keep within 5 km of him for the next 50 minutes",
+    "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him, once we've mastered tracking a fishing vessel.",
+    "welcome": "There is a fishing vessel plus a dived submarine in these waters.  Practice trailing them, starting with the fishing vessel",
     "vessels": [
         {
             "name": "Ownship",
@@ -18,9 +18,9 @@
             "sonars": [
                 {
                     "name": "BASIC_TOWED",
-                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME"],
                     "offset": -1000,
-                    "ArrayGain": 12,
+                    "ArrayGain": 16,
                     "DT": -8,
                     "disabled": false
                 }
@@ -48,7 +48,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 0,
-                "maxSpeed": 21,
+                "maxSpeed": 11,
                 "climbRate": 1,
                 "diveRate": 2
             }
@@ -77,7 +77,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 99,
+                "baseLevel": 106,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -88,8 +88,8 @@
                 },
                 "course": 160,
                 "demCourse": 160,
-                "demSpeed": 10,
-                "speed": 10,
+                "demSpeed": 4,
+                "speed": 4,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -100,7 +100,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 14,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -119,12 +119,12 @@
                     "name": "Patrol area",
                     "type": "RECTANGLE_WANDER",
                     "tl": {
-                        "lat": 49.95,
-                        "lng": -7.85
+                        "lat": 50.13,
+                        "lng": -8.21
                     },
                     "br": {
-                        "lat": 49.86,
-                        "lng": -7.76
+                        "lat": 50.06,
+                        "lng": -8.15
                     }
                 }
             ],
@@ -137,13 +137,13 @@
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 49.91,
-                    "lng": -7.82
+                    "lat": 50.09,
+                    "lng": -8.22
                 },
                 "course": 160,
                 "demCourse": 160,
-                "demSpeed": 10,
-                "speed": 10,
+                "demSpeed": 8,
+                "speed": 8,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -154,7 +154,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 12,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -173,13 +173,13 @@
             "type": "SEQUENCE",
             "children": [
                 {
-                    "name": "Gain contact with Fishing Vessel",
+                    "name": "Gain sonar contact with Fishing Vessel",
                     "description": "Gain contact on the fishing vessel West of yo within 35 minutes",
                     "type": "GAIN_CONTACT",
                     "elapsed": 2100,
                     "target" : "FisherA",
-                    "success": "Well done, you've gained contact within the 8 minute limit. Try to keep trailing it for the next hour.",
-                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+                    "success": "Well done, you've gained contact within the time limit..",
+                    "failure": "Sorry, you didn't make contact in time. He wasn't in your bow null, was he?"
                 },
                 {
                     "name": "Maintain contact on surface target",
@@ -189,7 +189,26 @@
                     "subject": "Ownship",
                     "target" : "FisherA",
                     "success": "Well done, you've held contact for one hour",
-                    "failure": "More practice needed, you only held contact for [time] minutes."
+                    "failure": "More practice needed, you only held contact for [time] minutes.  Did you lose him in your bow null?"
+                },
+                {
+                    "name": "Gain contact with dived submarine",
+                    "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 30 minutes",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 2400,
+                    "target" : "SubTarget",
+                    "success": "Well done, you've gained contact within the time limit",
+                    "failure": "You didn't pick up the submarine in time. He wasn't in your bow null, was he? Or were you travelling too fast to hear him"
+                },
+                {
+                    "name": "Maintain contact on dived submarine",
+                    "description": "Maintain contact on the training target for 45 minutes",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 2700,
+                    "subject": "Ownship",
+                    "target" : "SubTarget",
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes.  Did you lose him in your bow null, or did you let him get too far away?"
                 }
             ]
         }
@@ -224,7 +243,7 @@
                 },
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [-8.2, 50.13]
+                    "coordinates": [-8.18, 50.09]
                 }
             }
         ]
