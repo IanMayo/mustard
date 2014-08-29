@@ -77,7 +77,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 106,
+                "baseLevel": 105,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -174,7 +174,7 @@
             "children": [
                 {
                     "name": "Gain sonar contact with Fishing Vessel",
-                    "description": "Gain contact on the fishing vessel West of yo within 35 minutes",
+                    "description": "Gain contact on the fishing vessel West of you within 35 minutes",
                     "type": "GAIN_CONTACT",
                     "elapsed": 2100,
                     "target" : "FisherA",
@@ -183,7 +183,7 @@
                 },
                 {
                     "name": "Maintain contact on surface target",
-                    "description": "Maintain contact on the training target for 45 minutes",
+                    "description": "Maintain contact on the fishing vessel for 45 minutes",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 2700,
                     "subject": "Ownship",
@@ -193,16 +193,16 @@
                 },
                 {
                     "name": "Gain contact with dived submarine",
-                    "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 30 minutes",
+                    "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 50 minutes",
                     "type": "GAIN_CONTACT",
-                    "elapsed": 2400,
+                    "elapsed": 3000,
                     "target" : "SubTarget",
                     "success": "Well done, you've gained contact within the time limit",
                     "failure": "You didn't pick up the submarine in time. He wasn't in your bow null, was he? Or were you travelling too fast to hear him"
                 },
                 {
                     "name": "Maintain contact on dived submarine",
-                    "description": "Maintain contact on the training target for 45 minutes",
+                    "description": "Maintain contact on the dived submarine for 45 minutes",
                     "type": "MAINTAIN_CONTACT",
                     "elapsed": 2700,
                     "subject": "Ownship",
