@@ -152,10 +152,10 @@ angular.module('subtrack90.game.simulator', [
 * @module Game
 * @class MissionCtrl (controller)
 */
-.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$interval', '$q', 'geoMath',
+.controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$q', 'geoMath',
         'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
         '$timeout', 'steppingControls', 'message',
-    function ($scope, $location, $route, $interval, $q, geoMath, movement, decision, objectives, detection,
+    function ($scope, $location, $route, $q, geoMath, movement, decision, objectives, detection,
         reviewSnapshot, user, $timeout, steppingControls, message) {
 
         /**
@@ -178,6 +178,8 @@ angular.module('subtrack90.game.simulator', [
         };
 
         var trackHistory = {};
+
+        var detectionHistory = [];
 
         var startTime; // keep track of the start time, so we can pass the period to the history object.
 
@@ -442,7 +444,8 @@ angular.module('subtrack90.game.simulator', [
                         "stepTime": $scope.gameState.simulationTimeStep,
                         "center": $scope.ownShip.location(),
                         "mapFeatures": $scope.mapFeatures,
-                        "vessels": trackHistory
+                        "vessels": trackHistory,
+                        "detections": detectionHistory
                     })
                 }
             };
@@ -494,11 +497,12 @@ angular.module('subtrack90.game.simulator', [
         /**
          * collate current ownship sonar detections.
          *
-         * @returns {Array}
+         * @returns {Object}
          */
         var collateCurrentSonarDetections = function () {
             var detections = [];
             var thisB;
+            var detectionsWithTracks = {};
 
             _.each($scope.ownShip.detections(), function (detection) {
                 // is this the first item?
@@ -517,7 +521,15 @@ angular.module('subtrack90.game.simulator', [
                 detections.push(thisB);
             });
 
-            return detections;
+            detectionsWithTracks = {
+                time: $scope.gameState.simulationTime,
+                detections: detections,
+                tracks: [].concat(_.pluck($scope.ownShip.detections(), 'trackId'))
+            };
+
+            detectionHistory.push(detectionsWithTracks);
+
+            return detectionsWithTracks;
         };
 
 
@@ -557,7 +569,7 @@ angular.module('subtrack90.game.simulator', [
                     cache = params.dataProvider();
 
                     // did we get any data?
-                    if (cache  && cache.length > 0) {
+                    if (cache  && (cache.length > 0 || _.isObject(cache))) {
                         cacheStorage.push(cache);
                     }
                 }
@@ -623,7 +635,7 @@ angular.module('subtrack90.game.simulator', [
                 // no, set the demanded states from the relevant control
                 $scope.ownShip.updateState({
                     demCourse: parseInt($scope.demandedState.course),
-                    demSpeed: parseInt($scope.demandedState.speed)
+                    demSpeed: parseFloat($scope.demandedState.speed)
                 });
             }
 
@@ -693,7 +705,7 @@ angular.module('subtrack90.game.simulator', [
             initializeTargetShips();
 
             $scope.demandedState.course = parseInt($scope.ownShip.state().demCourse);
-            $scope.demandedState.speed = parseInt($scope.ownShip.state().demSpeed);
+            $scope.demandedState.speed = parseFloat($scope.ownShip.state().demSpeed);
 
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
@@ -774,6 +786,16 @@ angular.module('subtrack90.game.simulator', [
          * save simulation state to the review history
          */
         $scope.$on("$routeChangeStart", storeHistory);
+
+        /**
+         * Callback when scope of the controller destroys
+         */
+        $scope.$on('$destroy', function () {
+            // destroy FPS meters
+            _.each(meters, function (meter) {
+                meter.destroy();
+            });
+        });
 
         // show Stepping controls in TimeDisplay directive
         steppingControls.setVisibility(true);
