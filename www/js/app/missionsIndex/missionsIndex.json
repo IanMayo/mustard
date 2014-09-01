@@ -249,22 +249,37 @@
             {
                 "id": "2c",
                 "name": "Handling bow null",
-                "description": "Track a quiet but relatively fast moving friendly dived target.",
-                "situation": "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+                "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
+                "situation": "In a benign environment you are going to track two types of vessel.",
                 "objectives": [
                     {
                         "name": "Spring Drift Training",
                         "children": [
                             {
-                                "name": "Maintain contact",
-                                "description": "Maintain conta,ct on the training target for one hour",
+                                "name": "Gain sonar contact with Fishing Vessel",
+                                "description": "Gain contact on the fishing vessel West of you within 35 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact on surface target",
+                                "description": "Maintain contact on the fishing vessel for 45 minutes",
+                                "type": "MAINTAIN_CONTACT"
+                            },
+                            {
+                                "name": "Gain contact with dived submarine",
+                                "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 50 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact on dived submarine",
+                                "description": "Maintain contact on the dived submarine for 45 minutes",
                                 "type": "MAINTAIN_CONTACT"
                             }
                         ]
                     }
                 ],
-                "url": "2c_bow_nulls_part_one",
-                "guidanceUrl": "guidance/processed/2c_bow_nulls_part_one.html"
+                "url": "2c_bow_nulls",
+                "guidanceUrl": "guidance/processed/2c_bow_nulls.html"
             }
         ]
     },
@@ -493,6 +508,7 @@
                         "children": [
                             {
                                 "name": "Newbie achievement",
+                                "description": "Get started with missions",
                                 "type": "ELAPSED"
                             },
                             {
@@ -507,6 +523,7 @@
                             },
                             {
                                 "name": "Array Handling Experience",
+                                "description": "Get used to towed array",
                                 "type": "ELAPSED"
                             },
                             {

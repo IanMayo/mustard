@@ -1,8 +1,8 @@
 {
     "id": "2c",
     "name": "Handling bow null",
-    "description": "Track a quiet but relatively fast moving friendly dived target.",
-    "situation" : "A friendly SSN is transiting through our waters. We're going to experiment with tracking him, once we've mastered tracking a fishing vessel.",
+    "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
+    "situation" : "In a benign environment you are going to track two types of vessel.",
     "welcome": "There is a fishing vessel plus a dived submarine in these waters.  Practice trailing them, starting with the fishing vessel",
     "vessels": [
         {
@@ -120,11 +120,11 @@
                     "type": "RECTANGLE_WANDER",
                     "tl": {
                         "lat": 50.13,
-                        "lng": -8.21
+                        "lng": -8.22
                     },
                     "br": {
                         "lat": 50.06,
-                        "lng": -8.15
+                        "lng": -8.14
                     }
                 }
             ],
@@ -137,8 +137,8 @@
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 50.09,
-                    "lng": -8.22
+                    "lat": 50.11,
+                    "lng": -8.21
                 },
                 "course": 160,
                 "demCourse": 160,
