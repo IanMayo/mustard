@@ -433,6 +433,7 @@
         },
         "behaviourRectangleWander": {
             "additionalProperties": false,
+            "description": "Wander around area. When edge of rectangle is reached, set demanded course to bearing to centre of area.",
             "properties": {
                 "name": {
                     "$ref": "#/definitions/behaviourName"
@@ -444,7 +445,8 @@
                     "$ref": "#/definitions/behaviourHeight"
                 },
                 "tl": {
-                    "$ref": "#/definitions/latLng"
+                    "$ref": "#/definitions/latLng",
+                    "description": "Co-ords of top-left corner of patrol area"
                 },
                 "br": {
                     "$ref": "#/definitions/latLng"
@@ -456,6 +458,7 @@
         },
         "behaviourSnort": {
             "additionalProperties": false,
+            "description": "When battery reaches danger level, snort until safe level",
             "properties": {
                 "name": {
                     "$ref": "#/definitions/behaviourName"
@@ -464,18 +467,22 @@
                     "enum": ["SNORT"]
                 },
                 "height": {
-                    "$ref": "#/definitions/behaviourHeight"
+                    "$ref": "#/definitions/behaviourHeight",
+                "description": "Height (-ve depth) to travel at for snort"
                 },
                 "startLevel": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Battery level at which snorting will start"
                 },
                 "stopLevel": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Battery level at which snorting will be complete"
                 }
             }
         },
         "behaviourEvade": {
             "additionalProperties": false,
+            "description": "Vessel will turn away when specified target is detected",
             "properties": {
                 "name": {
                     "$ref": "#/definitions/behaviourName"
@@ -487,18 +494,22 @@
                     "$ref": "#/definitions/behaviourHeight"
                 },
                 "target": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of target to evade"
                 },
                 "fleeTime": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "How long to evade for (secs)"
                 },
                 "speed": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Speed to evade at (m/s)"
                 }
             }
         },
         "behaviourAttack": {
             "additionalProperties": false,
+            "description": "Vessel will face towards named target, for as long as it is detected",
             "properties": {
                 "name": {
                     "$ref": "#/definitions/behaviourName"
@@ -507,23 +518,30 @@
                     "enum": ["ATTACK"]
                 },
                 "target": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of vessel to chase"
                 },
                 "height": {
-                    "$ref": "#/definitions/behaviourHeight"
+                    "$ref": "#/definitions/behaviourHeight",
+                    "description": "Height (-ve depth) to chase at"
                 },
                 "speed": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Speed to chase at (m/s)"
                 }
             }
         },
         "objectiveAchievement": {
+            "description": "Award the player with an achievement",
+            "required" : ["name", "message"],
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this achievement. Icon name is inferred from this"
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Message to accompany achievement"
                 }
             }
         },
@@ -544,13 +562,16 @@
         },
         "objectiveFindTarget": {
             "type": "object",
+            "description": "Player must select the indicated sonar track",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["FIND_TARGET"]
@@ -601,13 +622,16 @@
         },
         "objectiveDistanceToCategory": {
             "type": "object",
+            "description": "Fail if the subject gets within specified distance of specified category of vesssels",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["DISTANCE_TO_CATEGORY"]
@@ -631,13 +655,16 @@
         },
         "objectiveDistanceFromCategory": {
             "type": "object",
+            "description": "Failure if subject passes outside specified range of named category of vessel",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["DISTANCE_FROM_CATEGORY"]
@@ -667,13 +694,16 @@
         },
         "objectiveStayInArea": {
             "type": "object",
+            "description": "Failure if subject vessel passes outside specified rectangular bounds",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["STAY_IN_AREA"]
@@ -700,13 +730,16 @@
         },
         "objectiveProximity": {
             "type": "object",
+            "description": "Subject vessel must pass within specified range target within specified time, potentially at indicated course and speed",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["PROXIMITY"]
@@ -757,13 +790,16 @@
         },
         "objectiveGainContact": {
             "type": "object",
+            "description": "Subject vessel must gain contact with specified target within elapsed time",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["GAIN_CONTACT"]
@@ -787,13 +823,16 @@
         },
         "objectiveMaintainContact": {
             "type": "object",
+            "description": "Subject vessel must stay in continuous contact with target for specified period",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["MAINTAIN_CONTACT"]
@@ -820,13 +859,16 @@
         },
         "objectiveObtainSolution": {
             "type": "object",
+            "description": "Player must achieve specified number of solutions, at specified accuracy",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["OBTAIN_SOLUTION"]
@@ -847,13 +889,16 @@
         },
         "objectiveDistance": {
             "type": "object",
+            "description": "Subject vessel must stay outside specified distance of target",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["DISTANCE"]
@@ -883,13 +928,16 @@
         },
         "objectiveDestroyTarget": {
             "type": "object",
+            "description": "Subject vessel must destroy named target within time limit",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["DESTROY_TARGET"]
@@ -914,13 +962,16 @@
         },
         "objectiveElapsed": {
             "type": "object",
+            "description": "Game must continue for specified time period",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of this observer instance"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Player's description of this observer"
                 },
                 "type": {
                     "enum": ["ELAPSED"]
