@@ -302,6 +302,7 @@ angular.module('subtrack90.game.simulator', [
                         text: $scope.gameState.successMessage,
                         time: new Date().toLocaleTimeString()
                     });
+                    delete $scope.gameState.successMessage;
                 } else if ($scope.gameState.failureMessage) {
                     $scope.gameState.state = 'FAILURE';
                     $scope.messages.add({
@@ -310,6 +311,7 @@ angular.module('subtrack90.game.simulator', [
                         text: $scope.gameState.failureMessage,
                         time: new Date().toLocaleTimeString()
                     });
+                    delete $scope.gameState.failureMessage;
                 }
 
                 // are there any achievements?
@@ -354,10 +356,8 @@ angular.module('subtrack90.game.simulator', [
 
                         message.finishMission({
                             title: 'Well done!',
-                            message: $scope.gameState.successMessage,
                             icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
-                            type: 'panel-success',
                             buttons: [{
                                 text: 'Ok',
                                 type: 'info',
@@ -375,10 +375,8 @@ angular.module('subtrack90.game.simulator', [
 
                         message.finishMission({
                             title: 'Failed!',
-                            message: $scope.gameState.failureMessage,
                             icon: 'glyphicon-remove',
                             achievements: [],
-                            type: 'panel-danger',
                             buttons: [{
                                 text: 'Ok',
                                 type: 'info',
@@ -403,11 +401,6 @@ angular.module('subtrack90.game.simulator', [
                     // ok, store the snapshot
                     storeHistory();
                 }
-
-                // delete existing stop messages, so we can track when new ones pop up
-                delete $scope.gameState.failureMessage;
-                delete $scope.gameState.successMessage;
-
             }
         };
 
