@@ -1,6 +1,13 @@
 <div class="modal-header">
   <h4 class="modal-title">
-      <span class="glyphicon {{ config.icon }}"></span>&nbsp;{{ config.title }}
+      <div class="panel" data-ng-class="config.type">
+          <div class="panel-heading">
+              <span class="glyphicon {{ config.icon }}"></span>&nbsp;{{ config.title }}
+          </div>
+          <div class="panel-body">
+              {{ config.message }}
+          </div>
+      </div>
   </h4>
 </div>
 
