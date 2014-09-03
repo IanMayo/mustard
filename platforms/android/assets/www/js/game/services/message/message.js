@@ -138,7 +138,9 @@ angular.module('subtrack90.game.message', [])
          * @example
          * message.finishMission({
          *     title: 'Mission Accomplished',
+         *     type: 'panel-success' or 'panel-failure'
          *     icon: 'glyphicon-add',
+         *     message: 'Reason for success'
          *     achievements: [{name: 'Speed Demon'}],
          *     buttons: [
          *         {

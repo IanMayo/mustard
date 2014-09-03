@@ -13,7 +13,7 @@
 .tab-content,
 .tabbable,
 .range-calculator,
-#Sonar {
+.simulation-event-slider {
   height: 100%;
   padding: 0;
   overflow: hidden;
@@ -45,6 +45,18 @@
   width: 285px;
   padding: 10px 0 10px 5px;
   overflow: hidden;
+}
+
+.simulation-event-slider {
+  padding: 5px 0 10px;
+}
+
+.ship-state-info-container {
+  padding: 5px 0 0 10px;
+}
+
+.narrative-info-container {
+  padding: 5px 0 0 10px;
 }
 
 .controls-container {
@@ -135,6 +147,7 @@
 
 .btn-back {
   margin-left: 10px;
+  margin-top: 5px;
 }
 
 /* Range calculator */

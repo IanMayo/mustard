@@ -3124,6 +3124,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/panToVessel \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/rangeCalculator \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/reviewTour \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/rzslider \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipControls \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing \
@@ -3150,6 +3151,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/rangeCalculator/rangeCalculator.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/rangeCalculator/rangeCalculator.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/reviewTour/reviewTour.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/rzslider/rzslider.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipControls/shipControls.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipControls/shipControls.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState/shipState.js \
