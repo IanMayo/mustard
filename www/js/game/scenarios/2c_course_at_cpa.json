@@ -1,9 +1,9 @@
 {
     "id": "2c",
     "name": "Determine target course at CPA",
-    "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
-    "situation" : "In a benign environment you are going to track two types of vessel.",
-    "welcome": "There is a fishing vessel plus a dived submarine in these waters.  Practice trailing them, starting with the fishing vessel",
+    "description": "How to use the bearing to target at CPA to approximate his course",
+    "situation" : "We have to covertly indicate the target course to a third-party MPA, by passing a marker buoy at the same course as the target vessel",
+    "welcome": "There's a target ahead of you. Determine the true track to the target, let him pass you, then determine his course from the bearing at CPA.",
     "vessels": [
         {
             "name": "Ownship",
@@ -33,7 +33,7 @@
                 "time": 0,
                 "categories": [],
                 "location": {
-                    "lat": 49.97,
+                    "lat": 50.01,
                     "lng": -8.14
                 },
                 "height": 0,
@@ -67,12 +67,12 @@
                     "path": [
                         {
                             "lat": 49.96,
-                            "lng": -8.24
+                            "lng": -8.21
                         }
                     ],
                     "height": 0,
-                    "repeat": true,
-                    "forever": true
+                    "repeat": false,
+                    "forever": false
                 }
             ],
             "sonars": [
@@ -85,12 +85,12 @@
                 "categories": [],
                 "location": {
                     "lat": 50.09,
-                    "lng": -8.09
+                    "lng": -8.15
                 },
-                "course": 222,
-                "demCourse": 222,
-                "demSpeed": 15,
-                "speed": 15,
+                "course": 210,
+                "demCourse": 210,
+                "demSpeed": 17,
+                "speed": 17,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -115,7 +115,30 @@
     ],
     "environment": {},
     "objectives": [
-
+        {
+            "name": "Covertly convey target course",
+            "description": "Travel within 1km of marker, matching target course to within 20 degs",
+            "type": "PROXIMITY",
+            "location": {
+                "lat": 50.06,
+                "lng": -8.18
+            },
+            "range": 1000,
+            "elapsed": 2100,
+            "course": 220,
+            "courseError": 20,
+            "bonusAchievementTime": 1500,
+            "bonusAchievement": {
+                "name": "Speedy CPA",
+                "message": "Hey, you beat 25 minutes, speed freak!"
+            },
+            "success": "Course transferred, acknowledgement received.",
+            "failure": "Sorry, you didn't make the marker buoy in time. You'll have to restart this mission",
+            "achievement": {
+                "name": "CPA Course",
+                "message": "Able to determine course from bearing at CPA"
+            }
+        }
     ],
     "features": {
         "type": "FeatureCollection",
@@ -147,7 +170,7 @@
                 },
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [-8.18, 50.09]
+                    "coordinates": [-8.18, 50.06]
                 }
             }
         ]
