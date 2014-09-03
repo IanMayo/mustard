@@ -883,6 +883,12 @@
                 "success": {
                     "type": "string"
                 },
+                "failureTime": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
                 "subject": {
                     "type": "string"
                 }
