@@ -19,7 +19,7 @@
                     "categories": ["NO_STEADY_TIME"],
                     "offset": -1000,
                     "ArrayGain": 18,
-                    "DT": -8,
+                    "DT": -26,
                     "disabled": false
                 }
             ],
@@ -32,12 +32,12 @@
                 "categories": [],
                 "location": {
                     "lat": 49.91,
-                    "lng": -8.04
+                    "lng": -7.90
                 },
-                "course": 110,
-                "demCourse": 110,
-                "demSpeed": 10,
-                "speed": 10,
+                "course": 270,
+                "demCourse": 270,
+                "demSpeed": 6,
+                "speed": 6,
                 "height": 0,
                 "demHeight": -10.0
             },
@@ -64,7 +64,7 @@
                     "name": "Flee blue",
                     "type": "EVADE",
                     "target": "Ownship",
-                    "fleeTime": 300,
+                    "fleeTime": 1000,
                     "height": -30,
                     "speed": 12
                 },
@@ -94,14 +94,14 @@
                 {
                     "name": "BASIC_HULL",
                     "categories": ["NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_AMBIGUOUS"],
-                    "coverage": 120,
+                    "coverage": 179,
                     "offset": 0,
-                    "ArrayGain": 28,
+                    "ArrayGain": 26,
                     "DT": -8
                 }
             ],
             "radiatedNoise": {
-                "baseLevel": 90,
+                "baseLevel": 86,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -112,8 +112,8 @@
                 },
                 "course": 310,
                 "demCourse": 310,
-                "demSpeed": 12,
-                "speed": 12,
+                "demSpeed": 5,
+                "speed": 5,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
