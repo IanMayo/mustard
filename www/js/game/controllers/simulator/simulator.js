@@ -356,7 +356,7 @@ angular.module('subtrack90.game.simulator', [
                             message: $scope.gameState.successMessage,
                             icon: 'glyphicon-ok',
                             achievements: $scope.reachedAchievements,
-                            type: 'panel-success',
+                            type: 'success',
                             buttons: [{
                                 text: 'Ok',
                                 type: 'info',
@@ -377,7 +377,7 @@ angular.module('subtrack90.game.simulator', [
                             message: $scope.gameState.failureMessage,
                             icon: 'glyphicon-remove',
                             achievements: [],
-                            type: 'panel-danger',
+                            type: 'danger',
                             buttons: [{
                                 text: 'Ok',
                                 type: 'info',
