@@ -280,6 +280,14 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         };
 
         var handleObtainSolution = function (gameState, obtain, vessels) {
+
+            // do we have an specified elapsed time?
+            if (obtain.elapsed) {
+                if (!obtain.stopTime) {
+                    obtain.stopTime = gameState.simulationTime + obtain.elapsed * 1000;
+                }
+            }
+
             var subjectName = obtain.subject;
             if (!subjectName) {
                 subjectName = "Ownship";
@@ -314,6 +322,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 }
             });
 
+
             // ok, have we reached our limit
             if (obtain.counter >= obtain.count) {
                 // ok, done.
@@ -323,6 +332,26 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                 // and store any achievements
                 processAchievements(obtain.achievement, obtain);
+            }
+            else
+            {
+                // oh dear, we haven't run out of time, have we?
+                if  ((obtain.stopTime) && (gameState.simulationTime > obtain.stopTime)){
+
+                    // ok, game failure
+                    obtain.complete = true;
+                    var failureMessage = obtain.failureTime ? obtain.failureTime : obtain.failure;
+                    gameState.failureMessage = failureMessage;
+                    gameState.state = "DO_STOP";
+
+                    // clear the flag
+                    delete obtain.stopTime;
+
+                    var narrMessage = obtain.narrFailure ? obtain.narrFailure : "Failed to produce solutions in time";
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                        narrMessage);
+                }
+
 
             }
 
