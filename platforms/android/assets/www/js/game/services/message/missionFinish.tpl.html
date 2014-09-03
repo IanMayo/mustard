@@ -1,6 +1,14 @@
-<div class="modal-header">
-  <h4 class="modal-title">
-      <span class="glyphicon {{ config.icon }}"></span>&nbsp;{{ config.title }}
+<div class="modal-header panel-heading">
+  <h4 class="modal-title panel-success">
+    <div class="panel panel-{{ config.type }}">
+      <div class="panel-heading">
+        <span class="glyphicon {{ config.icon }}"></span>
+        {{ config.title }}
+      </div>
+      <div class="panel-body">
+        {{ config.message }}
+      </div>
+    </div>
   </h4>
 </div>
 
