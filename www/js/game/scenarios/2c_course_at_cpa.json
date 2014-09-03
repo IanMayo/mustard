@@ -2,7 +2,7 @@
     "id": "2c",
     "name": "Determine target course at CPA",
     "description": "How to use the bearing to target at CPA to approximate his course",
-    "situation" : "We have to covertly indicate the target course to a third-party MPA, by passing a marker buoy at the same course as the target vessel",
+    "situation": "We have to covertly indicate the target course to a third-party MPA, by passing a marker buoy at the same course as the target vessel",
     "welcome": "There's a target ahead of you. Determine the true track to the target, let him pass you, then determine his course from the bearing at CPA.",
     "vessels": [
         {
@@ -116,28 +116,35 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Covertly convey target course",
-            "description": "Travel within 1km of marker, matching target course to within 20 degs",
-            "type": "PROXIMITY",
-            "location": {
-                "lat": 50.06,
-                "lng": -8.18
-            },
-            "range": 1000,
-            "elapsed": 2100,
-            "course": 220,
-            "courseError": 20,
-            "bonusAchievementTime": 1500,
-            "bonusAchievement": {
-                "name": "Speedy CPA",
-                "message": "Hey, you beat 25 minutes, speed freak!"
-            },
-            "success": "Course transferred, acknowledgement received.",
-            "failure": "Sorry, you didn't make the marker buoy in time. You'll have to restart this mission",
-            "achievement": {
-                "name": "CPA Course",
-                "message": "Able to determine course from bearing at CPA"
-            }
+            "name": "Covert messaging",
+            "type": "SEQUENCE",
+            "children": [
+
+                {
+                    "name": "Covertly convey target course",
+                    "description": "Travel within 1km of marker, matching target course to within 20 degs",
+                    "type": "PROXIMITY",
+                    "location": {
+                        "lat": 50.06,
+                        "lng": -8.18
+                    },
+                    "range": 1000,
+                    "elapsed": 2100,
+                    "course": 220,
+                    "courseError": 20,
+                    "bonusAchievementTime": 1300,
+                    "bonusAchievement": {
+                        "name": "Speedy CPA",
+                        "message": "Hey, you beat 25 minutes, speed freak!"
+                    },
+                    "success": "Course transferred, MPA acknowledgement received.",
+                    "failure": "Sorry, you didn't make the marker buoy in time. You'll have to restart this mission",
+                    "achievement": {
+                        "name": "CPA Course",
+                        "message": "Able to determine course from bearing at CPA"
+                    }
+                }
+            ]
         }
     ],
     "features": {
@@ -163,10 +170,10 @@
                 "id": "OpsArea"
             },
             {
-                "id": "Start Marker",
+                "id": "CovertMarker",
                 "type": "Feature",
                 "properties": {
-                    "name": "Marker for dived contact start point"
+                    "name": "Marker for where to convey target course"
                 },
                 "geometry": {
                     "type": "Point",
