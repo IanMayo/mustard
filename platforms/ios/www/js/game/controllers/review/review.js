@@ -3,12 +3,13 @@ angular.module('subtrack90.game.review', [
     'subtrack90.game.timeDisplayDirective',
     'subtrack90.game.timeRemainingDirective',
     'subtrack90.game.shipStateDirective',
-    'subtrack90.game.timeBearingDisplayDirective',
     'subtrack90.game.objectiveListDirective',
     'subtrack90.game.reviewSnapshot',
     'subtrack90.game.eventPickerDirective',
     'subtrack90.game.reviewTourDirective',
-    'subtrack90.game.geoMath'
+    'subtrack90.game.geoMath',
+    'subtrack90.game.sonarBearing',
+    'subtrack90.game.rzslider'
 ])
 
 /**
@@ -225,6 +226,8 @@ angular.module('subtrack90.game.review', [
     var doUpdate = function () {
         var vessels = vesselsTracks();
 
+        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime);
+
         $scope.$broadcast('changeMarkers', $scope.vessels);
 
         removeDestroyedVessels(vessels);
@@ -286,6 +289,11 @@ angular.module('subtrack90.game.review', [
     // create a wrapped ownship instance, for convenience
     $scope.ownShip = ownShipApi();
 
+    $timeout(function () {
+        $scope.$broadcast('updateReviewPlot', $scope.reviewState.reviewTime, $scope.history.detections);
+        $scope.history.detections = null;
+    });
+
     $scope.$watch('reviewState.reviewTime', function (newVal) {
         if (newVal) {
             doUpdate();
@@ -304,15 +312,14 @@ angular.module('subtrack90.game.review', [
      * @param value the current slider value (millis)
      * @returns {string} a time-string representation of the value
      */
-    $scope.translate = function(value)
-    {
+    $scope.translate = function(value) {
       var date = new Date(value);
       return date.toLocaleTimeString();
-    }
+    };
 
     $scope.simulationTimeEnd = function () {
         return _.last($scope.history.vessels[$scope.ownShip.name()].track).time;
-    }
+    };
 
     // show the markers, plus their routes
     showVesselRoutes();

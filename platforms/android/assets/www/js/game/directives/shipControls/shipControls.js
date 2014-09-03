@@ -9,7 +9,9 @@ angular.module('subtrack90.game.shipControlsDirective', [])
     }
 })
 
-.directive('shipControls', ['shipControlsConfig', function (shipControlsConfig) {
+.constant('KNOTS_IN_MPS', 1.943844)// knots and m/s relation
+
+.directive('shipControls', ['shipControlsConfig', 'KNOTS_IN_MPS', function (shipControlsConfig, KNOTS_IN_MPS) {
     return {
         restrict: 'EA',
         scope: {
@@ -18,6 +20,8 @@ angular.module('subtrack90.game.shipControlsDirective', [])
         },
         templateUrl: 'js/game/directives/shipControls/shipControls.tpl.html',
         link: function (scope) {
+            var speedInKnots = parseInt(scope.speed * KNOTS_IN_MPS);
+
             scope.courseRate = shipControlsConfig.courseRate;
             scope.speedRate = shipControlsConfig.speed.rate;
 
@@ -42,13 +46,26 @@ angular.module('subtrack90.game.shipControlsDirective', [])
              * @param {Integer} value
              */
             scope.changeSpeed = function (value) {
-                var newSpeed = scope.speed + value;
+                var newMPSSpeed;
+                var newKnotsSpeed = speedInKnots + value;
 
-                if (newSpeed > shipControlsConfig.speed.max || newSpeed < shipControlsConfig.speed.min) {
+                newMPSSpeed = newKnotsSpeed * 1 / KNOTS_IN_MPS;
+
+                if (newMPSSpeed > shipControlsConfig.speed.max || newMPSSpeed < shipControlsConfig.speed.min) {
                     return;
                 }
 
-                scope.speed = parseFloat((newSpeed).toFixed(2));
+                speedInKnots = newKnotsSpeed;
+                scope.speed = newMPSSpeed;
+            };
+
+            /**
+             * Return onwship in knots.
+             *
+             * @returns {Number} speed in knots
+             */
+            scope.knotsSpeed = function () {
+                return speedInKnots;
             };
         }
     };
