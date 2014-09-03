@@ -152,7 +152,7 @@
                     "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?"
                 },
                 {
-                    "name": "Deter submarine",
+                    "name": "Force SM to MPA Coverage",
                     "description": "Deter target submarine by passing within 1km",
                     "type": "PROXIMITY",
                     "target": "Target",
