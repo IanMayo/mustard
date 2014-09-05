@@ -61,9 +61,11 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
         } else {
             // ok, do we have any detections?
             if (myDetections) {
+
                 // ok, are any from a target?
                 for (var i = 0; i < myDetections.length; i++) {
                     var thisD = myDetections[i];
+
                     if (!(evade.target) || (thisD.source == evade.target)) {
                         // ok, start fleeing
 
