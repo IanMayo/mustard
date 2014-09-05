@@ -242,6 +242,7 @@
                         "lng": -8.06
                     },
                     "range": 2000,
+                    "failure": "Sorry, didn't make this objective in time",
                     "success": "Ok checks done. Sorry they took so long. Let's get that array fitted. We're running a bit late, so you need to within 1km of the barge (about 20 miles North of here) carrying your array within 30 mins. You must be doing approx North course at under 3 knots for the transfer to happen. There's quite a rush, you'll probably need to travel at about 20 knots. Hey, you there's a unit citation on offer if you can do it under 25 minutes"
                 },
                 {
@@ -287,6 +288,7 @@
                     "description": "Get within 200 of Target vessel",
                     "type": "PROXIMITY",
                     "target": "Target",
+                    "failure": "Sorry, didn't make this objective in time",
                     "range": 200,
                     "success": "Ker-Splash. Well, I think we came off better than him!",
                     "achievement": {
