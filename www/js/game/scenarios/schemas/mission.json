@@ -732,6 +732,7 @@
         "objectiveProximity": {
             "type": "object",
             "description": "Subject vessel must pass within specified range target within specified time, potentially at indicated course and speed",
+            "required" : ["name", "description","failure"],
             "additionalProperties": false,
             "properties": {
                 "name": {
