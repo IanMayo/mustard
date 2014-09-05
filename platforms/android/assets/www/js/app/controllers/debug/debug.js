@@ -116,6 +116,8 @@ angular.module('subtrack90.app.debug', [
         message.finishMission({
             title: 'Mission Accomplished',
             icon: 'glyphicon-ok',
+            type: 'success',
+            message: 'Success!',
             achievements: $scope.achievements,
             buttons: [
                 {
@@ -149,6 +151,8 @@ angular.module('subtrack90.app.debug', [
         message.finishMission({
             title: 'Mission Failed',
             icon: 'glyphicon-remove',
+            type: 'danger',
+            message: 'Failed!',
             achievements: [],
             buttons: [
                 {

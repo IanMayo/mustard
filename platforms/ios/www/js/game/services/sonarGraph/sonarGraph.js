@@ -31,6 +31,7 @@ angular.module('subtrack90.game.sonarGraph', [])
 
         var detectionExpireTime =  1 * 60 * 1000; // 1 minute
 
+        var svgContainer;
         var graph;
         var mainClipPath;
         var gMain;
@@ -55,7 +56,8 @@ angular.module('subtrack90.game.sonarGraph', [])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            initialTime: new Date()
+            initialTime: new Date(),
+            serialRenderingMode: false
         };
 
         init(options);
@@ -100,15 +102,15 @@ angular.module('subtrack90.game.sonarGraph', [])
          * Add svg element and apply margin values.
          */
         function addSvgElement() {
-            var svg = d3.select(config.containerElement)
+            svgContainer = d3.select(config.containerElement)
                 .append('svg')
                 .attr('class', 'graph g-wrapper');
 
             // https://bugzilla.mozilla.org/show_bug.cgi?id=779368
             // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
-            svg.style({width: '100%', height: '100%'});
+            svgContainer.style({width: '100%', height: '100%'});
 
-            graph = svg
+            graph = svgContainer
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
         }
@@ -289,7 +291,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
-                        if (yAxisScale.domain()[0].getTime() >
+                        if (config.serialRenderingMode && yAxisScale.domain()[0].getTime() >
                             (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
                             // datapoint became "invisible" - its time is less then time axis domain lower value
 
@@ -332,7 +334,7 @@ angular.module('subtrack90.game.sonarGraph', [])
 
             if (expiredDetections.length) {
                 // expired series exist - analise them
-                removeExpiredDetection(d3MapDetections, expiredDetections);
+                removeExpiredDetection(expiredDetections);
             }
         }
 
@@ -342,7 +344,7 @@ angular.module('subtrack90.game.sonarGraph', [])
          * @param {Object} dataset
          * @param {Object} datapoints
          */
-        function removeExpiredDetection(dataset, datapoints) {
+        function removeExpiredDetection(datapoints) {
             _.each(datapoints, function (datapoint) {
 
                 if (yAxisScale.domain()[0].getTime() >
@@ -354,15 +356,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                     // and remove it
                     expiredDetection.pointElement.remove();
 
-                    if (!renderedDetections[datapoint].data.length) {
-                        // if collection is empty
-                        // remove empty collection
-                        delete renderedDetections[datapoint];
-                        // remove detection collection respectively
-                        delete dataset[datapoint];
-                        // remove group wrapper element
-                        $('#' + config.containerElement.id + ' .' + datapoint).remove();
-                    }
+                    removeExpiredDatapointGroup(datapoint);
                 }
             });
         }
@@ -410,6 +404,53 @@ angular.module('subtrack90.game.sonarGraph', [])
             yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
             yAxisElement
                 .call(yAxisScale.axis);
+
+            _.each(renderedDetections, function (detection, key) {
+                // move group container
+                gMain.select('.' + key).
+                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+            });
+
+            if (!config.serialRenderingMode) {
+                removeAllExpiredDetections();
+            }
+        }
+
+        /**
+         * Remove all expired detections.
+         * Used in review mode
+         */
+        function removeAllExpiredDetections() {
+            _.each(d3MapDetections, function (detection, name) {
+                if (renderedDetections[name].data.length) {
+                    _.each(renderedDetections[name].data, function (item, index) {
+                        if (item.date.getTime() >= yAxisScale.domain()[1].getTime() ||
+                            item.date.getTime() <= yAxisScale.domain()[0].getTime()) {
+                            var expiredDetection = renderedDetections[name].data.splice(index, 1).pop();
+                            expiredDetection.pointElement.remove();
+
+                            removeExpiredDatapointGroup(name);
+                        }
+                    });
+                }
+            });
+        }
+
+        /**
+         * Remove group wrapper element of detections.
+         *
+         * @param {String} name
+         */
+        function removeExpiredDatapointGroup (name) {
+            if (!renderedDetections[name].data.length) {
+                // if collection is empty
+                // remove empty collection
+                delete renderedDetections[name];
+                // remove detection collection respectively
+                delete d3MapDetections[name];
+                // remove group wrapper element
+                $('#' + config.containerElement.id + ' .' + name).remove();
+            }
         }
 
         /**
@@ -418,6 +459,7 @@ angular.module('subtrack90.game.sonarGraph', [])
          * @param {Object} detections
          */
          function addDetection(detections){
+//            console.log('detections', detections);
             // create list of path names from detections
             _.each(detections, function (detection) {
                 // exclude a detection path name from the list
@@ -442,10 +484,31 @@ angular.module('subtrack90.game.sonarGraph', [])
             updateLabelPosition();
         }
 
+        /**
+         * Return current boundaries of Y axis.
+         *
+         * @returns {Array}
+         */
+        function visibleDomain() {
+            return yAxisScale.domain();
+        }
+
+        /**
+         * Remove graph from DOM and remove handlers
+         */
+        function remove () {
+            _.each(renderedDetections, function (detection) {
+                detection.group.on('click', null);
+            });
+            svgContainer.remove();
+        }
+
         return {
             changeYAxisDomain: changeYAxisDomain,
             addDetection: addDetection,
-            changeGraphHeight: changeGraphHeight
+            changeGraphHeight: changeGraphHeight,
+            timeAxisBoundaries: visibleDomain,
+            remove: remove
         }
     }
 
