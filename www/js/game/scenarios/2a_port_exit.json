@@ -48,7 +48,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 0,
-                "maxSpeed": 21,
+                "maxSpeed": 12,
                 "climbRate": 1,
                 "diveRate": 2
             }
@@ -97,8 +97,8 @@
                 },
                 "course": 160,
                 "demCourse": 160,
-                "demSpeed": 8,
-                "speed": 8,
+                "demSpeed": 7,
+                "speed": 7,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -109,7 +109,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 7,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -161,7 +161,7 @@
                 "course": 160,
                 "demCourse": 160,
                 "demSpeed": 9,
-                "speed": 9,
+                "speed": 7,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -172,7 +172,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 7,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -239,7 +239,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 7,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -306,7 +306,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 7,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -365,7 +365,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 7,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -377,7 +377,7 @@
             "categories": {
                 "force": "BLUE",
                 "environment": "SURFACE",
-                "type": "WARSHIP"
+                "type": "MERCHANT"
             },
             "behaviours": [
             ],
@@ -427,11 +427,11 @@
             "children": [
                 {
                     "name": "Avoid fishing vessels",
-                    "description": "Stay outside 4000m of fishing vessels",
+                    "description": "Stay outside 3km of fishing vessels",
                     "type": "DISTANCE_TO_CATEGORY",
                     "category": "FISHERMAN",
                     "subject": "Ownship",
-                    "range": 4000,
+                    "range": 3000,
                     "failure": "We're caught, she's breaking up!"
                 },
                 {
