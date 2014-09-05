@@ -729,12 +729,13 @@ angular.module('subtrack90.game.simulator', [
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
 
+            // ensure the welcome is displayed before any mission objectives
+            showWelcome();
 
             $timeout(function () {
                 // trigger an initial update of locations
                 $scope.$broadcast('changeMarkers', $scope.vessels);
                 $scope.$broadcast('showFeatures', $scope.mapFeatures);
-                showWelcome();
             }, 300);
         };
 
