@@ -17,7 +17,10 @@ $ npm install
 $ grunt build
 ```
 
-# Verify missions against JSON schema
+### Verify missions against JSON schema
+
+A [JSON Schema](www/js/game/scenarios/schemas/mission.json) constrains the mission level scenarios. Run validator with this:
+
 ```
 $ grunt validate
 ```
