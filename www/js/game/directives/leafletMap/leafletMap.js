@@ -433,6 +433,13 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 map.remove();
             });
 
+            /**
+             * Convert maker position (mouse position over the map) to latitude/longitude coordinates.
+             */
+            scope.$on('markLocationOnMap', function (event, ui) {
+                scope.$emit('locationMarkedWithCoordinates', map.containerPointToLatLng([ui.layerX, ui.layerY]));
+            });
+
             createMap();
             configureReviewTour();
         }

@@ -101,6 +101,10 @@
                             "diveRate": 2
                         }
                     }
+                },
+                {
+                    "type": "MISSILE",
+                    "name": "Designate"
                 }
             ],
             "radiatedNoise": {
