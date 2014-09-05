@@ -53,6 +53,8 @@
               <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
               <div ng-show="ownShip.missileWeapon()">
                 <span ui-draggable="true" class="glyphicon glyphicon-screenshot"></span> {{ownShip.missileWeapon().name}}
+                <span popover="Drag marker onto map to initiate missile launch" popover-trigger="mouseenter"
+                      class="glyphicon glyphicon-question-sign"></span>
               </div>
             </tab>
           </tabset>
