@@ -1040,7 +1040,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 gameState.state = "DO_STOP";
 
                 insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                    "Managed to stay outside the necessary range");
+                    "Subject vessel entered specified area");
 
                 // and store any achievements
                 processAchievements(failInArea.achievement, gameState);
