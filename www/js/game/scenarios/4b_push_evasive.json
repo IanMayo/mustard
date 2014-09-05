@@ -153,11 +153,18 @@
                 {
                     "name": "Force SM to MPA Coverage",
                     "description": "Deter target submarine by passing within 1km",
-                    "type": "PROXIMITY",
-                    "target": "Target",
-                    "range": 1000,
-                    "elapsed": 2300,
-                    "success": "Well done, that was tricky. ",
+                    "type": "FAIL_IN_AREA",
+                    "subject": "Target",
+                    "tl": {
+                        "lat": 50.12,
+                        "lng": -7.89
+                    },
+                    "br": {
+                        "lat": 50.01,
+                        "lng": -7.77
+                    },
+                    "elapsed": 4300,
+                    "success": "Well done, the MPA can take over now. ",
                     "failure" :"You didn't force target during the time window"
                 }
             ]
