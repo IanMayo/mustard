@@ -207,7 +207,7 @@
                         "children": [
                             {
                                 "name": "Avoid fishing vessels",
-                                "description": "Stay outside 4000m of fishing vessels",
+                                "description": "Stay outside 3km of fishing vessels",
                                 "type": "DISTANCE_TO_CATEGORY"
                             },
                             {
@@ -380,9 +380,9 @@
                                 "type": "GAIN_CONTACT"
                             },
                             {
-                                "name": "Deter submarine",
-                                "description": "Deter target submarine by passing within 1km",
-                                "type": "PROXIMITY"
+                                "name": "Force SM to MPA Coverage",
+                                "description": "Force target into MPA coverage zone",
+                                "type": "SUCCESS_IN_AREA"
                             }
                         ]
                     }
