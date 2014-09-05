@@ -43,6 +43,19 @@
 
   <h1>Mock login</h1>
 
+  <!-- include warning for alpha versions - TODO: DELETE THIS-->
+  <div class="panel panel-danger">
+    <div class="panel-heading"><strong><span class="glyphicon glyphicon-warning-sign"></span> Warning</strong></div>
+    <div class="panel-body">
+      This is ALPHA software, with the following acknowledged shortcomings:
+      <ul>
+        <li>The set of missions is incomplete</li>
+        <li>"Guidance" training content to be authored for each mission</li>
+        <li>Awaiting graphic makeover, similar to <a href="https://www.google.co.uk/search?q=lcars&safe=off&es_sm=93&biw=1174&bih=780&source=lnms&tbm=isch&sa=X&ei=MIYJVIb6KbTQ7AbR74DgAQ&ved=0CAYQ_AUoAQ">this</a></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="well">
     <button type="button" class="btn btn-default btn-lg btn-block" ng-click="submit('newbie')">
       Newbie <small>(Fresh start)</small>
@@ -50,7 +63,7 @@
     <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="submit('sailor')">
       Sailor <small>(Part way through story)</small>
     </button>
-    <button type="button" class="btn btn-danger btn-lg btn-block" ng-click="submit('commander')">
+    <button type="button" class="btn btn-success btn-lg btn-block" ng-click="submit('commander')">
       Commander <small>(All missions unlocked - for review)</small>
     </button>
   </div>
