@@ -9,10 +9,10 @@
           <h4>Situation</h4>
             {{mission.situation}}
           <h4>Objectives</h4>
-            <div ng-repeat="objective in mission.objectives">
-                <strong>{{ objective.name }}</strong>
-                <ul class="list-group small">
-                    <li class="list-group-item" ng-repeat="obj in objective.children | filter:canSucceed">
+            <div id="objectiveList" ng-repeat="objective in mission.objectives">
+                <strong>{{ objective.name }}:</strong>
+                <ul class="small">
+                    <li ng-repeat="obj in objective.children | filter:canSucceed">
                         <span class="glyphicon glyphicon-record"></span>
                         {{ obj.name }}
                     </li>
