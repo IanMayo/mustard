@@ -200,6 +200,7 @@
                     "target": "Target",
                     "range": 1000,
                     "elapsed": 2300,
+                    "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?",
                     "success": "Well done, that was tricky. "
                 }
             ]
