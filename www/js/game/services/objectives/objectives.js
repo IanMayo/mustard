@@ -90,8 +90,11 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "DESTROY_TARGET":
                     handleDestroyTarget(gameState, objective, vessels, deadVessels);
                     break;
-                case "STAY_IN_AREA":
+                case "FAIL_IN_AREA":
                     handleStayInArea(gameState, objective, vessels);
+                    break;
+                case "SUCCESS_IN_AREA":
+                    handleSuccessInArea(gameState, objective, vessels);
                     break;
                 case "OBTAIN_SOLUTION":
                     handleObtainSolution(gameState, objective, vessels);
@@ -181,7 +184,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
 
             // loop through all, or until we don't get a result object
-            for(var thisId = 0;thisId < any.children.length; thisId ++) {
+            for (var thisId = 0; thisId < any.children.length; thisId++) {
                 // get the next child
                 var child = any.children[thisId];
 
@@ -218,11 +221,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // ok, special case: we need to push the message for the first objective,
                 // if it has one
                 // is this the first objective?
-                if(thisId == 0)
-                {
+                if (thisId == 0) {
                     // does it have an un-shared description?
-                    if(child.description && !child.descriptionPushed)
-                    {
+                    if (child.description && !child.descriptionPushed) {
                         // ok - pass on the message
                         gameState.firstObjective = "<b>" + child.description + "</b>";
 
@@ -256,8 +257,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                             var nextChild = sequence.children[thisId + 1];
 
                             // does it have an un-shared description?
-                            if(nextChild.description && !nextChild.descriptionPushed)
-                            {
+                            if (nextChild.description && !nextChild.descriptionPushed) {
                                 // yes - append this description to the previous success message
                                 gameState.successMessage += "<br/><b>" + nextChild.description + "</b>";
                                 nextChild.descriptionPushed = true;
@@ -333,10 +333,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // and store any achievements
                 processAchievements(obtain.achievement, obtain);
             }
-            else
-            {
+            else {
                 // oh dear, we haven't run out of time, have we?
-                if  ((obtain.stopTime) && (gameState.simulationTime > obtain.stopTime)){
+                if ((obtain.stopTime) && (gameState.simulationTime > obtain.stopTime)) {
 
                     // ok, game failure
                     obtain.complete = true;
@@ -522,11 +521,9 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             }
 
             // do we have a description for this objective?
-            if(findTarget.description && ! findTarget.objectivePushed)
-            {
+            if (findTarget.description && !findTarget.objectivePushed) {
                 // ok, is this the current state objective description?
-                if(findTarget.description != gameState.objective)
-                {
+                if (findTarget.description != gameState.objective) {
                     // ok, inject the description
                     gameState.objective = findTarget.description;
 
@@ -550,7 +547,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 var matched = false;
                 if (findTarget.targetSubString) {
                     // ok, we have to do a regexp match here
-                    var reg = new RegExp(findTarget.targetSubString,"i");
+                    var reg = new RegExp(findTarget.targetSubString, "i");
                     matched = reg.exec(curSelection);
                 }
                 else if (findTarget.target) {
@@ -574,8 +571,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         }
                     }
 
-                    if (inTime)
-                    {
+                    if (inTime) {
                         // correct track selected
                         findTarget.complete = true;
 
@@ -592,8 +588,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         var narrMessage = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
                         insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage);
                     }
-                    else
-                    {
+                    else {
                         // ok, the user has made the selection too early
                         // ok, game failure
                         findTarget.complete = true;
@@ -808,12 +803,12 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             _.each(vessels, function (thisV) {
 
                 // check it's not us
-                if(thisV != subject){
+                if (thisV != subject) {
 
                     // verify the categories
-                    if((thisV.categories.force == distance.category)
-                    ||(thisV.categories.environment == distance.category)
-                    || (thisV.categories.type == distance.category)){
+                    if ((thisV.categories.force == distance.category)
+                        || (thisV.categories.environment == distance.category)
+                        || (thisV.categories.type == distance.category)) {
 
                         // ok, matching vessel what's his location?
                         var hisLoc = thisV.state.location;
@@ -825,8 +820,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         var range = geoMath.rhumbDistanceFromTo(hisLoc, myLoc);
 
                         // is it beyond the acceptable limit?
-                        if(range < distance.range)
-                        {
+                        if (range < distance.range) {
                             // ok, the target has encroached on the distance. failed.
                             distance.complete = true;
                             gameState.failureMessage = distance.failure;
@@ -858,12 +852,12 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             _.each(vessels, function (thisV) {
 
                 // check it's not us
-                if(thisV != subject){
+                if (thisV != subject) {
 
                     // verify the categories
-                    if((thisV.categories.force == distance.category)
-                        ||(thisV.categories.environment == distance.category)
-                        || (thisV.categories.type == distance.category)){
+                    if ((thisV.categories.force == distance.category)
+                        || (thisV.categories.environment == distance.category)
+                        || (thisV.categories.type == distance.category)) {
 
                         // ok, matching vessel what's his location?
                         var hisLoc = thisV.state.location;
@@ -875,8 +869,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         var range = geoMath.rhumbDistanceFromTo(hisLoc, myLoc);
 
                         // is it beyond the acceptable limit?
-                        if(range > distance.range)
-                        {
+                        if (range > distance.range) {
                             // ok, the target has encroached on the distance. failed.
                             distance.complete = true;
                             gameState.failureMessage = distance.failure;
@@ -891,7 +884,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             });
 
             // do we have a time for which we have to maintain contact?
-            if(distance.elapsed) {
+            if (distance.elapsed) {
 
                 // yes- is this our first pass?
                 if (!distance.stopTime) {
@@ -1001,6 +994,78 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     }
                 }
             }
+        };
+
+        /** fail if subject goes into specified area
+         *
+         * @param gameState
+         * @param failInArea
+         * @param vessels
+         */
+        var handleSuccessInArea = function (gameState, failInArea, vessels) {
+
+            var subject = vessels[failInArea.subject];
+
+            if (!subject) {
+                return;
+            }
+            // right, do we have an elapsed time limit
+            if (failInArea.elapsed) {
+                // ok. do we know when this objective started?
+                if (!failInArea.stopTime) {
+                    // no, better store it
+                    failInArea.stopTime = gameState.simulationTime + (failInArea.elapsed * 1000);
+                }
+            }
+
+            // have we constructed the bounding polygon?
+            if (!failInArea.boundsObj) {
+                // ok, inject the bounds
+                var tl = L.latLng(failInArea.tl.lat, failInArea.tl.lng);
+                var br = L.latLng(failInArea.br.lat, failInArea.br.lng);
+                var bounds = L.latLngBounds(tl, br);
+                failInArea.boundsObj = bounds;
+            }
+
+            // ok, have we left it?
+            // are we in the patrol area?
+            var location = subject.state.location;
+
+            var myLoc = L.latLng(location.lat, location.lng);
+            if (failInArea.boundsObj.contains(myLoc)) {
+
+                // ok - the target has entered the area
+                failInArea.complete = true;
+                gameState.successMessage = failInArea.success;
+                gameState.state = "DO_STOP";
+
+                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                    "Managed to stay outside the necessary range");
+
+                // and store any achievements
+                processAchievements(failInArea.achievement, gameState);
+
+                // hey, is there a bonus time?
+                if (failInArea.bonusStopTime) {
+                    // note: we're relying on the
+                    if (gameState.simulationTime < failInArea.bonusStopTime) {
+                        processAchievements(failInArea.bonusAchievement, gameState);
+                    }
+                }
+            }
+            else {
+                // right, just check if we have failed to reach our distance in time
+                if (failInArea.stopTime) {
+                    if (gameState.simulationTime > failInArea.stopTime) {
+                        // ok, we've run out of time - game over
+                        gameState.failureMessage = failInArea.failure;
+                        gameState.state = "DO_STOP";
+                        insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                            "Subject vessel failed to enter area in time");
+                    }
+                }
+            }
+
         };
 
 
