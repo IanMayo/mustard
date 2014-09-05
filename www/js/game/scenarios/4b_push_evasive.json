@@ -147,12 +147,12 @@
                     "type": "GAIN_CONTACT",
                     "target": "Target",
                     "elapsed": 3300,
-                    "success": "Ok, we've got a feint trace on the target submarine.  You can differentiate it from the merchant vessel since it should not show side-lobes",
+                    "success": "Ok, we've got a feint trace on the target submarine.",
                     "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?"
                 },
                 {
                     "name": "Force SM to MPA Coverage",
-                    "description": "Deter target submarine by passing within 1km",
+                    "description": "Force target into MPA coverage zone",
                     "type": "SUCCESS_IN_AREA",
                     "subject": "Target",
                     "tl": {
