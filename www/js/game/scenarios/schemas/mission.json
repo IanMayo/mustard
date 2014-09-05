@@ -278,6 +278,9 @@
                                     "$ref": "#/definitions/objectiveStayInArea"
                                 },
                                 {
+                                    "$ref": "#/definitions/objectiveSuccessInArea"
+                                },
+                                {
                                     "$ref": "#/definitions/objectiveProximity"
                                 },
                                 {
@@ -711,6 +714,45 @@
                 },
                 "subject": {
                     "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "tl": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "br": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveSuccessInArea": {
+            "type": "object",
+            "description": "Success if subject vessel passes into specified rectangular bounds",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["SUCCESS_IN_AREA"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
                 },
                 "category": {
                     "type": "string"
