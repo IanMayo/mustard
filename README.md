@@ -17,6 +17,12 @@ $ npm install
 $ grunt build
 ```
 
+# Verify missions against JSON schema
+```
+$ grunt validate
+```
+
+
 ###iOS emulator installation
 
 ```
