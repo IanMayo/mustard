@@ -28,7 +28,7 @@ angular.module('subtrack90', [
 .constant('APP_DEBUG', true)
 .constant('IS_MOBILE', Modernizr.touch)
 .constant('SPLASH_ON_LOGIN', true)
-.constant('SPLASH_ON_MAIN', true)
+.constant('SPLASH_ON_MAIN', !!window.cordova)
 
 .config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
 
