@@ -21,7 +21,11 @@ angular.module('subtrack90.app.splashScreen', [])
     var options = {
         id: 'splash',
         idSel: '#splash',
-        fadeOutDelay: 500
+        fadeOutDelay: 500,
+        labelTmpl:
+            '<h3 class="label-splash">' +
+                '<span class="label label-info">Click anywhere to continue</span>' +
+            '</h3>'
     };
 
     /**
@@ -67,6 +71,7 @@ angular.module('subtrack90.app.splashScreen', [])
 
                     deferred.resolve(true);
                 })
+                .append(options.labelTmpl)
                 .appendTo($body);
         },
 
