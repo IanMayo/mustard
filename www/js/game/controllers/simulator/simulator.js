@@ -201,6 +201,7 @@ angular.module('subtrack90.game.simulator', [
         var ownShipApi = function () {
             var ownShipName = _.first(_.toArray($scope.vessels)).name;
             var vessel = $scope.vessels[ownShipName];
+            var missileWeapon;
 
             return {
                 name: function () {
@@ -236,7 +237,12 @@ angular.module('subtrack90.game.simulator', [
                     return vessel.weapons && vessel.weapons.length > 0;
                 },
                 missileWeapon: function () {
-                    return _.findWhere(vessel.weapons, {type: 'MISSILE'});
+                    if (!missileWeapon) {
+                        // add weapon info to cache
+                        missileWeapon = _.findWhere(vessel.weapons, {type: 'MISSILE'});
+                    }
+
+                    return missileWeapon;
                 },
                 /** whether the vessel can perform ranging
                  *
