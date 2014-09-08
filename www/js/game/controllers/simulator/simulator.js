@@ -795,7 +795,6 @@ angular.module('subtrack90.game.simulator', [
          * Add locationMarker state to ownship. 
          */
         $scope.$on('locationMarkedWithCoordinates', function (event, latLng) {
-            console.log('latLng', latLng);
             $scope.ownShip.updateState({locationMarked: latLng});
         });
 
