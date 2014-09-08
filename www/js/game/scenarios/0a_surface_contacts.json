@@ -1,6 +1,7 @@
 {
     "id": "0a",
     "name": "Reading Surface Contacts on the sonar display",
+    "pauseOnStart": true,
     "description": "Learn to read and interact with the sonar",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. Once you've mastered the sonar you'll be qualified to give Ship Control instructions. Start off by selecting the ownship noise trace in the sonar display",
     "vessels": [
