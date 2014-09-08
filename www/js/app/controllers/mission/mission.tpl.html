@@ -5,19 +5,20 @@
       <accordion id="missionAccordion" close-others="true">
         <accordion-group heading="Mission" is-open="!failedMission()">
         <h4>Description</h4>
-            <span data-ng-bind-html="mission.description"></span>
+          {{mission.description}}
+          <span data-ng-bind-html="mission.description"></span>
           <h4>Situation</h4>
-            <span data-ng-bind-html="mission.situation"></span>
+          <span data-ng-bind-html="mission.situation"></span>
           <h4>Objectives</h4>
-            <div id="objectiveList" ng-repeat="objective in mission.objectives">
-                <strong>{{ objective.name }}:</strong>
-                <ul class="small">
-                    <li ng-repeat="obj in objective.children | filter:canSucceed">
-                        <span class="glyphicon glyphicon-record"></span>
-                        {{ obj.name }}
-                    </li>
-                </ul>
-            </div>
+          <div id="objectiveList" ng-repeat="objective in mission.objectives">
+            <strong>{{ objective.name }}:</strong>
+            <ul class="small">
+              <li ng-repeat="obj in objective.children | filter:canSucceed">
+                  <span class="glyphicon glyphicon-record"></span>
+                  {{ obj.name }}
+              </li>
+            </ul>
+          </div>
         </accordion-group>
         <accordion-group heading="Guidance" is-open="failedMission()">
           <div ng-include="mission.guidanceUrl"></div>
