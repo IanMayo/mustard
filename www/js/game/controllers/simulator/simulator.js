@@ -49,6 +49,12 @@ angular.module('subtrack90.game.simulator', [
     $scope.missionID = scenario.id;
 
     /**
+     * State of simulation process on start
+     * @type {Boolean}
+     */
+    $scope.timerPaused = scenario.pauseOnStart;
+
+    /**
      * OwnShip vessel API
      */
     $scope.ownShip = {};
