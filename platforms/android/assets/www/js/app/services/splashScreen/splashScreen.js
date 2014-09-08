@@ -4,12 +4,7 @@
 
 angular.module('subtrack90.app.splashScreen', [])
 
-/**
- * Splash time constant which is used in "desktop splash screen resolver"
- */
-.constant('SPLASH_TIME', 5000)
-
-.factory('splashScreen', ['$q', '$timeout', 'SPLASH_TIME', function ($q, $timeout, SPLASH_TIME) {
+.factory('splashScreen', ['$q', 'IS_MOBILE', function ($q, IS_MOBILE) {
 
     /**
      * Indicates that splash screen is blocked and we can't show it by splash.show()
@@ -19,13 +14,6 @@ angular.module('subtrack90.app.splashScreen', [])
     var isBlocked = false;
 
     /**
-     * Phonegap splash screen plugin which should exist only on mobile devices
-     *
-     * @type {org.apache.cordova.splashscreen}
-     */
-    var navSplash = navigator.splashscreen;
-
-    /**
      * Desktop splash screen options
      *
      * @type {Object}
@@ -33,7 +21,11 @@ angular.module('subtrack90.app.splashScreen', [])
     var options = {
         id: 'splash',
         idSel: '#splash',
-        fadeOutDelay: 500
+        fadeOutDelay: 500,
+        labelTmpl:
+            '<h3 class="label-splash">' +
+                '<span class="label label-info">Click anywhere to continue</span>' +
+            '</h3>'
     };
 
     /**
@@ -59,29 +51,28 @@ angular.module('subtrack90.app.splashScreen', [])
         },
 
         /**
-         * Show splash screen
+         * Show splash screen and add on touch handler to close it
+         *
+         * @param deferred
          */
-        show: navSplash ?
-        function () {
-            !isBlocked && navSplash.show();
-        } :
-        function () {
+        show: function (deferred) {
             if ($body.find(options.idSel).length || isBlocked) {
                 return;
             }
 
             $(document.createElement('div'))
                 .attr({id: options.id})
-                .appendTo($body);
-        },
+                .bind(IS_MOBILE ? 'touchstart' : 'click', function () {
+                    var $element = $(this);
 
-        /**
-         * Hide splash screen
-         */
-        hide: navSplash ? navSplash.hide : function () {
-            $body.find(options.idSel).fadeOut(options.fadeOutDelay, function() {
-                $(this).remove();
-            });
+                    $element.fadeOut(options.fadeOutDelay, function() {
+                        $element.remove();
+                    });
+
+                    deferred.resolve(true);
+                })
+                .append(options.labelTmpl)
+                .appendTo($body);
         },
 
         /**
@@ -95,13 +86,8 @@ angular.module('subtrack90.app.splashScreen', [])
             var self = this;
 
             if (showSplash && !isBlocked) {
-                self.show();
+                self.show(deferred);
                 self.block();
-
-                $timeout(function () {
-                    self.hide();
-                    deferred.resolve(true);
-                }, SPLASH_TIME);
             } else {
                 deferred.resolve(false);
             }

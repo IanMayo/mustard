@@ -9,7 +9,7 @@ angular.module('subtrack90.app.debug', [
  * @module Debug
  * @class DebugCtrl (controller)
  */
-.controller('DebugCtrl', function ($scope, $timeout, user, localStorageService, $location, message, splashScreen) {
+.controller('DebugCtrl', function ($q, $scope, $timeout, user, localStorageService, $location, message, splashScreen) {
 
     /**
      * DEBUG CONSOLE METHODS
@@ -184,10 +184,6 @@ angular.module('subtrack90.app.debug', [
 
     $scope.showSplash = function () {
         splashScreen.unblock();
-        splashScreen.show();
-
-        $timeout(function () {
-            splashScreen.hide();
-        }, 3000);
+        splashScreen.show($q.defer());
     }
 });
