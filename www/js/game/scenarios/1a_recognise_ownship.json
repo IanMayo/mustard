@@ -4,7 +4,7 @@
     "pauseOnStart": true,
     "description": "Early steps in reading and interacting with the sonar.",
     "situation" : "We've got a towed array configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  To give you a nice easy start, we're going to start off with recognising how Ownship Noise is displayed in the sonar",
-    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. <br/><b>Start things moving by clicking on the Player [>] button to the left.</b>",
     "vessels": [
         {
             "name": "Ownship",

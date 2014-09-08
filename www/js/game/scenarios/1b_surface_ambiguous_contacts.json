@@ -4,7 +4,7 @@
     "description": "Using easy surface contacts to highlight bearing ambiguity",
     "pauseOnStart": true,
     "situation" : "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
-    "welcome": "Back on the training vessel. Let's carry on learning.",
+    "welcome": "Back on the training vessel. Let's carry on learning.  Again, Start things moving by clicking on the Player [>] button to the left. <br/><b><i>Warning</i>: The next mission will auto start</b>",
     "vessels": [
         {
             "name": "Ownship",
