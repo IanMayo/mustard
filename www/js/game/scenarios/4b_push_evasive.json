@@ -143,7 +143,7 @@
             "children": [
                 {
                     "name": "Gain contact on SM",
-                    "description": "Gain contact with the dived submarine",
+                    "description": "Gain contact with the dived submarine, he's roughly to your North West",
                     "type": "GAIN_CONTACT",
                     "target": "Target",
                     "elapsed": 3300,

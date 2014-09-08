@@ -56,7 +56,7 @@
         {
             "name": "SubTarget",
             "categories": {
-                "force": "BLUE",
+                "force": "RED",
                 "environment": "SUBSURFACE",
                 "type": "SUBMARINE"
             },
