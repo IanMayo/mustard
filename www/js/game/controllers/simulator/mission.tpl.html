@@ -15,7 +15,7 @@
       <li class="pull-left">
         <div class="time-display-container">
           <time-display class="form-group time-display" data-time-step="gameState.simulationTimeStep"
-                        data-timer="gameState.simulationTime"></time-display>
+                        data-timer="gameState.simulationTime" timer-paused="timerPaused"></time-display>
           <time-remaining data-remaining="gameState.remaining"></time-remaining>
         </div>
         <button data-ng-click="goBack()" type="button" class="btn btn-default btn-sm btn-back">
@@ -51,6 +51,16 @@
               </tab-heading>
 
               <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
+              <div class="location-marker-container" ng-show="ownShip.missileWeapon()">
+                <div class="location-marker">
+                  <span ng-drag="true" class="glyphicon glyphicon-screenshot"></span>
+                </div>
+                <div class="location-marker-name">
+                  <span>{{ownShip.missileWeapon().name}}</span>
+                <span popover="{{ownShip.missileWeapon().message}}" popover-trigger="mouseenter"
+                      class="glyphicon glyphicon-question-sign"></span>
+                </div>
+              </div>
             </tab>
           </tabset>
         </div>

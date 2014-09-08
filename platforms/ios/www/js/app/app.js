@@ -28,7 +28,7 @@ angular.module('subtrack90', [
 .constant('APP_DEBUG', true)
 .constant('IS_MOBILE', Modernizr.touch)
 .constant('SPLASH_ON_LOGIN', true)
-.constant('SPLASH_ON_MAIN', false)
+.constant('SPLASH_ON_MAIN', !!window.cordova)
 
 .config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
 
@@ -44,7 +44,7 @@ angular.module('subtrack90', [
             controller: 'LoginCtrl',
             templateUrl: 'js/app/controllers/login/login.tpl.html',
             resolve: {
-                splash: IS_MOBILE ? angular.noop : ['splashScreen', function (splashScreen) {
+                splash: ['splashScreen', function (splashScreen) {
                     return splashScreen.resolver(SPLASH_ON_LOGIN);
                 }]
             }
@@ -62,7 +62,7 @@ angular.module('subtrack90', [
                 levels: ['missionsIndex', function (missionsIndex) {
                     return missionsIndex.getLevels();
                 }],
-                splash: IS_MOBILE ? angular.noop : ['splashScreen', function (splashScreen) {
+                splash: ['splashScreen', function (splashScreen) {
                     return splashScreen.resolver(SPLASH_ON_MAIN);
                 }]
             }

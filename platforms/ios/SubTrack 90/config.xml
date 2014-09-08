@@ -8,7 +8,6 @@
     <preference name="FadeSplashScreenDuration" value=".25" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
-    <preference name="ShowSplashScreenSpinner" value="true" />
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="TopActivityIndicator" value="gray" />
     <preference name="GapBetweenPages" value="0" />
@@ -31,9 +30,8 @@
         <param name="onload" value="true" />
     </feature>
     <preference name="SplashScreen" value="screen" />
-    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="5000" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="Fullscreen" value="true" />
     <preference name="Orientation" value="landscape" />
