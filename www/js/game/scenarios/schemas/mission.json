@@ -1060,7 +1060,7 @@
             "uniqueItems": true,
             "items": {
                 "type": "object",
-                "required": ["type", "count"],
+                "required": ["type"],
                 "properties": {
                     "type": {
                         "type": "string"
