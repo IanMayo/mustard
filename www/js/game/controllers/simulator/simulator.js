@@ -21,7 +21,8 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.notificationIcon',
     'subtrack90.game.elementVisibility',
     'subtrack90.app.user',
-    'subtrack90.game.sonarBearing'
+    'subtrack90.game.sonarBearing',
+    'ngDraggable'
 ])
 
 /**
@@ -200,6 +201,7 @@ angular.module('subtrack90.game.simulator', [
         var ownShipApi = function () {
             var ownShipName = _.first(_.toArray($scope.vessels)).name;
             var vessel = $scope.vessels[ownShipName];
+            var missileWeapon;
 
             return {
                 name: function () {
@@ -233,6 +235,14 @@ angular.module('subtrack90.game.simulator', [
                  */
                 hasWeapons: function() {
                     return vessel.weapons && vessel.weapons.length > 0;
+                },
+                missileWeapon: function () {
+                    if (!missileWeapon) {
+                        // add weapon info to cache
+                        missileWeapon = _.findWhere(vessel.weapons, {type: 'MISSILE'});
+                    }
+
+                    return missileWeapon;
                 },
                 /** whether the vessel can perform ranging
                  *
@@ -792,6 +802,13 @@ angular.module('subtrack90.game.simulator', [
          * save simulation state to the review history
          */
         $scope.$on("$routeChangeStart", storeHistory);
+
+        /**
+         * Add locationMarker state to ownship. 
+         */
+        $scope.$on('locationMarkedWithCoordinates', function (event, latLng) {
+            $scope.ownShip.updateState({locationMarked: latLng});
+        });
 
         /**
          * Callback when scope of the controller destroys
