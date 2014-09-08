@@ -70,7 +70,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/logo.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mockup.png \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/twitter.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac/atlases \
@@ -3017,6 +3017,10 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac/atlases/MapQuest/9/244/174.jpg \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac/atlases/MapQuest/9/245/173.jpg \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mobac/atlases/MapQuest/9/245/174.jpg \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash-wide.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash-wide@2x.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash@2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/128 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/32 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48 \
