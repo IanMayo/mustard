@@ -249,7 +249,7 @@
                     "target": "Ownship",
                     "elapsed": 300,
                     "description" : "Start off by selecting the ownship track in the sonar",
-                    "success": "Ok, well that was obvious. Now, there's also a dived target out there. Wait to gain contact, then select any sonar track that represents it.  Oh, and while you're watching look out for how the two tracks on the surface contact change when ownship changes course.",
+                    "success": "Ok, well that was obvious. Now, there's a surface and a dived target out there. Watch how the two tracks for the surface contact change when ownship changes course.",
                     "failure": "Sorry, you didn't click on the ownship track in time.  Look at the map and consider what the ownship heading is",
                     "narrSuccess" : "Identified ownship track"
                 },
@@ -260,7 +260,7 @@
                     "subject": "Ownship",
                     "description" : "Select any sonar track that represents the merchant to the North of you",
                     "targetSubString": "TargetB_",
-                    "success": "That was easy",
+                    "success": "That was easy. Now wait for the dived target to appear",
                     "failure": "Come on, it's not a very cluttered track",
                     "narrSuccess" : "Identified merchant track"
                 },
