@@ -20,7 +20,7 @@
                     "name": "BASIC_TOWED",
                     "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
                     "offset": -1000,
-                    "ArrayGain": 12,
+                    "ArrayGain": 15,
                     "DT": -8,
                     "disabled": false
                 }
@@ -48,7 +48,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 0,
-                "maxSpeed": 21,
+                "maxSpeed": 13,
                 "climbRate": 1,
                 "diveRate": 2
             }
@@ -145,7 +145,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 84,
+                "baseLevel": 89,
                 "speedPattern": "Uniform"
             },
             "state": {
@@ -156,8 +156,8 @@
                 },
                 "course": 122,
                 "demCourse": 122,
-                "demSpeed": 13,
-                "speed": 13,
+                "demSpeed": 10,
+                "speed": 10,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -168,7 +168,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 10,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -193,8 +193,8 @@
                     "category": "SUBMARINE",
                     "subject": "Ownship",
                     "range": 5000,
-                    "failure": "We've drifted too far from the dived target. Why not try sprinting to catch up with the target then slowing down to regain contact?",
-                    "success": "We've loosely tracked the target for 50 minutes.",
+                    "failure": "We've drifted too far from the dived target. Why not try sprinting to catch up with the target then slowing down to regain contact?  Oh, and why not click on the mission [Review] button to replay what happened?",
+                    "success": "We've maintained loose tracking on the target for 50 minutes.",
                     "achievement": {
                         "name": "Loose trail",
                         "message": "You can keep track of a target, even without continuous contact."

@@ -156,7 +156,7 @@
                     "target": "Target_a",
                     "elapsed": 300,
                     "success": "Well done initial target track spotted",
-                    "failure": "Come on, it's not a very cluttered track",
+                    "failure": "Did you miss the clue? It's to the West of you.",
                     "narrSuccess" : "Identified Leg 1"
                 },
                 {
