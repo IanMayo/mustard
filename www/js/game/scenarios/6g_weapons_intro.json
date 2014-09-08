@@ -104,7 +104,8 @@
                 },
                 {
                     "type": "MISSILE",
-                    "count": 2
+                    "name": "Designate",
+                    "message": "Drag marker onto map to initiate missile launch"
                 }
             ],
             "radiatedNoise": {

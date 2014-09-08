@@ -187,3 +187,17 @@
   background-size: 50% auto;
   z-index: 1000;
 }
+
+.location-marker {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+}
+.location-marker .glyphicon {
+  top: 6px;
+  font-size: 1.6em;
+}
+.location-marker-name {
+  display: inline-block;
+  line-height: 35px;
+}
