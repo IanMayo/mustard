@@ -2,7 +2,7 @@
     "id": "1a",
     "name": "Recognising Ownship & third party tracks",
     "pauseOnStart": true,
-    "description": "<b>Very gentle</b> steps in reading and interacting with the sonar.",
+    "description": "Very gentle steps in reading and interacting with the sonar.",
     "situation" : "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. <br/><b>Start things moving by clicking on the Player [>] button to the left.</b>",
     "vessels": [
