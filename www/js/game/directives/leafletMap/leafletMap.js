@@ -436,8 +436,8 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             /**
              * Convert maker position (mouse position over the map) to latitude/longitude coordinates.
              */
-            scope.$on('markLocationOnMap', function (event, ui) {
-                scope.$emit('locationMarkedWithCoordinates', map.containerPointToLatLng([ui.layerX, ui.layerY]));
+            scope.$on('markLocationOnMap', function (event, position) {
+                scope.$emit('locationMarkedWithCoordinates', map.containerPointToLatLng([position.left, position.top]));
             });
 
             createMap();

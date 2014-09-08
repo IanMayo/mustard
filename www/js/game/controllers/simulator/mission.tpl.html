@@ -4,7 +4,7 @@
       <div id="sonarMeter"></div>
       <sonar-bearing class="sonarBearing" class="time-bearing-display" data-timer="{{gameState.simulationTime}}"></sonar-bearing>
     </div>
-    <div class="col-xs-7 col-md-7 spatial-container" ui-on-drop="markLocation($event)">
+    <div class="col-xs-7 col-md-7 spatial-container">
       <div id="mapMeter"></div>
       <spatial-view class="spatial-view"></spatial-view>
     </div>
@@ -52,7 +52,7 @@
 
               <fire-weapon data-ownship="ownShip.vessel()"></fire-weapon>
               <div ng-show="ownShip.missileWeapon()">
-                <span ui-draggable="true" class="glyphicon glyphicon-screenshot"></span> {{ownShip.missileWeapon().name}}
+                <span ng-drag="true" class="glyphicon glyphicon-screenshot"></span> {{ownShip.missileWeapon().name}}
                 <span popover="Drag marker onto map to initiate missile launch" popover-trigger="mouseenter"
                       class="glyphicon glyphicon-question-sign"></span>
               </div>

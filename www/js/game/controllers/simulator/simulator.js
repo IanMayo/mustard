@@ -22,7 +22,7 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.elementVisibility',
     'subtrack90.app.user',
     'subtrack90.game.sonarBearing',
-    'ngDragDrop'
+    'ngDraggable'
 ])
 
 /**
@@ -791,18 +791,11 @@ angular.module('subtrack90.game.simulator', [
          */
         $scope.$on("$routeChangeStart", storeHistory);
 
-
-        /**
-         * Add marker to location.
-         */
-        $scope.markLocation = function ($event) {
-            $scope.$broadcast('markLocationOnMap', $event);
-        };
-
         /**
          * Add locationMarker state to ownship. 
          */
         $scope.$on('locationMarkedWithCoordinates', function (event, latLng) {
+            console.log('latLng', latLng);
             $scope.ownShip.updateState({locationMarked: latLng});
         });
 
