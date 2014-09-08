@@ -114,7 +114,7 @@ angular.module("ngDraggable", [])
                 var onrelease = function(evt) {
                     if(! _dragEnabled)return;
                     evt.preventDefault();
-                    $rootScope.$broadcast('draggable:end', {x:_mx, y:_my, tx:_tx, ty:_ty, element:element, data:_data, callback:onDragComplete});
+                    $rootScope.$broadcast('draggable:end', {x:_mx, y:_my, tx:_tx, ty:_ty, element:element, data:_data, callback:onDragComplete, uiEvent: evt});
                     element.removeClass('dragging');
                     reset();
                     $document.off(_moveEvents, onmove);
@@ -192,7 +192,7 @@ angular.module("ngDraggable", [])
                         //       onDropCallback(scope, {$data: obj.data, $event: evt});
                         //   });
                         $timeout(function(){
-                            onDropCallback(scope, {$data: obj.data, $event: evt});
+                            onDropCallback(scope, {$data: obj.data, $event: evt, uiEvent: obj.uiEvent});
                         });
 
 
