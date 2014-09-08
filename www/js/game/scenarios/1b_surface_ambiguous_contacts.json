@@ -2,6 +2,7 @@
     "id": "1b",
     "name": "Understanding bearing ambiguity in surface contacts",
     "description": "Using easy surface contacts to highlight bearing ambiguity",
+    "pauseOnStart": true,
     "situation" : "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
     "welcome": "Back on the training vessel. Let's carry on learning.",
     "vessels": [
