@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-tv4');
     grunt.loadTasks('./tasks');
 
     grunt.initConfig({
@@ -38,8 +39,23 @@ module.exports = function(grunt) {
                     to: 'src="guidance/img/'
                 }]
             }
+        },
+
+        /**
+         * It validates all the scenario files against the schema.
+         */
+        tv4: {
+            options: {
+                root: grunt.file.readJSON('www/js/game/scenarios/schemas/mission.json'),
+                banUnknown: false
+            },
+            validate: {
+                src: ['www/js/game/scenarios/*_*.json']
+            }
         }
+
     });
 
     grunt.registerTask('build', ['missionsIndex', 'replace:guidance']);
+    grunt.registerTask('validate', ['tv4:validate']);
 };

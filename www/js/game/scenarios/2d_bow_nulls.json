@@ -1,0 +1,250 @@
+{
+    "id": "2d",
+    "name": "Handling bow null",
+    "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
+    "situation" : "In a benign environment you are going to track two types of vessel.",
+    "welcome": "There is a fishing vessel plus a dived submarine in these waters.  Practice trailing them, starting with the fishing vessel",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 16,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 49.9,
+                    "lng": -8.13
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 8,
+                "demCourse": 90,
+                "demSpeed": 8,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 11,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 49.95,
+                        "lng": -7.85
+                    },
+                    "br": {
+                        "lat": 49.86,
+                        "lng": -7.76
+                    }
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 105,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.91,
+                    "lng": -7.82
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 4,
+                "speed": 4,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 14,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "SubTarget",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 50.13,
+                        "lng": -8.22
+                    },
+                    "br": {
+                        "lat": 50.06,
+                        "lng": -8.14
+                    }
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 99,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.11,
+                    "lng": -8.21
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 8,
+                "speed": 8,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 12,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Spring Drift Training",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain sonar contact with Fishing Vessel",
+                    "description": "Gain contact on the fishing vessel West of you within 35 minutes",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 2100,
+                    "target" : "FisherA",
+                    "success": "Well done, you've gained contact within the time limit..",
+                    "failure": "Sorry, you didn't make contact in time. He wasn't in your bow null, was he?"
+                },
+                {
+                    "name": "Maintain contact on surface target",
+                    "description": "Maintain contact on the fishing vessel for 45 minutes",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 2700,
+                    "subject": "Ownship",
+                    "target" : "FisherA",
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes.  Did you lose him in your bow null?"
+                },
+                {
+                    "name": "Gain contact with dived submarine",
+                    "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 50 minutes",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 3000,
+                    "target" : "SubTarget",
+                    "success": "Well done, you've gained contact within the time limit",
+                    "failure": "You didn't pick up the submarine in time. He wasn't in your bow null, was he? Or were you travelling too fast to hear him"
+                },
+                {
+                    "name": "Maintain contact on dived submarine",
+                    "description": "Maintain contact on the dived submarine for 45 minutes",
+                    "type": "MAINTAIN_CONTACT",
+                    "elapsed": 2700,
+                    "subject": "Ownship",
+                    "target" : "SubTarget",
+                    "success": "Well done, you've held contact for one hour",
+                    "failure": "More practice needed, you only held contact for [time] minutes.  Did you lose him in your bow null, or did you let him get too far away?"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Allocated Water"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            },
+            {
+                "id": "Start Marker",
+                "type": "Feature",
+                "properties": {
+                    "name": "Marker for dived contact start point"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.18, 50.09]
+                }
+            }
+        ]
+    }}

@@ -48,13 +48,11 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
         if (evade.stopTime) {
             // ok, have we passed that time?
             if (tNow >= evade.stopTime) {
-                console.log("finished fleeing");
                 // ok, done fleeing
                 delete evade.stopTime;
                 delete evade.counterBrg;
             }
             else {
-                console.log("still fleeing");
                 // carry on along the counter bearing
                 res = {};
                 res.description = "Still evading target";
@@ -63,9 +61,11 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
         } else {
             // ok, do we have any detections?
             if (myDetections) {
+
                 // ok, are any from a target?
                 for (var i = 0; i < myDetections.length; i++) {
                     var thisD = myDetections[i];
+
                     if (!(evade.target) || (thisD.source == evade.target)) {
                         // ok, start fleeing
 
@@ -73,7 +73,6 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
                         counterBrg = counterBrg % 360;
 
                         evade.counterBrg = counterBrg;
-                        console.log("starting to flee, on:" + evade, counterBrg);
 
                         res = {};
                         res.description = "Turning to evade target";
@@ -174,6 +173,13 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
                     else {
                         // ok, we're done.
                         path.complete = true;
+
+                        // do we have a previous demanded speed?
+                        if(path.oldDemSpeed)
+                        {
+                            res = {};
+                            res.demSpeed = path.oldDemSpeed;
+                        }
                     }
                 }
             }
@@ -185,6 +191,25 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
             if (path.height) {
                 res.demHeight = path.height;
             }
+
+            // does this path have a speed?
+            if(path.speed)
+            {
+                if(!path.demSpeedAssigned) {
+
+                    // ok, remember the old dem speed, for once we are complete
+                    path.oldDemSpeed = myState.demSpeed;
+
+                    // and set the speed for this path
+                    res.demSpeed = path.speed;
+
+                    // and remember that we've assigned it.
+                    path.demSpeedAssigned = true;
+                }
+            }
+
+
+
         }
 
         return res;

@@ -50,7 +50,7 @@ body {
 }
 
 /** give the leaflet map a plain, sea-colored background */
-spatial-view .leaflet-container
+#spatial-view .leaflet-container
 {
     background-color:#b5d0d0;
 }
@@ -63,6 +63,18 @@ spatial-view .leaflet-container
 #missionAccordion .panel-body{
   overflow-y: visible;
 }
+
+/* indent the list of objectives */
+#objectiveList{
+  padding-left:20px;
+}
+
+/* hide the symbol for the list items, since we're using a glyph */
+#objectiveList ul{
+    list-style-type: none;
+    padding-left:20px;
+}
+
 
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {

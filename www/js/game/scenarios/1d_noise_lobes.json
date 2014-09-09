@@ -1,0 +1,301 @@
+{
+    "id": "1d",
+    "name": "Understanding noise levels",
+    "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
+    "situation" : "The simulated tracks you're encountering here will now start making speed changes",
+    "welcome": "You've mastered most of the elementary sonar techniques, time to step it up a little. The sonar is going to end up very cluttered, so be sure to keep a close eye on it",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Quick turn",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.11,
+                            "lng": -8.23
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Slow legs",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.11,
+                            "lng": -8.04
+                        },
+                        {
+                            "lat": 50.05,
+                            "lng": -8.06
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Fast legs",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.07,
+                            "lng": -7.75
+                        }
+                    ],
+                    "height": 0,
+                    "speed": 16,
+                    "repeat": false,
+                    "forever": false
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50.12,
+                    "lng": -8.25
+                },
+                "height": 0,
+                "course": 160,
+                "speed": 10,
+                "demCourse": 160,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 21,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "TargetA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Route One",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.20
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route One",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.14
+                        }
+                    ],
+                    "height": 0,
+                    "speed" : 16,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route One",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.91,
+                            "lng": -8.12
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route Two",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.0,
+                            "lng": -8.08
+                        }
+                    ],
+                    "height": 0,
+                    "speed" : 9.3,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Route Three",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.90,
+                            "lng": -7.7
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 121,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.91,
+                    "lng": -8.23
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 9,
+                "speed": 9,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.06,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 25,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [        {
+        "name": "Sonar Qualification",
+        "type": "SEQUENCE",
+        "children": [
+            {
+                "name": "Spot Merchant truth track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "description" : "Start off by selecting the truth track for the Merchant",
+                "target": "TargetA_a",
+                "elapsed": 300,
+                "success": "That was easy.  The merchant is going to accelerate soon, keep an eye out for the new side lobes.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Spot Merchant side lobe",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "description" : "Select a side-lobe on the Merchant's truth track.",
+                "targetSubString": "TargetA_side[12]_a",
+                "success": "That was easy. After a while, we're sure he will slow down again. You get ready for it.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant side lobe"
+            },
+            {
+                "name": "Spot quieter Merchant main track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "target": "TargetA_a",
+                "after": 525,
+                "description" : "Select the main trace for the Merchant's truth track, after the side-lobes are lost",
+                "success": "Well done.  As the merchant turns towards and closes on Ownship, look out for side-lobes appearing as the received noise increases",
+                "failure": "Come on, it's not a very cluttered track",
+                "failureEarly": "No, you made the selection before the side-lobes disappeared",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Spot ambiguous side-lobe on Merchant",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "targetSubString": "TargetA_side[12]_b",
+                "description" : "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                "success": "That was easy. Soon, Ownship is going to make a sharp turn to Starboard.  Notice how the Merchant disappears in the Ownship bow null.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Select Ownship track",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "after": 1710,
+                "targetSubString": "Ownship",
+                "description" : "Select the ownship track, once the merchant disappears in the bow null",
+                "success": "Well done. Once ownship is back on the original course, he will accelerate, notice how the merchant side lobes disappear.",
+                "failureEarly": "No, you selected Ownship before the merchant disappered into the bow null.",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            },
+            {
+                "name": "Select disappearing Merchant",
+                "type": "FIND_TARGET",
+                "clearAfterwards" : true,
+                "subject": "Ownship",
+                "after" : 2910,
+                "targetSubString": "TargetA_[ab]",
+                "description" : "Select any trace on the merchant track once its side lobes have been lost",
+                "success": "That was easy",
+                "failureEarly": "No, you selected a Merchant track before the side lobes were lost",
+                "failure": "Come on, it's not a very cluttered track",
+                "narrSuccess" : "Identified merchant track"
+            }
+        ]
+    }
+
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+        ]
+    }
+}

@@ -1,307 +1,330 @@
 [
     {
-        "id": "0",
-        "name": "Sonar School",
+        "id": "1",
+        "name": "On board training",
+        "description": "Initial training, against simulated targets",
         "missions": [
             {
-                "id": "0a",
-                "name": "Reading Surface Contacts on the sonar display",
-                "description": "Learn to read and interact with the sonar",
+                "id": "1a",
+                "name": "Recognising Ownship & third party tracks",
+                "description": "Very gentle steps in reading and interacting with the sonar.",
+                "situation": "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
                         "children": [
                             {
-                                "name": "Select ownship",
+                                "name": "Select ownship track",
+                                "description": "Select the ownship noise trace in the sonar display.",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Identify surface vessel track",
+                                "description": "Select the noise trace for the vessel to the South West of you.",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Identify dived submarine track",
+                                "description": "Select the noise trace for the dived track",
+                                "type": "FIND_TARGET"
+                            }
+                        ]
+                    }
+                ],
+                "url": "1a_recognise_ownship",
+                "guidanceUrl": "guidance/processed/1a_recognise_ownship.html"
+            },
+            {
+                "id": "1b",
+                "name": "Understanding bearing ambiguity in surface contacts",
+                "description": "Using easy surface contacts to highlight bearing ambiguity",
+                "situation": "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
+                "objectives": [
+                    {
+                        "name": "Sonar Qualification",
+                        "children": [
+                            {
+                                "name": "Select ownship track",
+                                "description": "Select the ownship noise trace in the sonar display",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Identify NW target track",
+                                "description": "Select any bearing that represents the target to the North West of you.",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Spot true bearing on NW Target",
+                                "description": "Select a sonar track that represents the True bearing for the target to the North West of you.",
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Spot ambiguous bearing on E track",
+                                "name": "Select ambiguous bearing on SE track",
+                                "description": "Select the ambiguous bearing for the SE track",
                                 "type": "FIND_TARGET"
                             }
                         ]
                     }
                 ],
-                "url": "0a_surface_contacts",
-                "guidanceUrl": "guidance/processed/0a_surface_contacts.html"
+                "url": "1b_surface_ambiguous_contacts",
+                "guidanceUrl": "guidance/processed/1b_surface_ambiguous_contacts.html"
             },
             {
-                "id": "0b",
+                "id": "1c",
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
+                "situation": "Your sonar is still showing ambiguous contacts.  You now need to start practicing against dived targets - where visual sightings aren't available",
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
                         "children": [
                             {
                                 "name": "Select ownship",
+                                "description": "Start off by selecting the ownship track in the sonar",
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Spot target track",
+                                "name": "Spot Merchant track",
+                                "description": "Select any sonar track that represents the merchant to the North of you",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Identify target track",
+                                "description": "Select any sonar track that represents the dived target",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Spot true bearing",
+                                "description": "Select the true bearing to the dived target",
                                 "type": "FIND_TARGET"
                             },
                             {
                                 "name": "Spot ambiguous bearing",
+                                "description": "Select the ambiguous bearing to the dived target",
                                 "type": "FIND_TARGET"
                             }
                         ]
                     }
                 ],
-                "url": "0b_submarine_contacts",
-                "guidanceUrl": "guidance/processed/0b_submarine_contacts.html"
-            }
-        ]
-    },
-    {
-        "id": "1",
-        "name": "Ship Control",
-        "missions": [
-            {
-                "id": "1a",
-                "name": "Learner Driver",
-                "description": "Learn to drive, on the tracked range",
-                "objectives": [
-                    {
-                        "name": "Driving Exam",
-                        "children": [
-                            {
-                                "name": "Newbie achievement",
-                                "type": "ELAPSED"
-                            },
-                            {
-                                "name": "Conduct Noise Checks",
-                                "description": "Travel to rendez-vous point A for noise checks",
-                                "type": "PROXIMITY"
-                            },
-                            {
-                                "name": "Get Towed Array Fitted",
-                                "description": "Travel to Sonar Fitting barge",
-                                "type": "PROXIMITY"
-                            },
-                            {
-                                "name": "Array Handling Experience",
-                                "type": "ELAPSED"
-                            },
-                            {
-                                "name": "Secret Quest",
-                                "description": "Get within 200 of Target vessel",
-                                "type": "PROXIMITY"
-                            }
-                        ]
-                    }
-                ],
-                "url": "1a_drive_vessel",
-                "guidanceUrl": "guidance/processed/1a_drive_vessel.html"
-            },
-            {
-                "id": "1b",
-                "name": "Reading Bearings",
-                "description": "Learn to trail a bearing",
-                "objectives": [
-                    {
-                        "name": "Gain & keep contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact on the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
-                            }
-                        ]
-                    }
-                ],
-                "url": "1b_read_bearings",
-                "guidanceUrl": "guidance/processed/1b_read_bearings.html"
-            },
-            {
-                "id": "1c",
-                "name": "Handling ambiguity",
-                "description": "Intro to ambiguous bearings",
-                "objectives": [
-                    {
-                        "name": "Gain & keep contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target within 15 minutes",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact with the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
-                            }
-                        ]
-                    }
-                ],
-                "url": "1c_resolve_ambiguity",
-                "guidanceUrl": "guidance/processed/1c_resolve_ambiguity.html"
+                "url": "1c_submarine_contacts",
+                "guidanceUrl": "guidance/processed/1c_submarine_contacts.html"
             },
             {
                 "id": "1d",
-                "name": "Advanced Ambiguity",
-                "description": "More advanced ambiguous bearings",
+                "name": "Understanding noise levels",
+                "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
+                "situation": "The simulated tracks you're encountering here will now start making speed changes",
                 "objectives": [
                     {
-                        "name": "Gain & keep contact",
+                        "name": "Sonar Qualification",
                         "children": [
                             {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the quiet training target within 15 minutes",
-                                "type": "GAIN_CONTACT"
+                                "name": "Spot Merchant truth track",
+                                "description": "Start off by selecting the truth track for the Merchant",
+                                "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact with the quiet training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
+                                "name": "Spot Merchant side lobe",
+                                "description": "Select a side-lobe on the Merchant's truth track.",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Spot quieter Merchant main track",
+                                "description": "Select the main trace for the Merchant's truth track, after the side-lobes are lost",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Spot ambiguous side-lobe on Merchant",
+                                "description": "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select Ownship track",
+                                "description": "Select the ownship track, once the merchant disappears in the bow null",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select disappearing Merchant",
+                                "description": "Select any trace on the merchant track once its side lobes have been lost",
+                                "type": "FIND_TARGET"
                             }
                         ]
                     }
                 ],
-                "url": "1d_resolve_ambiguity_2",
-                "guidanceUrl": "guidance/processed/1d_resolve_ambiguity_2.html"
+                "url": "1d_noise_lobes",
+                "guidanceUrl": "guidance/processed/1d_noise_lobes.html"
+            },
+            {
+                "id": "1e",
+                "name": "Unsteady Array",
+                "description": "The effects of the array being unsteady",
+                "situation": "Ok, you're ready for a real puzzler. We're going to switch off the array heading sensors, so you will lose contact during and after each Ownship turn.  There's a dived target in the scenario, and we want you to track it.",
+                "objectives": [
+                    {
+                        "name": "Sonar Qualification",
+                        "children": [
+                            {
+                                "name": "Select dived target track [Leg 1]",
+                                "description": "Start off by selecting the truth track for the submarine to the West of you",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 2]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 3]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            },
+                            {
+                                "name": "Select dived target track [Leg 4]",
+                                "description": "Select the dived truth track after the end of the next turn",
+                                "type": "FIND_TARGET"
+                            }
+                        ]
+                    }
+                ],
+                "url": "1e_array_unsteady",
+                "guidanceUrl": "guidance/processed/1e_array_unsteady.html"
             }
         ]
     },
     {
         "id": "2",
-        "name": "Self Noise",
+        "name": "Ship Control",
+        "description": "Authority to control vessel course and speed during transit to deployment area",
         "missions": [
             {
                 "id": "2a",
-                "name": "Elementary Self Noise",
-                "description": "An introduction to self-noise",
+                "name": "Learning ship control, the hard way",
+                "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
                 "objectives": [
                     {
-                        "name": "Gain & keep contact",
+                        "name": "Ship Control exam",
                         "children": [
                             {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
+                                "name": "Avoid fishing vessels",
+                                "description": "Stay outside 3km of fishing vessels",
+                                "type": "DISTANCE_TO_CATEGORY"
                             },
                             {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact on the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
+                                "name": "Remain in allocated water",
+                                "description": "Stay within operating area",
+                                "type": "STAY_IN_AREA"
+                            },
+                            {
+                                "name": "R/V with support barge",
+                                "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
+                                "type": "PROXIMITY"
                             }
                         ]
                     }
                 ],
-                "url": "2a_intro_self_noise",
-                "guidanceUrl": "guidance/processed/2a_intro_self_noise.html"
+                "url": "2a_port_exit",
+                "guidanceUrl": "guidance/processed/2a_port_exit.html"
             },
             {
                 "id": "2b",
-                "name": "Full Self Noise",
-                "description": "Full self-noise characteristics",
+                "name": "Handling ownship noise levels",
+                "description": "Track a quiet but relatively fast moving friendly dived target.",
+                "situation": "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
                 "objectives": [
                     {
-                        "name": "Gain & keep contact",
+                        "name": "Spring Drift Training",
                         "children": [
                             {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain contact on the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
+                                "name": "Stay near dived target",
+                                "description": "Stay within 5km of dived target",
+                                "type": "DISTANCE_FROM_CATEGORY"
                             }
                         ]
                     }
                 ],
-                "url": "2b_full_self_noise",
-                "guidanceUrl": "guidance/processed/2b_full_self_noise.html"
+                "url": "2b_sprint_drift",
+                "guidanceUrl": "guidance/processed/2b_sprint_drift.html"
             },
             {
                 "id": "2c",
-                "name": "Advanced Self Noise",
-                "description": "Advanced Self Noise",
+                "name": "Determine target course at CPA",
+                "description": "How to use the bearing to target at CPA to approximate his course",
+                "situation": "We have to covertly indicate the target course to a third-party MPA, by passing a marker buoy at the same course as the target vessel",
                 "objectives": [
                     {
-                        "name": "Gain & maintain contact",
+                        "name": "Covert messaging",
                         "children": [
                             {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Maintain contact",
-                                "description": "Maintain continuous contact on the training target for one hour",
-                                "type": "MAINTAIN_CONTACT"
+                                "name": "Covertly convey target course",
+                                "description": "Travel within 1km of marker, matching target course to within 20 degs",
+                                "type": "PROXIMITY"
                             }
                         ]
                     }
                 ],
-                "url": "2c_adv_self_noise",
-                "guidanceUrl": "guidance/processed/2c_adv_self_noise.html"
+                "url": "2c_course_at_cpa",
+                "guidanceUrl": "guidance/processed/2c_course_at_cpa.html"
             },
             {
                 "id": "2d",
-                "name": "Self Noise Extra",
-                "description": "More challenging self noise",
+                "name": "Handling bow null",
+                "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
+                "situation": "In a benign environment you are going to track two types of vessel.",
                 "objectives": [
                     {
-                        "name": "Gain & maintain contact",
+                        "name": "Spring Drift Training",
                         "children": [
                             {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
+                                "name": "Gain sonar contact with Fishing Vessel",
+                                "description": "Gain contact on the fishing vessel West of you within 35 minutes",
                                 "type": "GAIN_CONTACT"
                             },
                             {
-                                "name": "Maintain contact",
-                                "description": "Maintain continuous contact on the training target for one hour",
+                                "name": "Maintain contact on surface target",
+                                "description": "Maintain contact on the fishing vessel for 45 minutes",
+                                "type": "MAINTAIN_CONTACT"
+                            },
+                            {
+                                "name": "Gain contact with dived submarine",
+                                "description": "There is a dived submarine near the North West marker.  Gain it on sonar within 50 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact on dived submarine",
+                                "description": "Maintain contact on the dived submarine for 45 minutes",
                                 "type": "MAINTAIN_CONTACT"
                             }
                         ]
                     }
                 ],
-                "url": "2d_more_self_noise",
-                "guidanceUrl": "guidance/processed/2d_more_self_noise.html"
+                "url": "2d_bow_nulls",
+                "guidanceUrl": "guidance/processed/2d_bow_nulls.html"
             }
         ]
     },
     {
         "id": "3",
-        "name": "Ranging Manoeuvres",
+        "name": "Advance to contact",
+        "description": "Engage with potential adversaries in relatively benign area of theatre",
         "missions": [
             {
                 "id": "3a",
                 "name": "Initial Ranging",
                 "description": "An introduction to passive ranging",
+                "situation": "To qualify to conduct TMA against a dived target, you first need to practice on a surface target - both to valid yourself and the TMA computer",
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
                         "children": [
                             {
                                 "name": "Gain contact",
-                                "description": "Gain contact on the training target",
+                                "description": "Travel West to gain contact on the Platfom Support Vessel working in that area",
                                 "type": "GAIN_CONTACT"
                             },
                             {
-                                "name": "Range 3 times",
-                                "description": "Perform 3 ranging manoeuvres",
+                                "name": "Conduct 3 ranging times",
+                                "description": "Perform 3 ranging manoeuvres on surface target",
                                 "type": "OBTAIN_SOLUTION"
                             }
                         ]
@@ -386,90 +409,14 @@
     },
     {
         "id": "4",
-        "name": "Advanced Tactics & Weapons",
+        "name": "Task Group Operations",
+        "description": "Support High Value Units in complex environment",
         "missions": [
             {
                 "id": "4a",
-                "name": "Fleeing Target",
-                "description": "Trailing a fleeing target",
-                "objectives": [
-                    {
-                        "name": "Gain & maintain contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Detect it",
-                                "description": "Get within 500m of Target vessel",
-                                "type": "PROXIMITY"
-                            }
-                        ]
-                    }
-                ],
-                "url": "4a_fleeing_target",
-                "guidanceUrl": "guidance/processed/4a_fleeing_target.html"
-            },
-            {
-                "id": "4b",
-                "name": "Attacking Target",
-                "description": "Evading an attacking target",
-                "objectives": [
-                    {
-                        "name": "Gain & maintain contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Detect it",
-                                "description": "Get within 500m of Target vessel",
-                                "type": "DISTANCE"
-                            }
-                        ]
-                    }
-                ],
-                "url": "4b_attacking_target",
-                "guidanceUrl": "guidance/processed/4b_attacking_target.html"
-            },
-            {
-                "id": "4c",
-                "name": "Weapons Intro",
-                "description": "First use of weapons",
-                "objectives": [
-                    {
-                        "name": "Gain & keep contact",
-                        "children": [
-                            {
-                                "name": "Gain contact",
-                                "description": "Gain contact on the training target within 15 minutes",
-                                "type": "GAIN_CONTACT"
-                            },
-                            {
-                                "name": "Destroy target",
-                                "description": "Destroy the target, with torpedoes within one hour",
-                                "type": "DESTROY_TARGET"
-                            }
-                        ]
-                    }
-                ],
-                "url": "4c_weapons_intro",
-                "guidanceUrl": "guidance/processed/4c_weapons_intro.html"
-            }
-        ]
-    },
-    {
-        "id": "6",
-        "name": "Complex Operating Areas",
-        "missions": [
-            {
-                "id": "6a",
-                "name": "Merchant in area",
-                "description": "Handling a cargo ship in the training area",
+                "name": "Familiarise with area of operations",
+                "description": "Recognising a range of targets in the area",
+                "situation": "Before the HVU reaches our area of operations, we have to learn more about what's out there.  We've heard talk that an enemy submarine is shadowing merchant shipping. We don't have sufficient ROE to use weapons, but try to intimidate it with a close pass.",
                 "objectives": [
                     {
                         "name": "Find submarine",
@@ -480,15 +427,164 @@
                                 "type": "GAIN_CONTACT"
                             },
                             {
-                                "name": "Detect it",
-                                "description": "Get within 500m of Target vessel",
+                                "name": "Deter submarine",
+                                "description": "Deter target submarine by passing within 1km",
                                 "type": "PROXIMITY"
                             }
                         ]
                     }
                 ],
-                "url": "6a_merchant",
-                "guidanceUrl": "guidance/processed/6a_merchant.html"
+                "url": "4a_merchant",
+                "guidanceUrl": "guidance/processed/4a_merchant.html"
+            },
+            {
+                "id": "4b",
+                "name": "Influence evasive SM",
+                "description": "Force evasive SM into area of MPA coverage",
+                "situation": "Now that the dived SM knows who is boss, we're going to push him into an area of dense MPA coverage, so that we're free to transit to escort the incoming HVU.",
+                "objectives": [
+                    {
+                        "name": "Find submarine",
+                        "children": [
+                            {
+                                "name": "Gain contact on SM",
+                                "description": "Gain contact with the dived submarine, he's roughly to your North West",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Force SM to MPA Coverage",
+                                "description": "Force target into MPA coverage zone",
+                                "type": "SUCCESS_IN_AREA"
+                            }
+                        ]
+                    }
+                ],
+                "url": "4b_push_evasive",
+                "guidanceUrl": "guidance/processed/4b_push_evasive.html"
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "name": "Developed Operations",
+        "description": "Complex tasking, occasionally against advanced targets",
+        "missions": []
+    },
+    {
+        "id": "6",
+        "name": "Special Weapons & Tactics",
+        "description": "Non-traditional Ops, under Limited Distribution",
+        "missions": [
+            {
+                "id": "6d",
+                "name": "Advanced Ambiguity",
+                "description": "More advanced ambiguous bearings",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the quiet training target within 15 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact with the quiet training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6_1d_resolve_ambiguity_2",
+                "guidanceUrl": "guidance/processed/6_1d_resolve_ambiguity_2.html"
+            },
+            {
+                "id": "6a",
+                "name": "Learner Driver",
+                "description": "Learn to drive, on the tracked range",
+                "objectives": [
+                    {
+                        "name": "Driving Exam",
+                        "children": [
+                            {
+                                "name": "Newbie achievement",
+                                "description": "Get started with missions",
+                                "type": "ELAPSED"
+                            },
+                            {
+                                "name": "Conduct Noise Checks",
+                                "description": "Travel to rendez-vous point A for noise checks",
+                                "type": "PROXIMITY"
+                            },
+                            {
+                                "name": "Get Towed Array Fitted",
+                                "description": "Travel to Sonar Fitting barge",
+                                "type": "PROXIMITY"
+                            },
+                            {
+                                "name": "Array Handling Experience",
+                                "description": "Get used to towed array",
+                                "type": "ELAPSED"
+                            },
+                            {
+                                "name": "Secret Quest",
+                                "description": "Get within 200 of Target vessel",
+                                "type": "PROXIMITY"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6a_drive_vessel",
+                "guidanceUrl": "guidance/processed/6a_drive_vessel.html"
+            },
+            {
+                "id": "6a",
+                "name": "Elementary Self Noise",
+                "description": "An introduction to self-noise",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6a_intro_self_noise",
+                "guidanceUrl": "guidance/processed/6a_intro_self_noise.html"
+            },
+            {
+                "id": "6b",
+                "name": "Full Self Noise",
+                "description": "Full self-noise characteristics",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6b_full_self_noise",
+                "guidanceUrl": "guidance/processed/6b_full_self_noise.html"
             },
             {
                 "id": "6b",
@@ -513,17 +609,35 @@
                 ],
                 "url": "6b_merchant_and_fisherman",
                 "guidanceUrl": "guidance/processed/6b_merchant_and_fisherman.html"
-            }
-        ]
-    },
-    {
-        "id": "7",
-        "name": "Complex Sonar",
-        "missions": [
+            },
             {
-                "id": "7a",
-                "name": "Unsteady Array",
-                "description": "The effects of the array being unsteady",
+                "id": "6b",
+                "name": "Reading Bearings",
+                "description": "Learn to trail a bearing",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6b_read_bearings",
+                "guidanceUrl": "guidance/processed/6b_read_bearings.html"
+            },
+            {
+                "id": "6c",
+                "name": "Advanced Self Noise",
+                "description": "Advanced Self Noise",
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",
@@ -534,16 +648,143 @@
                                 "type": "GAIN_CONTACT"
                             },
                             {
-                                "name": "Locate it",
+                                "name": "Maintain contact",
+                                "description": "Maintain continuous contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6c_adv_self_noise",
+                "guidanceUrl": "guidance/processed/6c_adv_self_noise.html"
+            },
+            {
+                "id": "6c",
+                "name": "Handling ambiguity",
+                "description": "Intro to ambiguous bearings",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target within 15 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain contact with the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6c_resolve_ambiguity",
+                "guidanceUrl": "guidance/processed/6c_resolve_ambiguity.html"
+            },
+            {
+                "id": "6d",
+                "name": "Self Noise Extra",
+                "description": "More challenging self noise",
+                "objectives": [
+                    {
+                        "name": "Gain & maintain contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Maintain contact",
+                                "description": "Maintain continuous contact on the training target for one hour",
+                                "type": "MAINTAIN_CONTACT"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6d_more_self_noise",
+                "guidanceUrl": "guidance/processed/6d_more_self_noise.html"
+            },
+            {
+                "id": "6g",
+                "name": "Weapons Intro",
+                "description": "First use of weapons",
+                "objectives": [
+                    {
+                        "name": "Gain & keep contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target within 15 minutes",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Destroy target",
+                                "description": "Destroy the target, with torpedoes within one hour",
+                                "type": "DESTROY_TARGET"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6g_weapons_intro",
+                "guidanceUrl": "guidance/processed/6g_weapons_intro.html"
+            },
+            {
+                "id": "6h",
+                "name": "Fleeing Target",
+                "description": "Trailing a fleeing target",
+                "objectives": [
+                    {
+                        "name": "Gain & maintain contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Detect it",
                                 "description": "Get within 500m of Target vessel",
                                 "type": "PROXIMITY"
                             }
                         ]
                     }
                 ],
-                "url": "7a_array_unsteady",
-                "guidanceUrl": "guidance/processed/7a_array_unsteady.html"
+                "url": "6h_fleeing_target",
+                "guidanceUrl": "guidance/processed/6h_fleeing_target.html"
             },
+            {
+                "id": "6j",
+                "name": "Attacking Target",
+                "description": "Evading an attacking target",
+                "objectives": [
+                    {
+                        "name": "Gain & maintain contact",
+                        "children": [
+                            {
+                                "name": "Gain contact",
+                                "description": "Gain contact on the training target",
+                                "type": "GAIN_CONTACT"
+                            },
+                            {
+                                "name": "Detect it",
+                                "description": "Get within 500m of Target vessel",
+                                "type": "DISTANCE"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6j_attacking_target",
+                "guidanceUrl": "guidance/processed/6j_attacking_target.html"
+            }
+        ]
+    },
+    {
+        "id": "7",
+        "name": "Spare",
+        "description": "temporary storage for legacy missions",
+        "missions": [
             {
                 "id": "7b",
                 "name": "Quick win",
@@ -589,8 +830,14 @@
                         ]
                     },
                     {
-                        "name": "Destroy target",
-                        "description": "Destroy the target, with torpedoes within one hour"
+                        "name": "Destroy the target",
+                        "children": [
+                            {
+                                "name": "Destroy target",
+                                "description": "Destroy the target, with torpedoes within one hour",
+                                "type": "DESTROY_TARGET"
+                            }
+                        ]
                     }
                 ],
                 "url": "7c_quick_fail",
@@ -621,5 +868,11 @@
                 "guidanceUrl": "guidance/processed/7d_placeholder.html"
             }
         ]
+    },
+    {
+        "id": "8",
+        "name": "Development missions",
+        "description": "test cases used during scenario development",
+        "missions": []
     }
 ]

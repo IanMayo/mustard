@@ -1,0 +1,504 @@
+{
+    "id": "2a",
+    "name": "Learning ship control, the hard way",
+    "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+    "situation" : "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you have 40 minutes to come within 1km of the support barge, on a Northerly course at less than 3 kts",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.21
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 12,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.01,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 50.0,
+                            "lng": -8.03
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.08,
+                    "lng": -8.02
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 7,
+                "speed": 7,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherB",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.93,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 50.01,
+                            "lng": -8.02
+                        },
+                        {
+                            "lat": 50.06,
+                            "lng": -7.97
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.01,
+                    "lng": -7.93
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 9,
+                "speed": 7,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherC",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.02,
+                            "lng": -7.95
+                        },
+                        {
+                            "lat": 50.06,
+                            "lng": -7.97
+                        },
+                        {
+                            "lat": 50.00,
+                            "lng": -8.00
+                        },
+                        {
+                            "lat": 49.92,
+                            "lng": -7.93
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.92,
+                    "lng": -7.92
+                },
+                "course": 333,
+                "demCourse": 333,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherD",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.06,
+                            "lng": -7.96
+                        },
+                        {
+                            "lat": 50.01,
+                            "lng": -7.92
+                        },
+                        {
+                            "lat": 49.92,
+                            "lng": -7.96
+                        },
+                        {
+                            "lat": 50.00,
+                            "lng": -7.93
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.00,
+                    "lng": -8.00
+                },
+                "course": 333,
+                "demCourse": 333,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherE",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.996,
+                            "lng": -8.082
+                        },
+                        {
+                            "lat": 50.01,
+                            "lng": -8.09
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.005,
+                    "lng": -8.12
+                },
+                "course": 122,
+                "demCourse": 122,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Support Platform",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.98,
+                    "lng": -7.8
+                },
+                "course": 1,
+                "demCourse": 1,
+                "demSpeed": 0,
+                "speed": 0,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 0,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Ship Control exam",
+            "type": "OR",
+            "children": [
+                {
+                    "name": "Avoid fishing vessels",
+                    "description": "Stay outside 3km of fishing vessels",
+                    "type": "DISTANCE_TO_CATEGORY",
+                    "category": "FISHERMAN",
+                    "subject": "Ownship",
+                    "range": 3000,
+                    "failure": "We're caught, she's breaking up!"
+                },
+                {
+                    "name": "Remain in allocated water",
+                    "description": "Stay within operating area",
+                    "type": "STAY_IN_AREA",
+                    "subject": "Ownship",
+                    "tl": {
+                        "lat": 50.08,
+                        "lng": -8.25
+                    },
+                    "br": {
+                        "lat": 49.92,
+                        "lng": -7.75
+                    },
+                    "failure": "END-EX, you've left the allocated water!"
+                },
+                {
+                    "name": "R/V with support barge",
+                    "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
+                    "type": "PROXIMITY",
+                    "location": {
+                        "lat": 49.98,
+                        "lng": -7.8
+                    },
+                    "range": 1000,
+                    "elapsed": 3600,
+                    "course": 0,
+                    "courseError": 10,
+                    "bonusAchievementTime": 2100,
+                    "bonusAchievement": {
+                        "name": "Speed Demon",
+                        "message": "Hey, you beat 35 minutes, Good driving!"
+                    },
+                    "maxSpeed": 1.54,
+                    "success": "Well done, you made it. Let's get the special weapons loaded and continue with the transit.",
+                    "failure": "Sorry, you didn't make it in time, and we missed our window.",
+                    "achievement": {
+                        "name": "Driver",
+                        "message": "You're now a qualified driver. Well done."
+                    }
+                }
+            ]
+        }
+
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Allocated Water"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.08],
+                            [-8.25, 49.92],
+                            [-7.75, 49.92],
+                            [-7.75, 50.08],
+                            [-8.25, 50.08 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }}
