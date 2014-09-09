@@ -269,8 +269,8 @@
             {
                 "id": "2d",
                 "name": "Handling bow null",
-                "description": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.",
-                "situation": "In a benign environment you are going to track two types of vessel.",
+                "description": "Effective localisation, despite bow null",
+                "situation": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.  In a benign environment you are going to track two types of vessel.",
                 "objectives": [
                     {
                         "name": "Spring Drift Training",
