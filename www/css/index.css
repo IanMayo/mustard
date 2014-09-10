@@ -117,13 +117,14 @@ body {
 }
 
 .leaflet-control-scale-line {
-  border: none;
-  background: #000;
+  border-top: 2px solid #535353;
+  background: transparent;
   color: #bcdf1b;
 }
 
 .leaflet-control-scale-line:not(:first-child) {
   border-top: 2px solid #535353;
+  border-bottom: 2px solid #535353;
 }
 .leaflet-control-scale-line:not(:first-child):not(:last-child) {
   border-bottom: 2px solid #535353;
