@@ -201,3 +201,23 @@
   display: inline-block;
   line-height: 35px;
 }
+
+.point-label {
+  width: 120px;
+  position: relative;
+}
+.point-label .label-container {
+  border-radius: 4px;
+  background: rgba(0,0,0,0.05);
+  position: absolute;
+}
+
+.point-label .label-wrapper {
+  line-height: 12px;
+  font-size: 11px;
+  margin: 2px;
+  padding: 3px;
+  max-height: 60px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+}
