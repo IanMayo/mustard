@@ -343,6 +343,16 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     L.geoJson(features, {
                         style: {
                             clickable: false
+                        },
+                        pointToLayer: function (feature, latlng) {
+                            var marker = new L.marker();
+                            var iconLabel = L.iconLabel();
+                            marker.setLatLng(latlng);
+                            marker.setIcon(iconLabel);
+                            marker.on('add', function () {
+                                iconLabel.addLabel(feature.properties.name);
+                            });
+                            return marker;
                         }
                     }).addTo(map);
                 }
