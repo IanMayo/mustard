@@ -109,7 +109,7 @@ body {
 .leaflet-bar a,
 .leaflet-bar a:hover {
   background-color: #bcdf1b;
-  border-bottom: 1px solid #535353;
+  border-bottom: 1px solid #bcdf1b;
 }
 
 .leaflet-container {
@@ -117,15 +117,15 @@ body {
 }
 
 .leaflet-control-scale-line {
-  border-top: 2px solid #535353;
+  border: 2px solid #bcdf1b;
   background: transparent;
   color: #bcdf1b;
 }
 
 .leaflet-control-scale-line:not(:first-child) {
-  border-top: 2px solid #535353;
-  border-bottom: 2px solid #535353;
+  border-top: 2px solid #bcdf1b;
+  border-bottom: 2px solid #bcdf1b;
 }
 .leaflet-control-scale-line:not(:first-child):not(:last-child) {
-  border-bottom: 2px solid #535353;
+  border-bottom: 2px solid #bcdf1b;
 }
