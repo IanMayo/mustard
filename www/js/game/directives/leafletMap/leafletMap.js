@@ -267,8 +267,6 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             var createMap = function () {
                 map = new L.Map(element[0], {attributionControl: false});
 
-                L.tileLayer(tileLayerUrl).addTo(map);
-
                 configureLayers();
                 addMapFeatures();
             };
