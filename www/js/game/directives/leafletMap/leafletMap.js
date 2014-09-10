@@ -26,10 +26,18 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             var spatialViewController = controllers[0];
             var reviewTourController = controllers[1];
             var layerGroups = {};
-            var tileLayerUrl = 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg';
             var leafletMarkers = {};
             var sonarMultiPolyline;
             var map;
+
+            /**
+             * Note, the following line was used to show a tiled
+             * backdrop behind the map.  The URL was added to the map
+             * using "L.tileLayer(tileLayerUrl).addTo(map);"
+             * in the createMap method.
+             *
+             * var tileLayerUrl = 'img/mobac/atlases/MapQuest/{z}/{x}/{y}.jpg';
+             */
 
             /**
              * Add scale and mouse positions information to the map layer.
@@ -266,8 +274,6 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
              */
             var createMap = function () {
                 map = new L.Map(element[0], {attributionControl: false});
-
-                L.tileLayer(tileLayerUrl).addTo(map);
 
                 configureLayers();
                 addMapFeatures();

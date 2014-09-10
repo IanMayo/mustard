@@ -208,16 +208,17 @@
 }
 .point-label .label-container {
   border-radius: 4px;
-  background: rgba(0,0,0,0.05);
+  background: rgba(170,206,0, 0.9);
   position: absolute;
 }
 
 .point-label .label-wrapper {
   line-height: 12px;
   font-size: 11px;
-  margin: 2px;
+  margin: 1px;
+  color: #bcdf1b;
   padding: 3px;
   max-height: 60px;
   border-radius: 4px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.75);
 }
