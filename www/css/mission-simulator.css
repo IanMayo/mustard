@@ -23,10 +23,17 @@
   padding: 0 0 175px 0;
   margin-bottom: -175px;
   height: 100%;
+  background: url(../img/dirty-metal-surface.jpg) no-repeat;
 }
 
-.time-bearing-container {
-  border-right: 2px solid grey;
+.data-leaflet-map-container,
+.sonarBearing {
+  padding: 10px;
+}
+
+.leaflet-container, .visContainer {
+  border-radius: 30px;
+  border: 10px solid #000000;
 }
 
 .time-bearing-container,
@@ -47,6 +54,11 @@
   overflow: hidden;
 }
 
+.event-slider-container {
+  background-color: #ffffff;
+  border-top: 2px solid grey;
+}
+
 .simulation-event-slider {
   padding: 5px 0 10px;
 }
@@ -63,6 +75,7 @@
   padding: 0;
   height: 175px;
   border-top: 2px solid grey;
+  background-color: #ffffff;
 }
 
 .spatial-view,
