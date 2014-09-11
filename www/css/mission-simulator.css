@@ -54,6 +54,11 @@
   overflow: hidden;
 }
 
+.event-slider-container {
+  background-color: #ffffff;
+  border-top: 2px solid grey;
+}
+
 .simulation-event-slider {
   padding: 5px 0 10px;
 }
