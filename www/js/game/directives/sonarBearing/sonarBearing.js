@@ -35,7 +35,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                             height: 1,
                             duration: 8,
                             yTicks: 15,
-                            detectionPointRadii: {rx: 3, ry: 4.5},
+                            detectionPointRadii: {rx: 4, ry: 5},
                             margin: {top: 25, left: 60, bottom: 5, right: 10}
                         });
                         break;

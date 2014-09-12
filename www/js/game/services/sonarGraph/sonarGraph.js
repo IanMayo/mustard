@@ -1,7 +1,8 @@
 /**
  * @module Sonar Graph
  *
- * Factory class to create a single sonar graph
+ * Factory class to create a single sonar graph.
+ * jQuery requires.
  */
 
 angular.module('subtrack90.game.sonarGraph', [])
@@ -149,15 +150,21 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .attr('width', containerElementSize.width)
                 .attr('height', containerElementSize.height);
 
-            graph
+            var defsPathMarker =  graph
                 .append('defs')
-                .append('ellipse')
-                .attr('cx', 2.5)
-                .attr('cy', 4)
+                .append('g')
+                .attr('id', 'pathMarker_' + config.containerElement.id)
+
+            defsPathMarker.append('ellipse')
+                .attr('class', 'detectionPoint')
                 .attr('rx', config.detectionPointRadii.rx)
                 .attr('ry', config.detectionPointRadii.ry)
-                .attr('id', 'pathMarker_' + config.containerElement.id)
                 .style({'fill': 'rgb(170, 206, 0)'});
+
+            // Add transparent circle to expand "clickable" area. It helps selecting sonar path
+            defsPathMarker.append('circle')
+                .attr('r', 20)
+                .style({fill: 'black', 'fill-opacity': '0'});
         }
 
         /**
@@ -233,8 +240,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .append('use')
                 .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
                 .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
-                .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)))
-                .attr('class', name);
+                .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)));
         }
 
         /**
@@ -250,18 +256,20 @@ angular.module('subtrack90.game.sonarGraph', [])
                     var group = gMain.append('g')
                         .attr('class', 'detectionPath ' + name)
                         .attr('detection-name', name);
+                    // wrap the element by jQuery
+                    var $group = $(group[0]);
 
-                    // bind click handler
-                    group.on('click', function () {
+                    // bind click delegate handler
+                    $group.on('click', 'use', function (event) {
+                        event.stopPropagation();
+
                         var detectionName = '';
-                        if(event.target.getAttribute) {
-                            // <g> element selected
-                            detectionName = event.target.getAttribute('detection-name');
-                        } else if (event.target.correspondingUseElement) {
-                            // <use> element selected
-                            detectionName = event.target.correspondingUseElement.getAttribute('class');
+                        var target = event.target;
+
+                        if('use' === target.tagName.toLowerCase()) {
+                            detectionName = target.parentElement.getAttribute('detection-name');
                         } else {
-                            alert('Can\'t get class attribute of the target');
+                            console.log('Can\'t get class attribute of the target', target);
                         }
                         config.detectionSelect(detectionName);
                     });
