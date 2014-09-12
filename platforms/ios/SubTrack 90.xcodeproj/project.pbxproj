@@ -482,7 +482,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -507,6 +508,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
+				PROVISIONING_PROFILE = "26bdc2ed-d02c-44d5-9875-57667d945078";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -516,7 +518,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SubTrack 90/SubTrack 90-Prefix.pch";
@@ -539,6 +542,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
+				PROVISIONING_PROFILE = "26bdc2ed-d02c-44d5-9875-57667d945078";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

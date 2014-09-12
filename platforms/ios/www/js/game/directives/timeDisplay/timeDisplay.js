@@ -25,7 +25,8 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
         restrict :'EA',
         scope: {
             timer: '=',
-            timeStep: '='
+            timeStep: '=',
+            timerPaused: '='
         },
         templateUrl: 'js/game/directives/timeDisplay/timeDisplay.tpl.html',
         link: function (scope) {
@@ -76,7 +77,14 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
                 });
             };
 
-            scope.speed = timeDisplayConfig.initialAccelRate;
+            if (scope.timerPaused) {
+                // Set time display to "pause" state on start
+                scope.speed = 0;
+                oldSpeed = timeDisplayConfig.initialAccelRate;
+            } else {
+                scope.speed = timeDisplayConfig.initialAccelRate;
+            }
+
             scope.timerLabel = timeDisplayConfig.initialTimerLabel;
             scope.steppingEnabled = steppingControls.visibility();
 

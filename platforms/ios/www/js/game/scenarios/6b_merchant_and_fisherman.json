@@ -244,6 +244,7 @@
                     "name": "Locate it",
                     "description": "Get within 500m of Target vessel",
                     "type": "PROXIMITY",
+                    "failure": "Sorry, didn't make this objective in time",
                     "target": "Target",
                     "range": 500,
                     "success": "Well done, that was tricky. "

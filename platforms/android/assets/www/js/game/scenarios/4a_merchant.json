@@ -1,0 +1,234 @@
+{
+    "id": "4a",
+    "name": "Familiarise with area of operations",
+    "description": "Recognising a range of targets in the area",
+    "welcome": "Investigate surface targets, try to find the dived submarine",
+    "situation": "Before the HVU reaches our area of operations, we have to learn more about what's out there.  We've heard talk that an enemy submarine is shadowing merchant shipping. We don't have sufficient ROE to use weapons, but try to intimidate it with a close pass.",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 49.91,
+                    "lng": -8.04
+                },
+                "course": 110,
+                "demCourse": 110,
+                "demSpeed": 10,
+                "speed": 10,
+                "height": 0,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+
+            "behaviours": [
+                {
+                    "name": "Shipping Route offset",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.02,
+                            "lng": -7.96
+                        }
+                        ,
+                        {
+                            "lat": 50.01,
+                            "lng": -8.17
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 92,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.99,
+                    "lng": -7.8
+                },
+                "course": 310,
+                "demCourse": 310,
+                "demSpeed": 12,
+                "speed": 12,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Merchant",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Shipping Route 1",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.02,
+                            "lng": -8.00
+                        }
+                        ,
+                        {
+                            "lat": 50.01,
+                            "lng": -8.24
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 114,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.95,
+                    "lng": -7.8
+                },
+                "course": 300,
+                "demCourse": 300,
+                "demSpeed": 10,
+                "speed": 10,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Find submarine",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact",
+                    "description": "Gain contact on the target submarine",
+                    "type": "GAIN_CONTACT",
+                    "target": "Target",
+                    "elapsed": 2300,
+                    "success": "Ok, we've got a feint trace on the target submarine.  You can differentiate it from the merchant vessel since it should not show side-lobes",
+                    "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?"
+                },
+                {
+                    "name": "Deter submarine",
+                    "description": "Deter target submarine by passing within 1km",
+                    "type": "PROXIMITY",
+                    "target": "Target",
+                    "range": 1000,
+                    "elapsed": 2300,
+                    "failure": "Sorry, you didn't get close enough in time. That bow null is really tricky, isn't it?",
+                    "success": "Well done, that was tricky. "
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
+}
