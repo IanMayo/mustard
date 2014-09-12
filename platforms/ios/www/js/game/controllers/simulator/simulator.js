@@ -21,7 +21,8 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.notificationIcon',
     'subtrack90.game.elementVisibility',
     'subtrack90.app.user',
-    'subtrack90.game.sonarBearing'
+    'subtrack90.game.sonarBearing',
+    'ngDraggable'
 ])
 
 /**
@@ -47,6 +48,12 @@ angular.module('subtrack90.game.simulator', [
      * @type {String}
      */
     $scope.missionID = scenario.id;
+
+    /**
+     * State of simulation process on start
+     * @type {Boolean}
+     */
+    $scope.timerPaused = scenario.pauseOnStart;
 
     /**
      * OwnShip vessel API
@@ -200,6 +207,7 @@ angular.module('subtrack90.game.simulator', [
         var ownShipApi = function () {
             var ownShipName = _.first(_.toArray($scope.vessels)).name;
             var vessel = $scope.vessels[ownShipName];
+            var missileWeapon;
 
             return {
                 name: function () {
@@ -233,6 +241,14 @@ angular.module('subtrack90.game.simulator', [
                  */
                 hasWeapons: function() {
                     return vessel.weapons && vessel.weapons.length > 0;
+                },
+                missileWeapon: function () {
+                    if (!missileWeapon) {
+                        // add weapon info to cache
+                        missileWeapon = _.findWhere(vessel.weapons, {type: 'MISSILE'});
+                    }
+
+                    return missileWeapon;
                 },
                 /** whether the vessel can perform ranging
                  *
@@ -286,6 +302,7 @@ angular.module('subtrack90.game.simulator', [
         };
 
         var handleMissionEnd = function () {
+
             // do we need to pause/stop?
             if (($scope.gameState.state === 'DO_PAUSE') || ($scope.gameState.state === 'DO_STOP')) {
 
@@ -296,7 +313,7 @@ angular.module('subtrack90.game.simulator', [
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
                     $scope.messages.add({
-                        title: 'Success message',
+                        title: 'Objective Complete',
                         type: 'success',
                         text: $scope.gameState.successMessage,
                         time: new Date().toLocaleTimeString()
@@ -630,9 +647,7 @@ angular.module('subtrack90.game.simulator', [
                     }
                 } else {
                     storeState(vessel, $scope.gameState.simulationTime);
-
                 }
-
             });
 
             // can ownship drive itself?
@@ -665,6 +680,20 @@ angular.module('subtrack90.game.simulator', [
 
             // let the referees run
             objectives.doObjectives($scope.gameState, $scope.objectives, $scope.vessels, $scope.deadVessels);
+
+            // do we have an initial objective description?
+            if($scope.gameState.firstObjective) {
+                $scope.messages.add({
+                    title: 'First objective!',
+                    type: 'warning',
+                    text: $scope.gameState.firstObjective,
+                    time: new Date().toLocaleTimeString()
+                });
+
+                // ok, we can now ditch it
+                delete $scope.gameState.firstObjective;
+
+            }
 
             // see if this mission is complete
             handleMissionEnd();
@@ -716,11 +745,13 @@ angular.module('subtrack90.game.simulator', [
             // initialiee the start time
             startTime = $scope.gameState.simulationTime;
 
+            // ensure the welcome is displayed before any mission objectives
+            showWelcome();
+
             $timeout(function () {
                 // trigger an initial update of locations
                 $scope.$broadcast('changeMarkers', $scope.vessels);
                 $scope.$broadcast('showFeatures', $scope.mapFeatures);
-                showWelcome();
             }, 300);
         };
 
@@ -781,6 +812,7 @@ angular.module('subtrack90.game.simulator', [
         $scope.$on('sonarTrackSelected', function (event, theTrackName) {
             $scope.ownShip.vessel().selectedTrack = theTrackName;
             $scope.$broadcast('shareSelectedTrack', theTrackName)
+            console.log("+++SELECTION:" + theTrackName);
         });
 
         $scope.goBack = function () {
@@ -792,6 +824,13 @@ angular.module('subtrack90.game.simulator', [
          * save simulation state to the review history
          */
         $scope.$on("$routeChangeStart", storeHistory);
+
+        /**
+         * Add locationMarker state to ownship. 
+         */
+        $scope.$on('locationMarkedWithCoordinates', function (event, latLng) {
+            $scope.ownShip.updateState({locationMarked: latLng});
+        });
 
         /**
          * Callback when scope of the controller destroys

@@ -40,10 +40,17 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  font-family: "Courier New", Courier, monospace;  /* give most of the app a type-writer style */
+}
+
+/** give the game (and review page) the default font */
+.mission-simulator
+{
+  font-family: "Helvetic Neue", Helvetica, Arial;
 }
 
 /** give the leaflet map a plain, sea-colored background */
-spatial-view .leaflet-container
+#spatial-view .leaflet-container
 {
     background-color:#b5d0d0;
 }
@@ -57,13 +64,23 @@ spatial-view .leaflet-container
   overflow-y: visible;
 }
 
+/* indent the list of objectives */
+#objectiveList{
+  padding-left:20px;
+}
+
+/* hide the symbol for the list items, since we're using a glyph */
+#objectiveList ul{
+    list-style-type: none;
+    padding-left:20px;
+}
+
+
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 5px #bbb;
   padding: 0 5px;
   margin:0;
-  color: #333;
+  color: #bcdf1b;
   font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
@@ -89,3 +106,26 @@ spatial-view .leaflet-container
   height: 100%;
 }
 
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: #bcdf1b;
+  border-bottom: 1px solid #bcdf1b;
+}
+
+.leaflet-container {
+  background: #000;
+}
+
+.leaflet-control-scale-line {
+  border: 2px solid #bcdf1b;
+  background: transparent;
+  color: #bcdf1b;
+}
+
+.leaflet-control-scale-line:not(:first-child) {
+  border-top: 2px solid #bcdf1b;
+  border-bottom: 2px solid #bcdf1b;
+}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+  border-bottom: 2px solid #bcdf1b;
+}

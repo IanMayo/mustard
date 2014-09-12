@@ -4,7 +4,8 @@
 
 angular.module('subtrack90.game.spatialViewDirective', [
     'subtrack90.game.geoMath',
-    'subtrack90.game.leafletMapDirective'
+    'subtrack90.game.leafletMapDirective',
+    'ngDraggable'
 ])
 
 .constant('spatialViewConfig', {
@@ -43,7 +44,7 @@ angular.module('subtrack90.game.spatialViewDirective', [
 
         templateUrl: 'js/game/directives/spatialView/spatialView.tpl.html',
 
-        link: function (scope) {
+        link: function (scope, element) {
 
             /**
              * Show markers of target vessels on the map
@@ -186,6 +187,15 @@ angular.module('subtrack90.game.spatialViewDirective', [
              */
             scope.toggleTargets = function () {
                 scope.$broadcast('changeTargetsVisibility', scope.targetsVisibility);
+            };
+
+            /**
+             * Add marker location.
+             */
+            scope.markLocation = function (uiEvent) {
+                var offset = element.children().offset();
+                var mousePosition = {left: uiEvent.clientX - offset.left, top: uiEvent.clientY - offset.top};
+                scope.$broadcast('markLocationOnMap', mousePosition);
             };
         }
     };

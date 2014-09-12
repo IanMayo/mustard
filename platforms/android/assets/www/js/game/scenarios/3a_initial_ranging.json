@@ -2,6 +2,7 @@
     "id": "3a",
     "name": "Initial Ranging",
     "description": "An introduction to passive ranging",
+    "situation": "To qualify to conduct TMA against a dived target, you first need to practice on a surface target - both to valid yourself and the TMA computer",
     "welcome": "Your vessel now has a passive Range Calculator.  \n\nInitiate a ranging manoeuvre by selecting a sonar track.  Then, press the 'Start' button, let the caculator average the bearing rate for a minute, then make a turn, then wait another minute.\n\nThe solution will be shown on the map.",
     "vessels": [
         {
@@ -52,9 +53,9 @@
         {
             "name": "Target",
             "categories": {
-                "force": "RED",
-                "environment": "SUBSURFACE",
-                "type": "SUBMARINE"
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
             },
             "behaviours": [
                 {
@@ -117,19 +118,21 @@
             "children": [
                 {
                     "name": "Gain contact",
-                    "description": "Gain contact on the training target",
+                    "description": "Travel West to gain contact on the Platfom Support Vessel working in that area",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
-                    "success": "Well done, you've gained contact within the 8 minute limit. You now need to perform 3 ranging manoeuvres on him.",
+                    "success": "Well done, you've gained contact within the 8 minute limit",
                     "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
                 },
                 {
-                    "name": "Range 3 times",
-                    "description": "Perform 3 ranging manoeuvres",
+                    "name": "Conduct 3 ranging times",
+                    "description": "Perform 3 ranging manoeuvres on surface target",
                     "type": "OBTAIN_SOLUTION",
                     "count" : 3,
                     "subject" : "Ownship",
-                    "success": "Well done, 3 solutions obtained"
+                    "success": "Well done, 3 solutions obtained",
+                    "elapsed": 7200,
+                    "failureTime": "You didn't create your solutions in time"
                 }
             ]
         }
