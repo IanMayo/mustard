@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'Conspiracy-PressRelease';
+  /* IE9 Compat Modes */
+  src: url('../fonts/Conspiracy-PressRelease.eot');
+  /* IE6-IE8 */
+  src: url('../fonts/Conspiracy-PressRelease.eot?#iefix') format('embedded-opentype'),
+  /* Modern Browsers */
+  url('../fonts/Conspiracy-PressRelease.woff') format('woff'),
+  /* Safari, Android, iOS */
+  url('../fonts/Conspiracy-PressRelease.ttf')  format('truetype'),
+  /* Legacy iOS */
+  url('../fonts/Conspiracy-PressRelease.svg#Conspiracy-PressRelease') format('svg');
+}
+
+.redacted-text {
+  font-family: 'Conspiracy-PressRelease', 'Courier New', Courier, monospace !important;
+}

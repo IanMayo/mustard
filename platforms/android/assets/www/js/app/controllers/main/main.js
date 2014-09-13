@@ -33,7 +33,7 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
      * @param id the mission id
      * @returns {boolean}  is-complete
      */
-    var isLocked = function (id) {
+    $scope.isLocked = function (id) {
         var res = null;
 
         // ok, lookup this id in the player achievements
@@ -68,7 +68,7 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
      * @param id
      */
     $scope.moveToMission = function (id) {
-        if (!isLocked(id)) {
+        if (!$scope.isLocked(id)) {
             $location.path('mission/' + id);
         }
     };
