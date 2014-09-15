@@ -3,12 +3,6 @@
   font-size: 10px;
 }
 
-.vizSonar .detectionPath {
-  fill: blue;
-  stroke: rgb(170, 206, 0);
-  stroke-width: 2px;
-}
-
 .vizSonar .axis path,
 .vizSonar .axis line {
   fill: none;

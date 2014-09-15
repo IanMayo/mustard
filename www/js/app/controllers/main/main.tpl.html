@@ -9,10 +9,15 @@
     <div class="container-fluid">
       <div class="panel panel-info" ng-repeat="level in levels">
         <div class="panel-heading panel-title text-center">
-          <h2>{{ level.id }} - {{ level.name }}<br/><small>{{ level.description }}</small></h2>
+          <h2 ng-class="{'redacted-text': isLockedLevel(level.id)}">
+            {{ level.id }} - {{ level.name }}<br/>
+            <small>{{ level.description }}</small>
+          </h2>
         </div>
         <div class="panel-body list-group mission-list">
-          <div ng-repeat="mission in level.missions" ng-click="moveToMission([mission.id])"
+          <div ng-repeat="mission in level.missions"
+            ng-click="moveToMission([mission.id])"
+            ng-class="{'redacted-text': isLocked(mission.id)}"
             class="text-center list-group-item mission">
             <div class="pull-right">
               <span class="glyphicon mission-status" ng-class="glyphFor([mission.id])"></span>
