@@ -28,6 +28,25 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
     var userMissions = user.getMissions();
 
 
+    /**
+     * Check if level has only "LOCKED" missions and if it's true let's show its name redacted
+     *
+     * @param id
+     * @returns {boolean}
+     */
+    $scope.isLockedLevel = function (id) {
+        var isLocked = true;
+        var level = _.findWhere($scope.player.levels, {id: id});
+
+        _.every(level.missions, function (mission) {
+            isLocked = mission.status === 'LOCKED';
+
+            return isLocked;
+        });
+
+        return isLocked;
+    };
+
     /** whether the specified mission is available to the user
      *
      * @param id the mission id
