@@ -3,7 +3,7 @@
     "name": "Recognising Ownship & third party tracks",
     "pauseOnStart": true,
     "description": "Very gentle steps in reading and interacting with the sonar.",
-    "situation" : "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings).  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
+    "situation" : "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings). You're in a scenario with a merchant, a dived submarine, and a jet-ski.  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
     "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. <br/><b>Start things moving by clicking on the Player [>] button to the left.</b>",
     "vessels": [
         {
@@ -124,6 +124,75 @@
         }
         ,
         {
+            "name": "JetSki",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Slow leg",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.93,
+                            "lng": -7.79
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                },
+                {
+                    "name": "Fast leg",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.04,
+                            "lng": -8.1
+                        }
+                    ],
+                    "height": 0,
+                    "speed": 30,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 109,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 49.93,
+                    "lng": -7.7
+                },
+                "course": 270,
+                "demCourse": 270,
+                "demSpeed": 6,
+                "speed": 6,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 30,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
             "name": "TargetA",
             "categories": {
                 "force": "WHITE",
@@ -225,10 +294,23 @@
                     "elapsed": 1200,
                     "subject": "Ownship",
                     "description" : "Select the noise trace for the dived track",
-                    "success": "Ok, well done. That's the first steps covered.",
+                    "success": "Great, you translated the bearing well",
                     "failure": "Oh dear, you clicked the wrong track. This may take some time",
                     "failureTime": "Sorry, you didn't click on the dived track in time. Are you concentrating?",
                     "narrSuccess" : "Spotted dived track"
+                },
+                {
+                    "name": "Identify jet ski",
+                    "clearAfterwards" : true,
+                    "type": "FIND_TARGET",
+                    "targetSubString": "JetSki",
+                    "elapsed": 1200,
+                    "subject": "Ownship",
+                    "description" : "We've instructed the jet ski to conduct a fast pass. Select it on the sonar when it accelerates",
+                    "success": "Ok, well done. That's the first steps covered.",
+                    "failure": "Oh dear, you clicked the wrong track. This may take some time",
+                    "failureTime": "Sorry, you didn't click on the jet ski track in time. Are you concentrating?",
+                    "narrSuccess" : "Successfully identified Jet ski on sonar"
                 }
             ]
         }

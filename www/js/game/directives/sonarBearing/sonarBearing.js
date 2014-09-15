@@ -4,7 +4,7 @@
 
 angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
-.directive('sonarBearing', ['$timeout', 'plotGraphs', function ($timeout, plotGraphs) {
+.directive('sonarBearing', ['plotGraphs', function (plotGraphs) {
     return {
         restrict: 'EA',
         scope: {
@@ -44,7 +44,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
             var pointClickCallback = function (detectionName) {
                 // 'Safe' $apply
-                $timeout(function () {
+                scope.$evalAsync(function (scope) {
                     scope.$emit('sonarTrackSelected', detectionName);
                 });
             };

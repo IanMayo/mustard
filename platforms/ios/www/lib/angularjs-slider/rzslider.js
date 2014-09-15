@@ -4,7 +4,7 @@
  * (c) Rafal Zajac <rzajac@gmail.com>
  * http://github.com/rzajac/angularjs-slider
  *
- * Version: v0.1.2
+ * Version: v0.1.6
  *
  * Licensed under the MIT license
  */
@@ -202,7 +202,7 @@ function throttle(func, wait, options) {
       this.initElemHandles();
       this.calcViewDimensions();
 
-      this.setMinAndMax();      
+      this.setMinAndMax();
       this.precision = this.scope.rzSliderPrecision === undefined ? 0 : +this.scope.rzSliderPrecision;
       this.step = this.scope.rzSliderStep === undefined ? 1 : +this.scope.rzSliderStep;
 
@@ -214,6 +214,9 @@ function throttle(func, wait, options) {
         self.bindEvents();
       });
 
+      // Recalculate slider view dimensions
+      this.scope.$on('reCalcViewDimensions', angular.bind(this, this.calcViewDimensions));
+
       // Recalculate stuff if view port dimensions have changed
       angular.element(window).on('resize', angular.bind(this, this.calcViewDimensions));
 
@@ -223,6 +226,7 @@ function throttle(func, wait, options) {
 
       var thrLow = throttle(function()
       {
+        self.setMinAndMax();
         self.updateLowHandle(self.valueToOffset(self.scope.rzSliderModel));
 
         if(self.range)
@@ -235,10 +239,21 @@ function throttle(func, wait, options) {
 
       var thrHigh = throttle(function()
       {
+        self.setMinAndMax();
         self.updateHighHandle(self.valueToOffset(self.scope.rzSliderHigh));
         self.updateSelectionBar();
         self.updateCmbLabel();
       }, 350, { leading: false });
+
+      this.scope.$on('rzSliderForceRender', function()
+      {
+        self.resetLabelsValue();
+        thrLow();
+        thrHigh();
+        self.resetSlider();
+      });
+
+      // Watchers
 
       this.scope.$watch('rzSliderModel', function(newValue, oldValue)
       {
@@ -251,6 +266,42 @@ function throttle(func, wait, options) {
         if(newValue === oldValue) return;
         thrHigh();
       });
+
+      this.scope.$watch('rzSliderFloor', function(newValue, oldValue)
+      {
+        if(newValue === oldValue) return;
+        self.resetSlider();
+      });
+
+      this.scope.$watch('rzSliderCeil', function(newValue, oldValue)
+      {
+        if(newValue === oldValue) return;
+        self.resetSlider();
+      });
+    },
+
+    /**
+     * Resets slider
+     *
+     * @returns {undefined}
+     */
+    resetSlider: function()
+    {
+      this.setMinAndMax();
+      this.calcViewDimensions();
+      this.updateCeilLab();
+      this.updateFloorLab();
+    },
+
+    /**
+     * Reset label values
+     *
+     * @return {undefined}
+     */
+    resetLabelsValue: function()
+    {
+      this.minLab.rzsv = undefined;
+      this.maxLab.rzsv = undefined;
     },
 
     /**
@@ -277,7 +328,7 @@ function throttle(func, wait, options) {
      *
      * @param {number|string} value
      * @param {jqLite} label
-     * @param {bool} useCustomTr
+     * @param {bool?} useCustomTr
      * @returns {undefined}
      */
     translateFn: function(value, label, useCustomTr)
@@ -287,7 +338,7 @@ function throttle(func, wait, options) {
       var valStr = this.customTrFn && useCustomTr ? '' + this.customTrFn(value) : '' + value,
         getWidth = false;
 
-      if(label.rzsv === undefined || label.rzsv.length != valStr.length)
+      if(label.rzsv === undefined || label.rzsv.length != valStr.length || (label.rzsv.length > 0 && label.rzsw == 0))
       {
         getWidth = true;
         label.rzsv = valStr;
@@ -724,22 +775,22 @@ function throttle(func, wait, options) {
 
       if(this.tracking !== '') { return }
 
-      // We have to do this in case the HTML where the sliders are on 
+      // We have to do this in case the HTML where the sliders are on
       // have been animated into view.
       this.calcViewDimensions();
       this.tracking = ref;
 
       pointer.addClass('active');
 
-      if(event.touches)
+      if(event.touches || (typeof(event.originalEvent) != 'undefined' && event.originalEvent.touches))
       {
-        $document.on('touchmove', angular.bind(this, this.onMove, pointer));
-        $document.on('touchend', angular.bind(this, this.onEnd));
+        $document.on('touchmove.rzslider', angular.bind(this, this.onMove, pointer));
+        $document.on('touchend.rzslider', angular.bind(this, this.onEnd));
       }
       else
       {
-        $document.on('mousemove', angular.bind(this, this.onMove, pointer));
-        $document.on('mouseup', angular.bind(this, this.onEnd));
+        $document.on('mousemove.rzslider', angular.bind(this, this.onMove, pointer));
+        $document.on('mouseup.rzslider', angular.bind(this, this.onEnd));
       }
     },
 
@@ -752,7 +803,7 @@ function throttle(func, wait, options) {
      */
     onMove: function (pointer, event)
     {
-      var eventX = event.clientX || event.touches[0].clientX,
+      var eventX = event.clientX || (typeof(event.originalEvent) != 'undefined' ? event.originalEvent.touches[0].clientX : event.touches[0].clientX),
         sliderLO = this.sliderElem.rzsl,
         newOffset = eventX - sliderLO - this.handleHalfWidth,
         newValue;
@@ -823,16 +874,18 @@ function throttle(func, wait, options) {
       this.minH.removeClass('active');
       this.maxH.removeClass('active');
 
-      if(event.touches)
+      if(event.touches || (typeof(event.originalEvent) != 'undefined' && event.originalEvent.touches))
       {
-        $document.unbind('touchmove');
-        $document.unbind('touchend');
+        $document.unbind('touchmove.rzslider');
+        $document.unbind('touchend.rzslider');
       }
       else
       {
-        $document.unbind('mousemove');
-        $document.unbind('mouseup');
+        $document.unbind('mousemove.rzslider');
+        $document.unbind('mouseup.rzslider');
       }
+
+      this.scope.$emit('slideEnded');
 
       this.tracking = '';
     }
@@ -844,7 +897,7 @@ function throttle(func, wait, options) {
 .directive('rzslider', ['Slider', function(Slider)
 {
   return {
-    restrict: 'E',
+    restrict: 'EA',
     scope: {
       rzSliderFloor: '=?',
       rzSliderCeil: '=?',
