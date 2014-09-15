@@ -7,15 +7,21 @@
 <div class="wrapper-mobile">
   <div class="container-with-scroll-mobile">
     <div class="container-fluid">
+      <div class="text-center">
+        <h2>AF Brigand</h2>
+        <p>Maritime <span class="redacted-text">Special Projects</span></p>
+        <p>12 Berth, <span class="redacted-text">East Harbour</span>, New Portsmouth <span class="redacted-text">Coalition Facility</span></p>
+      </div>
       <p><div class="pull-right">19th September 1983</div>Dr <span class="redacted-text">John Craven</span></p>
       <h3 class="redacted-text">TOP SECRET</h3>
       <h3>SUBJECT: PROJECT SUB-TRACK '90</h3>
-      <p><strong>Introduction.</strong> You will progress through the following set of missions. Missions will remain locked until prerequisite levels are complete.  Return to this document from any mission using the <strong>Back</strong> button on each page.</p>
+      <p class="redacted-text">Petty Officer Jim Stoner</p>
+      <p><strong>Introduction.</strong> Welcome aboard <strong>AF Brigand</strong>, the platform leading the critical ASW capability development pipeline.  Whilst on board AF Brigand you will progress through the series of missions presented below, each in ascending level of complexity. Missions will remain locked until prerequisite levels are complete.  Return to this document from any mission using the <strong>Back</strong> button on each page.</p>
       <p>At the foot of this document are links to view your <strong>User Profile</strong>, <strong>Game Credits (including Help)</strong>  and <strong>Game Settings</strong></p>
       <div ng-repeat="level in levels">
         <div>
           <p class="text-left lead" ng-class="{'redacted-text': isLockedLevel(level.id)}">
-            <strong>{{ level.id }}. {{ level.name }}. </strong><small>{{ level.description }}</small>
+            <strong>Level {{ level.id }}. {{ level.name }}. </strong><small>{{ level.description }}</small>
           </p>
         </div>
         <div class=" mission-list">
@@ -23,8 +29,8 @@
             ng-click="moveToMission([mission.id])"
             ng-class="{'redacted-text': isLocked(mission.id)}"
             class="text-center mission">
-            <p class="text-left"><strong>{{ mission.id }}. {{ mission.name }}. </strong><small>{{ mission.description }}
-            </small><span ng-hide="isLocked(mission.id)"  style="color:yellowgreen" class="glyphicon glyphicon-play-circle mission-status"></span></p>
+            <p class="text-left"><strong>Mission {{ mission.id }}. {{ mission.name }}. </strong><small>{{ mission.description }}
+            </small><span ng-hide="isLocked(mission.id)"  style="color:yellowgreen" class="glyphicon glyphicon-play-circle btn-lg"></span></p>
           </div>
         </div>
       </div>
