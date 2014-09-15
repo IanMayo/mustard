@@ -30,7 +30,7 @@
                             },
                             {
                                 "name": "Identify jet ski",
-                                "description": "We've instructed the jet ski to conduct a fast pass. Select it on the sonar hwen it accelerates",
+                                "description": "We've instructed the jet ski to conduct a fast pass. Select it on the sonar when it accelerates",
                                 "type": "FIND_TARGET"
                             }
                         ]
@@ -64,8 +64,8 @@
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Select ambiguous bearing on SE track",
-                                "description": "Select the ambiguous bearing for the SE track",
+                                "name": "Select True bearing on SE track",
+                                "description": "Select the True bearing for the SE track",
                                 "type": "FIND_TARGET"
                             }
                         ]
@@ -140,7 +140,7 @@
                             },
                             {
                                 "name": "Spot ambiguous side-lobe on Merchant",
-                                "description": "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                                "description": "Select a side lobe on the merchant's ambiguous track as it gets closer",
                                 "type": "FIND_TARGET"
                             },
                             {
@@ -282,7 +282,7 @@
                         "children": [
                             {
                                 "name": "Gain sonar contact with Fishing Vessel",
-                                "description": "Gain contact on the fishing vessel West of you within 35 minutes",
+                                "description": "Gain contact on the fishing vessel East of you within 35 minutes",
                                 "type": "GAIN_CONTACT"
                             },
                             {
@@ -311,7 +311,7 @@
     {
         "id": "3",
         "name": "Advance to contact",
-        "description": "Engage with potential adversaries in relatively benign area of theatre",
+        "description": "Engage with potential adversaries in a relatively benign region adjacent to theatre of operations",
         "missions": [
             {
                 "id": "3a",

@@ -258,7 +258,7 @@
                 "clearAfterwards" : true,
                 "subject": "Ownship",
                 "targetSubString": "TargetA_side[12]_b",
-                "description" : "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                "description" : "Select a side lobe on the merchant's ambiguous track as it gets closer",
                 "success": "That was easy. Soon, Ownship is going to make a sharp turn to Starboard.  Notice how the Merchant disappears in the Ownship bow null.",
                 "failure": "Come on, it's not a very cluttered track",
                 "narrSuccess" : "Identified merchant track"
