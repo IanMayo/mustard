@@ -306,7 +306,7 @@
                     "targetSubString": "JetSki",
                     "elapsed": 1200,
                     "subject": "Ownship",
-                    "description" : "We've instructed the jet ski to conduct a fast pass. Select it on the sonar hwen it accelerates",
+                    "description" : "We've instructed the jet ski to conduct a fast pass. Select it on the sonar when it accelerates",
                     "success": "Ok, well done. That's the first steps covered.",
                     "failure": "Oh dear, you clicked the wrong track. This may take some time",
                     "failureTime": "Sorry, you didn't click on the jet ski track in time. Are you concentrating?",
