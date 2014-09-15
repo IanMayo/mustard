@@ -40,13 +40,13 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  font-family: "Courier New", Courier, monospace;  /* give most of the app a type-writer style */
+  /* give most of the app a type-writer style */
+  font-family: 'Conspiracy', "Courier New", Courier, monospace;
 }
 
-/** give the game (and review page) the default font */
-.mission-simulator
-{
-  font-family: "Helvetic Neue", Helvetica, Arial;
+/* give the game (and review page) the default font */
+.mission-simulator {
+  font-family: "Helvetic Neue", Helvetica, Arial, monospace;
 }
 
 /** give the leaflet map a plain, sea-colored background */

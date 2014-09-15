@@ -34,6 +34,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/TorpedoLaunch.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/bootstrap.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/fonts.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/index.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/leaflet.css \
@@ -51,6 +52,18 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/marker-icon-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/marker-shadow.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Bold.eot \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Bold.svg \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Bold.ttf \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Bold.woff \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-PressRelease.eot \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-PressRelease.svg \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-PressRelease.ttf \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-PressRelease.woff \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Regular.eot \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Regular.svg \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Regular.ttf \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/Conspiracy-Regular.woff \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/glyphicons-halflings-regular.eot \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/glyphicons-halflings-regular.svg \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/fonts/glyphicons-halflings-regular.ttf \
