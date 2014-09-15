@@ -577,6 +577,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/rzslider.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/rzslider.less \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/demo/index.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/demo/tabs.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.min.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.min.js \
