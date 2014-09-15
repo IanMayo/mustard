@@ -1,6 +1,6 @@
 angular.module('subtrack90.game.timeBearingDisplayDirective', ['subtrack90.game.spatialViewDirective'])
 
-.directive('timeBearingDisplay', ['$timeout', function ($timeout) {
+.directive('timeBearingDisplay', function () {
     return {
         restrict: 'E',
         scope: {
@@ -41,9 +41,10 @@ angular.module('subtrack90.game.timeBearingDisplayDirective', ['subtrack90.game.
                             x: {axisLabelFontSize: 10},
                             y: {axisLabelFontSize: 10}
                         },
+
                         pointClickCallback: function (event, point) {
                             // 'Safe' $apply
-                            $timeout(function () {
+                            scope.$evalAsync(function (scope) {
                                 scope.$emit('sonarTrackSelected', point.name);
                             });
                         }
@@ -92,4 +93,4 @@ angular.module('subtrack90.game.timeBearingDisplayDirective', ['subtrack90.game.
             });
         }
     };
-}]);
+});

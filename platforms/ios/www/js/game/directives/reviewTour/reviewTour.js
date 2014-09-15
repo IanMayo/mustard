@@ -4,7 +4,7 @@
 
 angular.module('subtrack90.game.reviewTourDirective', ['subtrack90.game.leafletMapDirective'])
 
-.directive('reviewTour', ['$timeout', function ($timeout) {
+.directive('reviewTour', function () {
     return {
         restrict: 'EA',
         controller: ['$scope', function ($scope) {
@@ -15,7 +15,7 @@ angular.module('subtrack90.game.reviewTourDirective', ['subtrack90.game.leafletM
 
             var changeTime = function () {
                 var step = tour.getCurrentStep();
-                $timeout(function () {
+                $scope.$evalAsync(function ($scope) {
                     $scope.reviewState.reviewTime = narrativeSteps[step].time;
 
                     stepChangedListener(narrativeSteps[step]);
@@ -85,7 +85,7 @@ angular.module('subtrack90.game.reviewTourDirective', ['subtrack90.game.leafletM
             };
         }]
     }
-}])
+})
 
 .directive('breakReviewTour', function () {
     return {

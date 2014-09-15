@@ -1,6 +1,6 @@
 angular.module('subtrack90.game.fireWeaponDirective', [])
 
-.directive('fireWeapon', ['$timeout', function ($timeout) {
+.directive('fireWeapon', function () {
     return {
         restrict: 'EA',
         scope: {
@@ -53,37 +53,35 @@ angular.module('subtrack90.game.fireWeaponDirective', [])
             scope.doFireStraight = function () {
 
                 // 'Safe' $apply
-                $timeout(function () {
+                scope.$evalAsync(function (scope) {
                     if (scope.straightCount > 0) {
                         scope.straightCount--;
                         fireWeapon(scope.ownship.state, scope.ownship.state.course, straightWeapon.template);
                     }
                 });
             };
+
             scope.doFireSonar = function () {
 
                 // 'Safe' $apply
-                $timeout(function () {
+                scope.$evalAsync(function (scope) {
+                    // ok, find the last bearing on the relevant track
+                    var dets = scope.ownship.newDetections;
 
-                        // ok, find the last bearing on the relevant track
-                        var dets = scope.ownship.newDetections;
+                    // find the one for the releveant track
+                    var thisD = _.find(dets, function (det) {
+                        return det.trackId == scope.detectionTrackId
+                    });
 
-                        // find the one for the releveant track
-                        var thisD = _.find(dets, function (det) {
-                            return det.trackId == scope.detectionTrackId
-                        });
-
-                        if (thisD) {
-                            if (scope.sonarCount > 0) {
-                                scope.sonarCount--;
-                                fireWeapon(scope.ownship.state, thisD.bearing, sonarWeapon.template);
-                            }
+                    if (thisD) {
+                        if (scope.sonarCount > 0) {
+                            scope.sonarCount--;
+                            fireWeapon(scope.ownship.state, thisD.bearing, sonarWeapon.template);
                         }
-                        else {
-                            scope.enableSonarFire = false;
-                        }
+                    } else {
+                        scope.enableSonarFire = false;
                     }
-                );
+                });
             };
 
 
@@ -112,4 +110,4 @@ angular.module('subtrack90.game.fireWeaponDirective', [])
             }
         }
     };
-}]);
+});
