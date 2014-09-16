@@ -52,7 +52,9 @@ angular.module('subtrack90.app.user', [
 
         if (mission) {
             if (mission.status !== 'SUCCESS') {
-                // change the status only if a mission was not completed successfully
+                // change the status only if a mission was not completed successfully,
+                // to prevent the status changing to "failed" if a player
+                // re-plays are previously completed mission
                 mission.status = missionStatus;
                 saveUserToLocal(user);
             }
