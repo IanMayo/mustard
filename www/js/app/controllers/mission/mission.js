@@ -12,12 +12,11 @@ angular.module('subtrack90.app.mission', [])
 
     $scope.mission = mission;
 
-    $scope.missionAction = function () {
-        if (missionStatus === 'SUCCESS' || $scope.failedMission()) {
-            return 'Replay';
-        } else {
-            return 'Play';
-        }
+    /** has this mission been attempted yet?
+     * @returns {string}
+     */
+    $scope.missionAttempted = function () {
+        return (missionStatus === 'SUCCESS' || $scope.failedMission());
     };
 
     $scope.moveToMission = function (missionUrl) {
