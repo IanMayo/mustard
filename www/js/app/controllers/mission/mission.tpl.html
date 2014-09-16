@@ -26,7 +26,7 @@
 
     </div>
     <div class="container-fluid text-center">
-      <button ng-click="moveToMission([mission.url])" type="button" class="btn btn-danger btn-lg">Play</button>
+      <button ng-click="moveToMission([mission.url])" type="button" class="btn btn-danger btn-lg">{{missionAction()}}</button>
       <button ng-click="doReview([mission.url])" type="button" ng-disabled="!reviewEnabled()"
         class="btn btn-default btn-lg btn-disabled">Review
       </button>
