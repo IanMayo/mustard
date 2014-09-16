@@ -13,7 +13,7 @@ angular.module('subtrack90.app.mission', [])
     $scope.mission = mission;
 
     /** has this mission been attempted yet?
-     * @returns {string}
+     * @returns {boolean}
      */
     $scope.missionAttempted = function () {
         return (missionStatus === 'SUCCESS' || $scope.failedMission());

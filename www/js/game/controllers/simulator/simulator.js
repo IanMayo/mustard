@@ -817,7 +817,8 @@ angular.module('subtrack90.game.simulator', [
 
         $scope.goBack = function () {
             // mark this mission as failed, side-effect is that
-            // mission page knows to show "Replay" instead of "Play" button
+            // mission page knows mission has already been attempted
+            // (and can show "Replay" instead of "Play")
             user.missionFailed($scope.missionID);
 
             window.history.back();
