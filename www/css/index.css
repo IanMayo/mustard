@@ -55,12 +55,12 @@ body {
     background-color:#b5d0d0;
 }
 
-#missionAccordion .panel-group{
+#missionOrders .panel-group{
   height:400px;
   overflow-y: auto;
 }
 
-#missionAccordion .panel-body{
+#missionOrders .panel-body{
   overflow-y: visible;
 }
 
