@@ -20,17 +20,17 @@
       <p>At the foot of this document are links to view your <strong>User Profile</strong>, <strong>Game Credits (including Help)</strong>  and <strong>Game Settings</strong></p>
       <div ng-repeat="level in levels">
         <div>
-          <p class="text-left lead" ng-class="{'redacted-text': isLockedLevel(level.id)}">
-            <strong>Level {{ level.id }}. {{ level.name }}. </strong><small>{{ level.description }}</small>
-          </p>
+          <h4 class="text-left mission-level" ng-class="{'redacted-text': isLockedLevel(level.id)}">
+            {{ level.id }}. {{ level.name }}. <small>{{ level.description }}</small>
+          </h4>
         </div>
-        <div class=" mission-list">
+        <div class="mission-list">
           <div ng-repeat="mission in level.missions"
             ng-click="moveToMission([mission.id])"
             ng-class="{'redacted-text': isLocked(mission.id)}"
             class="text-center mission">
-            <p class="text-left"><strong>Mission {{ mission.id }}. {{ mission.name }}. </strong><small>{{ mission.description }}
-            </small><span ng-hide="isLocked(mission.id)"  style="color:yellowgreen" class="glyphicon glyphicon-play-circle btn-lg"></span></p>
+            <h5 class="text-left"><strong>{{ mission.id }}. {{ mission.name }}. </strong><small>{{ mission.description }}
+            </small><span ng-hide="isLocked(mission.id)" style="color:yellowgreen" class="glyphicon glyphicon-play-circle mission-glyph"></span></h5>
           </div>
         </div>
       </div>
