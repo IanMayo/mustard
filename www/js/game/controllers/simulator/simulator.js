@@ -170,17 +170,19 @@ angular.module('subtrack90.game.simulator', [
          */
         var meters = {
             model: new FPSMeter($('#modelMeter')[0], {
-                left: '25%',
+                left: '00%',
                 top: '60%',
                 margin: '0 0 0 0'
             }),
             map: new FPSMeter($('#mapMeter')[0], {
-                left: '50%',
-                margin: '10px 0 0 0'
+                left: '05%',
+                top: '80%',
+                margin: '0 0 0 0'
             }),
             sonar: new FPSMeter($('#sonarMeter')[0], {
-                left: '20%',
-                margin: '10px 0 0 0'
+                left: '80%',
+                top: '80%',
+                margin: '0 0 0 0'
             })
         };
 
@@ -816,6 +818,11 @@ angular.module('subtrack90.game.simulator', [
         });
 
         $scope.goBack = function () {
+            // mark this mission as failed, side-effect is that
+            // mission page knows mission has already been attempted
+            // (and can show "Replay" instead of "Play")
+            user.missionFailed($scope.missionID);
+
             window.history.back();
         };
 

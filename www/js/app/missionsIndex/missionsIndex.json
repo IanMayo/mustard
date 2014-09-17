@@ -9,6 +9,11 @@
                 "name": "Recognising Ownship & third party tracks",
                 "description": "Very gentle steps in reading and interacting with the sonar.",
                 "situation": "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings). You're in a scenario with a merchant, a dived submarine, and a jet-ski.  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
+                "forces": {
+                    "enemy": "HULL 1214",
+                    "friendly": "AF Brigand",
+                    "neutral": "JetSki, MV Stukard"
+                },
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
@@ -44,6 +49,11 @@
                 "name": "Understanding bearing ambiguity in surface contacts",
                 "description": "Using easy surface contacts to highlight bearing ambiguity",
                 "situation": "The training array now shows ambiguous bearings, you're going to be learning which is the true bearing to each target",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand",
+                    "neutral": "TargetB, TargetA"
+                },
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
@@ -79,6 +89,11 @@
                 "name": "Using ownship manoeuvres to determine ambiguous bearing",
                 "description": "Using ownship manoeuvres to determine bearing ambiguity",
                 "situation": "Your sonar is still showing ambiguous contacts.  You now need to start practicing against dived targets - where visual sightings aren't available",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "TargetB"
+                },
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
@@ -119,6 +134,11 @@
                 "name": "Understanding noise levels",
                 "description": "Observing how changing Signal to Noise Ratios are shown in the sonar display",
                 "situation": "The simulated tracks you're encountering here will now start making speed changes",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand",
+                    "neutral": "TargetA"
+                },
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
@@ -164,6 +184,11 @@
                 "name": "Unsteady Array",
                 "description": "The effects of the array being unsteady",
                 "situation": "Ok, you're ready for a real puzzler. We're going to switch off the array heading sensors, so you will lose contact during and after each Ownship turn.  There's a dived target in the scenario, and we want you to track it.",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Sonar Qualification",
@@ -206,6 +231,11 @@
                 "name": "Learning ship control, the hard way",
                 "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
                 "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand, Support Platform",
+                    "neutral": "FisherA, FisherB, FisherC, FisherD, FisherE"
+                },
                 "objectives": [
                     {
                         "name": "Ship Control exam",
@@ -236,6 +266,11 @@
                 "name": "Handling ownship noise levels",
                 "description": "Track a quiet but relatively fast moving friendly dived target.",
                 "situation": "A friendly SSN is transiting through our waters. We're going to experiment with tracking him.",
+                "forces": {
+                    "enemy": "Friendly",
+                    "friendly": "AF Brigand",
+                    "neutral": "FisherA"
+                },
                 "objectives": [
                     {
                         "name": "Spring Drift Training",
@@ -256,6 +291,11 @@
                 "name": "Determine target course at CPA",
                 "description": "How to use the bearing to target at CPA to approximate his course",
                 "situation": "We have to covertly indicate the target course to a third-party MPA, by passing a marker buoy at the same course as the target vessel",
+                "forces": {
+                    "enemy": "SubTarget",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Covert messaging",
@@ -276,6 +316,11 @@
                 "name": "Handling bow null",
                 "description": "Effective localisation, despite bow null",
                 "situation": "Your vessel obscures targets dead ahead of you, resulting in a bow null.  But, with the correct techniques you can still perform continuous tracking on a sonar contact.  In a benign environment you are going to track two types of vessel.",
+                "forces": {
+                    "enemy": "SubTarget",
+                    "friendly": "AF Brigand",
+                    "neutral": "FisherA"
+                },
                 "objectives": [
                     {
                         "name": "Spring Drift Training",
@@ -318,6 +363,11 @@
                 "name": "Initial Ranging",
                 "description": "An introduction to passive ranging",
                 "situation": "To qualify to conduct TMA against a dived target, you first need to practice on a surface target - both to valid yourself and the TMA computer",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand, Target",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -342,6 +392,11 @@
                 "id": "3b",
                 "name": "Successive ranging",
                 "description": "Maintain a target solution using a series of ranging manoeuvres",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -366,6 +421,11 @@
                 "id": "3c",
                 "name": "Subtle turns",
                 "description": "Conducting ranging using small manoeuvres",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -390,6 +450,11 @@
                 "id": "3d",
                 "name": "Lay in wait",
                 "description": "Use passive tracking to predict target route",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -422,6 +487,11 @@
                 "name": "Familiarise with area of operations",
                 "description": "Recognising a range of targets in the area",
                 "situation": "Before the HVU reaches our area of operations, we have to learn more about what's out there.  We've heard talk that an enemy submarine is shadowing merchant shipping. We don't have sufficient ROE to use weapons, but try to intimidate it with a close pass.",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "Merchant"
+                },
                 "objectives": [
                     {
                         "name": "Find submarine",
@@ -447,6 +517,11 @@
                 "name": "Influence evasive SM",
                 "description": "Take control of the Ops Area by handing on an evasive SM to Airborne assets",
                 "situation": "Now that the dived SM knows who is boss, we're going to push him into an area of dense MPA coverage, so that we're free to transit to escort the incoming HVU.  Intel on his SOPs is that each time he detects us he will head out on the opposite bearing for around 15 minutes.",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Find submarine",
@@ -484,6 +559,11 @@
                 "id": "6d",
                 "name": "Advanced Ambiguity",
                 "description": "More advanced ambiguous bearings",
+                "forces": {
+                    "enemy": "Quiet Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -508,6 +588,11 @@
                 "id": "6a",
                 "name": "Learner Driver",
                 "description": "Learn to drive, on the tracked range",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "Survey Vessel, Support Barge"
+                },
                 "objectives": [
                     {
                         "name": "Driving Exam",
@@ -547,6 +632,11 @@
                 "id": "6a",
                 "name": "Elementary Self Noise",
                 "description": "An introduction to self-noise",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -571,6 +661,11 @@
                 "id": "6b",
                 "name": "Full Self Noise",
                 "description": "Full self-noise characteristics",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -595,6 +690,11 @@
                 "id": "6b",
                 "name": "White Shipping",
                 "description": "Handling multiple ships in the training area",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "Merchant, Fisherman"
+                },
                 "objectives": [
                     {
                         "name": "Find submarine",
@@ -619,6 +719,11 @@
                 "id": "6b",
                 "name": "Reading Bearings",
                 "description": "Learn to trail a bearing",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -643,6 +748,11 @@
                 "id": "6c",
                 "name": "Advanced Self Noise",
                 "description": "Advanced Self Noise",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",
@@ -667,6 +777,11 @@
                 "id": "6c",
                 "name": "Handling ambiguity",
                 "description": "Intro to ambiguous bearings",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -691,6 +806,11 @@
                 "id": "6d",
                 "name": "Self Noise Extra",
                 "description": "More challenging self noise",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",
@@ -715,6 +835,11 @@
                 "id": "6g",
                 "name": "Weapons Intro",
                 "description": "First use of weapons",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -739,6 +864,11 @@
                 "id": "6h",
                 "name": "Fleeing Target",
                 "description": "Trailing a fleeing target",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",
@@ -763,6 +893,11 @@
                 "id": "6j",
                 "name": "Attacking Target",
                 "description": "Evading an attacking target",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",
@@ -794,6 +929,11 @@
                 "id": "7b",
                 "name": "Quick win",
                 "description": "Test mission - succeeds quickly",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -818,6 +958,11 @@
                 "id": "7c",
                 "name": "Quick fail",
                 "description": "Test mission - fails quickly",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & keep contact",
@@ -852,6 +997,11 @@
                 "id": "7d",
                 "name": "Test mission - Placeholder",
                 "description": "Plain mission - used to test onward flow from succeed/fail",
+                "forces": {
+                    "enemy": "Target",
+                    "friendly": "AF Brigand",
+                    "neutral": "-Nil-"
+                },
                 "objectives": [
                     {
                         "name": "Gain & maintain contact",

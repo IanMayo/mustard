@@ -68,7 +68,7 @@
             }
         },
         {
-            "name": "TargetB",
+            "name": "HULL 1214",
             "categories": {
                 "force": "RED",
                 "environment": "SUBSURFACE",
@@ -193,7 +193,7 @@
             }
         },
         {
-            "name": "TargetA",
+            "name": "MV Stukard",
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
@@ -280,7 +280,7 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "clearAfterwards" : true,
-                    "target": "TargetA",
+                    "target": "MV Stukard",
                     "description" : "Select the noise trace for the vessel to the South West of you.",
                     "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
                     "failure": "This should have been easy - it's the only other bearing on there!",
@@ -290,7 +290,7 @@
                     "name": "Identify dived submarine track",
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
-                    "target": "TargetB",
+                    "target": "HULL 1214",
                     "elapsed": 1200,
                     "subject": "Ownship",
                     "description" : "Select the noise trace for the dived track",
