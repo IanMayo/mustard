@@ -55,13 +55,17 @@ body {
     background-color:#b5d0d0;
 }
 
-#missionAccordion .panel-group{
+#missionOrders .panel-group{
   height:400px;
   overflow-y: auto;
 }
 
-#missionAccordion .panel-body{
+#missionOrders .panel-body{
   overflow-y: visible;
+}
+
+#situation b{
+    color: #e55;
 }
 
 /* indent the list of objectives */
@@ -74,7 +78,6 @@ body {
     list-style-type: none;
     padding-left:20px;
 }
-
 
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {
