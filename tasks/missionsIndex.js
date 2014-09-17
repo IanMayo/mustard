@@ -142,6 +142,40 @@ module.exports = function(grunt) {
 
                 var fileName = getFileNameWithoutExtension(mission._url_);
 
+                // produce a list of forces in the mission
+                var enemyF = [];
+                var friendlyF = [];
+                var neutralF = [];
+                mission.vessels.forEach(function (vessel) {
+                    var thisF = vessel.categories.force;
+                    var thisName = vessel.name;
+
+                    // rename ownship to AF Brigand
+                    if(thisName == "Ownship"){
+                        thisName = "AF Brigand"
+                    }
+
+                    // see which force it belongs to
+                    switch(thisF){
+                        case "BLUE":
+                            friendlyF.push(thisName);
+                            break;
+                        case "RED":
+                            enemyF.push(thisName);
+                            break;
+                        default:
+                            neutralF.push(thisName);
+                            break;
+                    }
+                });
+
+                var forces = {};
+                var nilPhrase = '-Nil-';
+                forces.enemy =  enemyF.length ? enemyF.join(', ') : nilPhrase;
+                forces.friendly = friendlyF.length ? friendlyF.join(', ') : nilPhrase;
+                forces.neutral = neutralF.length ? neutralF.join(', ') : nilPhrase;
+
+
                 // produce a trimmed down list of mission objectives, just containing the names and descriptions
                 var objectives = [];
                 mission.objectives.forEach(function (objective) {
@@ -181,6 +215,7 @@ module.exports = function(grunt) {
                     name: mission.name,
                     description: mission.description,
                     situation: mission.situation,
+                    forces: forces,
                     objectives: objectives,
                     url: fileName,
                     guidanceUrl: guidanceDir + fileName + '.html'
