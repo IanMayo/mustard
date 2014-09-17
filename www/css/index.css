@@ -64,6 +64,10 @@ body {
   overflow-y: visible;
 }
 
+#missionOrders #situation b{
+    color: #e55;
+}
+
 /* indent the list of objectives */
 #objectiveList{
   padding-left:20px;
@@ -74,7 +78,6 @@ body {
     list-style-type: none;
     padding-left:20px;
 }
-
 
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {

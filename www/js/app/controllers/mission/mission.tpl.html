@@ -6,7 +6,7 @@
         <accordion-group heading="Op Order" is-open="!failedMission()">
           <h5>1. Situation</h5>
           <p><span>Enemy Forces: </span><strong>{{ mission.forces.enemy }}</strong><span> Friendly Forces: </span><strong>{{ mission.forces.friendly }}</strong><span> Neutral: </span><strong>{{ mission.forces.neutral }}</strong></p>
-          <span data-ng-bind-html="mission.situation"></span>
+          <span id="situation" data-ng-bind-html="mission.situation"></span>
           <h5>2. Mission</h5>
           {{mission.description}}
           <h5>3. Execution</h5>
