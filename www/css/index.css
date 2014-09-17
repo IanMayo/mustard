@@ -64,6 +64,32 @@ body {
   overflow-y: visible;
 }
 
+/* show click cursor for missions */
+.mission-list div {
+    cursor: pointer;
+}
+
+/* don't show "click" cursor for redacted missions */
+.mission-list .redacted-text{
+    cursor: text;
+}
+
+.mission-level small, .mission-list small{
+    color: black;
+}
+
+/* make the "play" button to the right of the mission nice & clear */
+.mission-glyph {
+    font-size: 18px;
+ }
+
+.mission-level{
+    margin-top: 1.5em;
+}
+
+
+
+/* if the situation has <b> bold text, we really want to make the player aware of it */
 #situation b{
     color: #e55;
 }
