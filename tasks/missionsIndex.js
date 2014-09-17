@@ -151,7 +151,7 @@ module.exports = function(grunt) {
                     var thisName = vessel.name;
 
                     // rename ownship to AF Brigand
-                    if(thisName == "Ownship"){
+                    if(thisName === "Ownship"){
                         thisName = "AF Brigand"
                     }
 
