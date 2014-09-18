@@ -4,8 +4,8 @@
 
 angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDisplayDirective'])
 
-.directive('soundAtSecond', ['$sce', 'timeAccelerated', '$interval',
-    function ($sce, timeAccelerated, $interval) {
+.directive('soundAtSecond', ['$sce', 'timeAccelerated',
+    function ($sce, timeAccelerated) {
     return {
         restrict: 'EA',
         replace: true,
@@ -15,36 +15,20 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
             second: '@',
             src: '@'
         },
-        template: "<div><audio><source src=\"{{getAudioUrl()}}\" type=\"audio/mpeg\">" +
+        template: "<audio><source src=\"{{getAudioUrl()}}\" type=\"audio/mpeg\">" +
             "Your browser does not support the audio tag. " +
-            "</audio><span class=\"label label-warning\" style='margin-left: 10px'>{{countdownLabel}}</span></div>",
+            "</audio>",
         link: function (scope, element) {
             scope.getAudioUrl = function () {
                 return $sce.trustAsResourceUrl('audio/' + scope.src);
             };
 
-            scope.countdownLabel = 'Wait alarm sound...';
-
             var clearWatchingTime = scope.$watch('time', function (millisec) {
                 if (millisec / timeAccelerated.current() < parseInt(scope.second) * parseInt(scope.timeStep)) {
                     clearWatchingTime();
-                    element.children()[0].play();
-                    countdown();
+                    element[0].play();
                 }
             });
-
-            var countdown = function () {
-                var startValue = parseInt(scope.second);
-                scope.countdownLabel = startValue;
-
-                var interval = $interval(function () {
-                    startValue = startValue - 1;
-                    scope.countdownLabel = startValue;
-                    if (!scope.countdownLabel) {
-                        $interval.cancel(interval);
-                    }
-                }, 1000);
-            }
         }
     }
 }])
