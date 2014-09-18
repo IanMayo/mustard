@@ -1,4 +1,5 @@
 angular.module('subtrack90', [
+    'ngCordova',
     'ngRoute',
     'ngTouch',
     'subtrack90.cordova',
@@ -26,6 +27,7 @@ angular.module('subtrack90', [
  * SPLASH_ON_LOGIN & SPLASH_ON_MAIN these are created for Ian's splash screen testing
  */
 .constant('APP_DEBUG', true)
+.constant('IS_CORDOVA', window.cordova)
 .constant('IS_MOBILE', Modernizr.touch)
 .constant('SPLASH_ON_LOGIN', true)
 .constant('SPLASH_ON_MAIN', !!window.cordova)
