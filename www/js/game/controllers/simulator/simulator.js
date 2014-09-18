@@ -22,7 +22,7 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.elementVisibility',
     'subtrack90.app.user',
     'subtrack90.game.sonarBearing',
-    'subtrack90.game.soundAtSecond',
+    'subtrack90.game.warningAboutTimer',
     'ngDraggable'
 ])
 
