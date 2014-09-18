@@ -12,6 +12,13 @@ angular.module('subtrack90.app.mission', [])
 
     $scope.mission = mission;
 
+    /** has this mission been attempted yet?
+     * @returns {boolean}
+     */
+    $scope.missionAttempted = function () {
+        return (missionStatus === 'SUCCESS' || $scope.failedMission());
+    };
+
     $scope.moveToMission = function (missionUrl) {
         $location.path('/game/mission/' + missionUrl);
     };

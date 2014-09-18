@@ -32,6 +32,8 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Alarm.mp3 \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/DarkNoise.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/TorpedoLaunch.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/bootstrap.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/fonts.css \
@@ -419,6 +421,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Marker.Rotate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ngDraggable.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ui-bootstrap-0.10.0.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ui-bootstrap-tpls-0.10.0.min.js \
@@ -666,7 +669,11 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr/modernizr.custom.93820.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova/ng-cordova.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www/nativeaudio.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www/splashscreen.js \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/AndroidManifest.xml \

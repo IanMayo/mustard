@@ -77,10 +77,19 @@
         <button class="btn btn-warning btn-lg" ng-click="showSplash()">Show Splash Screen</button>
       </div>
 
-        <div>
-            <h4>Mission Schema</h4>
-            <a href="js/game/scenarios/schemas/docson-master/index.html#../mission.json" class="btn btn-lg btn-primary " role="button">View schema</a>
-        </div>
+      <div>
+        <h4>Mission Schema</h4>
+        <a href="js/game/scenarios/schemas/docson-master/index.html#../mission.json"
+           class="btn btn-lg btn-primary " role="button">View schema</a>
+      </div>
+
+      <div ng-init="preloadSounds()">
+        <h4>Sounds</h4>
+        <button class="btn btn-info btn-lg" ng-click="playTorpedoLaunch()">Torpedo Launch!</button>
+        <button class="btn btn-info btn-lg" ng-click="playAlarm()">Alarm!</button>
+        <button class="btn btn-info btn-lg" ng-click="playMusic()">Background Noise</button>
+        <button class="btn btn-info btn-lg" ng-click="stopMusic()">Stop Background Noise</button>
+      </div>
 
     </div>
   </div>

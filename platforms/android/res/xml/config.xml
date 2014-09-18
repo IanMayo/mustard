@@ -5,6 +5,9 @@
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
+    <feature name="NativeAudio">
+        <param name="android-package" value="de.neofonie.cordova.plugin.nativeaudio.NativeAudio" />
+    </feature>
     <name>SubTrack 90</name>
     <description>
         Open Source (MIT License) mobile app to gamify Sonar best practices.

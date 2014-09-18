@@ -56,7 +56,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 var detectionsPoints = _.rest(detections.detections);
                 _.each(detectionsPoints, function (point, index) {
                     detectionsAssociatedWithLabels.push({
-                        name: detections.tracks[index],
+                        trackName: detections.tracks[index],
                         date: currentTime,
                         degree: point,
                         strength: lineStroke
