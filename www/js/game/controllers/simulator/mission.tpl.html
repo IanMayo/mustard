@@ -1,5 +1,6 @@
 <div data-ng-controller="MissionSimulatorCtrl" class="mission-simulator">
   <div class="container-fluid time-bearing-spatial-container">
+    <div data-warning-background class="warning-background" data-time="gameState.remaining" data-second="5"></div>
     <div class="col-xs-5 col-md-5 time-bearing-container">
       <div id="sonarMeter"></div>
       <sonar-bearing class="sonarBearing" class="time-bearing-display" data-timer="{{gameState.simulationTime}}"></sonar-bearing>
