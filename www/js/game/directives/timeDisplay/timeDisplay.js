@@ -6,8 +6,12 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
 })
 
 .factory('timeAccelerated', ['timeDisplayConfig', function (timeDisplayConfig) {
-    var accelerating = timeDisplayConfig.initialAccelRate;
+    var accelerating;
+        
     return {
+        init: function () {
+            accelerating = timeDisplayConfig.initialAccelRate;
+        },
         update: function (value) {
             accelerating = value;
         },
@@ -88,6 +92,8 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
                     }
                 });
             };
+
+            timeAccelerated.init();
 
             if (scope.timerPaused) {
                 // Set time display to "pause" state on start
