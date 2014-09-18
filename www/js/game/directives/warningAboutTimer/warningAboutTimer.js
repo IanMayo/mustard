@@ -11,20 +11,19 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
         replace: true,
         scope: {
             time: '=',
-            timeStep: '@',
-            second: '@',
-            src: '@'
+            timeStep: '&',
+            play: '&'
         },
         template: "<audio><source src=\"{{getAudioUrl()}}\" type=\"audio/mpeg\">" +
             "Your browser does not support the audio tag. " +
             "</audio>",
         link: function (scope, element) {
             scope.getAudioUrl = function () {
-                return $sce.trustAsResourceUrl('audio/' + scope.src);
+                return $sce.trustAsResourceUrl('audio/' + scope.play().track);
             };
 
             var clearWatchingTime = scope.$watch('time', function (millisec) {
-                if (millisec / timeAccelerated.current() < parseInt(scope.second) * parseInt(scope.timeStep)) {
+                if (millisec / timeAccelerated.current() < parseInt(scope.play().inSecond) * scope.timeStep()) {
                     clearWatchingTime();
                     element[0].play();
                 }
@@ -38,12 +37,12 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
         restrict: 'EA',
         scope: {
             time: '=',
-            timeStep: '@',
-            second: '@'
+            timeStep: '&',
+            warn: '&'
         },
         link: function (scope, element) {
             var clearWatchingTime = scope.$watch('time', function (millisec) {
-                if (millisec / timeAccelerated.current() < parseInt(scope.second) * parseInt(scope.timeStep)) {
+                if (millisec / timeAccelerated.current() < parseInt(scope.warn().inSecond) * scope.timeStep()) {
                     clearWatchingTime();
                     element.addClass('play-warning');
                 }
