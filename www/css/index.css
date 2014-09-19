@@ -105,9 +105,11 @@ body {
     padding-left:20px;
 }
 
+/** display the mission name at the top of the objectives list */
 #objectives-header{
     border-bottom: solid #888 2px;
     margin-bottom:5px;
+    font-weight: bold;
 }
 
 /** for the leaflet mouse location  */
