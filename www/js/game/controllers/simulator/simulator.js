@@ -50,6 +50,12 @@ angular.module('subtrack90.game.simulator', [
      */
     $scope.missionID = scenario.id;
 
+    /** the name of this mission
+     *
+     * @type {String}
+     */
+    $scope.missionName = scenario.name;
+
     /**
      * State of simulation process on start
      * @type {Boolean}
