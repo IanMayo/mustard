@@ -107,8 +107,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // just do a check for time remaining
                 if (objective.stopTime) {
                     // ok, how long is remaiing?
-                    var remaining = objective.stopTime - gameState.simulationTime;
-                    gameState.remaining = geoMath.formatMillis(remaining);
+                    gameState.remaining = objective.stopTime - gameState.simulationTime;
                 }
                 else {
                     delete gameState.remaining;

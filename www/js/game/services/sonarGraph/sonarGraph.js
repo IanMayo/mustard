@@ -240,7 +240,8 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
                 .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
                 .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)))
-                .attr('class', name);
+                .attr('class', name)
+                .attr('detection-name', detectionPoint.trackName);
         }
 
         /**
@@ -255,27 +256,10 @@ angular.module('subtrack90.game.sonarGraph', [])
                     // add group element
                     var group = gMain.append('g')
                         .attr('class', 'detectionPath ' + name)
-                        .attr('detection-name', name);
+                        .attr('detection-name', detection.trackName);
 
                     // bind click delegate handler
-                    group.on('click', function () {
-                        var detectionName;
-                        if(event.target.correspondingUseElement) {
-                            // <use> element selected
-                            detectionName = event.target.correspondingUseElement.getAttribute('class');
-                        } else if (event.target.getAttribute) {
-                            if ('use' === event.target.tagName.toLowerCase()) {
-                                detectionName = event.target.parentElement.getAttribute('detection-name');
-                            } else {
-                                // <g> element selected
-                                detectionName = event.target.getAttribute('detection-name');
-                            }
-                        } else {
-                            console.log('Can\'t get class attribute of the target', event.target);
-                        }
-
-                        config.detectionSelect(detectionName);
-                    });
+                    group.on('click', selectedDetectionHandler);
 
                     // append new point element based on detection
                     detection.pointElement = appendDetectionPointToGroup(group, detection, name, groupOffset);
@@ -385,6 +369,7 @@ angular.module('subtrack90.game.sonarGraph', [])
             }
 
             dataset[row.name] = {
+                trackName: row.trackName,
                 date: row.date,
                 degree: row.degree,
                 strength: row.strength ? row.strength : null
@@ -470,16 +455,36 @@ angular.module('subtrack90.game.sonarGraph', [])
          * @param {Object} detections
          */
          function addDetection(detections){
-//            console.log('detections', detections);
             // create list of path names from detections
-            _.each(detections, function (detection) {
-                // exclude a detection path name from the list
-                addDatapoint(d3MapDetections, detection);
+            _.map(detections, function (item) {
+                // use normalized name to work with collection correctly
+                // replace spaces
+                item.name = item.trackName.replace(/\W/, '_');
+                addDatapoint(d3MapDetections, item);
             });
 
             findExpiredDetections(detections);
 
             render();
+        }
+
+        function selectedDetectionHandler () {
+            var detectionName;
+            if(event.target.correspondingUseElement) {
+                // <use> element selected
+                detectionName = event.target.correspondingUseElement.getAttribute('detection-name');
+            } else if (event.target.getAttribute) {
+                if ('use' === event.target.tagName.toLowerCase()) {
+                    detectionName = event.target.parentElement.getAttribute('detection-name');
+                } else {
+                    // <g> element selected
+                    detectionName = event.target.getAttribute('detection-name');
+                }
+            } else {
+                console.log('Can\'t get class attribute of the target', event.target);
+            }
+
+            config.detectionSelect(detectionName);
         }
 
         /**
