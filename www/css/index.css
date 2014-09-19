@@ -110,6 +110,9 @@ body {
     border-bottom: solid #888 2px;
     margin-bottom:5px;
     font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /** for the leaflet mouse location  */
