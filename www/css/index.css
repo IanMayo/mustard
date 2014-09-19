@@ -105,6 +105,11 @@ body {
     padding-left:20px;
 }
 
+#objectives-header{
+    border-bottom: solid #888 2px;
+    margin-bottom:5px;
+}
+
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {
   padding: 0 5px;
