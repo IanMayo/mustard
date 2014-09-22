@@ -31,6 +31,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/index.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Alarm.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/DarkNoise.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Robot_blip-Marianne_Gagnon.mp3 \
@@ -677,4 +678,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr/modernizr.custom.93820.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova/ng-cordova.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www/nativeaudio.js \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/AndroidManifest.xml \

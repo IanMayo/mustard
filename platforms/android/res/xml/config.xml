@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.subtrack90" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
+    <feature name="NativeAudio">
+        <param name="android-package" value="de.neofonie.cordova.plugin.nativeaudio.NativeAudio" />
+    </feature>
     <name>SubTrack 90</name>
     <description>
         Open Source (MIT License) mobile app to gamify Sonar best practices.
@@ -17,7 +20,4 @@
     <preference name="WebViewBounce" value="false" />
     <content src="index.html" />
     <access origin="*" />
-    <feature name="NativeAudio">
-        <param name="android-package" value="de.neofonie.cordova.plugin.nativeaudio.NativeAudio" />
-    </feature>
 </widget>
