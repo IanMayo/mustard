@@ -33,4 +33,7 @@
     <preference name="WebViewBounce" value="false" />
     <content src="index.html" />
     <access origin="*" />
+    <feature name="NativeAudio">
+        <param name="ios-package" value="NativeAudio" />
+    </feature>
 </widget>

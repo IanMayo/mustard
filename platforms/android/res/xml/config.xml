@@ -17,4 +17,7 @@
     <preference name="WebViewBounce" value="false" />
     <content src="index.html" />
     <access origin="*" />
+    <feature name="NativeAudio">
+        <param name="android-package" value="de.neofonie.cordova.plugin.nativeaudio.NativeAudio" />
+    </feature>
 </widget>
