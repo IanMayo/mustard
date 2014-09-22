@@ -23,7 +23,7 @@ $ grunt build
 sudo npm update -g cordova
 ```
 
-If you'll bump with "pre-compile headers" issue after re-build the app on iOS platform
+If you'll bump with "pre-compile headers" issue after re-building of the app on the iOS platform then
 please check [this link](http://stackoverflow.com/questions/19391768/file-has-been-modified-since-the-precompiled-header-was-built/25182895#25182895)
 
 
