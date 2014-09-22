@@ -27,11 +27,6 @@
     <author email="ian@planetmayo.com" href="http://planetmayo.com">
         Planetmayo Team
     </author>
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="ios-package" value="CDVSplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
     <preference name="SplashScreen" value="screen" />
     <preference name="ShowSplashScreenSpinner" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
