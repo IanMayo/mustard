@@ -17,6 +17,16 @@ $ npm install
 $ grunt build
 ```
 
+###Update Cordova
+
+```
+sudo npm update -g cordova
+```
+
+If you'll bump with "pre-compile headers" issue after re-build the app on iOS platform
+please check [this link](http://stackoverflow.com/questions/19391768/file-has-been-modified-since-the-precompiled-header-was-built/25182895#25182895)
+
+
 ### Verify missions against JSON schema
 
 A [JSON Schema](www/js/game/scenarios/schemas/mission.json) constrains the mission level scenarios. Run validator with this:
