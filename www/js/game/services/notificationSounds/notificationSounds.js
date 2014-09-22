@@ -24,11 +24,14 @@ angular.module('subtrack90.game.notificationSounds', [])
     };
 
     Player.prototype.play = function () {
-        this.trackBuffer.start();
+        var source = context.createBufferSource();
+        source.buffer = this.trackBuffer;
+        source.connect(context.destination);
+        source.start(0);
     };
 
     Player.prototype.stop = function () {
-        this.trackBuffer.stop();
+        this.trackBuffer.stop(0);
     };
 
     var deferredService = $q.defer();
@@ -92,13 +95,7 @@ angular.module('subtrack90.game.notificationSounds', [])
     function createBuffer(httpResponse) {
         var soundSourceDeferred = $q.defer();
         context.decodeAudioData(httpResponse.data, function (buffer) {
-            // create a sound source
-            var soundSource = context.createBufferSource();
-
-            soundSource.buffer = buffer;
-
-            soundSource.connect(context.destination);
-            soundSourceDeferred.resolve(soundSource);
+            soundSourceDeferred.resolve(buffer);
         });
         return soundSourceDeferred.promise;
     }
