@@ -31,6 +31,8 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/index.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Alarm.mp3 \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/DarkNoise.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Robot_blip-Marianne_Gagnon.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Sad_Trombone-Joe_Lamb.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Ta_Da-SoundBible.mp3 \
@@ -426,6 +428,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Marker.Rotate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ngDraggable.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ui-bootstrap-0.10.0.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ui-bootstrap-tpls-0.10.0.min.js \
@@ -673,4 +676,5 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr/modernizr.custom.93820.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova/ng-cordova.js \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/AndroidManifest.xml \
