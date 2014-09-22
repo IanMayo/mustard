@@ -30,7 +30,7 @@ angular.module('subtrack90.game.simulator', [
 * @module Game
 * @class GameCtrl (controller)
 */
-.controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
+.controller('SimulatorCtrl', ['$scope', 'scenario', 'audioSounds', function ($scope, scenario, audioSounds) {
 
     /**
      * Indexed list of vessels in scenario
@@ -160,6 +160,8 @@ angular.module('subtrack90.game.simulator', [
             active: false
         }
     };
+
+    $scope.audioSounds = audioSounds;
 }])
 
 /**
@@ -396,6 +398,8 @@ angular.module('subtrack90.game.simulator', [
                         });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
+                        $scope.audioSounds.objectiveFailed.play();
+
                         user.missionFailed($scope.missionID);
 
                         message.finishMission({
@@ -412,6 +416,7 @@ angular.module('subtrack90.game.simulator', [
                                 }
                             }]
                         });
+
                     }
 
                     // for diagnostics, show any narrative entries
