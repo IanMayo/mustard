@@ -1,6 +1,6 @@
-angular.module('subtrack90.game.timeRemainingDirective', [])
+angular.module('subtrack90.game.timeRemainingDirective', ['subtrack90.game.geoMath'])
 
-.directive('timeRemaining',  function () {
+.directive('timeRemaining',  ['geoMath', function (geoMath) {
     return {
         restrict: 'EA',
         scope: {
@@ -8,7 +8,9 @@ angular.module('subtrack90.game.timeRemainingDirective', [])
         },
         templateUrl: 'js/game/directives/timeRemaining/timeRemaining.tpl.html',
         link: function (scope) {
-
+            scope.remainingTime = function () {
+                return geoMath.formatMillis(scope.remaining);
+            };
         }
     };
-});
+}]);
