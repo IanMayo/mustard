@@ -10,6 +10,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
         color: '#A9A9A9',
         weight: 2
     },
+    zIndexMarkerHighestOffset: 1000,
     ownshipPositionStyle: {
         radius: 5,
         opacity: 1
@@ -81,12 +82,15 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 if (leafletMarkers[vessel.name]) {
                     updateMarker(vessel);
                 } else {
-                    createMarker(vessel);
+                    var marker = createMarker(vessel);
 
                     // set map center according to ownship marker location and set proper initial zoom
                     if (vessel.name === spatialViewController.ownShipName()) {
                         map.setView([vessel.state.location.lat, vessel.state.location.lng],
                             leafletMapConfig.initialZoom);
+
+                        // always bring to front owship marker
+                        marker.setZIndexOffset(leafletMapConfig.zIndexMarkerHighestOffset);
                     }
                 }
             };
@@ -127,6 +131,8 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             /**
              * Create (and update) config object for a vessel marker.
              * @param {Object} vessel
+             *
+             * @return {Object} leaflet marker
              */
             var createMarker = function (vessel) {
                 // produce the icon for this vessel type
@@ -177,6 +183,8 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 marker.setIcon(icon);
 
                 leafletMarkers[vessel.name] = marker;
+
+                return marker;
             };
 
             /**
@@ -358,6 +366,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                             marker.on('add', function () {
                                 iconLabel.addLabel(feature.properties.name);
                             });
+                            // always bring to back marker features
+                            marker.setZIndexOffset(-leafletMapConfig.zIndexMarkerHighestOffset);
+
                             return marker;
                         }
                     }).addTo(map);

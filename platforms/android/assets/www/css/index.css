@@ -55,13 +55,43 @@ body {
     background-color:#b5d0d0;
 }
 
-#missionAccordion .panel-group{
+#missionOrders .panel-group{
   height:400px;
   overflow-y: auto;
 }
 
-#missionAccordion .panel-body{
+#missionOrders .panel-body{
   overflow-y: visible;
+}
+
+/* show click cursor for missions */
+.mission-list div {
+    cursor: pointer;
+}
+
+/* don't show "click" cursor for redacted missions */
+.mission-list .redacted-text{
+    cursor: text;
+}
+
+.mission-level small, .mission-list small{
+    color: black;
+}
+
+/* make the "play" button to the right of the mission nice & clear */
+.mission-glyph {
+    font-size: 18px;
+ }
+
+.mission-level{
+    margin-top: 1.5em;
+}
+
+
+
+/* if the situation has <b> bold text, we really want to make the player aware of it */
+#situation b{
+    color: #e55;
 }
 
 /* indent the list of objectives */
@@ -75,6 +105,15 @@ body {
     padding-left:20px;
 }
 
+/** display the mission name at the top of the objectives list */
+#objectives-header{
+    border-bottom: solid #888 2px;
+    margin-bottom:5px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
 /** for the leaflet mouse location  */
 .leaflet-container .leaflet-control-mouseposition {
