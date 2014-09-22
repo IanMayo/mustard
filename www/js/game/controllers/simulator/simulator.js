@@ -320,6 +320,8 @@ angular.module('subtrack90.game.simulator', [
                 // take copy of game state
                 var timeState = $scope.gameState.state;
 
+                $scope.audioSounds.messageDisplayed.play();
+
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
@@ -374,6 +376,8 @@ angular.module('subtrack90.game.simulator', [
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
 
+                        $scope.audioSounds.objectiveAchieved.play();
+
                         // add reached achievements to the user service
                         angular.forEach($scope.reachedAchievements, function (achievement) {
                             user.addAchievement(achievement.name);
@@ -398,6 +402,7 @@ angular.module('subtrack90.game.simulator', [
                         });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
+
                         $scope.audioSounds.objectiveFailed.play();
 
                         user.missionFailed($scope.missionID);

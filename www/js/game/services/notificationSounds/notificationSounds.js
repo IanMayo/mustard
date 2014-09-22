@@ -41,13 +41,13 @@ angular.module('subtrack90.game.notificationSounds', [])
     var tracks = [
         {
             name: 'Robot_blip-Marianne_Gagnon.mp3',
-            apiMethod: 'objectiveAchieved'
+            apiMethod: 'messageDisplayed'
         }, {
             name: 'Sad_Trombone-Joe_Lamb.mp3',
             apiMethod: 'objectiveFailed'
         }, {
             name: 'Ta_Da-SoundBible.mp3',
-            apiMethod: 'otherMessageDisplayed'
+            apiMethod: 'objectiveAchieved'
         }];
 
     _.each(tracks, function (track) {

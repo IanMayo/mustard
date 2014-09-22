@@ -9,13 +9,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
  * @class Service
  * @description Game objectives
  */
-    .service('objectives', ['geoMath', 'notificationSounds', function (geoMath, notificationSounds) {
-
-        var audioSounds;
-
-        notificationSounds.then(function (sounds) {
-            audioSounds = sounds;
-        });
+    .service('objectives', ['geoMath', function (geoMath) {
 
         /**
          * Callback function which returns desstroyed vessel.
@@ -124,7 +118,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             // if the objective type isn't an "organisational" one, set the remaining time, if present
             if ((objective.type != "SEQUENCE") && (objective.type != "OR")) {
                 if (gameState.successMessage && objective.complete) {
-                    audioSounds.objectiveAchieved.play();
+
                     // ok, is there a success action?
                     if (objective.successAction) {
                         handleAction(gameState, vessels, objective.successAction);
