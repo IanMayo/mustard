@@ -1,10 +1,25 @@
 angular.module('subtrack90.game.timeDisplayDirective', [])
 
 .constant('timeDisplayConfig', {
-    initialSimulationSpeed: 1, // 1x,
     initialAccelRate: 16,
     initialTimerLabel: '01:00:00'
 })
+
+.factory('timeAccelerated', ['timeDisplayConfig', function (timeDisplayConfig) {
+    var accelerating;
+        
+    return {
+        init: function () {
+            accelerating = timeDisplayConfig.initialAccelRate;
+        },
+        update: function (value) {
+            accelerating = value;
+        },
+        current: function () {
+            return accelerating;
+        }
+    }
+}])
 
 .factory('steppingControls', function () {
     var steppingEnabled = true;
@@ -19,8 +34,8 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
     };
 })
 
-.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls',
-    function (timeDisplayConfig, $interval, steppingControls) {
+.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls', 'timeAccelerated',
+    function (timeDisplayConfig, $interval, steppingControls, timeAccelerated) {
     return {
         restrict :'EA',
         scope: {
@@ -35,7 +50,7 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
              * Simulation speed trigger
              * @type {Number}
              */
-            var oldSpeed = timeDisplayConfig.initialSimulationSpeed;
+            var oldSpeed = 0;
             
             /**
              * Simulation time trigger
@@ -73,16 +88,19 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
                     if (newVal) {
                         // do play
                         simulationIntervalId = $interval(changeSimulationTimer, 1000 / scope.speed);
+                        timeAccelerated.update(scope.speed);
                     }
                 });
             };
 
+            timeAccelerated.init();
+
             if (scope.timerPaused) {
                 // Set time display to "pause" state on start
                 scope.speed = 0;
-                oldSpeed = timeDisplayConfig.initialAccelRate;
+                oldSpeed = timeAccelerated.current();
             } else {
-                scope.speed = timeDisplayConfig.initialAccelRate;
+                scope.speed = timeAccelerated.current();
             }
 
             scope.timerLabel = timeDisplayConfig.initialTimerLabel;

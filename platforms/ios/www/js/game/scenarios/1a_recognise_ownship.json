@@ -4,7 +4,7 @@
     "pauseOnStart": true,
     "description": "Very gentle steps in reading and interacting with the sonar.",
     "situation" : "We've got a towed array training module configured for you, preset in auto-resolve mode (so you won't be seeing ambiguous bearings). You're in a scenario with a merchant, a dived submarine, and a jet-ski.  Since this is your very first mission, we'll start off with you gently. <b>Be sure to read the instructions in the message box towards the bottom of the screen.</b>",
-    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. <br/><b>Start things moving by clicking on the Player [>] button to the left.</b>",
+    "welcome": "Welcome to your new vessel.  We're going to work through a few easy steps using the sonar. <br/><b>Start things moving by clicking on the Play button to the left.</b>",
     "vessels": [
         {
             "name": "Ownship",
@@ -68,7 +68,7 @@
             }
         },
         {
-            "name": "TargetB",
+            "name": "HULL 1214",
             "categories": {
                 "force": "RED",
                 "environment": "SUBSURFACE",
@@ -193,7 +193,7 @@
             }
         },
         {
-            "name": "TargetA",
+            "name": "MV Stukard",
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
@@ -280,7 +280,7 @@
                     "type": "FIND_TARGET",
                     "subject": "Ownship",
                     "clearAfterwards" : true,
-                    "target": "TargetA",
+                    "target": "MV Stukard",
                     "description" : "Select the noise trace for the vessel to the South West of you.",
                     "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
                     "failure": "This should have been easy - it's the only other bearing on there!",
@@ -290,7 +290,7 @@
                     "name": "Identify dived submarine track",
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
-                    "target": "TargetB",
+                    "target": "HULL 1214",
                     "elapsed": 1200,
                     "subject": "Ownship",
                     "description" : "Select the noise trace for the dived track",

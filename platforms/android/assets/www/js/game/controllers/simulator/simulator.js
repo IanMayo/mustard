@@ -22,6 +22,7 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.elementVisibility',
     'subtrack90.app.user',
     'subtrack90.game.sonarBearing',
+    'subtrack90.game.warningAboutTimer',
     'ngDraggable'
 ])
 
@@ -29,7 +30,7 @@ angular.module('subtrack90.game.simulator', [
 * @module Game
 * @class GameCtrl (controller)
 */
-.controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
+.controller('SimulatorCtrl', ['$scope', 'scenario', 'audioSounds', function ($scope, scenario, audioSounds) {
 
     /**
      * Indexed list of vessels in scenario
@@ -48,6 +49,12 @@ angular.module('subtrack90.game.simulator', [
      * @type {String}
      */
     $scope.missionID = scenario.id;
+
+    /** the name of this mission
+     *
+     * @type {String}
+     */
+    $scope.missionName = scenario.name;
 
     /**
      * State of simulation process on start
@@ -153,6 +160,8 @@ angular.module('subtrack90.game.simulator', [
             active: false
         }
     };
+
+    $scope.audioSounds = audioSounds;
 }])
 
 /**
@@ -170,17 +179,19 @@ angular.module('subtrack90.game.simulator', [
          */
         var meters = {
             model: new FPSMeter($('#modelMeter')[0], {
-                left: '25%',
+                left: '00%',
                 top: '60%',
                 margin: '0 0 0 0'
             }),
             map: new FPSMeter($('#mapMeter')[0], {
-                left: '50%',
-                margin: '10px 0 0 0'
+                left: '05%',
+                top: '80%',
+                margin: '0 0 0 0'
             }),
             sonar: new FPSMeter($('#sonarMeter')[0], {
-                left: '20%',
-                margin: '10px 0 0 0'
+                left: '80%',
+                top: '80%',
+                margin: '0 0 0 0'
             })
         };
 
@@ -309,6 +320,8 @@ angular.module('subtrack90.game.simulator', [
                 // take copy of game state
                 var timeState = $scope.gameState.state;
 
+                $scope.audioSounds.messageDisplayed.play();
+
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
                     $scope.gameState.state = 'SUCCESS';
@@ -363,6 +376,8 @@ angular.module('subtrack90.game.simulator', [
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
 
+                        $scope.audioSounds.objectiveAchieved.play();
+
                         // add reached achievements to the user service
                         angular.forEach($scope.reachedAchievements, function (achievement) {
                             user.addAchievement(achievement.name);
@@ -387,6 +402,9 @@ angular.module('subtrack90.game.simulator', [
                         });
                     }
                     else if ($scope.gameState.state == "FAILURE") {
+
+                        $scope.audioSounds.objectiveFailed.play();
+
                         user.missionFailed($scope.missionID);
 
                         message.finishMission({
@@ -403,6 +421,7 @@ angular.module('subtrack90.game.simulator', [
                                 }
                             }]
                         });
+
                     }
 
                     // for diagnostics, show any narrative entries
@@ -816,6 +835,11 @@ angular.module('subtrack90.game.simulator', [
         });
 
         $scope.goBack = function () {
+            // mark this mission as failed, side-effect is that
+            // mission page knows mission has already been attempted
+            // (and can show "Replay" instead of "Play")
+            user.missionFailed($scope.missionID);
+
             window.history.back();
         };
 

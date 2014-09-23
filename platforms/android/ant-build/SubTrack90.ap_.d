@@ -31,8 +31,11 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/index.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Robot_blip-Marianne_Gagnon.mp3 \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Sad_Trombone-Joe_Lamb.mp3 \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Ta_Da-SoundBible.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/TorpedoLaunch.mp3 \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/woop-woop.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/bootstrap.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/fonts.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images \
@@ -231,6 +234,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeDisplay \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeRemaining \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/warningAboutTimer \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/clickRepeat/clickRepeat.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/elementVisibility/elementVisibility.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/eventPicker/eventPicker.js \
@@ -267,6 +271,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeDisplay/timeDisplay.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeRemaining/timeRemaining.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeRemaining/timeRemaining.tpl.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/warningAboutTimer/warningAboutTimer.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/1.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/1a_recognise_ownship.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/1b_surface_ambiguous_contacts.json \
@@ -375,6 +380,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/notificationSounds \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot \
@@ -403,6 +409,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-shadow.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/notificationSounds/notificationSounds.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives/objectives.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs/plotGraphs.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot/reviewSnapshot.js \
@@ -666,7 +673,4 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr/modernizr.custom.93820.js \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/org.apache.cordova.splashscreen/www/splashscreen.js \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/AndroidManifest.xml \

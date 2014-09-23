@@ -118,6 +118,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             // if the objective type isn't an "organisational" one, set the remaining time, if present
             if ((objective.type != "SEQUENCE") && (objective.type != "OR")) {
                 if (gameState.successMessage && objective.complete) {
+
                     // ok, is there a success action?
                     if (objective.successAction) {
                         handleAction(gameState, vessels, objective.successAction);

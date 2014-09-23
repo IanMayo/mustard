@@ -107,8 +107,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // just do a check for time remaining
                 if (objective.stopTime) {
                     // ok, how long is remaiing?
-                    var remaining = objective.stopTime - gameState.simulationTime;
-                    gameState.remaining = geoMath.formatMillis(remaining);
+                    gameState.remaining = objective.stopTime - gameState.simulationTime;
                 }
                 else {
                     delete gameState.remaining;
@@ -119,6 +118,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             // if the objective type isn't an "organisational" one, set the remaining time, if present
             if ((objective.type != "SEQUENCE") && (objective.type != "OR")) {
                 if (gameState.successMessage && objective.complete) {
+
                     // ok, is there a success action?
                     if (objective.successAction) {
                         handleAction(gameState, vessels, objective.successAction);
