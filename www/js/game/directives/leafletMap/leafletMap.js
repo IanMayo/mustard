@@ -176,7 +176,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
 
                 icon = L.icon.Name({
                     labelText: vessel.name,
-                    labelAnchor: new L.Point(iconSize / 3, - iconSize / 2),
+                    labelAnchor: new L.Point(10 + iconSize / 2, - 4 * ( iconSize / 5)),
                     iconAngle: 0,
                     iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
                     iconSize: [iconSize, iconSize],

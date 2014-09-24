@@ -479,15 +479,15 @@
 
 
 .leaflet-marker-icon-wrapper {
-  position: absolute
+  position: absolute;
 }
 
 .leaflet-marker-iconlabel {
-  background: transparent;
   display: block;
-  font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-  padding: 4px;
+  width: 100px;
+  font: 12px;
   color: #bcdf1b;
   white-space: nowrap;
+  background: transparent;
   position: absolute;
 }

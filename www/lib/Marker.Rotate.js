@@ -75,13 +75,18 @@
         },
 
         _changeLabelIndent: function (labelElement) {
-            var designedLeftMargin = labelElement.getAttribute('data-designed-left-margin');
+            var designedLeftMargin = parseInt(labelElement.getAttribute('data-designed-left-margin'));
+            var designedTopMargin = parseInt(labelElement.getAttribute('data-designed-top-margin'));
             var currentLeftMargin = parseInt(labelElement.style.marginLeft);
 
             if ((this.options.iconAngle >= 25 && this.options.iconAngle <= 90)) {
-                labelElement.style.marginLeft = (0 - (3 * designedLeftMargin)).toString() + 'px';
+                labelElement.style.marginLeft = (0 - (2 * designedLeftMargin + 10)).toString() + 'px';
+                labelElement.style.marginTop = (designedTopMargin + 10).toString() + 'px';
+                labelElement.style.textAlign = 'right';
             } else if (currentLeftMargin !== designedLeftMargin) {
                 labelElement.style.marginLeft = designedLeftMargin + 'px';
+                labelElement.style.marginTop = designedTopMargin + 'px';
+                labelElement.style.textAlign = 'left';
             }
         }
     });
