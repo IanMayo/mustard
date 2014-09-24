@@ -476,3 +476,18 @@
 	background: #fff;
 	border: 1px solid #666;
 	}
+
+
+.leaflet-marker-icon-wrapper {
+  position: absolute
+}
+
+.leaflet-marker-iconlabel {
+  background: transparent;
+  display: block;
+  font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  padding: 4px;
+  color: #bcdf1b;
+  white-space: nowrap;
+  position: absolute;
+}
