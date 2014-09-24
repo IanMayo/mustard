@@ -23,9 +23,14 @@
         },
 
         _setPos: function (pos) {
+            var iconImg;
 
             if (this._icon) {
-                this._icon.style[L.DomUtil.TRANSFORM] = "";
+                iconImg = this._icon;
+                if (iconImg.tagName.toLowerCase() !== 'img') {
+                    iconImg = this._findImgElement(iconImg);
+                }
+                iconImg.style[L.DomUtil.TRANSFORM] = "";
             }
             if (this._shadow) {
                 this._shadow.style[L.DomUtil.TRANSFORM] = "";
@@ -38,9 +43,8 @@
                 var a = this.options.icon.options.iconAnchor;
                 var s = this.options.icon.options.iconSize;
                 var i;
-                if (this._icon) {
-                    i = this._icon;
-                    this._updateImg(i, a, s);
+                if (iconImg) {
+                    this._updateImg(iconImg, a, s);
                 }
 
                 if (this._shadow) {
@@ -50,6 +54,34 @@
                     this._updateImg(i, a, s);
                 }
 
+            }
+        },
+
+        _findImgElement: function (element) {
+            var nodes = element.childNodes;
+            var iconImgEl;
+
+            for (var len = nodes.length, i = 0; i < len; i ++) {
+                var tagName = nodes[i].tagName.toLocaleLowerCase();
+
+                if (tagName === 'img') {
+                    iconImgEl = nodes[i];
+                } else if (tagName === 'span') {
+                    this._changeLabelIndent(nodes[i]);
+                }
+            }
+
+            return iconImgEl;
+        },
+
+        _changeLabelIndent: function (labelElement) {
+            var designedLeftMargin = labelElement.getAttribute('data-designed-left-margin');
+            var currentLeftMargin = parseInt(labelElement.style.marginLeft);
+
+            if ((this.options.iconAngle >= 25 && this.options.iconAngle <= 90)) {
+                labelElement.style.marginLeft = (0 - (3 * designedLeftMargin)).toString() + 'px';
+            } else if (currentLeftMargin !== designedLeftMargin) {
+                labelElement.style.marginLeft = designedLeftMargin + 'px';
             }
         }
     });
