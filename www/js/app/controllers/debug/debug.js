@@ -1,6 +1,7 @@
 angular.module('subtrack90.app.debug', [
     'subtrack90.app.user',
     'subtrack90.app.splashScreen',
+    'subtrack90.app.sound',
     'subtrack90.game.message',
     'LocalStorageModule'
 ])
@@ -10,7 +11,7 @@ angular.module('subtrack90.app.debug', [
  * @class DebugCtrl (controller)
  */
 .controller('DebugCtrl',
-    function ($q, $scope, $timeout, $cordovaNativeAudio, user, localStorageService, $location, message, splashScreen) {
+    function ($q, $scope, $timeout, sound, user, localStorageService, $location, message, splashScreen) {
 
     /**
      * DEBUG CONSOLE METHODS
@@ -188,39 +189,19 @@ angular.module('subtrack90.app.debug', [
         splashScreen.show($q.defer());
     };
 
-    $scope.preloadSounds = function () {
-        $cordovaNativeAudio.preloadSimple('torpedo', 'audio/TorpedoLaunch.mp3').then(function (msg) {
-            console.log(msg);
-        }, function (error) {
-            console.error(error);
-        });
-
-        $cordovaNativeAudio.preloadSimple('alarm', 'audio/Alarm.mp3').then(function (msg) {
-            console.log(msg);
-        }, function (error) {
-            console.error(error);
-        });
-
-        $cordovaNativeAudio.preloadComplex('music', 'audio/DarkNoise.mp3', 1, 1).then(function (msg) {
-            console.log(msg);
-        }, function (error) {
-            console.error(error);
-        });
-    };
-
     $scope.playTorpedoLaunch = function () {
-        $cordovaNativeAudio.play('torpedo');
+        sound.play('audio/TorpedoLaunch.mp3');
     };
 
     $scope.playAlarm = function () {
-        $cordovaNativeAudio.play('alarm');
+        sound.play('audio/Alarm.mp3');
     };
 
     $scope.playMusic = function () {
-        $cordovaNativeAudio.loop('music');
+        sound.loop('audio/DarkNoise.mp3');
     };
 
     $scope.stopMusic = function () {
-        $cordovaNativeAudio.stop('music');
+        sound.stop('audio/DarkNoise.mp3');
     };
 });
