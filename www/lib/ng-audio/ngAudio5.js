@@ -2,7 +2,7 @@ angular.module('Audio5', []).factory('AudioService', function () {
     "use strict";
 
     var params = {
-        swf_path:'../../swf/audio5js.swf',
+        swf_path:'lib/ng-audio/audio5js.swf',
         throw_errors:true,
         format_time:true
     };

@@ -4,7 +4,7 @@
  * @description This is the wrapper service for html5audio & native mobile audio libs
  */
 
-angular.module('subtrack90.app.sound', ['ngCordova', ''])
+angular.module('subtrack90.app.sound', ['ngCordova', 'Audio5'])
 
 .factory('sound', function (IS_CORDOVA, $cordovaNativeAudio, AudioService) {
 
