@@ -90,15 +90,20 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 case "DESTROY_TARGET":
                     handleDestroyTarget(gameState, objective, vessels, deadVessels);
                     break;
-                case "FAIL_IN_AREA":
+                case "STAY_IN_AREA":
                     handleStayInArea(gameState, objective, vessels);
                     break;
                 case "SUCCESS_IN_AREA":
                     handleSuccessInArea(gameState, objective, vessels);
                     break;
+                case "SUCCESS_ON_LINE":
+                    handleSuccessOnLine(gameState, objective, vessels);
+                    break;
                 case "OBTAIN_SOLUTION":
                     handleObtainSolution(gameState, objective, vessels);
                     break;
+                default:
+                    console.log("OBJECTIVE NOT HANDLED:" + thisType);
             }
 
 
@@ -996,7 +1001,73 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
             }
         };
 
-        /** fail if subject goes into specified area
+        /** success if subject passes close to line
+         *
+         * @param gameState
+         * @param failInArea
+         * @param vessels
+         */
+        var handleSuccessOnLine = function (gameState, successOnLine, vessels) {
+
+            var subject = vessels[successOnLine.subject];
+
+            if (!subject) {
+                return;
+            }
+            // right, do we have an elapsed time limit
+            if (successOnLine.elapsed) {
+                // ok. do we know when this objective started?
+                if (!successOnLine.stopTime) {
+                    // no, better store it
+                    successOnLine.stopTime = gameState.simulationTime + (successOnLine.elapsed * 1000);
+                }
+            }
+
+            // what's the distance to mark passing hte line?
+            var location = subject.state.location;
+            var myLoc = L.latLng(location.lat, location.lng);
+            var distanceFromLine = geoMath.distanceFromLine(myLoc.lat, myLoc.lng,
+                successOnLine.p1.lat, successOnLine.p1.lng,
+                successOnLine.p2.lat, successOnLine.p2.lng);
+
+            if (distanceFromLine < successOnLine.range) {
+
+                // ok - the target has entered the area
+                successOnLine.complete = true;
+                gameState.successMessage = successOnLine.success;
+                gameState.state = "DO_STOP";
+
+                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                    "Subject vessel passed marker line");
+
+                // and store any achievements
+                processAchievements(successOnLine.achievement, gameState);
+
+                // hey, is there a bonus time?
+                if (successOnLine.bonusStopTime) {
+                    // note: we're relying on the
+                    if (gameState.simulationTime < successOnLine.bonusStopTime) {
+                        processAchievements(successOnLine.bonusAchievement, gameState);
+                    }
+                }
+            }
+            else {
+                // right, just check if we have failed to reach our distance in time
+                if (successOnLine.stopTime) {
+                    if (gameState.simulationTime > successOnLine.stopTime) {
+                        // ok, we've run out of time - game over
+                        gameState.failureMessage = successOnLine.failure;
+                        gameState.state = "DO_STOP";
+                        insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                            "Subject vessel failed to pass line in time");
+                    }
+                }
+            }
+
+        };
+
+
+        /** success if subject reaches specified area
          *
          * @param gameState
          * @param failInArea
@@ -1069,6 +1140,12 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         };
 
 
+        /** failure if subject leaves the area
+         *
+         * @param gameState
+         * @param stayInArea
+         * @param vessels
+         */
         var handleStayInArea = function(gameState, stayInArea, vessels) {
 
             var subject = vessels[stayInArea.subject];
