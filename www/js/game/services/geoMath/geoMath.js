@@ -83,6 +83,52 @@ angular.module('subtrack90.game.geoMath', [])
         return dms;
     };
 
+        /** calculate the distance of the point (Expressed in degs) from the line
+         *
+         * @param x
+         * @param y
+         * @param x1
+         * @param y1
+         * @param x2
+         * @param y2
+         * @returns {double} distant (metres)
+         */
+    var distanceFromLine = function pDistance(x, y, x1, y1, x2, y2) {
+
+        const R = 60.0 * 1852;  // conversion factor from degrees to metres
+
+        var A = x - x1;
+        var B = y - y1;
+        var C = x2 - x1;
+        var D = y2 - y1;
+
+        var dot = A * C + B * D;
+        var len_sq = C * C + D * D;
+        var param = dot / len_sq;
+
+        var xx, yy;
+
+        if (param < 0 || (x1 == x2 && y1 == y2)) {
+            xx = x1;
+            yy = y1;
+        }
+        else if (param > 1) {
+            xx = x2;
+            yy = y2;
+        }
+        else {
+            xx = x1 + param * C;
+            yy = y1 + param * D;
+        }
+
+        var dx = x - xx;
+        var dy = y - yy;
+        var dist =  Math.sqrt(dx * dx + dy * dy);
+
+        // convert to metres
+        return R * dist;
+    };
+
     /**
      * Convert numeric degrees to deg/min/sec latitude (suffixed with N/S)
      *
@@ -150,6 +196,8 @@ angular.module('subtrack90.game.geoMath', [])
         toDegs: toDegs,
 
         formatMillis: formatMillis,
+
+        distanceFromLine: distanceFromLine,
 
         toString: function (location) {
             return toString(location.lat, location.lng);
