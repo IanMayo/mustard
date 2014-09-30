@@ -1,0 +1,332 @@
+{
+    "id": "2a",
+    "name": "De-gaussing stage",
+    "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+    "situation" : "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you have 40 minutes to come within 1km of the support barge, on a Northerly course at less than 3 kts",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": [ "NO_COMPLEX_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 12,
+                    "DT": -8,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.21
+                },
+                "height": 0,
+                "course": 90,
+                "speed": 10,
+                "demCourse": 90,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 0,
+                "maxSpeed": 12,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "FisherA",
+            "categories": {
+                "force": "WHITE",
+                "environment": "SURFACE",
+                "type": "FISHERMAN"
+            },
+            "behaviours": [
+                {
+                    "name": "Fishing Area",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.01,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -7.98
+                        },
+                        {
+                            "lat": 50.0,
+                            "lng": -8.03
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 107,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.08,
+                    "lng": -8.02
+                },
+                "course": 160,
+                "demCourse": 160,
+                "demSpeed": 7,
+                "speed": 7,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 7,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Ship Control exam",
+            "type": "OR",
+            "children": [
+                {
+                    "name": "Avoid fishing vessels",
+                    "description": "Stay outside 3km of fishing vessels",
+                    "type": "DISTANCE_TO_CATEGORY",
+                    "category": "FISHERMAN",
+                    "subject": "Ownship",
+                    "range": 3000,
+                    "failure": "We're caught, she's breaking up!  Remember to stay outside 3km of the fishing vessels."
+                },
+                {
+                    "name": "Remain in allocated water",
+                    "description": "Stay within operating area",
+                    "type": "STAY_IN_AREA",
+                    "subject": "Ownship",
+                    "tl": {
+                        "lat": 50.15,
+                        "lng": -8.25
+                    },
+                    "br": {
+                        "lat": 49.85,
+                        "lng": -7.75
+                    },
+                    "failure": "END-EX, you've left the allocated water!"
+                },
+                {
+                    "name": "De-Gauss",
+                    "type": "SEQUENCE",
+                    "children": [
+                        {
+                            "name": "Pass Gate 1",
+                            "description": "Pass through Gate 1",
+                            "type": "SUCCESS_ON_LINE",
+                            "subject": "Ownship",
+                            "p1": {
+                                "lat": 50.01,
+                                "lng": -8.15
+                            },
+                            "p2": {
+                                "lat": 50.0,
+                                "lng": -8.125
+                            },
+                            "range": 100,
+                            "success" : "Gate 1 complete",
+                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                        },
+                        {
+                            "name": "Pass Gate 2",
+                            "description": "Pass through Gate 2",
+                            "type": "SUCCESS_ON_LINE",
+                            "subject": "Ownship",
+                            "p1": {
+                                "lat": 50.10,
+                                "lng": -8.075
+                            },
+                            "p2": {
+                                "lat": 50.085,
+                                "lng": -8.075
+                            },
+                            "range": 100,
+                            "success" : "Gate 2 complete",
+                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Allocated Water"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.75],
+                            [-7.75, 49.75],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            },
+            {
+                "id": "1",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 1"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.125, 50.0]
+                }
+            },
+            {
+                "id": "1L",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 1"
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [[-8.15, 50.01], [-8.125, 50.0]]
+                }
+            },
+            {
+                "id": "2",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 2"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.075, 50.10]
+                }
+            },
+            {
+                "id": "2L",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 2b"
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [[-8.075, 50.10], [-8.075, 50.085]]
+                }
+            },
+            {
+                "id": "3",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 3"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-8.025, 50.025]
+                }
+            },
+            {
+                "id": "3L",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 2b"
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [[-8.05, 50.025], [-8.025, 50.025]]
+                }
+            },
+            {
+                "id": "4",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 4"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-7.95, 50.025]
+                }
+            },
+            {
+                "id": "4L",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 4"
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [[-7.975, 50.025], [-7.95, 50.025]]
+                }
+            },
+            {
+                "id": "5",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 5"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-7.8, 50.125]
+                }
+            },
+            {
+                "id": "5L",
+                "type": "Feature",
+                "properties": {
+                    "name": "Gate 5"
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [[-7.8, 50.125], [-7.8, 50.11]]
+                }
+            }
+
+
+        ]
+    }}
