@@ -1,9 +1,9 @@
 {
     "id": "2a",
     "name": "De-gaussing stage",
-    "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
-    "situation" : "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
-    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you have 40 minutes to come within 1km of the support barge, on a Northerly course at less than 3 kts",
+    "description": "Now that you have provisional ship control authority, you're going to be tested as we go through a series of degaussing stations.",
+    "situation" : "We're transiting to load some special weapons, but before we do that we've got to validate the ownship degaussing systems.  Drive across the set of submerged de-gaussing gates in order, but stay outside 3000m of any fishing vessels.  Oh, and please don't exit your allocated water (the blue rectangle)",
+    "welcome": "Hopefully this is the hardest part of the transit.  Good luck, you'll need to show some skillful manoeuvring.",
     "vessels": [
         {
             "name": "Ownship",
@@ -38,9 +38,9 @@
                 },
                 "height": 0,
                 "course": 90,
-                "speed": 10,
+                "speed": 5.68,
                 "demCourse": 90,
-                "demSpeed": 10,
+                "demSpeed": 5.68,
                 "demHeight": -10.0
             },
             "perf": {
@@ -54,7 +54,7 @@
             }
         },
         {
-            "name": "FisherA",
+            "name": "FV Duntrawlin",
             "categories": {
                 "force": "WHITE",
                 "environment": "SURFACE",
@@ -169,6 +169,7 @@
                                 "lng": -8.125
                             },
                             "range": 100,
+                            "elapsed" : 1200,
                             "success" : "Gate 1 complete",
                             "failure": "De-gaussing failed, you didn't get through the gate in time."
                         },
@@ -186,9 +187,76 @@
                                 "lng": -8.075
                             },
                             "range": 100,
+                            "elapsed" : 2400,
                             "success" : "Gate 2 complete",
                             "failure": "De-gaussing failed, you didn't get through the gate in time."
+                        },
+                        {
+                            "name": "Pass Gate 3",
+                            "description": "Pass through Gate 3",
+                            "type": "SUCCESS_ON_LINE",
+                            "subject": "Ownship",
+                            "p1": {
+                                "lat": 50.025,
+                                "lng": -8.05
+                            },
+                            "p2": {
+                                "lat": 50.025,
+                                "lng": -8.025
+                            },
+                            "range": 100,
+                            "elapsed" : 2400,
+                            "success" : "Gate 3 complete",
+                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                        },
+                        {
+                            "name": "Pass Gate 4",
+                            "description": "Pass through Gate 4",
+                            "type": "SUCCESS_ON_LINE",
+                            "subject": "Ownship",
+                            "p1": {
+                                "lat": 50.025,
+                                "lng": -7.975
+                            },
+                            "p2": {
+                                "lat": 50.025,
+                                "lng": -7.95
+                            },
+                            "range": 100,
+                            "elapsed" : 1600,
+                            "success" : "Gate 4 complete. You may have to speed up to get to the last gate - we're running out of range time. There's a bonus if you can get there in 30 minutes",
+                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                        },
+                        {
+                            "name": "Pass Gate 5",
+                            "description": "Pass through Gate 5",
+                            "type": "SUCCESS_ON_LINE",
+                            "subject": "Ownship",
+                            "p1": {
+                                "lat": 50.125,
+                                "lng": -7.8
+                            },
+                            "p2": {
+                                "lat": 50.11,
+                                "lng": -7.8
+                            },
+                            "range": 100,
+                            "elapsed" : 3100,
+                            "bonusAchievementTime": 1800,
+                            "bonusAchievement": {
+                                "name": "Speed Demon",
+                                "message": "Hey, you beat the 30 minute bonus time - you've earned some R&R"
+                            },
+                            "achievement": {
+                                "name": "Ship Control",
+                                "message": "That was some good driving you showed there"
+                            },
+                            "success" : "De-Gaussing complete, well driven.",
+                            "failure": "De-gaussing failed, you didn't get through the gate in time."
                         }
+
+
+
                     ]
                 }
             ]
@@ -275,7 +343,7 @@
                 "id": "3L",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 2b"
+                    "name": "Gate 3b"
                 },
                 "geometry": {
                     "type": "LineString",
