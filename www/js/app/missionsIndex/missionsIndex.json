@@ -227,6 +227,40 @@
         "description": "Authority to control vessel course and speed during transit to deployment area",
         "missions": [
             {
+                "id": "2a",
+                "name": "De-gaussing stage",
+                "description": "Now that you have provisional ship control authority, you're going to be tested as we go through a series of degaussing stations.",
+                "situation": "We're transiting to load some special weapons, but before we do that we've got to validate the ownship degaussing systems.  Drive across the set of submerged de-gaussing gates in order, but stay outside 3000m of any fishing vessels.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand",
+                    "neutral": "FV Duntrawlin"
+                },
+                "objectives": [
+                    {
+                        "name": "Ship Control exam",
+                        "children": [
+                            {
+                                "name": "Avoid fishing vessels",
+                                "description": "Stay outside 3km of fishing vessels",
+                                "type": "DISTANCE_TO_CATEGORY"
+                            },
+                            {
+                                "name": "Remain in allocated water",
+                                "description": "Stay within operating area",
+                                "type": "STAY_IN_AREA"
+                            },
+                            {
+                                "name": "De-Gauss",
+                                "type": "SEQUENCE"
+                            }
+                        ]
+                    }
+                ],
+                "url": "2a_gauss_gates",
+                "guidanceUrl": "guidance/processed/2a_gauss_gates.html"
+            },
+            {
                 "id": "2b",
                 "name": "Handling ownship noise levels",
                 "description": "Track a quiet but relatively fast moving friendly dived target.",
@@ -887,7 +921,7 @@
                 "id": "6k",
                 "name": "Fishing frenzy",
                 "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
-                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 3000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
                 "forces": {
                     "enemy": "-Nil-",
                     "friendly": "AF Brigand, Support Platform",
