@@ -1021,6 +1021,14 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     // no, better store it
                     successOnLine.stopTime = gameState.simulationTime + (successOnLine.elapsed * 1000);
                 }
+
+                // hey, is there a bonus for time?
+                if (successOnLine.bonusAchievementTime) {
+                    if (!successOnLine.bonusStopTime) {
+                        // no, better store it
+                        successOnLine.bonusStopTime = gameState.simulationTime + (successOnLine.bonusAchievementTime * 1000);
+                    }
+                }
             }
 
             // what's the distance to mark passing hte line?
@@ -1063,7 +1071,6 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     }
                 }
             }
-
         };
 
 
