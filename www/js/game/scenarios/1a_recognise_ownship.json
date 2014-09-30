@@ -80,8 +80,8 @@
                     "type": "PATH",
                     "path": [
                         {
-                            "lat": 50.28,
-                            "lng": -7.74
+                            "lat": 50.06,
+                            "lng": -7.14
                         }
                     ],
                     "height": 0,
@@ -92,19 +92,19 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 105,
+                "baseLevel": 106,
                 "speedPattern": "Uniform"
             },
             "state": {
                 "categories": [],
                 "location": {
-                    "lat": 49.93,
-                    "lng": -7.76
+                    "lat": 50.06,
+                    "lng": -8.0
                 },
-                "course": 0,
-                "demCourse": 0,
-                "demSpeed": 10,
-                "speed": 13,
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 3,
+                "speed": 3,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -282,7 +282,7 @@
                     "clearAfterwards" : true,
                     "target": "MV Stukard",
                     "description" : "Select the noise trace for the vessel to the South West of you.",
-                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine out there somewhere. You should gain him after about 10 minutes.",
+                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine to the East of you. You should gain him after about 10 minutes. Notice how the sonar trace is 'cleaner' than the merchant",
                     "failure": "This should have been easy - it's the only other bearing on there!",
                     "narrSuccess" : "Spotted surface track"
                 },

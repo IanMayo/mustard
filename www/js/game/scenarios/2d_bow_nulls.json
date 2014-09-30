@@ -169,12 +169,12 @@
     "environment": {},
     "objectives": [
         {
-            "name": "Spring Drift Training",
+            "name": "Sprint Drift Training",
             "type": "SEQUENCE",
             "children": [
                 {
                     "name": "Gain sonar contact with Fishing Vessel",
-                    "description": "Gain contact on the fishing vessel West of you within 35 minutes",
+                    "description": "Gain contact on the fishing vessel East of you within 35 minutes",
                     "type": "GAIN_CONTACT",
                     "elapsed": 2100,
                     "target" : "FisherA",

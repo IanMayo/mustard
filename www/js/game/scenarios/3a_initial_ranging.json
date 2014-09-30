@@ -45,7 +45,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 40,
+                "maxSpeed": 14,
                 "climbRate": 1,
                 "diveRate": 2
             }
@@ -86,8 +86,8 @@
                 },
                 "course": 300,
                 "demCourse": 300,
-                "demSpeed": 10,
-                "speed": 10,
+                "demSpeed": 7,
+                "speed": 7,
                 "time": 0,
                 "height": -40,
                 "demHeight": -40.0,
@@ -98,7 +98,7 @@
                 "accelerationRate": 0.3,
                 "decelerationRate": 0.8,
                 "minSpeed": 4,
-                "maxSpeed": 20,
+                "maxSpeed": 10,
                 "batteryUsage": 0.00035,
                 "chargeRate": 0.013,
                 "climbRate": 1,
@@ -118,7 +118,7 @@
             "children": [
                 {
                     "name": "Gain contact",
-                    "description": "Travel West to gain contact on the Platfom Support Vessel working in that area",
+                    "description": "Travel East to gain contact on the Platfom Support Vessel working in that area",
                     "type": "GAIN_CONTACT",
                     "elapsed": 480,
                     "success": "Well done, you've gained contact within the 8 minute limit",
