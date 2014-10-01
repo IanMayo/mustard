@@ -58,7 +58,8 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                         weight: 1,
                         opacity: 0.3
                     },
-                    interval: 0.0285
+                    interval: 0.0285,
+                    maxIntervals: 30
                 }).addTo(map);
             };
 

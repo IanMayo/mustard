@@ -8,7 +8,8 @@ L.Graticule = L.GeoJSON.extend({
             color: '#333',
             weight: 1
         },
-        interval: 20
+        interval: 20,
+        maxIntervals: 20
     },
 
     initialize: function (options) {
@@ -99,14 +100,32 @@ L.Graticule = L.GeoJSON.extend({
         var lat, lng;
 
         var interval = this.options.interval;
+        var maxIntervals = this.options.maxIntervals;
 
         var northEast = bounds.getNorthEast();
         var southWest = bounds.getSouthWest();
 
         // find the latitude of the centre of the visible area
-        var midLat = southWest.lat + (northEast.lat - southWest.lat)/2.0;
+        var deltaLat = northEast.lat - southWest.lat;
 
-        // convert it to a whole num of degs, so that the rectangles stay about the same size
+        // see how many intervals we're due to produce
+        var numIntervals = deltaLat / interval;
+        if(numIntervals > maxIntervals)
+        {
+            // we're zoomed out too far to show lines, ditch them
+            for (var key in this._lineStrings) {
+                var kArr = key.split(':');
+                this._removeLine(key);
+            }
+
+            // ok, now drop out
+            return;
+        }
+
+        // find the centre-lat of the visible area
+        var midLat = southWest.lat + (deltaLat)/2.0;
+
+        // convert mid-lat to a whole num of degs, so that the rectangles stay about the same size
         midLat = 10 * Math.round(midLat/10);
 
         // convert the interval to the effective height at this latitude
