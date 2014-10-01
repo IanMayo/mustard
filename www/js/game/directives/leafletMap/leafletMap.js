@@ -51,6 +51,16 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
 
                 L.control.scale(scaleConfig).addTo(map);
                 L.control.mousePosition().addTo(map);
+
+                L.graticule({
+                    style: {
+                        color: '#791',
+                        weight: 1,
+                        opacity: 0.3
+                    },
+                    interval: 0.0285,
+                    maxIntervals: 30
+                }).addTo(map);
             };
 
             /**
