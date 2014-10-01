@@ -99,16 +99,26 @@ L.Graticule = L.GeoJSON.extend({
         var lat, lng;
 
         var interval = this.options.interval;
+
         var northEast = bounds.getNorthEast();
         var southWest = bounds.getSouthWest();
 
-        var minLat = Math.floor(southWest.lat / interval) * interval;
-        var maxLat = Math.floor(northEast.lat / interval) * interval;
+        // find the latitude of the centre of the visible area
+        var midLat = southWest.lat + (northEast.lat - southWest.lat)/2.0;
+
+        // convert it to a whole num of degs, so that the rectangles stay about the same size
+        midLat = 10 * Math.round(midLat/10);
+
+        // convert the interval to the effective height at this latitude
+        var latInterval = Math.cos(midLat * Math.PI / 180.0) * interval;
+
+        var minLat = Math.floor(southWest.lat / latInterval) * latInterval;
+        var maxLat = Math.floor(northEast.lat / latInterval) * latInterval;
 
         var minLng = Math.floor(southWest.lng / interval) * interval;
         var maxLng = Math.floor(northEast.lng / interval) * interval;
 
-        for (lat = minLat; lat <= maxLat.toFixed(5); lat = parseFloat((lat + interval).toFixed(5))) {
+        for (lat = minLat; lat <= maxLat.toFixed(5); lat = parseFloat((lat + latInterval).toFixed(5))) {
             var name = 'lat:' + lat.toString();
             if (this._lineShouldBeAdded(name)) {
                 var northCoord = this._getParallelForLat(lat);
