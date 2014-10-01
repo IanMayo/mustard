@@ -110,23 +110,20 @@ L.Graticule = L.GeoJSON.extend({
 
         // see how many intervals we're due to produce
         var numIntervals = deltaLat / interval;
-        if(numIntervals > maxIntervals)
-        {
-            // we're zoomed out too far to show lines, ditch them
-            for (var key in this._lineStrings) {
-                var kArr = key.split(':');
-                this._removeLine(key);
-            }
 
+        if (numIntervals > maxIntervals) {
+            // we're zoomed out too far to show lines, ditch them
+            this.clearLayers();
+            this._lineStrings = {};
             // ok, now drop out
             return;
         }
 
         // find the centre-lat of the visible area
-        var midLat = southWest.lat + (deltaLat)/2.0;
+        var midLat = bounds.getCenter().lat;
 
         // convert mid-lat to a whole num of degs, so that the rectangles stay about the same size
-        midLat = 10 * Math.round(midLat/10);
+        midLat = 10 * Math.round(midLat / 10);
 
         // convert the interval to the effective height at this latitude
         var latInterval = Math.cos(midLat * Math.PI / 180.0) * interval;
