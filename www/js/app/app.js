@@ -31,7 +31,7 @@ angular.module('subtrack90', [
 .constant('SPLASH_ON_LOGIN', true)
 .constant('SPLASH_ON_MAIN', !!window.cordova)
 
-.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
+.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN, $provide) {
 
     if (APP_DEBUG) {
         $routeProvider.when('/debug', {
@@ -127,6 +127,12 @@ angular.module('subtrack90', [
         })
 
         .otherwise({redirectTo: '/main'});
+
+        $provide.decorator('popoverPopupDirective', function ($delegate) {
+            // replace designed template with html unsafe content
+            $delegate[0].templateUrl = "view/popover-html-unsafe.html";
+            return $delegate;
+        });
 
 }).run(function ($rootScope, $location, user) {
 
