@@ -8,7 +8,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
 
 .constant('DEFAULT_VOLUME', 1)
 
-.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, $cordovaNativeAudio, $q) {
+.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, $cordovaNativeAudio) {
 
     var soundMap = [];
 
@@ -18,16 +18,13 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * @param id
      * @param volume
      * @param inLoop
-     * @returns {promise}
+     * @returns {{stop: function}}
      */
     var html5AudioPlay = function (id, volume, inLoop) {
-        var deferred = $q.defer();
         var soundMapItem = _.findWhere(soundMap, {id: id});
 
-        // check if sound exists and preloaded
         if (!soundMapItem) {
-            deferred.resolve({stop: angular.noop});
-            return deferred.promise;
+            return {stop: angular.noop};
         }
 
         var sound = soundMapItem.instance;
@@ -35,9 +32,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         sound.loop(inLoop);
         sound.play();
 
-        deferred.resolve({stop: sound.stop.bind(sound)});
-
-        return deferred.promise;
+        return {stop: sound.stop.bind(sound)};
     };
 
     /**
@@ -77,7 +72,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @param id
          * @param volume
-         * @returns {promise}
+         * @returns {Object}
          */
         play: function (id, volume) {
             return html5AudioPlay(id, volume, false);
@@ -88,7 +83,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @param id
          * @param volume
-         * @returns {promise}
+         * @returns {Object}
          */
         loop: function (id, volume) {
             return html5AudioPlay(id, volume, true);
@@ -112,11 +107,19 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * @type {Object}
      */
     var mobileAudio = {
-        play: function (path) {
+        loadSoundMap: function (map) {
 
         },
 
-        loop: function (path) {
+        unloadSoundMap: function () {
+
+        },
+
+        play: function (id, volume) {
+
+        },
+
+        loop: function (id, volume) {
 
         },
 
