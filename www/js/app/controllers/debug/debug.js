@@ -216,16 +216,16 @@ angular.module('subtrack90.app.debug', [
         sound.play('alarm', 0.5);
     };
 
-    $scope.loopInstances = [];
+    $scope.loopSounds = [];
     $scope.playMusic = function () {
-        sound.loop('music', 0.3).then(function(instance) {
-            $scope.loopInstances.push(instance);
-        });
+        $scope.loopSounds.push(
+            sound.loop('music', 0.3)
+        );
     };
 
     $scope.stopMusic = function () {
-        angular.forEach($scope.loopInstances, function (instance) {
-            instance.stop();
+        angular.forEach($scope.loopSounds, function (sound) {
+            sound.stop();
         })
     };
 });
