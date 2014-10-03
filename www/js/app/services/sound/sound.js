@@ -6,7 +6,39 @@
 
 angular.module('subtrack90.app.sound', ['ngCordova'])
 
-.factory('sound', function (IS_CORDOVA, $cordovaNativeAudio, $q) {
+.constant('DEFAULT_VOLUME', 1)
+
+.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, $cordovaNativeAudio, $q) {
+
+    var soundMap = [];
+
+    /**
+     * Play html5audio sound instance
+     *
+     * @param id
+     * @param volume
+     * @param inLoop
+     * @returns {promise}
+     */
+    var html5AudioPlay = function (id, volume, inLoop) {
+        var deferred = $q.defer();
+        var soundMapItem = _.findWhere(soundMap, {id: id});
+
+        // check if sound exists and preloaded
+        if (!soundMapItem) {
+            deferred.resolve({stop: angular.noop});
+            return deferred.promise;
+        }
+
+        var sound = soundMapItem.instance;
+        sound.volume(volume || DEFAULT_VOLUME);
+        sound.loop(inLoop);
+        sound.play();
+
+        deferred.resolve({stop: sound.stop.bind(sound)});
+
+        return deferred.promise;
+    };
 
     /**
      * Audio wrapper for howler.js lib
@@ -16,44 +48,50 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
     var html5Audio = {
 
         /**
-         * Play sound
+         * Load html5audio sound map
          *
-         * @param path
-         * @param volume
-         * @returns {promise}
+         * @param map
          */
-        play: function (path, volume) {
-            var deferred = $q.defer();
+        loadSoundMap: function (map) {
+            html5Audio.unloadSoundMap();
 
-            var sound = new Howl({
-                urls: [path],
-                volume: volume
-            }).play();
-
-            deferred.resolve({stop: sound.stop.bind(sound)});
-
-            return deferred.promise;
+            angular.forEach(map, function (sound) {
+                soundMap.push({
+                    id: sound.id,
+                    instance: new Howl({
+                        urls: [sound.path]
+                    })
+                });
+            });
         },
 
         /**
-         * Play sound in loop
+         * Destroy existing sound map
+         */
+        unloadSoundMap: function () {
+            soundMap = [];
+        },
+
+        /**
+         * Play sound from sound map
          *
-         * @param path
+         * @param id
          * @param volume
          * @returns {promise}
          */
-        loop: function (path, volume) {
-            var deferred = $q.defer();
+        play: function (id, volume) {
+            return html5AudioPlay(id, volume, false);
+        },
 
-            var sound = new Howl({
-                urls: [path],
-                loop: true,
-                volume: volume
-            }).play();
-
-            deferred.resolve({stop: sound.stop.bind(sound)});
-
-            return deferred.promise;
+        /**
+         * Play sound from sound map in loop
+         *
+         * @param id
+         * @param volume
+         * @returns {promise}
+         */
+        loop: function (id, volume) {
+            return html5AudioPlay(id, volume, true);
         },
 
         /**
