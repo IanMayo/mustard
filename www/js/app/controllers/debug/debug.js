@@ -10,12 +10,15 @@ angular.module('subtrack90.app.debug', [
  * @module Debug
  * @class DebugCtrl (controller)
  */
-.controller('DebugCtrl',
-    function ($q, $scope, $timeout, sound, user, localStorageService, $location, message, splashScreen) {
+.controller('DebugCtrl', function (IS_MOBILE, IS_CORDOVA, $q, $scope, $timeout, sound, user, localStorageService,
+    $location, message, splashScreen) {
 
     /**
      * DEBUG CONSOLE METHODS
      */
+
+    $scope.isMobile = IS_MOBILE;
+    $scope.isCordova = IS_CORDOVA;
 
     var localTime = new Date().toLocaleTimeString();
 
@@ -189,17 +192,33 @@ angular.module('subtrack90.app.debug', [
         splashScreen.show($q.defer());
     };
 
+    var loadSoundMap = function () {
+        sound.loadSoundMap([
+            {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
+            {id: 'alarm', path: 'audio/Alarm.mp3'},
+            {id: 'music', path: 'audio/DarkNoise.mp3'}
+        ]);
+    };
+
+    $scope.loadSoundMap = function () {
+        loadSoundMap();
+    };
+
+    $scope.unloadSoundMap = function () {
+        sound.unloadSoundMap();
+    };
+
     $scope.playTorpedoLaunch = function () {
-        sound.play('audio/TorpedoLaunch.mp3', 0.7);
+        sound.play('torpedo', 0.5);
     };
 
     $scope.playAlarm = function () {
-        sound.play('audio/Alarm.mp3', 0.7);
+        sound.play('alarm', 0.5);
     };
 
     $scope.loopInstances = [];
     $scope.playMusic = function () {
-        sound.loop('audio/DarkNoise.mp3').then(function(instance) {
+        sound.loop('music', 0.3).then(function(instance) {
             $scope.loopInstances.push(instance);
         });
     };
