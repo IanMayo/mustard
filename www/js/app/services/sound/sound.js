@@ -6,7 +6,7 @@
 
 angular.module('subtrack90.app.sound', ['ngCordova'])
 
-.factory('sound', function (IS_CORDOVA, $cordovaNativeAudio) {
+.factory('sound', function (IS_CORDOVA, $cordovaNativeAudio, $q) {
 
     /**
      * Audio wrapper for howler.js lib
@@ -14,21 +14,53 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * @type {Object}
      */
     var html5Audio = {
+
+        /**
+         * Play sound
+         *
+         * @param path
+         * @param volume
+         * @returns {promise}
+         */
         play: function (path, volume) {
-            new Howl({
+            var deferred = $q.defer();
+
+            var sound = new Howl({
                 urls: [path],
                 volume: volume
             }).play();
+
+            deferred.resolve({stop: sound.stop.bind(sound)});
+
+            return deferred.promise;
         },
 
+        /**
+         * Play sound in loop
+         *
+         * @param path
+         * @param volume
+         * @returns {promise}
+         */
         loop: function (path, volume) {
-            new Howl({
+            var deferred = $q.defer();
+
+            var sound = new Howl({
                 urls: [path],
                 loop: true,
                 volume: volume
             }).play();
+
+            deferred.resolve({stop: sound.stop.bind(sound)});
+
+            return deferred.promise;
         },
 
+        /**
+         * Set global volume
+         *
+         * @param value
+         */
         volume: function (value) {
             Howler.volume(value);
         }

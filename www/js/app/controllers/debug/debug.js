@@ -190,18 +190,23 @@ angular.module('subtrack90.app.debug', [
     };
 
     $scope.playTorpedoLaunch = function () {
-        sound.play('audio/TorpedoLaunch.mp3');
+        sound.play('audio/TorpedoLaunch.mp3', 0.7);
     };
 
     $scope.playAlarm = function () {
-        sound.play('audio/Alarm.mp3');
+        sound.play('audio/Alarm.mp3', 0.7);
     };
 
+    $scope.loopInstances = [];
     $scope.playMusic = function () {
-        sound.loop('audio/DarkNoise.mp3');
+        sound.loop('audio/DarkNoise.mp3').then(function(instance) {
+            $scope.loopInstances.push(instance);
+        });
     };
 
     $scope.stopMusic = function () {
-        sound.stop('audio/DarkNoise.mp3');
+        angular.forEach($scope.loopInstances, function (instance) {
+            instance.stop();
+        })
     };
 });
