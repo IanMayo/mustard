@@ -228,4 +228,8 @@ angular.module('subtrack90.app.debug', [
             sound.stop();
         })
     };
+
+    $scope.setVolume = function (value) {
+        sound.volume(value);
+    }
 });
