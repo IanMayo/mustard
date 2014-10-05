@@ -1,5 +1,4 @@
 angular.module('subtrack90', [
-    'ngCordova',
     'ngRoute',
     'ngTouch',
     'subtrack90.cordova',

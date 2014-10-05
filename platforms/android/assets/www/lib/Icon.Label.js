@@ -47,3 +47,64 @@ L.IconLabel = L.Icon.Default.extend({
 L.iconLabel = function (text, options) {
     return new L.IconLabel(text, options);
 };
+
+L.Icon.Name = L.Icon.extend({
+    options: {
+        /*
+         labelAnchor: (Point) (top left position of the label within the wrapper, default is right)
+         labelText: (String) (label's text component, if this is null the element will not be created)
+         */
+        labelClassName: ''
+    },
+
+    initialize: function (options) {
+        L.Util.setOptions(this, options);
+        L.Icon.prototype.initialize.call(this, this.options);
+    },
+
+    createIcon: function () {
+        return this._createLabel(L.Icon.prototype.createIcon.call(this));
+    },
+
+    updateLabel: function (icon, text) {
+        if (icon.nodeName.toUpperCase() === 'DIV') {
+            icon.childNodes[1].innerHTML = text;
+
+            this.options.labelText = text;
+        }
+    },
+
+    _createLabel: function (img) {
+        if (!this._labelTextIsSet()) {
+            return img;
+        }
+
+        var wrapper = document.createElement('div'),
+            label = document.createElement('span');
+
+        wrapper.className = 'leaflet-marker-icon-wrapper leaflet-zoom-animated';
+
+        // set up label
+        label.className = 'leaflet-marker-iconlabel ' + this.options.labelClassName;
+
+        label.innerHTML = this.options.labelText;
+
+        label.setAttribute('data-designed-left-margin', this.options.labelAnchor.x);
+        label.setAttribute('data-designed-top-margin', this.options.labelAnchor.y);
+        label.style.marginLeft = this.options.labelAnchor.x + 'px';
+        label.style.marginTop = this.options.labelAnchor.y + 'px';
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(label);
+
+        return wrapper;
+    },
+
+    _labelTextIsSet: function () {
+        return typeof this.options.labelText !== 'undefined' && this.options.labelText !== null;
+    }
+});
+
+L.icon.Name = function (text, options) {
+    return new L.Icon.Name(text, options);
+};

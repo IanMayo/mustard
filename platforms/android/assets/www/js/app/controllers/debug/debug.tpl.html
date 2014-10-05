@@ -83,12 +83,20 @@
            class="btn btn-lg btn-primary " role="button">View schema</a>
       </div>
 
-      <div ng-init="preloadSounds()">
+      <div ng-init="loadSoundMap()">
         <h4>Sounds</h4>
         <button class="btn btn-info btn-lg" ng-click="playTorpedoLaunch()">Torpedo Launch!</button>
         <button class="btn btn-info btn-lg" ng-click="playAlarm()">Alarm!</button>
-        <button class="btn btn-info btn-lg" ng-click="playMusic()">Background Noise</button>
-        <button class="btn btn-info btn-lg" ng-click="stopMusic()">Stop Background Noise</button>
+        <button class="btn btn-info btn-lg" ng-disabled="isMobile && !isCordova" ng-click="playMusic()">
+          Background Noise(s)
+        </button>
+        <button class="btn btn-info btn-lg" ng-disabled="isMobile && !isCordova" ng-click="stopMusic()">
+          Stop Background Noise(s)
+        </button>
+        <button class="btn btn-success btn-lg" ng-click="setVolume(1)">High volume</button>
+        <button class="btn btn-success btn-lg" ng-click="setVolume(0.1)">Low volume</button>
+        <button class="btn btn-warning btn-lg" ng-click="loadSoundMap()">Load sound map</button>
+        <button class="btn btn-danger btn-lg" ng-click="unloadSoundMap()">Unload sound map</button>
       </div>
 
     </div>

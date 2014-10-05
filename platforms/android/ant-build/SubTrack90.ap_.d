@@ -32,13 +32,13 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/1sec.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Alarm.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/DarkNoise.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Robot_blip-Marianne_Gagnon.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Sad_Trombone-Joe_Lamb.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Ta_Da-SoundBible.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/TorpedoLaunch.mp3 \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/audio/woop-woop.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/bootstrap.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/fonts.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images \
@@ -79,7 +79,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/1c_submarine_contacts.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/1d_noise_lobes.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/1e_array_unsteady.html \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/2a_port_exit.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/2a_gauss_gates.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/2b_sprint_drift.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/2c_course_at_cpa.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/2d_bow_nulls.html \
@@ -98,6 +98,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/1c_submarine_contacts.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/1d_noise_lobes.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/1e_array_unsteady.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/2a_gauss_gates.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/2a_port_exit.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/2b_sprint_drift.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/guidance/processed/2c_course_at_cpa.html \
@@ -197,12 +198,14 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady/cordovaReady.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex/missionsIndex.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend/mockUserBackend.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels/mockUserLevels.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound/sound.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user/user.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/controllers \
@@ -282,7 +285,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/1d_noise_lobes.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/1e_array_unsteady.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2.json \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2a_port_exit.json \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2a_gauss_gates.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2b_sprint_drift.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2c_course_at_cpa.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/2d_bow_nulls.json \
@@ -308,6 +311,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/6g_weapons_intro.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/6h_fleeing_target.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/6j_attacking_target.json \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/6k_fishing_frenzy.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/7.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/7b_quick_win.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/scenarios/7c_quick_fail.json \
@@ -423,9 +427,11 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/d3.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/fpsmeter.min.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/howler \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Icon.Label.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/jquery.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Control.MousePosition.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Graticule.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Marker.Rotate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr \
@@ -667,6 +673,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/test/visual/standalone.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/test/visual/vendor \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/test/visual/vendor/normalize.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/howler/howler.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/images \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/leaflet-src.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet/leaflet.css \
