@@ -4,8 +4,45 @@
         "uninstalled": []
     },
     "config_munge": {
-        "files": {}
+        "files": {
+            "framework": {
+                "parents": {
+                    "Foundation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "AVFoundation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "AudioToolbox.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"NativeAudio\"><param name=\"ios-package\" value=\"NativeAudio\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
     },
-    "installed_plugins": {},
+    "installed_plugins": {
+        "de.neofonie.cordova.plugin.nativeaudio": {
+            "PACKAGE_NAME": "com.subtrack90"
+        }
+    },
     "dependent_plugins": {}
 }

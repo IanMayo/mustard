@@ -281,6 +281,9 @@
                                     "$ref": "#/definitions/objectiveSuccessInArea"
                                 },
                                 {
+                                    "$ref": "#/definitions/objectiveSuccessOnLine"
+                                },
+                                {
                                     "$ref": "#/definitions/objectiveProximity"
                                 },
                                 {
@@ -729,6 +732,54 @@
                 },
                 "failure": {
                     "type": "string"
+                }
+            }
+        },
+        "objectiveSuccessOnLine": {
+            "type": "object",
+            "description": "Success if subject vessel passes close to the line",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["SUCCESS_ON_LINE"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "range": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "p1": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "p2": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "bonusAchievementTime": {
+                    "type": "integer"
+                },
+                "bonusAchievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
                 }
             }
         },

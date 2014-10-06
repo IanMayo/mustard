@@ -51,6 +51,16 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
 
                 L.control.scale(scaleConfig).addTo(map);
                 L.control.mousePosition().addTo(map);
+
+                L.graticule({
+                    style: {
+                        color: '#791',
+                        weight: 1,
+                        opacity: 0.3
+                    },
+                    interval: 0.0285,
+                    maxIntervals: 30
+                }).addTo(map);
             };
 
             /**
@@ -174,7 +184,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     layerGroups.ownShip.addLayer(marker);
                 }
 
-                icon = L.icon({
+                icon = L.icon.Name({
+                    labelText: vessel.name,
+                    labelAnchor: new L.Point(10 + iconSize / 2, - 4 * ( iconSize / 5)),
                     iconAngle: 0,
                     iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
                     iconSize: [iconSize, iconSize],

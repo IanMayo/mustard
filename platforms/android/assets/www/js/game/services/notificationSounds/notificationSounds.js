@@ -11,6 +11,28 @@ angular.module('subtrack90.game.notificationSounds', [])
  */
 .service('notificationSounds', ['$http', '$q', function ($http, $q) {
 
+    var pathToAudio = 'audio/';
+
+    function HtmlAudio() {
+        this.silentTrack = pathToAudio + '1sec.mp3';
+        this.audio = new Audio();
+        this.track;
+    }
+
+    HtmlAudio.prototype.setTrack = function (track) {
+        this.track = pathToAudio + track;
+    };
+
+    HtmlAudio.prototype.playSilent = function () {
+        this.audio.src = this.silentTrack;
+        this.audio.play();
+    };
+
+    HtmlAudio.prototype.play = function () {
+        this.audio.src = this.track;
+        this.audio.play();
+    };
+
     function Player(name) {
         this.track = name;
     }
@@ -50,23 +72,42 @@ angular.module('subtrack90.game.notificationSounds', [])
             apiMethod: 'objectiveAchieved'
         }];
 
-    _.each(tracks, function (track) {
-        var player = new Player(track.name);
-        apiMethods[track.apiMethod] = player;
-    });
-
     function init() {
         try {
             // Fix up for prefixing
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
             context = new AudioContext();
-        } catch (e) {
-            alert('Web Audio API is not supported in this browser');
-        }
+        } catch (e) {}
 
-        getTracks().then(function () {
+        createApiMethods();
+    }
+
+    function createApiMethods () {
+        if (context) {
+            _.each(tracks, function (track) {
+                var player = new Player(track.name);
+                apiMethods[track.apiMethod] = player;
+            });
+
+            getTracks().then(function () {
+                deferredService.resolve(apiMethods);
+            });
+        } else {
+            _.each(tracks, function (track) {
+                var player = new HtmlAudio();
+                player.setTrack(track.name);
+                apiMethods[track.apiMethod] = player;
+            });
+
+            $(document).on('touchstart.playSilentAudio', function () {
+                $(document).off('touchstart.playSilentAudio');
+                _.each(apiMethods, function (method) {
+                    method.playSilent();
+                });
+            });
+
             deferredService.resolve(apiMethods);
-        });
+        }
     }
 
     function getTracks() {
@@ -87,7 +128,7 @@ angular.module('subtrack90.game.notificationSounds', [])
     function loadTrack(player) {
         return $http({
             method: "GET",
-            url: 'audio/' + player.trackName(),
+            url: pathToAudio + player.trackName(),
             responseType: 'arraybuffer'
         });
     }

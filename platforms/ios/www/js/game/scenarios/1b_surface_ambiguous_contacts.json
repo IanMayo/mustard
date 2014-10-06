@@ -233,15 +233,15 @@
                     "narrSuccess" : "Spotted True bearing of NW"
                 },
                 {
-                    "name": "Select ambiguous bearing on SE track",
+                    "name": "Select True bearing on SE track",
                     "clearAfterwards" : true,
                     "type": "FIND_TARGET",
-                    "target": "TargetB_b",
+                    "target": "TargetB_a",
                     "subject": "Ownship",
-                    "description" : "Select the ambiguous bearing for the SE track",
+                    "description" : "Select the True bearing for the SE track",
                     "elapsedNot": 300,
                     "success": "Ok, well done. That's the surface contacts covered.",
-                    "failure": "Oops, did you select the correct one? Try estimating the bearing to the target using the map, then you can work out which is the 'other' one.",
+                    "failure": "Oops, did you select the correct one? Try estimating the bearing to the target using the map, that will give you the <i>True</i> bearing.",
                     "narrSuccess" : "Spotted Ambiguous bearing"
                 }
             ]

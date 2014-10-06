@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.subtrack90" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
+    <feature name="NativeAudio">
+        <param name="android-package" value="de.neofonie.cordova.plugin.nativeaudio.NativeAudio" />
+    </feature>
     <name>SubTrack 90</name>
     <description>
         Open Source (MIT License) mobile app to gamify Sonar best practices.
@@ -8,9 +11,6 @@
     <author email="ian@planetmayo.com" href="http://planetmayo.com">
         Planetmayo Team
     </author>
-    <preference name="SplashScreen" value="screen" />
-    <preference name="ShowSplashScreenSpinner" value="true" />
-    <preference name="AutoHideSplashScreen" value="true" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="Fullscreen" value="true" />
     <preference name="Orientation" value="landscape" />

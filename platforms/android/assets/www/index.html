@@ -41,20 +41,22 @@
   <link rel="stylesheet" type="text/css" href="css/sonar.css">
   <title>SubTrack &#39;90 - ASW Trainer</title>
 </head>
-<body>
 
+<body>
 <div class="app-body" ng-view></div>
 
 <!-- Libs -->
 <script type="text/javascript" src="cordova.js"></script>
+
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="lib/Marker.Rotate.js"></script>
 <script type="text/javascript" src="lib/Icon.Label.js"></script>
-
 <script type="text/javascript" src="lib/modernizr/modernizr.custom.93820.js"></script>
 <script type="text/javascript" src="lib/underscore-min.js"></script>
 <script type="text/javascript" src="lib/underscore.number.js"></script>
+<script type="text/javascript" src="lib/howler/howler.js"></script>
+
 <script type="text/javascript" src="lib/angular/angular.js"></script>
 <script type="text/javascript" src="lib/angular/angular-route.js"></script>
 <script type="text/javascript" src="lib/angular/angular-touch.js"></script>
@@ -62,10 +64,12 @@
 <script type="text/javascript" src="lib/angular/angular-animate.js"></script>
 <script type="text/javascript" src="lib/angular/angular-sanitize.js"></script>
 <script type="text/javascript" src="lib/angularjs-slider/dist/rzslider.min.js"></script>
-<script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
+<script type="text/javascript" src="lib/ng-cordova/ng-cordova.js"></script>
+
 <script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
+<script type="text/javascript" src="lib/L.Graticule.js"></script>
 <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
 <script type="text/javascript" src="lib/d3.min.js"></script>
@@ -93,6 +97,7 @@
 <script type="text/javascript" src="js/app/services/user/user.js"></script>
 <script type="text/javascript" src="js/app/services/missionsIndex/missionsIndex.js"></script>
 <script type="text/javascript" src="js/app/services/splashScreen/splashScreen.js"></script>
+<script type="text/javascript" src="js/app/services/sound/sound.js"></script>
 
 <!-- Game controllers -->
 <script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
@@ -130,6 +135,7 @@
 <script type="text/javascript" src="js/game/services/message/message.js"></script>
 <script type="text/javascript" src="js/game/services/plotGraphs/plotGraphs.js"></script>
 <script type="text/javascript" src="js/game/services/sonarGraph/sonarGraph.js"></script>
+<script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
 <script type="text/javascript" src="js/game/services/notificationSounds/notificationSounds.js"></script>
 
 <script type="text/javascript">
