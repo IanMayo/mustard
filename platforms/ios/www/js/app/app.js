@@ -32,7 +32,7 @@ angular.module('subtrack90', [
 .constant('SPLASH_ON_LOGIN', true)
 .constant('SPLASH_ON_MAIN', !!window.cordova)
 
-.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN) {
+.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN, $provide) {
 
     if (APP_DEBUG) {
         $routeProvider.when('/debug', {
@@ -129,7 +129,63 @@ angular.module('subtrack90', [
 
         .otherwise({redirectTo: '/main'});
 
-}).run(function ($rootScope, $location, user) {
+        $provide.decorator('popoverPopupDirective', function ($delegate) {
+            // replace designed template with html unsafe content
+            $delegate[0].templateUrl = "view/popover-html-unsafe.html";
+
+            return $delegate;
+        });
+
+        if (IS_MOBILE) {
+            // The block was added to solve problem with touch events in Webkit browsers under iOS.
+            // Safari doesn't send mousedown, mouseup, click events if mouseover, mouseenter or mousemove change page content
+            // Android browser (Android platform) doesn't have such features.
+            // see figure 6-5
+            // https://developer.apple.com/library/IOS/documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html
+
+            $provide.decorator('popoverDirective', function ($delegate) {
+                var directive = $delegate[0];
+                // Grab the old compile function
+                var compile = directive.compile;
+
+                // Create a new compile function
+                directive.compile = function () {
+                    // get old link function
+                    var link = compile.apply(this, arguments);
+                    return function(scope, elem, attrs) {
+                        // get the old functionality
+                        link.apply(this, arguments);
+
+                        (function webkitEventFix() {
+                            var bodyEl = angular.element('body');
+                            var elementWasClicked = false;
+                            var catchClick = function () {
+                                elementWasClicked = true;
+                            };
+
+                            var fireEvent = function () {
+                                if (scope.tt_isOpen && !elementWasClicked) {
+                                    elem.trigger('mouseleave');
+                                }
+                            };
+
+                            elem.one('click', catchClick);
+
+                            scope.$watch('tt_isOpen', function (isOpen) {
+                                if (isOpen) {
+                                    // Add event listener to the body tag so that popup can be closed when event invoked
+                                    bodyEl.one('touchend', fireEvent);
+                                }
+                            })
+                        })();
+                    };
+                };
+
+                return $delegate;
+            });
+        }
+
+    }).run(function ($rootScope, $location, user) {
 
     $rootScope.$on("$routeChangeStart", function () {
         !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');
