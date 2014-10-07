@@ -84,8 +84,8 @@
                 labelElement.style.marginTop = (designedTopMargin + 10).toString() + 'px';
                 labelElement.style.textAlign = 'right';
             } else if (currentLeftMargin !== designedLeftMargin) {
-                labelElement.style.marginLeft = designedLeftMargin + 'px';
-                labelElement.style.marginTop = designedTopMargin + 'px';
+                labelElement.style.marginLeft = designedLeftMargin / 2 + 'px';
+                labelElement.style.marginTop = designedTopMargin / 2 + 'px';
                 labelElement.style.textAlign = 'left';
             }
         }
