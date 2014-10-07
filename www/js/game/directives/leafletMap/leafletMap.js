@@ -154,22 +154,19 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 var marker;
                 var markerColor;
 
-                switch (vessel.categories.type) {
-                    case "TORPEDO":
-                    case "HELICOPTER":
-                    case "SUBMARINE":
+                switch (vessel.categories.force) {
+                    case "RED":
                         markerColor = "#ac2925";
                         break;
-                    case "REFERENCE":
-                    case "FISHERMAN":
+                    case "WHITE":
+                    case "GREEN":
                         markerColor = "green";
                         break;
-                    case "MERCHANT":
-                    case "WARSHIP":
+                    case "BLUE":
                         markerColor = "blue";
                         break;
                     default:
-                        console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
+                        console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.force);
                         break;
                 }
 
