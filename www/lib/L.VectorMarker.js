@@ -8,7 +8,6 @@
         options: {
             iconSize: [30, 50],
             iconAnchor: [0, 50],
-            popupAnchor: [2, -40],
             shadowAnchor: [7, 45],
             shadowSize: [54, 51],
             className: "vector-marker",
@@ -26,9 +25,10 @@
             var div, icon, options, pin_path;
             div = (oldIcon && oldIcon.tagName === "DIV" ? oldIcon : document.createElement("div"));
             options = this.options;
+            var iconSize = new L.point(this.options.iconSize);
 
             pin_path = L.VectorMarker.MAP_PIN;
-            div.innerHTML = '<svg x="0" y="0" width="32px" height="72px" version="1.1" viewBox="0 0 30 72" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
+            div.innerHTML = '<svg version="1.1" preserveAspectRatio="none" width="'+iconSize.x+'" height="'+iconSize.y+'" viewBox="0 0 30 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
                 + '<path d="' + pin_path + '" fill="none" stroke-width="2" stroke="' + options.markerColor + '"></path></svg>';
             this._setIconStyles(div, "icon");
             this._setIconStyles(div, "icon-" + options.markerColor);
