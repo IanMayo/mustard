@@ -54,6 +54,7 @@ L.Icon.Name = L.VectorMarker.Icon.extend({
          labelAnchor: (Point) (top left position of the label within the wrapper, default is right)
          labelText: (String) (label's text component, if this is null the element will not be created)
          */
+        labelTextColor: '#bcdf1b',
         labelClassName: ''
     },
 
@@ -92,6 +93,7 @@ L.Icon.Name = L.VectorMarker.Icon.extend({
         label.setAttribute('data-designed-top-margin', this.options.labelAnchor.y);
         label.style.marginLeft = this.options.labelAnchor.x + 'px';
         label.style.marginTop = this.options.labelAnchor.y + 'px';
+        label.style.color = this.options.labelTextColor,
 
         wrapper.appendChild(img);
         wrapper.appendChild(label);
