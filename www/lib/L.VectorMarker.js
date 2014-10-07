@@ -2,58 +2,65 @@
     "use strict";
 
     L.VectorMarker = {};
-    L.VectorMarker.MAP_PIN = 'M13.897,2.667c0,0-8.871,37.216-11.272,49.917c-1.447,7.655,1.997,13.881,1.997,13.881s7.255-1.741,9.59-1.741c2.46,0,9.59,1.741,9.59,1.741s2.747-6.225,1.3-13.881C22.702,39.883,13.897,2.667,13.897,2.667z';
+    L.VectorMarker.MAP_PIN = 'M13.897,2.667c0,0-8.871,37.216-11.272,49.917c-1.447,7.655,1.997,13.881,1.997,' +
+        '13.881s7.255-1.741,9.59-1.741c2.46,0,9.59,1.741,9.59,1.741s2.747-6.225,1.3-13.881C22.702,39.883,13.897,' +
+        '2.667,13.897,2.667z';
 
     L.VectorMarker.Icon = L.Icon.extend({
         options: {
-            iconSize: [30, 50],
-            iconAnchor: [0, 50],
-            shadowAnchor: [7, 45],
-            shadowSize: [54, 51],
+            iconSize: new L.point(30, 50),
+            iconAnchor: new L.point(0, 50),
             className: "vector-marker",
-            prefix: "fa",
-            spinClass: "fa-spin",
             extraClasses: "",
-            icon: "home",
-            markerColor: "blue",
-            iconColor: "white"
+            markerColor: "blue"
         },
         initialize: function(options) {
             L.Util.setOptions(this, options);
         },
         createIcon: function(oldIcon) {
-            var div, icon, options, pin_path;
+            var div, icon, options, pintPath;
+
             div = (oldIcon && oldIcon.tagName === "DIV" ? oldIcon : document.createElement("div"));
             options = this.options;
-            var iconSize = new L.point(this.options.iconSize);
+            pintPath = L.VectorMarker.MAP_PIN;
 
-            pin_path = L.VectorMarker.MAP_PIN;
-            div.innerHTML = '<svg version="1.1" preserveAspectRatio="none" width="'+iconSize.x+'" height="'+iconSize.y+'" viewBox="0 0 30 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
-                + '<path d="' + pin_path + '" fill="none" stroke-width="2" stroke="' + options.markerColor + '"></path></svg>';
-            this._setIconStyles(div, "icon");
+            this._pathRoot = this._createElement('svg');
+            this._container = this._createElement('g');
+            this._path = this._createElement('path');
+
+            this._pathRoot.appendChild(this._container);
+            this._container.appendChild(this._path);
+
+            this._pathRoot.setAttribute('width', options.iconSize.x);
+            this._pathRoot.setAttribute('height', options.iconSize.y);
+            this._pathRoot.setAttribute('viewBox', '0 0 30 100');
+
+            this._path.setAttribute('d', pintPath);
+            this._path.setAttribute('fill', 'none');
+            this._path.setAttribute('stroke-width', '3');
+            this._path.setAttribute('stroke', options.markerColor);
+
+            div.appendChild(this._pathRoot);
+
             this._setIconStyles(div, "icon-" + options.markerColor);
             return div;
         },
         _setIconStyles: function(img, name) {
             var anchor, options, size;
             options = this.options;
-            size = L.point(options[(name === "shadow" ? "shadowSize" : "iconSize")]);
-
-            if (name === "shadow") {
-                anchor = L.point(options.shadowAnchor || options.iconAnchor);
-            } else {
-                anchor = L.point(options.iconAnchor);
-            }
+            size = options.iconSize;
+            anchor = options.iconAnchor;
 
             if (!anchor && size) {
                 anchor = size.divideBy(2, true);
             }
 
             img.className = "vector-marker-" + name + " " + options.className;
+            img.style.position = "absolute";
 
             if (anchor) {
-                img.style.marginLeft = (-anchor.x) + "px";
-                img.style.marginTop = (-anchor.y) + "px";
+                img.style.left = (-anchor.x) + "px";
+                img.style.top = (-anchor.y) + "px";
             }
 
             if (size) {
@@ -61,11 +68,8 @@
                 return img.style.height = size.y + "px";
             }
         },
-        createShadow: function() {
-            var div;
-            div = document.createElement("div");
-            this._setIconStyles(div, "shadow");
-            return div;
+        _createElement: function (name) {
+            return document.createElementNS(L.Path.SVG_NS, name);
         }
     });
 
