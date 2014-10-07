@@ -32,6 +32,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/view \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/1sec.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Alarm.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/DarkNoise.mp3 \
@@ -688,4 +689,5 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/plugins/de.neofonie.cordova.plugin.nativeaudio/www/nativeaudio.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/view/popover-html-unsafe.html \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/AndroidManifest.xml \

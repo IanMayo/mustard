@@ -133,6 +133,16 @@
   outline: none;
 }
 
+/* Objective list */
+
+.objective-list li {
+  position: static;
+}
+
+.objective-list li .glyphicon {
+  font-size: 14px;
+}
+
 /* Ship state */
 
 .ship-state {
