@@ -64,7 +64,7 @@
             for (var len = nodes.length, i = 0; i < len; i ++) {
                 var tagName = nodes[i].tagName.toLocaleLowerCase();
 
-                if (tagName === 'img') {
+                if (tagName === 'div') {
                     iconImgEl = nodes[i];
                 } else if (tagName === 'span') {
                     this._changeLabelIndent(nodes[i]);
