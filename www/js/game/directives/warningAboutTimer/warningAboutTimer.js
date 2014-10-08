@@ -18,14 +18,24 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
             "Your browser does not support the audio tag. " +
             "</audio>",
         link: function (scope, element) {
+            var warningIsActive = false;
+
             scope.getAudioUrl = function () {
                 return $sce.trustAsResourceUrl('audio/' + scope.play().track);
             };
 
-            var clearWatchingTime = scope.$watch('time', function (millisec) {
-                if (millisec / timeAccelerated.current() < parseInt(scope.play().inSecond) * scope.timeStep()) {
-                    clearWatchingTime();
-                    element[0].play();
+            scope.$watch('time', function (millisec, oldVal) {
+                if (oldVal > millisec) {
+                    // play warning sound for a new time-out
+                    if (false === warningIsActive &&
+                        millisec / timeAccelerated.current() < parseInt(scope.play().inSecond) * scope.timeStep()) {
+                        // play warning sound once for the time-out
+                        element[0].play();
+                        warningIsActive = true;
+                    }
+                } else {
+                    // next time-out alarm was added
+                    warningIsActive = false;
                 }
             });
         }
@@ -41,10 +51,24 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
             warn: '&'
         },
         link: function (scope, element) {
-            var clearWatchingTime = scope.$watch('time', function (millisec) {
-                if (millisec / timeAccelerated.current() < parseInt(scope.warn().inSecond) * scope.timeStep()) {
-                    clearWatchingTime();
-                    element.addClass('play-warning');
+            var warningIsActive = false;
+
+            scope.$watch('time', function (millisec, oldVal) {
+                if (oldVal > millisec) {
+                    // show warning background for a new time-out
+                    if (false === warningIsActive &&
+                        millisec / timeAccelerated.current() < parseInt(scope.warn().inSecond) * scope.timeStep()) {
+                        // show warning only once for the time-out
+                        element.addClass('play-warning');
+                        warningIsActive = true;
+                    }
+                } else {
+                    // next time-out alarm was added
+                    warningIsActive = false;
+                    if (element.hasClass('play-warning')) {
+                        // Remove warning background what was shown for previous time-out
+                        element.removeClass('play-warning');
+                    }
                 }
             });
         }
