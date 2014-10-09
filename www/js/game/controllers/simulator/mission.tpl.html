@@ -1,6 +1,6 @@
 <div data-ng-controller="MissionSimulatorCtrl" class="mission-simulator">
   <div class="container-fluid time-bearing-spatial-container">
-    <div data-warning-background warning-alarm class="warning-background"
+    <div data-warning-background data-warning-alarm class="warning-background"
          data-time="gameState.remaining" data-warn="{inSecond:5}" data-time-step="gameState.simulationTimeStep"></div>
     <div class="col-xs-5 col-md-5 time-bearing-container">
       <div id="sonarMeter"></div>
@@ -85,6 +85,6 @@
       </li>
     </ul>
   </div>
-  <warning-sound warning-alarm data-time="gameState.remaining" data-warn={inSecond:5,sound:'Alarm.mp3'}
+  <warning-sound data-warning-alarm data-time="gameState.remaining" data-warn={inSecond:5,sound:'Alarm.mp3'}
                  data-time-step="gameState.simulationTimeStep"></warning-sound>
 </div>
