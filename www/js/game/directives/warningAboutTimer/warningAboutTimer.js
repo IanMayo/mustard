@@ -51,7 +51,7 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
     }
 }])
     
-.directive('soundAtSecond', function () {
+.directive('warningSound', function () {
     return {
         restrict: 'EA',
         replace: true,
