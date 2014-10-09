@@ -62,7 +62,7 @@ angular.module('subtrack90.app.splashScreen', [])
 
             $(document.createElement('div'))
                 .attr({id: options.id})
-                .bind(IS_MOBILE ? 'touchstart' : 'click', function () {
+                .bind(IS_MOBILE ? 'touchend' : 'click', function () {
                     var $element = $(this);
 
                     $element.fadeOut(options.fadeOutDelay, function() {

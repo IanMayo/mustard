@@ -1,0 +1,24 @@
+{
+    "version": "2.8.1",
+    "name": "de.neofonie.cordova.plugin.nativeaudio",
+    "cordova_name": "Cordova Native Audio",
+    "description": "Cordova / PhoneGap 3.5+ extension for Native Audio playback, aimed at HTML5 gaming and audio applications which require minimum latency, polyphony and concurrency.\n        Community-driven fork of the Low Latency Audio Plugin with rich API feedback and Ionic Framework integration.",
+    "license": "MIT",
+    "repo": "https://github.com/sidneys/cordova-plugin-nativeaudio.git",
+    "issue": "https://github.com/sidneys/cordova-plugin-nativeaudio/issues",
+    "keywords": [
+        "audio",
+        "music",
+        "games"
+    ],
+    "platforms": [
+        "android",
+        "ios"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.5"
+        }
+    ]
+}

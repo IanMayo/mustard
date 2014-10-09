@@ -476,3 +476,18 @@
 	background: #fff;
 	border: 1px solid #666;
 	}
+
+
+.leaflet-marker-icon-wrapper {
+  position: absolute;
+}
+
+.leaflet-marker-iconlabel {
+  display: block;
+  width: 100px;
+  font: 12px;
+  color: #bcdf1b;
+  white-space: nowrap;
+  background: transparent;
+  position: absolute;
+}

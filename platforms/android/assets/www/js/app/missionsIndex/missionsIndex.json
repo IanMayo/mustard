@@ -74,8 +74,8 @@
                                 "type": "FIND_TARGET"
                             },
                             {
-                                "name": "Select ambiguous bearing on SE track",
-                                "description": "Select the ambiguous bearing for the SE track",
+                                "name": "Select True bearing on SE track",
+                                "description": "Select the True bearing for the SE track",
                                 "type": "FIND_TARGET"
                             }
                         ]
@@ -160,7 +160,7 @@
                             },
                             {
                                 "name": "Spot ambiguous side-lobe on Merchant",
-                                "description": "Select a side lobe on the merchan's ambiguous track as it gets closer",
+                                "description": "Select a side lobe on the merchant's ambiguous track as it gets closer",
                                 "type": "FIND_TARGET"
                             },
                             {
@@ -228,13 +228,13 @@
         "missions": [
             {
                 "id": "2a",
-                "name": "Learning ship control, the hard way",
-                "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
-                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 4000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "name": "De-gaussing stage",
+                "description": "Now that you have provisional ship control authority, you're going to be tested as we go through a series of degaussing stations.",
+                "situation": "We're transiting to load some special weapons, but before we do that we've got to validate the ownship degaussing systems.  Drive across the set of submerged de-gaussing gates in order, but stay outside 3000m of any fishing vessels.  Oh, and please don't exit your allocated water (the blue rectangle)",
                 "forces": {
                     "enemy": "-Nil-",
-                    "friendly": "AF Brigand, Support Platform",
-                    "neutral": "FisherA, FisherB, FisherC, FisherD, FisherE"
+                    "friendly": "AF Brigand",
+                    "neutral": "FV Duntrawlin"
                 },
                 "objectives": [
                     {
@@ -251,15 +251,14 @@
                                 "type": "STAY_IN_AREA"
                             },
                             {
-                                "name": "R/V with support barge",
-                                "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
-                                "type": "PROXIMITY"
+                                "name": "De-Gauss",
+                                "type": "SEQUENCE"
                             }
                         ]
                     }
                 ],
-                "url": "2a_port_exit",
-                "guidanceUrl": "guidance/processed/2a_port_exit.html"
+                "url": "2a_gauss_gates",
+                "guidanceUrl": "guidance/processed/2a_gauss_gates.html"
             },
             {
                 "id": "2b",
@@ -323,11 +322,11 @@
                 },
                 "objectives": [
                     {
-                        "name": "Spring Drift Training",
+                        "name": "Sprint Drift Training",
                         "children": [
                             {
                                 "name": "Gain sonar contact with Fishing Vessel",
-                                "description": "Gain contact on the fishing vessel West of you within 35 minutes",
+                                "description": "Gain contact on the fishing vessel East of you within 35 minutes",
                                 "type": "GAIN_CONTACT"
                             },
                             {
@@ -356,7 +355,7 @@
     {
         "id": "3",
         "name": "Advance to contact",
-        "description": "Engage with potential adversaries in relatively benign area of theatre",
+        "description": "Engage with potential adversaries in a relatively benign region adjacent to theatre of operations",
         "missions": [
             {
                 "id": "3a",
@@ -374,7 +373,7 @@
                         "children": [
                             {
                                 "name": "Gain contact",
-                                "description": "Travel West to gain contact on the Platfom Support Vessel working in that area",
+                                "description": "Travel East to gain contact on the Platfom Support Vessel working in that area",
                                 "type": "GAIN_CONTACT"
                             },
                             {
@@ -917,6 +916,41 @@
                 ],
                 "url": "6j_attacking_target",
                 "guidanceUrl": "guidance/processed/6j_attacking_target.html"
+            },
+            {
+                "id": "6k",
+                "name": "Fishing frenzy",
+                "description": "Now that you have provisional ship control authority, you're going to be tested with a challenging transit.",
+                "situation": "We're transiting to load some special weapons, but we've got limited time and a flotilla of fishing vessels have just arrived.  Come alongside the static support vessel to the East of you without getting within 3000m of any trawlers.  Oh, and please don't exit your allocated water (the blue rectangle)",
+                "forces": {
+                    "enemy": "-Nil-",
+                    "friendly": "AF Brigand, Support Platform",
+                    "neutral": "FisherA, FisherB, FisherC, FisherD, FisherE"
+                },
+                "objectives": [
+                    {
+                        "name": "Ship Control exam",
+                        "children": [
+                            {
+                                "name": "Avoid fishing vessels",
+                                "description": "Stay outside 3km of fishing vessels",
+                                "type": "DISTANCE_TO_CATEGORY"
+                            },
+                            {
+                                "name": "Remain in allocated water",
+                                "description": "Stay within operating area",
+                                "type": "STAY_IN_AREA"
+                            },
+                            {
+                                "name": "R/V with support barge",
+                                "description": "RAS next to Tactical Support Barge (Northerly course, less than 1km away, at less than 3 kts)",
+                                "type": "PROXIMITY"
+                            }
+                        ]
+                    }
+                ],
+                "url": "6k_fishing_frenzy",
+                "guidanceUrl": "guidance/processed/6k_fishing_frenzy.html"
             }
         ]
     },

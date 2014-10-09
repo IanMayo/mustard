@@ -190,7 +190,7 @@
                     "type": "GAIN_CONTACT",
                     "target": "Target",
                     "elapsed": 2300,
-                    "success": "Ok, we've got a feint trace on the target submarine.  You can differentiate it from the merchant vessel since it should not show side-lobes",
+                    "success": "Ok, we've got a faint trace on the target submarine.  You can differentiate it from the merchant vessel since it should not show side-lobes",
                     "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?"
                 },
                 {
