@@ -303,6 +303,69 @@
                                 },
                                 {
                                     "$ref": "#/definitions/objectiveElapsed"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "allow a second tier of objectives",
+                                    "required": ["name", "type"],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Name of this grouping"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Type of organisational grouping",
+                                            "enum": ["SEQUENCE", "OR"
+                                            ]
+                                        },
+                                        "children": {
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "$ref": "#/definitions/objectiveFindTarget"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistanceToCategory"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistanceFromCategory"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveStayInArea"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveSuccessInArea"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveSuccessOnLine"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveProximity"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveGainContact"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveMaintainContact"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveObtainSolution"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistance"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDestroyTarget"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveElapsed"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
                                 }
                             ]
                         }
@@ -317,77 +380,184 @@
             "required": ["type", "features"],
             "properties": {
                 "type": {
-                    "type": "string"
+                    "enum": ["FeatureCollection"]
                 },
                 "features": {
                     "type": "array",
+                    "additionalProperties": false,
                     "uniqueItems": true,
                     "items": {
-                        "type": "object",
-                        "required": ["type", "properties", "geometry", "id"],
-                        "properties": {
-                            "type": {
-                                "type": "string"
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/featurePoint"
                             },
-                            "properties": {
-                                "type": "object",
-                                "required": ["name"],
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                }
+                            {
+                                "$ref": "#/definitions/featureLineString"
                             },
-                            "geometry": {
-                                "type": "object",
-                                "required": ["type", "coordinates"],
-                                "properties": {
-                                    "type": {
-                                        "type": "string"
-                                    },
-                                    "coordinates": {
-                                        "type": "array",
-
-                                        "items": [
-                                            {
-                                                "oneOf": [
-
-                                                    {
-                                                        "type": "number"
-                                                    },
-
-                                                    {
-                                                        "type": "array",
-                                                        "items": [
-                                                            {
-                                                                "type": "array",
-                                                                "items": [
-                                                                    {
-                                                                        "type": "number"
-                                                                    }
-                                                                ]
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-
-                                        ]
-
-                                    }
-                                }
-                            },
-                            "id": {
-                                "type": "string"
+                            {
+                                "$ref": "#/definitions/featurePolygon"
                             }
-                        }
+                        ]
                     }
                 }
             }
         }
     },
     "definitions": {
+        "featurePoint": {
+            "type": "object",
+            "description" : "A fixed point",
+            "required": ["type", "properties", "geometry", "id"],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["Point"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+
+                                    "type": "number",
+                                    "additionalProperties": false,
+                                    "description": "pattern for Point object"
+
+                                }
+                            ]
+
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "featureLineString": {
+            "type": "object",
+            "description" : "A series of points",
+            "required": ["type", "properties", "geometry", "id"],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["LineString"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "array",
+                                    "additionalProperties": false,
+                                    "description": "pattern for LineString object",
+                                    "items": [
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "featurePolygon": {
+            "type": "object",
+            "required": ["type", "properties", "geometry", "id"],
+            "description" : "A series of ring objects, the first one plotted as the polygon",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["Polygon"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "array",
+                                    "additionalProperties": false,
+                                    "description": "pattern for Polygon object",
+                                    "items": [
+                                        {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+
+        },
         "behaviourName": {
+            "additionalProperties": false,
             "description": "Unique name for this instance of this behaviour",
             "properties": {
                 "name": {
@@ -396,6 +566,7 @@
             }
         },
         "behaviourHeight": {
+            "additionalProperties": false,
             "description": "Height (or -ve for depth) to travel at in assorted behaviours",
             "properties": {
                 "height": {
@@ -475,7 +646,7 @@
                 },
                 "height": {
                     "$ref": "#/definitions/behaviourHeight",
-                "description": "Height (-ve depth) to travel at for snort"
+                    "description": "Height (-ve depth) to travel at for snort"
                 },
                 "startLevel": {
                     "type": "integer",
@@ -540,7 +711,7 @@
         },
         "objectiveAchievement": {
             "description": "Award the player with an achievement",
-            "required" : ["name", "message"],
+            "required": ["name", "message"],
             "properties": {
                 "name": {
                     "type": "string",
@@ -775,6 +946,9 @@
                 "failure": {
                     "type": "string"
                 },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
                 "bonusAchievementTime": {
                     "type": "integer"
                 },
@@ -825,7 +999,7 @@
         "objectiveProximity": {
             "type": "object",
             "description": "Subject vessel must pass within specified range target within specified time, potentially at indicated course and speed",
-            "required" : ["name", "description","failure"],
+            "required": ["name", "description", "failure"],
             "additionalProperties": false,
             "properties": {
                 "name": {
@@ -1245,7 +1419,5 @@
                 }
             }
         }
-
-
     }
 }
