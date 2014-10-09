@@ -75,17 +75,17 @@
         },
 
         _changeLabelIndent: function (labelElement) {
-            var designedLeftMargin = parseInt(labelElement.getAttribute('data-designed-left-margin'));
-            var designedTopMargin = parseInt(labelElement.getAttribute('data-designed-top-margin'));
-            var currentLeftMargin = parseInt(labelElement.style.marginLeft);
+            var designedLeftPosition = parseInt(labelElement.getAttribute('data-designed-left-position'));
+            var designedTopPosition = parseInt(labelElement.getAttribute('data-designed-top-position'));
+            var currentLeftPosition = parseInt(labelElement.style.left);
 
             if ((this.options.iconAngle >= 25 && this.options.iconAngle <= 90)) {
-                labelElement.style.marginLeft = (0 - (2 * designedLeftMargin + 10)).toString() + 'px';
-                labelElement.style.marginTop = (designedTopMargin + 10).toString() + 'px';
+                labelElement.style.left =  -(parseInt(labelElement.getBoundingClientRect().width) + designedLeftPosition).toString() + 'px';
+                labelElement.style.top = (designedTopPosition).toString() + 'px';
                 labelElement.style.textAlign = 'right';
-            } else if (currentLeftMargin !== designedLeftMargin) {
-                labelElement.style.marginLeft = designedLeftMargin / 2 + 'px';
-                labelElement.style.marginTop = designedTopMargin / 2 + 'px';
+            } else if (currentLeftPosition !== designedLeftPosition) {
+                labelElement.style.left = designedLeftPosition.toString() + 'px';
+                labelElement.style.top = designedTopPosition.toString() + 'px';
                 labelElement.style.textAlign = 'left';
             }
         }

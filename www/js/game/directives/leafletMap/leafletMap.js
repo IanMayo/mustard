@@ -183,14 +183,15 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 }
 
                 iconSize = new L.point(20, 60);
+
                 icon = L.icon.Name({
                     labelText: vessel.name,
-                    labelAnchor: new L.Point(50, - 50),
+                    labelAnchor: new L.Point(iconSize.y / 5 , -iconSize.x / 2),
                     iconAngle: 0,
                     markerColor: markerColor,
                     labelTextColor: markerColor,
                     iconSize: iconSize,
-                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y - iconSize.y / 2)
+                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y / 2)
                 });
 
                 marker.setIcon(icon);

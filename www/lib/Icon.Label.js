@@ -89,11 +89,11 @@ L.Icon.Name = L.VectorMarker.Icon.extend({
 
         label.innerHTML = this.options.labelText;
 
-        label.setAttribute('data-designed-left-margin', this.options.labelAnchor.x);
-        label.setAttribute('data-designed-top-margin', this.options.labelAnchor.y);
-        label.style.marginLeft = this.options.labelAnchor.x + 'px';
-        label.style.marginTop = this.options.labelAnchor.y + 'px';
-        label.style.color = this.options.labelTextColor,
+        label.setAttribute('data-designed-left-position', this.options.labelAnchor.x);
+        label.setAttribute('data-designed-top-position', this.options.labelAnchor.y);
+        label.style.left = this.options.labelAnchor.x + 'px';
+        label.style.top = this.options.labelAnchor.y + 'px';
+        label.style.color = this.options.labelTextColor;
 
         wrapper.appendChild(img);
         wrapper.appendChild(label);
