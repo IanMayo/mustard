@@ -2,7 +2,7 @@
     "use strict";
 
     L.VectorMarker = {};
-    L.VectorMarker.MAP_PIN = 'M13.897,2.667c0,0-8.871,37.216-11.272,49.917c-1.447,7.655,1.997,13.881,1.997,' +
+    L.VectorMarker.SVG_SHAPE_COORDINATES = 'M13.897,2.667c0,0-8.871,37.216-11.272,49.917c-1.447,7.655,1.997,13.881,1.997,' +
         '13.881s7.255-1.741,9.59-1.741c2.46,0,9.59,1.741,9.59,1.741s2.747-6.225,1.3-13.881C22.702,39.883,13.897,' +
         '2.667,13.897,2.667z';
 
@@ -22,7 +22,7 @@
 
             div = (oldIcon && oldIcon.tagName === "DIV" ? oldIcon : document.createElement("div"));
             options = this.options;
-            pintPath = L.VectorMarker.MAP_PIN;
+            pintPath = L.VectorMarker.SVG_SHAPE_COORDINATES;
 
             this._pathRoot = this._createElement('svg');
             this._container = this._createElement('g');
