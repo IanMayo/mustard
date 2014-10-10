@@ -182,7 +182,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     layerGroups.ownShip.addLayer(marker);
                 }
 
-                iconSize = new L.point(20, 60);
+                iconSize = new L.point(0.5 * 32, 0.5 * 72);
 
                 icon = L.icon.Name({
                     labelText: vessel.name,
