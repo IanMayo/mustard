@@ -13,9 +13,9 @@ angular.module('subtrack90', [
     'subtrack90.app.missionsIndex',
     'subtrack90.app.splashScreen',
     'subtrack90.app.final',
+    'subtrack90.app.sound',
     'subtrack90.game.simulator',
     'subtrack90.game.review',
-    'subtrack90.game.notificationSounds',
     'ui.bootstrap',
     'rzModule'
 ])
@@ -115,9 +115,6 @@ angular.module('subtrack90', [
                         deferred.resolve(response);
                     });
                     return deferred.promise;
-                }],
-                audioSounds: ['notificationSounds', function (notificationSounds) {
-                    return notificationSounds;
                 }]
             }
         })
@@ -185,7 +182,18 @@ angular.module('subtrack90', [
             });
         }
 
-    }).run(function ($rootScope, $location, user) {
+}).run(function ($rootScope, $location, user, sound) {
+
+    // Load all sounds of the app
+    sound.loadSoundMap([
+        {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
+        {id: 'alarm', path: 'audio/Alarm.mp3'},
+        {id: 'noise', path: 'audio/DarkNoise.mp3'},
+        {id: '1sec', path: 'audio/1sec.mp3'},
+        {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3'},
+        {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3'},
+        {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3'}
+    ]);
 
     $rootScope.$on("$routeChangeStart", function () {
         !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');

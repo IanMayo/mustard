@@ -196,7 +196,11 @@ angular.module('subtrack90.app.debug', [
         sound.loadSoundMap([
             {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
             {id: 'alarm', path: 'audio/Alarm.mp3'},
-            {id: 'music', path: 'audio/DarkNoise.mp3'}
+            {id: 'noise', path: 'audio/DarkNoise.mp3'},
+            {id: '1sec', path: 'audio/1sec.mp3'},
+            {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3'},
+            {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3'},
+            {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3'}
         ]);
     };
 
@@ -219,7 +223,7 @@ angular.module('subtrack90.app.debug', [
     $scope.loopSounds = [];
     $scope.playMusic = function () {
         $scope.loopSounds.push(
-            sound.loop('music', 0.3)
+            sound.loop('noise', 0.3)
         );
     };
 

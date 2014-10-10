@@ -4,12 +4,18 @@
 
 angular.module('subtrack90.game.clickRepeat', [])
 
+.constant('clickConfig', {
+    defaultDelay: 300,
+    speedUpFactor: 1.03,
+    minDelay: 150
+})
+
 /**
  * Click & Repeat directive
  *
  * @example <... click-repeat="handler()" [delay="1000" speedup="1.5"] >
  */
-.directive('clickRepeat', ['$timeout', 'IS_MOBILE', function ($timeout, IS_MOBILE) {
+.directive('clickRepeat', ['$timeout', 'clickConfig', 'IS_MOBILE', function ($timeout, clickConfig, IS_MOBILE) {
 
     return {
         restrict: 'A',
@@ -34,14 +40,14 @@ angular.module('subtrack90.game.clickRepeat', [])
              *
              * @type {Number} in ms
              */
-            var defaultDelay = scope.delay || 300;
+            var defaultDelay = scope.delay || clickConfig.defaultDelay;
 
             /**
              * Acceleration rate
              *
              * @type {Number}
              */
-            var speedup = scope.speedup || 1.03;
+            var speedup = scope.speedup || clickConfig.speedUpFactor;
 
             /**
              * Delay which is used in action timer
@@ -56,7 +62,13 @@ angular.module('subtrack90.game.clickRepeat', [])
             var repeat = function () {
                 scope.clickRepeat();
                 timer = $timeout(repeat, delay);
-                delay /= speedup;
+
+                // don't let the click-repeat get "crazy fast",
+                // restrict it to 200ms
+                if(delay > clickConfig.minDelay)
+                {
+                    delay /= speedup;
+                }
             };
 
             /**
