@@ -480,6 +480,9 @@
 
 .leaflet-marker-icon-wrapper {
   position: absolute;
+  width: 2px;
+  height: 2px;
+  border: 1px solid red;
 }
 
 .leaflet-marker-iconlabel {
