@@ -33,7 +33,7 @@
 
             this._pathRoot.setAttribute('width', options.iconSize.x);
             this._pathRoot.setAttribute('height', options.iconSize.y);
-            this._pathRoot.setAttribute('viewBox', '0 0 30 100');
+            this._pathRoot.setAttribute('viewBox', '0 0 30 50');
 
             this._path.setAttribute('d', pintPath);
             this._path.setAttribute('fill', 'none');

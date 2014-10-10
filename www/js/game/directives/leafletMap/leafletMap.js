@@ -191,7 +191,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     markerColor: markerColor,
                     labelTextColor: markerColor,
                     iconSize: iconSize,
-                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y - 20)
+                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y)
                 });
 
                 marker.setIcon(icon);
