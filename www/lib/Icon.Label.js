@@ -48,7 +48,7 @@ L.iconLabel = function (text, options) {
     return new L.IconLabel(text, options);
 };
 
-L.Icon.Name = L.VectorMarker.Icon.extend({
+L.Icon.Name = L.Icon.extend({
     options: {
         /*
          labelAnchor: (Point) (top left position of the label within the wrapper, default is right)
@@ -63,7 +63,9 @@ L.Icon.Name = L.VectorMarker.Icon.extend({
     },
 
     createIcon: function () {
-        return this._createLabel(L.VectorMarker.Icon.prototype.createIcon.call(this));
+        var vectorMarker = L.VectorMarker.icon(this.options);
+        var icon = vectorMarker.createIcon();
+        return this._createLabel(icon);
     },
 
     updateLabel: function (icon, text) {
