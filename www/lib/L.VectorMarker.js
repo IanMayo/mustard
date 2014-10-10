@@ -2,9 +2,9 @@
     "use strict";
 
     L.VectorMarker = {};
-    L.VectorMarker.SVG_SHAPE_COORDINATES = 'M13.897,2.667c0,0-8.871,37.216-11.272,49.917c-1.447,7.655,1.997,13.881,1.997,' +
-        '13.881s7.255-1.741,9.59-1.741c2.46,0,9.59,1.741,9.59,1.741s2.747-6.225,1.3-13.881C22.702,39.883,13.897,' +
-        '2.667,13.897,2.667z';
+    L.VectorMarker.SVG_SHAPE_COORDINATES = 'M16,1C11.203,21.736,4.595,43.493,1.497,57.52 C-0.37,65.975,3.625,71,3.625,' +
+        '71S12.987,68.207,16,68.207c3.174,0,12.375,2.793,12.375,2.793s3.995-5.025,2.128-13.48 C27.405,43.493,20.797,' +
+        '21.736,16,1z';
 
     L.VectorMarker.Icon = L.Icon.extend({
         options: {
@@ -33,7 +33,7 @@
 
             this._pathRoot.setAttribute('width', options.iconSize.x);
             this._pathRoot.setAttribute('height', options.iconSize.y);
-            this._pathRoot.setAttribute('viewBox', '0 0 30 50');
+            this._pathRoot.setAttribute('viewBox', '0  32 72');
 
             this._path.setAttribute('d', pintPath);
             this._path.setAttribute('fill', 'none');
