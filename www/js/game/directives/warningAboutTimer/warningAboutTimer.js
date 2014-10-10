@@ -2,9 +2,12 @@
  * @module subtrack90.game.warningAboutTimer
  */
 
-angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDisplayDirective'])
+angular.module('subtrack90.game.warningAboutTimer', [
+    'subtrack90.app.sound',
+    'subtrack90.game.timeDisplayDirective'
+])
     
-.directive('warningAlarm', ['$sce', 'timeAccelerated', function ($sce, timeAccelerated) {
+.directive('warningAlarm', ['$sce', 'timeAccelerated', 'sound', function ($sce, timeAccelerated, sound) {
     return {
         restrict: 'EA',
         replace: true,
@@ -13,9 +16,11 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
             timeStep: '&',
             warn: '&'
         },
+
         controller: function ($scope) {
             var warningIsActive = false;
             var tasks = [];
+
             var runTask = function (type) {
                 _.each(tasks, function (task) {
                     if (angular.isFunction(task[type])) {
@@ -29,6 +34,10 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
                     // show warning background for a new time-out
                     if (false === warningIsActive &&
                         millisec / timeAccelerated.current() < parseInt($scope.warn().inSecond) * $scope.timeStep()) {
+
+                        // play alarm sound
+                        $scope.warn().sound && sound.play($scope.warn().sound);
+
                         // show warning only once for the time-out
                         runTask('warn');
                         warningIsActive = true;
@@ -40,38 +49,12 @@ angular.module('subtrack90.game.warningAboutTimer', ['subtrack90.game.timeDispla
                 }
             });
 
-            this.getAudioUrl = function () {
-                return $sce.trustAsResourceUrl('audio/' + $scope.warn().sound);
-            };
-
             this.addTask = function (task) {
                 tasks.push(task);
             };
         }
     }
 }])
-    
-.directive('warningSound', function () {
-    return {
-        restrict: 'EA',
-        replace: true,
-        require: 'warningAlarm',
-        template: "<audio><source src=\"{{getAudioUrl()}}\" type=\"audio/mpeg\">" +
-            "Your browser does not support the audio tag. " +
-            "</audio>",
-        link: function (scope, element, attr, controller) {
-            scope.getAudioUrl = function () {
-                return controller.getAudioUrl();
-            };
-
-            controller.addTask({
-                warn: function () {
-                    element[0].play();
-                }
-            });
-        }
-    }
-})
 
 .directive('warningBackground', function () {
     return {
