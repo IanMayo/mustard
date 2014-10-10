@@ -16,7 +16,6 @@ angular.module('subtrack90', [
     'subtrack90.app.sound',
     'subtrack90.game.simulator',
     'subtrack90.game.review',
-    'subtrack90.game.notificationSounds',
     'ui.bootstrap',
     'rzModule'
 ])
@@ -116,9 +115,6 @@ angular.module('subtrack90', [
                         deferred.resolve(response);
                     });
                     return deferred.promise;
-                }],
-                audioSounds: ['notificationSounds', function (notificationSounds) {
-                    return notificationSounds;
                 }]
             }
         })
