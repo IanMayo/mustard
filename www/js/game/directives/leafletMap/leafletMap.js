@@ -153,6 +153,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 var icon;
                 var marker;
                 var markerColor;
+                var iconScale = 0.5;
 
                 switch (vessel.categories.force) {
                     case "RED":
@@ -182,7 +183,8 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     layerGroups.ownShip.addLayer(marker);
                 }
 
-                iconSize = new L.point(0.5 * 32, 0.5 * 72);
+                iconSize = new L.point(iconScale * L.VectorMarker.SVG_SHAPE_WIDTH,
+                        iconScale * L.VectorMarker.SVG_SHAPE_HEIGHT);
 
                 icon = L.icon.Name({
                     labelText: vessel.name,
