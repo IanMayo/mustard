@@ -191,7 +191,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     markerColor: markerColor,
                     labelTextColor: markerColor,
                     iconSize: iconSize,
-                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y / 2)
+                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y - 20)
                 });
 
                 marker.setIcon(icon);
@@ -392,9 +392,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             /**
              * Add ownship traveling point.
              */
-            scope.$on('addOwnshipTravelingPoint', function (event, latlngs) {
-                if (latlngs) {
-                    var circleMarker = L.circleMarker(latlngs, leafletMapConfig.ownshipPositionStyle);
+            scope.$on('addOwnshipTravelingPoint', function (event, latLng) {
+                if (latLng) {
+                    var circleMarker = L.circleMarker(latLng, leafletMapConfig.ownshipPositionStyle);
                     layerGroups.ownshipTraveling.addLayer(circleMarker);
                     spatialViewController.updateOwnshipTravelingPoints(layerGroups.ownshipTraveling.getLayers());
                 }
