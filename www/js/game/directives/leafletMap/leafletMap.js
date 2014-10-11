@@ -152,23 +152,22 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 var iconSize;
                 var icon;
                 var marker;
+                var markerColor;
+                var iconScale = 0.5;
 
-                switch (vessel.categories.type) {
-                    case "TORPEDO":
-                    case "HELICOPTER":
-                    case "FISHERMAN":
-                        iconSize = 32;
+                switch (vessel.categories.force) {
+                    case "RED":
+                        markerColor = "#ac2925";
                         break;
-                    case "SUBMARINE":
-                    case "REFERENCE":
-                        iconSize = 48;
+                    case "WHITE":
+                    case "GREEN":
+                        markerColor = "green";
                         break;
-                    case "MERCHANT":
-                    case "WARSHIP":
-                        iconSize = 64;
+                    case "BLUE":
+                        markerColor = "blue";
                         break;
                     default:
-                        console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.type);
+                        console.log("PROBLEM - UNRECOGNISED VEHICLE TYPE: " + vessel.categories.force);
                         break;
                 }
 
@@ -184,14 +183,19 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     layerGroups.ownShip.addLayer(marker);
                 }
 
+                iconSize = new L.point(iconScale * L.VectorMarker.SVG_SHAPE_WIDTH,
+                        iconScale * L.VectorMarker.SVG_SHAPE_HEIGHT);
+
                 icon = L.icon.Name({
                     labelText: vessel.name,
-                    labelAnchor: new L.Point(10 + iconSize / 2, - 4 * ( iconSize / 5)),
+                    labelAnchor: new L.Point(iconSize.y / 5 , -iconSize.x / 2),
                     iconAngle: 0,
-                    iconUrl: 'img/vessels/' + iconSize + '/' + vType + '.png',
-                    iconSize: [iconSize, iconSize],
-                    iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+                    markerColor: markerColor,
+                    labelTextColor: markerColor,
+                    iconSize: iconSize,
+                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y)
                 });
+
                 marker.setIcon(icon);
 
                 leafletMarkers[vessel.name] = marker;
@@ -390,9 +394,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             /**
              * Add ownship traveling point.
              */
-            scope.$on('addOwnshipTravelingPoint', function (event, latlngs) {
-                if (latlngs) {
-                    var circleMarker = L.circleMarker(latlngs, leafletMapConfig.ownshipPositionStyle);
+            scope.$on('addOwnshipTravelingPoint', function (event, latLng) {
+                if (latLng) {
+                    var circleMarker = L.circleMarker(latLng, leafletMapConfig.ownshipPositionStyle);
                     layerGroups.ownshipTraveling.addLayer(circleMarker);
                     spatialViewController.updateOwnshipTravelingPoints(layerGroups.ownshipTraveling.getLayers());
                 }
