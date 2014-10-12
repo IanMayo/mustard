@@ -1,6 +1,6 @@
-angular.module('subtrack90.game.fireWeaponDirective', [])
+angular.module('subtrack90.game.fireWeaponDirective', ['subtrack90.app.sound'])
 
-.directive('fireWeapon', function () {
+.directive('fireWeapon', function (sound) {
     return {
         restrict: 'EA',
         scope: {
@@ -46,8 +46,7 @@ angular.module('subtrack90.game.fireWeaponDirective', [])
                     "course": course, "template": weaponTemplate});
 
                 // hey, play that sound!
-                document.getElementById("fireSound").play();
-
+                sound.play('torpedo');
             };
 
             scope.doFireStraight = function () {
