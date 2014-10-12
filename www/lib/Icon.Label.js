@@ -54,16 +54,18 @@ L.Icon.Name = L.Icon.extend({
          labelAnchor: (Point) (top left position of the label within the wrapper, default is right)
          labelText: (String) (label's text component, if this is null the element will not be created)
          */
+        labelTextColor: '#bcdf1b',
         labelClassName: ''
     },
 
     initialize: function (options) {
         L.Util.setOptions(this, options);
-        L.Icon.prototype.initialize.call(this, this.options);
     },
 
     createIcon: function () {
-        return this._createLabel(L.Icon.prototype.createIcon.call(this));
+        var vectorMarker = L.VectorMarker.icon(this.options);
+        var icon = vectorMarker.createIcon();
+        return this._createLabel(icon);
     },
 
     updateLabel: function (icon, text) {
@@ -89,10 +91,11 @@ L.Icon.Name = L.Icon.extend({
 
         label.innerHTML = this.options.labelText;
 
-        label.setAttribute('data-designed-left-margin', this.options.labelAnchor.x);
-        label.setAttribute('data-designed-top-margin', this.options.labelAnchor.y);
-        label.style.marginLeft = this.options.labelAnchor.x + 'px';
-        label.style.marginTop = this.options.labelAnchor.y + 'px';
+        label.setAttribute('data-designed-left-position', this.options.labelAnchor.x);
+        label.setAttribute('data-designed-top-position', this.options.labelAnchor.y);
+        label.style.left = this.options.labelAnchor.x + 'px';
+        label.style.top = this.options.labelAnchor.y + 'px';
+        label.style.color = this.options.labelTextColor;
 
         wrapper.appendChild(img);
         wrapper.appendChild(label);
