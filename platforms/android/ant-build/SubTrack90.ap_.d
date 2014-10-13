@@ -388,7 +388,6 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/notificationSounds \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot \
@@ -417,7 +416,6 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-shadow.png \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/notificationSounds/notificationSounds.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives/objectives.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs/plotGraphs.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot/reviewSnapshot.js \
@@ -433,6 +431,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/jquery.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Control.MousePosition.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Graticule.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.VectorMarker.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Marker.Rotate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr \

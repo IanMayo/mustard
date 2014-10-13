@@ -20,9 +20,10 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.messageList',
     'subtrack90.game.notificationIcon',
     'subtrack90.game.elementVisibility',
-    'subtrack90.app.user',
     'subtrack90.game.sonarBearing',
     'subtrack90.game.warningAboutTimer',
+    'subtrack90.app.user',
+    'subtrack90.app.sound',
     'ngDraggable'
 ])
 
@@ -30,7 +31,7 @@ angular.module('subtrack90.game.simulator', [
 * @module Game
 * @class GameCtrl (controller)
 */
-.controller('SimulatorCtrl', ['$scope', 'scenario', 'audioSounds', function ($scope, scenario, audioSounds) {
+.controller('SimulatorCtrl', ['$scope', 'scenario', function ($scope, scenario) {
 
     /**
      * Indexed list of vessels in scenario
@@ -161,7 +162,6 @@ angular.module('subtrack90.game.simulator', [
         }
     };
 
-    $scope.audioSounds = audioSounds;
 }])
 
 /**
@@ -170,9 +170,9 @@ angular.module('subtrack90.game.simulator', [
 */
 .controller('MissionSimulatorCtrl', ['$scope', '$location', '$route', '$q', 'geoMath',
         'movement', 'decision', 'objectives', 'detection', 'reviewSnapshot', 'user',
-        '$timeout', 'steppingControls', 'message',
+        '$timeout', 'steppingControls', 'message', 'sound',
     function ($scope, $location, $route, $q, geoMath, movement, decision, objectives, detection,
-        reviewSnapshot, user, $timeout, steppingControls, message) {
+        reviewSnapshot, user, $timeout, steppingControls, message, sound) {
 
         /**
          * Configure FPS meters
@@ -320,7 +320,7 @@ angular.module('subtrack90.game.simulator', [
                 // take copy of game state
                 var timeState = $scope.gameState.state;
 
-                $scope.audioSounds.messageDisplayed.play();
+                sound.play('robot-blip');
 
                 // scenario complete?
                 if ($scope.gameState.successMessage) {
@@ -376,7 +376,7 @@ angular.module('subtrack90.game.simulator', [
                     if ($scope.gameState.state == "SUCCESS") {
                         user.missionCompleted($scope.missionID);
 
-                        $scope.audioSounds.objectiveAchieved.play();
+                        sound.play('ta-da');
 
                         // add reached achievements to the user service
                         angular.forEach($scope.reachedAchievements, function (achievement) {
@@ -403,7 +403,7 @@ angular.module('subtrack90.game.simulator', [
                     }
                     else if ($scope.gameState.state == "FAILURE") {
 
-                        $scope.audioSounds.objectiveFailed.play();
+                        sound.play('sad-thrombone');
 
                         user.missionFailed($scope.missionID);
 

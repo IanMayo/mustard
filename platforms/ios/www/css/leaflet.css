@@ -486,6 +486,8 @@
   display: block;
   width: 100px;
   font: 12px;
+  margin-top: -15px;
+  line-height: 15px;
   color: #bcdf1b;
   white-space: nowrap;
   background: transparent;

@@ -64,7 +64,7 @@
             for (var len = nodes.length, i = 0; i < len; i ++) {
                 var tagName = nodes[i].tagName.toLocaleLowerCase();
 
-                if (tagName === 'img') {
+                if (tagName === 'div') {
                     iconImgEl = nodes[i];
                 } else if (tagName === 'span') {
                     this._changeLabelIndent(nodes[i]);
@@ -75,17 +75,17 @@
         },
 
         _changeLabelIndent: function (labelElement) {
-            var designedLeftMargin = parseInt(labelElement.getAttribute('data-designed-left-margin'));
-            var designedTopMargin = parseInt(labelElement.getAttribute('data-designed-top-margin'));
-            var currentLeftMargin = parseInt(labelElement.style.marginLeft);
+            var designedLeftPosition = parseInt(labelElement.getAttribute('data-designed-left-position'));
+            var designedTopPosition = parseInt(labelElement.getAttribute('data-designed-top-position'));
+            var currentLeftPosition = parseInt(labelElement.style.left);
 
             if ((this.options.iconAngle >= 25 && this.options.iconAngle <= 90)) {
-                labelElement.style.marginLeft = (0 - (2 * designedLeftMargin + 10)).toString() + 'px';
-                labelElement.style.marginTop = (designedTopMargin + 10).toString() + 'px';
+                labelElement.style.left =  -(parseInt(labelElement.getBoundingClientRect().width) + designedLeftPosition).toString() + 'px';
+                labelElement.style.top = (designedTopPosition).toString() + 'px';
                 labelElement.style.textAlign = 'right';
-            } else if (currentLeftMargin !== designedLeftMargin) {
-                labelElement.style.marginLeft = designedLeftMargin + 'px';
-                labelElement.style.marginTop = designedTopMargin + 'px';
+            } else if (currentLeftPosition !== designedLeftPosition) {
+                labelElement.style.left = designedLeftPosition.toString() + 'px';
+                labelElement.style.top = designedTopPosition.toString() + 'px';
                 labelElement.style.textAlign = 'left';
             }
         }
