@@ -308,5 +308,5 @@
 }
 
 .detectionPath.selected .point {
-  fill: #CF8;
+    fill: rgb(75, 239, 199);;
 }
