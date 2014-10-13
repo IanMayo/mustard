@@ -470,29 +470,26 @@ angular.module('subtrack90.game.sonarGraph', [])
         function selectedDetectionHandler () {
             var detectionName;
             var groupElement;
+            var target = event.target;
 
-            if(event.target.correspondingUseElement) {
-                // <use> element selected
-                detectionName = event.target.correspondingUseElement.getAttribute('detection-name');
-                groupElement = event.target.correspondingUseElement.parentElement;
-            } else if (event.target.getAttribute) {
-                if ('use' === event.target.tagName.toLowerCase()) {
-                    detectionName = event.target.parentElement.getAttribute('detection-name');
-                    groupElement = event.target.parentElement;
-                } else {
-                    // <g> element selected
-                    detectionName = event.target.getAttribute('detection-name');
-                    groupElement = event.target;
-                }
+            if (target.tagName && 'g' === target.tagName.toLowerCase()) {
+                groupElement = target;
             } else {
-                console.log('Can\'t get class attribute of the target', event.target);
+                if (target.getAttribute) {
+                    groupElement = target.parentElement;
+                } else if (target.correspondingUseElement) {
+                    // Safari browser
+                    groupElement = target.correspondingUseElement.parentElement;
+                } else {
+                    console.log('Can\'t get class attribute of the target', event.target);
+                }
             }
 
             if (groupElement) {
+                detectionName = groupElement.getAttribute('detection-name');
+                config.detectionSelect(detectionName);
                 highlightGroup(groupElement);
             }
-
-            config.detectionSelect(detectionName);
         }
 
         function highlightGroup(element) {
