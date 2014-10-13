@@ -157,8 +157,7 @@ angular.module('subtrack90.game.sonarGraph', [])
             defsPathMarker.append('ellipse')
                 .attr('class', 'detectionPoint')
                 .attr('rx', config.detectionPointRadii.rx)
-                .attr('ry', config.detectionPointRadii.ry)
-                .style({'fill': 'rgb(170, 206, 0)'});
+                .attr('ry', config.detectionPointRadii.ry);
 
             // Add transparent circle to expand "clickable" area. It helps selecting sonar path
             defsPathMarker.append('circle')
@@ -240,7 +239,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
                 .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
                 .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)))
-                .attr('class', name)
+                .attr('class', name + ' point')
                 .attr('detection-name', detectionPoint.trackName);
         }
 
@@ -470,21 +469,41 @@ angular.module('subtrack90.game.sonarGraph', [])
 
         function selectedDetectionHandler () {
             var detectionName;
+            var groupElement;
+
             if(event.target.correspondingUseElement) {
                 // <use> element selected
                 detectionName = event.target.correspondingUseElement.getAttribute('detection-name');
+                groupElement = event.target.correspondingUseElement.parentElement;
             } else if (event.target.getAttribute) {
                 if ('use' === event.target.tagName.toLowerCase()) {
                     detectionName = event.target.parentElement.getAttribute('detection-name');
+                    groupElement = event.target.parentElement;
                 } else {
                     // <g> element selected
                     detectionName = event.target.getAttribute('detection-name');
+                    groupElement = event.target;
                 }
             } else {
                 console.log('Can\'t get class attribute of the target', event.target);
             }
 
+            if (groupElement) {
+                highlightGroup(groupElement);
+            }
+
             config.detectionSelect(detectionName);
+        }
+
+        function highlightGroup(element) {
+            gMain.selectAll('.detectionPath').call(removeHighlightSelection);
+            d3.select(element).classed('selected', true);
+        }
+
+        function removeHighlightSelection(selection) {
+            _.each(selection[0] ,function (path) {
+                d3.select(path).classed('selected', false);
+            });
         }
 
         /**
