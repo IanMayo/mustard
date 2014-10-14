@@ -173,6 +173,14 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
                 .add({
                     combo: 'space',
                     callback: function () {scope.simulate();}
+                })
+                .add({
+                    combo: '-',
+                    callback: function () {scope.slower();}
+                })
+                .add({
+                    combo: '=',
+                    callback: function () {scope.faster();}
                 });
         }
     };
