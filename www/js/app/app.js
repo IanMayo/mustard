@@ -17,7 +17,8 @@ angular.module('subtrack90', [
     'subtrack90.game.simulator',
     'subtrack90.game.review',
     'ui.bootstrap',
-    'rzModule'
+    'rzModule',
+    'cfp.hotkeys'
 ])
 
 /**
