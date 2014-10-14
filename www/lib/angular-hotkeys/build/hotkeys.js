@@ -26,6 +26,12 @@
     this.includeCheatSheet = true;
 
     /**
+     * Configurable setting to show all possible key commands
+     * @type {Boolean}
+     */
+    this.allCombosInCheatSheet = true;
+
+    /**
      * Configurable setting for the cheat sheet title
      * @type {String}
      */
@@ -141,17 +147,20 @@
        * TODO: this gets called a lot.  We should cache the result
        */
       Hotkey.prototype.format = function() {
+        var combos = this.combo;
+        var comboGroups = [];
 
-        // Don't show all the possible key combos, just the first one.  Not sure
-        // of usecase here, so open a ticket if my assumptions are wrong
-        var combo = this.combo[0];
+        angular.forEach(combos, function (combo) {
+          var sequence = combo.split(/[\s]/);
 
-        var sequence = combo.split(/[\s]/);
-        for (var i = 0; i < sequence.length; i++) {
-          sequence[i] = symbolize(sequence[i]);
-        }
+          for (var i = 0; i < sequence.length; i++) {
+            sequence[i] = symbolize(sequence[i]);
+          }
 
-        return sequence;
+          comboGroups.push(sequence.join(''));
+        });
+
+        return comboGroups;
       };
 
       /**
@@ -185,6 +194,11 @@
        */
       scope.toggleCheatSheet = toggleCheatSheet;
 
+      /**
+       * Holds the setting for cheat-sheet commands list
+       * @type {String}
+       */
+      scope.allCombosInCheatSheet = this.allCombosInCheatSheet;
 
       /**
        * Holds references to the different scopes that have bound hotkeys
@@ -380,6 +394,10 @@
           Mousetrap.bind(combo, wrapApply(callback));
         }
 
+        if (!scope.allCombosInCheatSheet && angular.isArray(combo)) {
+          combo = combo.shift();
+        }
+
         var hotkey = new Hotkey(combo, description, callback, action, allowIn, persistent);
         scope.hotkeys.push(hotkey);
         return hotkey;
@@ -523,6 +541,7 @@
         includeCheatSheet     : this.includeCheatSheet,
         cheatSheetHotkey      : this.cheatSheetHotkey,
         cheatSheetDescription : this.cheatSheetDescription,
+        allCombosInCheatSheet : this.allCombosInCheatSheet,
         purgeHotkeys          : purgeHotkeys,
         templateTitle         : this.templateTitle
       };
