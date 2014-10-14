@@ -47,7 +47,10 @@
                       '<table><tbody>' +
                         '<tr ng-repeat="hotkey in hotkeys | filter:{ description: \'!$$undefined$$\' }">' +
                           '<td class="cfp-hotkeys-keys">' +
-                            '<span ng-repeat="key in hotkey.format() track by $index" class="cfp-hotkeys-key">{{ key }}</span>' +
+                            '<span ng-repeat="key in hotkey.format() track by $index">' +
+                                '<span class="cfp-hotkeys-key-separator" ng-if="$index > 0">,</span>' +
+                                '<span class="cfp-hotkeys-key">{{ key }}</span>' +
+                            '</span>' +
                           '</td>' +
                           '<td class="cfp-hotkeys-text">{{ hotkey.description }}</td>' +
                         '</tr>' +
@@ -157,7 +160,7 @@
             sequence[i] = symbolize(sequence[i]);
           }
 
-          comboGroups.push(sequence.join(''));
+          comboGroups.push(sequence.join(' '));
         });
 
         return comboGroups;
