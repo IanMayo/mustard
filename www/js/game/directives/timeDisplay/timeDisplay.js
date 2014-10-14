@@ -172,15 +172,17 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'space',
-                    description: 'Simulate / Pause',
+                    description: 'Play / Pause',
                     callback: function () {scope.simulate();}
                 })
                 .add({
                     combo: '-',
+                    description: 'Decrease game speed',
                     callback: function () {scope.slower();}
                 })
                 .add({
                     combo: '=',
+                    description: 'Increase game speed',
                     callback: function () {scope.faster();}
                 });
         }
