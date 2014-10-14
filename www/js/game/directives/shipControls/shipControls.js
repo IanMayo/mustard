@@ -72,18 +72,22 @@ angular.module('subtrack90.game.shipControlsDirective', [])
             hotkeys.bindTo(scope)
                 .add({
                     combo: ['up', 'w'],
+                    description: 'Increase vessel speed',
                     callback: function () {scope.changeSpeed(scope.speedRate)}
                 })
                 .add({
                     combo: ['down', 's'],
+                    description: 'Decrease vessel speed',
                     callback: function () {scope.changeSpeed(-scope.speedRate)}
                 })
                 .add({
                     combo: ['right', 'd'],
+                    description: 'Change vessel course',
                     callback: function () {scope.changeCourse(scope.courseRate)}
                 })
                 .add({
                     combo: ['left', 'a'],
+                    description: 'Change vessel course',
                     callback: function () {scope.changeCourse(-scope.courseRate)}
                 });
         }

@@ -172,6 +172,7 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'space',
+                    description: 'Simulate / Pause',
                     callback: function () {scope.simulate();}
                 });
         }
