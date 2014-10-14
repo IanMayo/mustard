@@ -34,8 +34,8 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
     };
 })
 
-.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls', 'timeAccelerated',
-    function (timeDisplayConfig, $interval, steppingControls, timeAccelerated) {
+.directive('timeDisplay', ['timeDisplayConfig', '$interval', 'steppingControls', 'timeAccelerated', 'hotkeys',
+    function (timeDisplayConfig, $interval, steppingControls, timeAccelerated, hotkeys) {
     return {
         restrict :'EA',
         scope: {
@@ -168,6 +168,12 @@ angular.module('subtrack90.game.timeDisplayDirective', [])
             } else {
                 changeSimulationTimer();
             }
+
+            hotkeys.bindTo(scope)
+                .add({
+                    combo: 'space',
+                    callback: function () {scope.simulate();}
+                });
         }
     };
 }]);
