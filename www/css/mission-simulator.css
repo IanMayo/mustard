@@ -33,7 +33,24 @@
 
 .leaflet-container, .visContainer {
   border-radius: 30px;
-  border: 10px solid #000000;
+  padding: 10px;
+  z-index: 0;
+}
+
+.leaflet-control-container .leaflet-left {
+  left: 7px;
+}
+
+.leaflet-control-container .leaflet-right {
+  right: 7px;
+}
+
+.leaflet-control-container .leaflet-top {
+  top: 7px;
+}
+
+.leaflet-control-container .leaflet-bottom {
+  bottom: 7px;
 }
 
 .time-bearing-container,
