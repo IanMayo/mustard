@@ -40,6 +40,10 @@ angular.module('subtrack90.game.spatialViewDirective', [
             this.setTargetsVisibility = function (value) {
                 $scope.targetsVisibility = value;
             };
+
+            this.missionNameLabel = function () {
+                return '[ ' + $scope.missionID + ' - ' + $scope.missionName + ' ]';
+            }
         },
 
         templateUrl: 'js/game/directives/spatialView/spatialView.tpl.html',
