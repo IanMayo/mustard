@@ -31,6 +31,12 @@
   padding: 10px;
 }
 
+.mission-name {
+  color: #384c26;
+  text-align: right;
+  font-size: 125%;
+}
+
 .leaflet-container, .visContainer {
   border-radius: 30px;
   padding: 10px;

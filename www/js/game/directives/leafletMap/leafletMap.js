@@ -294,6 +294,26 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
             };
 
             /**
+             * Add map layer to show mission name
+             */
+            var addMissionName = function () {
+                var MissionName = L.Control.extend({
+                    options: {
+                        position: 'topright'
+                    },
+
+                    onAdd: function (map) {
+                        var container = L.DomUtil.create('div', 'mission-name');
+
+                        container.innerText = spatialViewController.missionNameLabel();
+                        return container;
+                    }
+                });
+
+                map.addControl(new MissionName());
+            };
+
+            /**
              * Create Leaflet map.
              */
             var createMap = function () {
@@ -301,6 +321,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
 
                 configureLayers();
                 addMapFeatures();
+                addMissionName();
             };
 
             /**
