@@ -32,8 +32,9 @@
 }
 
 .mission-name {
-  color: #81ad4b;
+  color: #384c26;
   text-align: right;
+  font-size: 125%;
 }
 
 .leaflet-container, .visContainer {
