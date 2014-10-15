@@ -42,7 +42,7 @@ angular.module('subtrack90.game.spatialViewDirective', [
             };
 
             this.missionNameLabel = function () {
-                return '[ ' + $scope.missionID + ' - ' + $scope.missionName + ' ]';
+                return '[' + $scope.missionID + ' - ' + $scope.missionName + ']';
             }
         },
 
