@@ -1046,39 +1046,15 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath', 'subtra
 
                 if (speedRange) {
                     if (subjectSpeed >= minSpeed && subjectSpeed <= maxSpeed) {
-                        successOnLineWithSuccess(successOnLine, gameState, subject,
-                            "Subject vessel passed marker line at correct speed");
+                        successOnLineWithSuccess(successOnLine, gameState, subject);
+                    } else {
+                        successOnLineWithFailure(successOnLine, gameState, subject);
                     }
                 } else {
-                    successOnLineWithSuccess(successOnLine, gameState, subject),
-                        "Subject vessel passed marker line";
+                    successOnLineWithSuccess(successOnLine, gameState, subject);
                 }
-            }
-
-            // has the user just succeeded?
-            if( !successOnLine.complete) {
-                // no. is this mission time-sensitive?
-                if (successOnLine.stopTime) {
-                    // yes. has the user run out of time?
-                    if (gameState.simulationTime > successOnLine.stopTime) {
-                        // ok, we've run out of time - game over
-                        gameState.failureMessage = successOnLine.failure;
-                        gameState.state = "DO_STOP";
-
-                        var msg;
-                        if(successOnLine.speedRange)
-                        {
-                            msg = "Subject vessel failed to pass line at correct speed in time";
-                        }
-                        else
-                        {
-                            msg = "Subject vessel failed to pass line in time";
-                        }
-
-                        insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                            msg);
-                    }
-                }
+            } else {
+                successOnLineWithFailure(successOnLine, gameState, subject);
             }
         };
 
@@ -1387,14 +1363,27 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath', 'subtra
             }
         };
 
-        var successOnLineWithSuccess = function (successOnLine, gameState, subject, message) {
+        var successOnLineWithFailure = function(successOnLine, gameState, subject) {
+            // right, just check if we have failed to reach our distance in time
+            if (successOnLine.stopTime) {
+                if (gameState.simulationTime > successOnLine.stopTime) {
+                    // ok, we've run out of time - game over
+                    gameState.failureMessage = successOnLine.failure;
+                    gameState.state = "DO_STOP";
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                        "Subject vessel failed to pass line in time");
+                }
+            }
+        };
+
+        var successOnLineWithSuccess = function (successOnLine, gameState, subject) {
             // ok - the target has entered the area
             successOnLine.complete = true;
             gameState.successMessage = successOnLine.success;
             gameState.state = "DO_STOP";
 
             insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                message);
+                "Subject vessel passed marker line");
 
             // and store any achievements
             processAchievements(successOnLine.achievement, gameState);
