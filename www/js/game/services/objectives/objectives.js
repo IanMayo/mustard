@@ -2,14 +2,14 @@
  * @module Objectives
  */
 
-angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath', 'subtrack90.game.shipControlsDirective'])
+angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
 /**
  * @module Objectives
  * @class Service
  * @description Game objectives
  */
-    .service('objectives', ['geoMath', 'KNOTS_IN_MPS', function (geoMath, KNOTS_IN_MPS) {
+    .service('objectives', ['geoMath', function (geoMath) {
 
         /**
          * Callback function which returns desstroyed vessel.
@@ -1039,22 +1039,23 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath', 'subtra
                 successOnLine.p2.lat, successOnLine.p2.lng);
 
             if (distanceFromLine < successOnLine.range) {
-                var subjectSpeed = subject.state.speed;
+                // round value to two decimal places
+                var subjectSpeed = Math.round(subject.state.speed * 100) / 100;
                 var speedRange = successOnLine.speedRange;
-                var minSpeed = Math.round(speedRange.min * KNOTS_IN_MPS) * 1 / KNOTS_IN_MPS;
-                var maxSpeed = Math.round(speedRange.max * KNOTS_IN_MPS) * 1 / KNOTS_IN_MPS;
 
                 if (speedRange) {
-                    if (subjectSpeed >= minSpeed && subjectSpeed <= maxSpeed) {
+                    if (subjectSpeed >= speedRange.min && subjectSpeed <= speedRange.max) {
                         successOnLineWithSuccess(successOnLine, gameState, subject);
                     } else {
-                        successOnLineWithFailure(successOnLine, gameState, subject);
+                        var message = 'Vessel failed to cross gate within required speed range';
+                        successOnLineWithFailure(successOnLine, gameState, subject, message);
                     }
                 } else {
                     successOnLineWithSuccess(successOnLine, gameState, subject);
                 }
             } else {
-                successOnLineWithFailure(successOnLine, gameState, subject);
+                var message = 'Vessel failed to pass through gate';
+                successOnLineWithFailure(successOnLine, gameState, subject, message);
             }
         };
 
@@ -1363,15 +1364,14 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath', 'subtra
             }
         };
 
-        var successOnLineWithFailure = function(successOnLine, gameState, subject) {
+        var successOnLineWithFailure = function(successOnLine, gameState, subject, message) {
             // right, just check if we have failed to reach our distance in time
             if (successOnLine.stopTime) {
                 if (gameState.simulationTime > successOnLine.stopTime) {
                     // ok, we've run out of time - game over
                     gameState.failureMessage = successOnLine.failure;
                     gameState.state = "DO_STOP";
-                    insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                        "Subject vessel failed to pass line in time");
+                    insertNarrative(gameState, gameState.simulationTime, subject.state.location, message);
                 }
             }
         };
