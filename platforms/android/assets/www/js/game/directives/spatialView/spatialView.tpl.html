@@ -9,5 +9,7 @@
       <input type="checkbox" data-ng-model="showSonarDetections" data-ng-change="toggleDetections()"/>
     </label>
   </div>
-  <div data-leaflet-map class="data-leaflet-map" ng-drop="true" ng-drop-success="markLocation(uiEvent)"></div>
+  <div data-leaflet-map class="data-leaflet-map" ng-drop="true" ng-drop-success="markLocation(uiEvent)">
+    <div class="mission-name">[ {{missionID}} - {{missionName}} ]</div>
+  </div>
 </div>

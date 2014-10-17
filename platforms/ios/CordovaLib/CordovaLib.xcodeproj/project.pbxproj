@@ -367,7 +367,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -381,7 +380,6 @@
 				INSTALL_PATH = /usr/local/lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Cordova;
-				PROVISIONING_PROFILE = "fe2554ce-9e61-4ea4-adea-b2101b15c21a";
 				PUBLIC_HEADERS_FOLDER_PATH = include/Cordova;
 				SKIP_INSTALL = YES;
 			};
@@ -392,7 +390,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -403,7 +400,6 @@
 				INSTALL_PATH = /usr/local/lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Cordova;
-				PROVISIONING_PROFILE = "fe2554ce-9e61-4ea4-adea-b2101b15c21a";
 				PUBLIC_HEADERS_FOLDER_PATH = include/Cordova;
 				SKIP_INSTALL = YES;
 			};

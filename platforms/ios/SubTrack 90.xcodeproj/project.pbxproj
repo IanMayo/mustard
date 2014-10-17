@@ -5,9 +5,11 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1E8703E01779439B80FDC8D0 /* NativeAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 263FDE6D1EF644DA95811705 /* NativeAudio.m */; };
 		1F766FE113BBADB100FB74C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F766FDC13BBADB100FB74C0 /* Localizable.strings */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		301BF552109A68D80062928A /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BF535109A57CC0062928A /* libCordova.a */; };
@@ -36,12 +38,11 @@
 		7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DB1810823500FA85AD /* icon-76@2x.png */; };
 		7E7966E61810823500FA85AD /* icon-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DC1810823500FA85AD /* icon-small.png */; };
 		7E7966E71810823500FA85AD /* icon-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DD1810823500FA85AD /* icon-small@2x.png */; };
-		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
-		1E8703E01779439B80FDC8D0 /* NativeAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 263FDE6D1EF644DA95811705 /* NativeAudio.m */; };
 		ACBC736919094982992D1452 /* NativeAudioAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7E0B5080F24DC8BCEA4650 /* NativeAudioAsset.m */; };
-		C688E6DF3662499681D55EA2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8006FDE72FC465482976B7A /* Foundation.framework */; };
-		FC5FFD3D04EF45FEA9444F0D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E87CE3E04EF943A1B094A183 /* AVFoundation.framework */; };
 		BA52AFA319AF4699B2A21A2D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9589620A07944E7BBC8A107A /* AudioToolbox.framework */; };
+		C688E6DF3662499681D55EA2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8006FDE72FC465482976B7A /* Foundation.framework */; };
+		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
+		FC5FFD3D04EF45FEA9444F0D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E87CE3E04EF943A1B094A183 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,11 +63,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0DEF568B8AA8480496A57571 /* NativeAudioAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeAudioAsset.h; path = de.neofonie.cordova.plugin.nativeaudio/NativeAudioAsset.h; sourceTree = "<group>"; };
+		178707A193B2441A8BCD4F57 /* NativeAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeAudio.h; path = de.neofonie.cordova.plugin.nativeaudio/NativeAudio.h; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* SubTrack 90.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SubTrack 90.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F766FDD13BBADB100FB74C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		1F766FE013BBADB100FB74C0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Localizable.strings; sourceTree = "<group>"; };
+		263FDE6D1EF644DA95811705 /* NativeAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeAudio.m; path = de.neofonie.cordova.plugin.nativeaudio/NativeAudio.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
@@ -100,18 +104,15 @@
 		7E7966DC1810823500FA85AD /* icon-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-small.png"; sourceTree = "<group>"; };
 		7E7966DD1810823500FA85AD /* icon-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-small@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* SubTrack 90-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "SubTrack 90-Info.plist"; path = "../SubTrack 90-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8D7E0B5080F24DC8BCEA4650 /* NativeAudioAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeAudioAsset.m; path = de.neofonie.cordova.plugin.nativeaudio/NativeAudioAsset.m; sourceTree = "<group>"; };
+		9589620A07944E7BBC8A107A /* AudioToolbox.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		A8006FDE72FC465482976B7A /* Foundation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
+		E87CE3E04EF943A1B094A183 /* AVFoundation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EB87FDF21871DA7A0020F90C /* merges */ = {isa = PBXFileReference; lastKnownFileType = folder; name = merges; path = ../../merges; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "SubTrack 90/config.xml"; sourceTree = "<group>"; };
-		263FDE6D1EF644DA95811705 /* NativeAudio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NativeAudio.m"; path = "de.neofonie.cordova.plugin.nativeaudio/NativeAudio.m"; sourceTree = "<group>"; fileEncoding = 4; };
-		8D7E0B5080F24DC8BCEA4650 /* NativeAudioAsset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NativeAudioAsset.m"; path = "de.neofonie.cordova.plugin.nativeaudio/NativeAudioAsset.m"; sourceTree = "<group>"; fileEncoding = 4; };
-		178707A193B2441A8BCD4F57 /* NativeAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NativeAudio.h"; path = "de.neofonie.cordova.plugin.nativeaudio/NativeAudio.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		0DEF568B8AA8480496A57571 /* NativeAudioAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NativeAudioAsset.h"; path = "de.neofonie.cordova.plugin.nativeaudio/NativeAudioAsset.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		A8006FDE72FC465482976B7A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Foundation.framework"; path = "System/Library/Frameworks/Foundation.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
-		E87CE3E04EF943A1B094A183 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AVFoundation.framework"; path = "System/Library/Frameworks/AVFoundation.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
-		9589620A07944E7BBC8A107A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +491,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -514,6 +516,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
+				PROVISIONING_PROFILE = "506d4fe5-4d31-447e-a2a2-2c4da1d4a096";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -523,6 +526,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SubTrack 90/SubTrack 90-Prefix.pch";
@@ -545,6 +549,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
+				PROVISIONING_PROFILE = "506d4fe5-4d31-447e-a2a2-2c4da1d4a096";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
