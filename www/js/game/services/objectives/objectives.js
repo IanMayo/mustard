@@ -1039,35 +1039,43 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 successOnLine.p2.lat, successOnLine.p2.lng);
 
             if (distanceFromLine < successOnLine.range) {
+                // round value to two decimal places, since that's how it's stored in json mission
+                var subjectSpeed = Math.round(subject.state.speed * 100) / 100;
+                var speedRange = successOnLine.speedRange;
 
-                // ok - the target has entered the area
-                successOnLine.complete = true;
-                gameState.successMessage = successOnLine.success;
-                gameState.state = "DO_STOP";
-
-                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                    "Subject vessel passed marker line");
-
-                // and store any achievements
-                processAchievements(successOnLine.achievement, gameState);
-
-                // hey, is there a bonus time?
-                if (successOnLine.bonusStopTime) {
-                    // note: we're relying on the
-                    if (gameState.simulationTime < successOnLine.bonusStopTime) {
-                        processAchievements(successOnLine.bonusAchievement, gameState);
+                if (speedRange) {
+                    if (subjectSpeed >= speedRange.min && subjectSpeed <= speedRange.max) {
+                        successOnLineWithSuccess(successOnLine, gameState, subject,
+                            "Subject vessel passed marker line at correct speed");
                     }
+                } else {
+                    successOnLineWithSuccess(successOnLine, gameState, subject,
+                        "Subject vessel passed marker line");
                 }
             }
-            else {
-                // right, just check if we have failed to reach our distance in time
+
+
+            // has the user just succeeded?
+            if (!successOnLine.complete) {
+                // no. is this mission time-sensitive?
                 if (successOnLine.stopTime) {
+                    // yes. has the user run out of time?
                     if (gameState.simulationTime > successOnLine.stopTime) {
                         // ok, we've run out of time - game over
                         gameState.failureMessage = successOnLine.failure;
                         gameState.state = "DO_STOP";
+
+                        // sort out the correct message
+                        var msg;
+                        if (successOnLine.speedRange) {
+                            msg = "Subject vessel failed to pass line at correct speed in time";
+                        }
+                        else {
+                            msg = "Subject vessel failed to pass line in time";
+                        }
+
                         insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                            "Subject vessel failed to pass line in time");
+                            msg);
                     }
                 }
             }
@@ -1375,6 +1383,27 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                 // and ditch any completed actions
                 vessel.state.actions = _.difference(actions, toRemove);
+            }
+        };
+
+        var successOnLineWithSuccess = function (successOnLine, gameState, subject, message) {
+            // ok - the target has entered the area
+            successOnLine.complete = true;
+            gameState.successMessage = successOnLine.success;
+            gameState.state = "DO_STOP";
+
+            insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                message);
+
+            // and store any achievements
+            processAchievements(successOnLine.achievement, gameState);
+
+            // hey, is there a bonus time?
+            if (successOnLine.bonusStopTime) {
+                // note: we're relying on the
+                if (gameState.simulationTime < successOnLine.bonusStopTime) {
+                    processAchievements(successOnLine.bonusAchievement, gameState);
+                }
             }
         };
 
