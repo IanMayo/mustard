@@ -1,4 +1,4 @@
-/Users/alexander/Repos/mustard/platforms/android/ant-build/SubTrack90.ap_ \
+/Users/alexander/Repos/mustard/platforms/android/ant-build/CordovaApp.ap_ \
  : /Users/alexander/Repos/mustard/platforms/android/res/drawable/icon.png \
 /Users/alexander/Repos/mustard/platforms/android/res/drawable-hdpi/icon.png \
 /Users/alexander/Repos/mustard/platforms/android/res/drawable-hdpi/screen.png \

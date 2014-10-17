@@ -22,12 +22,13 @@ package com.subtrack90;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class SubTrack90 extends CordovaActivity
+public class CordovaApp extends CordovaActivity
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        super.init();
         // Set by <content src="index.html" /> in config.xml
         loadUrl(launchUrl);
     }
