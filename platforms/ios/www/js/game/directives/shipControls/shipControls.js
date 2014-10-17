@@ -11,7 +11,8 @@ angular.module('subtrack90.game.shipControlsDirective', [])
 
 .constant('KNOTS_IN_MPS', 1.943844)// knots and m/s relation
 
-.directive('shipControls', ['shipControlsConfig', 'KNOTS_IN_MPS', function (shipControlsConfig, KNOTS_IN_MPS) {
+.directive('shipControls', ['shipControlsConfig', 'KNOTS_IN_MPS', 'hotkeys',
+    function (shipControlsConfig, KNOTS_IN_MPS, hotkeys) {
     return {
         restrict: 'EA',
         scope: {
@@ -67,6 +68,28 @@ angular.module('subtrack90.game.shipControlsDirective', [])
             scope.knotsSpeed = function () {
                 return speedInKnots;
             };
+
+            hotkeys.bindTo(scope)
+                .add({
+                    combo: ['up', 'w'],
+                    description: 'Increase speed',
+                    callback: function () {scope.changeSpeed(scope.speedRate)}
+                })
+                .add({
+                    combo: ['down', 's'],
+                    description: 'Decrease speed',
+                    callback: function () {scope.changeSpeed(-scope.speedRate)}
+                })
+                .add({
+                    combo: ['right', 'd'],
+                    description: 'Turn to Stbd',
+                    callback: function () {scope.changeCourse(scope.courseRate)}
+                })
+                .add({
+                    combo: ['left', 'a'],
+                    description: 'Turn to Port',
+                    callback: function () {scope.changeCourse(-scope.courseRate)}
+                });
         }
     };
 }]);
