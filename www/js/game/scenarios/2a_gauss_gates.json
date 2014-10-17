@@ -171,7 +171,11 @@
                             "range": 100,
                             "elapsed" : 1200,
                             "success" : "Gate 1 complete",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 5,
+                                "max": 6
+                            }
                         },
                         {
                             "name": "Pass Gate 2",
