@@ -282,7 +282,7 @@
                     "clearAfterwards" : true,
                     "target": "MV Stukard",
                     "description" : "Select the noise trace for the vessel to the South West of you.",
-                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine to the East of you. You should gain him after about 10 minutes. Notice how the sonar trace is 'cleaner' than the merchant",
+                    "success": "Ok, well done. Now, wait until you gain another sonar contact - there's a dived submarine to the West of you. You should gain him after about 10 minutes. Notice how the sonar trace is 'cleaner' than the merchant",
                     "failure": "This should have been easy - it's the only other bearing on there!",
                     "narrSuccess" : "Spotted surface track"
                 },
