@@ -93,8 +93,8 @@
         <button class="btn btn-info btn-lg" ng-disabled="isMobile && !isCordova" ng-click="stopMusic()">
           Stop Background Noise(s)
         </button>
-        <button class="btn btn-success btn-lg" ng-click="setVolume(1)">High music volume</button>
-        <button class="btn btn-success btn-lg" ng-click="setVolume(0.1)">Low music volume</button>
+        <button class="btn btn-success btn-lg" ng-click="setVolume('sfx', 1)">High sfx volume</button>
+        <button class="btn btn-success btn-lg" ng-click="setVolume('sfx', 0.1)">Low sfx volume</button>
         <button class="btn btn-warning btn-lg" ng-click="loadSoundMap()">Load sound map</button>
         <button class="btn btn-danger btn-lg" ng-click="unloadSoundMap()">Unload sound map</button>
       </div>

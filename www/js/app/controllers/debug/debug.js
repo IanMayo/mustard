@@ -213,17 +213,17 @@ angular.module('subtrack90.app.debug', [
     };
 
     $scope.playTorpedoLaunch = function () {
-        sound.play('torpedo', 0.5);
+        sound.play('torpedo');
     };
 
     $scope.playAlarm = function () {
-        sound.play('alarm', 0.5);
+        sound.play('alarm');
     };
 
     $scope.loopSounds = [];
     $scope.playMusic = function () {
         $scope.loopSounds.push(
-            sound.loop('noise', 0.3)
+            sound.loop('noise')
         );
     };
 
@@ -233,7 +233,7 @@ angular.module('subtrack90.app.debug', [
         })
     };
 
-    $scope.setVolume = function (value) {
-        sound.volume('music', value);
+    $scope.setVolume = function (type, value) {
+        sound.volume(type, value);
     }
 });
