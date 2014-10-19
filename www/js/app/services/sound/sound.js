@@ -29,11 +29,10 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * Play html5audio sound instance
      *
      * @param id
-     * @param volume
      * @param inLoop
      * @returns {{stop: function}}
      */
-    var html5AudioPlay = function (id, volume, inLoop) {
+    var html5AudioPlay = function (id, inLoop) {
         var soundMapItem = _.findWhere(soundMap, {id: id});
 
         if (!soundMapItem) {
@@ -41,7 +40,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         }
 
         var sound = soundMapItem.instance;
-        sound.volume(volume || DEFAULT_VOLUME);
+        sound.volume(DEFAULT_VOLUME);
         sound.loop(inLoop);
         sound.play();
 
@@ -60,9 +59,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @example
          * sound.loadSoundMap([
-         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-         *     {id: 'alarm', path: 'audio/Alarm.mp3'},
-         *     {id: 'music', path: 'audio/DarkNoise.mp3'}
+         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+         *     {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+         *     {id: 'music', path: 'audio/DarkNoise.mp3', type: 'music'}
          * ]);
          *
          * @param map of sounds
@@ -73,6 +72,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
             angular.forEach(map, function (sound) {
                 soundMap.push({
                     id: sound.id,
+                    type: sound.type,
                     instance: new Howl({
                         urls: [sound.path]
                     })
@@ -95,39 +95,42 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * Play sound from sound map
          *
          * @example
-         * var instance = sound.play('alert', 0.3);
+         * var instance = sound.play('alert');
          * instance.stop();
          *
          * @param id of sound in preloaded map
-         * @param volume is a value from 1 to 0.1
          * @returns {Object}
          */
-        play: function (id, volume) {
-            return html5AudioPlay(id, volume, false);
+        play: function (id) {
+            return html5AudioPlay(id, false);
         },
 
         /**
          * Play sound from sound map in a loop
          *
          * @example
-         * var instance = sound.loop('noise', 0.1);
+         * var instance = sound.loop('noise');
          * instance.stop();
          *
          * @param id of sound in preloaded map
-         * @param volume is a value from 1 to 0.1
          * @returns {Object}
          */
-        loop: function (id, volume) {
-            return html5AudioPlay(id, volume, true);
+        loop: function (id) {
+            return html5AudioPlay(id, true);
         },
 
         /**
-         * Set global volume
+         * Set sfx and music volume
          *
-         * @param value
+         * @param type of sound
+         * @param value of volume
          */
-        volume: function (value) {
-            Howler.volume(value);
+        volume: function (type, value) {
+            var sounds = _.where(soundMap, {type: type});
+
+            angular.forEach(sounds, function (sound) {
+                sound.instance.volume(value || DEFAULT_VOLUME);
+            });
         }
     };
 
@@ -217,15 +220,12 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         },
 
         /**
-         * Set global volume
+         * Set sfx and music volume
          *
-         * BUG: Android behaviour is different it works only when we refresh the sound map,
-         * in other words just unload/load it, btw iOS works well.
-         * Ok let's make it to be cross-platform solution and refresh the sound map each time we change the volume.
-         *
+         * @param type of sound
          * @param value of volume
          */
-        volume: function (value) {
+        volume: function (type, value) {
             angular.forEach(soundMap, function (sound) {
                 $cordovaNativeAudio.setVolumeForComplexAsset(sound.id, value || DEFAULT_VOLUME);
             })
