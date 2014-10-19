@@ -16,7 +16,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
  */
 .constant('DEFAULT_VOICES', 10)
 
-.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, DEFAULT_VOICES, $cordovaNativeAudio, $timeout) {
+.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, DEFAULT_VOICES, $cordovaNativeAudio) {
 
     /**
      * Map that should contain sound ids and their instances/paths
