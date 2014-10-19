@@ -26,6 +26,35 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
     var soundMap = [];
 
     /**
+     * Volume level of sfx and music sounds
+     *
+     * @type {Object}
+     */
+    var volumeLevel = {
+        sfx: 0,
+        music: 0
+    };
+
+    /**
+     * Return correct volume level for sound by its type
+     *
+     * @param sound
+     */
+    var getVolumeLevelForSound = function (sound) {
+        return volumeLevel[sound.type] || DEFAULT_VOLUME;
+    };
+
+    /**
+     * Set particular volume level by sound type
+     *
+     * @param type of sound
+     * @param volume level of sound
+     */
+    var setVolumeLevelBySoundType = function (type, volume) {
+        volumeLevel[type] = volume || DEFAULT_VOLUME;
+    };
+
+    /**
      * Play html5audio sound instance
      *
      * @param id
@@ -40,7 +69,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         }
 
         var sound = soundMapItem.instance;
-        sound.volume(DEFAULT_VOLUME);
+        sound.volume(getVolumeLevelForSound(soundMapItem));
         sound.loop(inLoop);
         sound.play();
 
@@ -128,19 +157,13 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         volume: function (type, value) {
             var sounds = _.where(soundMap, {type: type});
 
+            setVolumeLevelBySoundType(type, value);
+
             angular.forEach(sounds, function (sound) {
-                sound.instance.volume(value || DEFAULT_VOLUME);
+                sound.instance.volume(getVolumeLevelForSound(sound));
             });
         }
     };
-
-    /**
-     * This is the value of global mobile audio volume,
-     * it is needed just to simulate proper behaviour
-     *
-     * @type {Number}
-     */
-    var globalMobileVolume = 0;
 
     /**
      * Audio wrapper for native mobile audio plugin which is based on
@@ -155,9 +178,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @example
          * sound.loadSoundMap([
-         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-         *     {id: 'alarm', path: 'audio/Alarm.mp3'},
-         *     {id: 'music', path: 'audio/DarkNoise.mp3'}
+         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+         *     {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+         *     {id: 'music', path: 'audio/DarkNoise.mp3', type: 'music'}
          * ]);
          *
          * @param map of sounds
@@ -168,7 +191,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
 
             angular.forEach(soundMap, function (sound) {
                 $cordovaNativeAudio
-                    .preloadComplex(sound.id, sound.path, globalMobileVolume || DEFAULT_VOLUME, DEFAULT_VOICES);
+                    .preloadComplex(sound.id, sound.path, DEFAULT_VOLUME, DEFAULT_VOICES);
             });
         },
 
@@ -187,15 +210,14 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * Play sound by its id in sound map
          *
          * @example
-         * var instance = sound.play('torpedo', 0.5);
+         * var instance = sound.play('torpedo');
          * instance.stop();
          *
          * @param id of sound
-         * @param volume level for sound
          * @returns {{stop: function}}
          */
-        play: function (id, volume) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, globalMobileVolume || volume || DEFAULT_VOLUME);
+        play: function (id) {
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, DEFAULT_VOLUME);
             $cordovaNativeAudio.play(id);
             
             return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
@@ -205,15 +227,14 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * Play particular sound in a loop
          *
          * @example
-         * var instance = sound.loop('music', 0.2);
+         * var instance = sound.loop('music');
          * instance.stop();
          *
          * @param id of sound
-         * @param volume level for sound
          * @returns {{stop: function}}
          */
-        loop: function (id, volume) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, globalMobileVolume || volume || DEFAULT_VOLUME);
+        loop: function (id) {
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, DEFAULT_VOLUME);
             $cordovaNativeAudio.loop(id);
 
             return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
