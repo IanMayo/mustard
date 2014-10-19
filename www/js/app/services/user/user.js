@@ -184,7 +184,7 @@ angular.module('subtrack90.app.user', [
      *        }
      *    ]
      *    "options": {
-     *        "audio": 0,
+     *        "music": 0,
      *        "sfx": 0,
      *        "language": ""
      *    }
