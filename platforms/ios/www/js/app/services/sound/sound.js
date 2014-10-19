@@ -163,14 +163,10 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
             mobileAudio.unloadSoundMap();
             soundMap = angular.isArray(map) ? map : [];
 
-            // Brute timeout hack for Android
-            // TODO: Remove timeout somehow
-            $timeout(function () {
-                angular.forEach(soundMap, function (sound) {
-                    $cordovaNativeAudio
-                        .preloadComplex(sound.id, sound.path, globalMobileVolume || DEFAULT_VOLUME, DEFAULT_VOICES);
-                });
-            }, 1000);
+            angular.forEach(soundMap, function (sound) {
+                $cordovaNativeAudio
+                    .preloadComplex(sound.id, sound.path, globalMobileVolume || DEFAULT_VOLUME, DEFAULT_VOICES);
+            });
         },
 
         /**
@@ -230,10 +226,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * @param value of volume
          */
         volume: function (value) {
-            var storedSoundMap = angular.extend([], soundMap);
-            globalMobileVolume = value;
-
-            mobileAudio.loadSoundMap(storedSoundMap);
+            angular.forEach(soundMap, function (sound) {
+                $cordovaNativeAudio.setVolumeForComplexAsset(sound.id, value || DEFAULT_VOLUME);
+            })
         }
     };
 

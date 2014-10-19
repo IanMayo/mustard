@@ -21,7 +21,7 @@ angular.module('subtrack90.game.shipControlsDirective', [])
         },
         templateUrl: 'js/game/directives/shipControls/shipControls.tpl.html',
         link: function (scope) {
-            var speedInKnots = parseInt(scope.speed * KNOTS_IN_MPS);
+            var speedInKnots = Math.round(scope.speed * KNOTS_IN_MPS);
 
             scope.courseRate = shipControlsConfig.courseRate;
             scope.speedRate = shipControlsConfig.speed.rate;

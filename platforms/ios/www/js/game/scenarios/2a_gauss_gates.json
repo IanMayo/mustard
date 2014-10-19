@@ -171,7 +171,11 @@
                             "range": 100,
                             "elapsed" : 1200,
                             "success" : "Gate 1 complete",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 5.14,
+                                "max": 6.17
+                            }
                         },
                         {
                             "name": "Pass Gate 2",
@@ -189,7 +193,11 @@
                             "range": 100,
                             "elapsed" : 2400,
                             "success" : "Gate 2 complete",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 3.09,
+                                "max": 4.16
+                            }
                         },
                         {
                             "name": "Pass Gate 3",
@@ -207,7 +215,11 @@
                             "range": 100,
                             "elapsed" : 2400,
                             "success" : "Gate 3 complete",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 7.72,
+                                "max": 8.75
+                            }
                         },
                         {
                             "name": "Pass Gate 4",
@@ -225,7 +237,11 @@
                             "range": 100,
                             "elapsed" : 1600,
                             "success" : "Gate 4 complete. You may have to speed up to get to the last gate - we're running out of range time. There's a bonus if you can get there in 30 minutes",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 5.14,
+                                "max": 6.17
+                            }
                         },
                         {
                             "name": "Pass Gate 5",
@@ -252,11 +268,12 @@
                                 "message": "That was some good driving you showed there"
                             },
                             "success" : "De-Gaussing complete, well driven.",
-                            "failure": "De-gaussing failed, you didn't get through the gate in time."
+                            "failure": "De-gaussing failed, you didn't get through the gate in time.",
+                            "speedRange": {
+                                "min": 8.75,
+                                "max": 11.32
+                            }
                         }
-
-
-
                     ]
                 }
             ]
@@ -288,7 +305,7 @@
                 "id": "1",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 1"
+                    "name": "Gate 1<br />10-12 kts"
                 },
                 "geometry": {
                     "type": "Point",
@@ -310,7 +327,7 @@
                 "id": "2",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 2"
+                    "name": "Gate 2<br />6-8 kts"
                 },
                 "geometry": {
                     "type": "Point",
@@ -332,7 +349,7 @@
                 "id": "3",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 3"
+                    "name": "Gate 3<br />15-17 kts"
                 },
                 "geometry": {
                     "type": "Point",
@@ -354,7 +371,7 @@
                 "id": "4",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 4"
+                    "name": "Gate 4<br />10-12 kts"
                 },
                 "geometry": {
                     "type": "Point",
@@ -376,7 +393,7 @@
                 "id": "5",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 5"
+                    "name": "Gate 5<br />17-22 kts"
                 },
                 "geometry": {
                     "type": "Point",

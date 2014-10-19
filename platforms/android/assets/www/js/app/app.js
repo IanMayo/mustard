@@ -33,6 +33,12 @@ angular.module('subtrack90', [
 .constant('SPLASH_ON_LOGIN', true)
 .constant('SPLASH_ON_MAIN', !!window.cordova)
 
+/**
+ * This is the default sound map load delay, we use it to prevent unexpected bugs in $cordovaNativeAudio service
+ * and with initialization of mobile Native Audio library within angularjs
+ */
+.constant('SOUND_MAP_LOAD_DELAY', 1000)
+
 .config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN, $provide) {
 
     if (APP_DEBUG) {
@@ -183,18 +189,24 @@ angular.module('subtrack90', [
             });
         }
 
-}).run(function ($rootScope, $location, user, sound) {
+}).run(function (SOUND_MAP_LOAD_DELAY, $rootScope, $location, $timeout, user, sound) {
 
-    // Load all sounds of the app
-    sound.loadSoundMap([
-        {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-        {id: 'alarm', path: 'audio/Alarm.mp3'},
-        {id: 'noise', path: 'audio/DarkNoise.mp3'},
-        {id: '1sec', path: 'audio/1sec.mp3'},
-        {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3'},
-        {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3'},
-        {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3'}
-    ]);
+    // We need to make sure that the DOM is created because run function itself is called a bit earlier
+    angular.element(document).ready(function () {
+
+        // Load all sounds of the app
+        $timeout(function () {
+            sound.loadSoundMap([
+                {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+                {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+                {id: 'noise', path: 'audio/DarkNoise.mp3', type: 'music'},
+                {id: '1sec', path: 'audio/1sec.mp3', type: 'sfx'},
+                {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3', type: 'sfx'},
+                {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3', type: 'sfx'},
+                {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3', type: 'sfx'}
+            ]);
+        }, SOUND_MAP_LOAD_DELAY);
+    });
 
     $rootScope.$on("$routeChangeStart", function () {
         !user.isAuthorized() && !user.restoreFromLocal() && $location.path('/login');
