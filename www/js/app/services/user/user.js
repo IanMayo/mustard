@@ -4,10 +4,16 @@
 
 angular.module('subtrack90.app.user', [
     'subtrack90.app.mockUserBackend',
+    'subtrack90.app.sound',
     'LocalStorageModule'
 ])
 
-.factory('user', function ($q, localStorageService, mockUserBackend) {
+/**
+ * It is needed to convert the values from user.options to the values for sound.volume
+ */
+.constant('VOLUME_MULTIPLIER', 0.2)
+
+.factory('user', function (VOLUME_MULTIPLIER, $q, localStorageService, mockUserBackend, sound) {
 
     /**
      * It saves user to the local storage
@@ -155,6 +161,16 @@ angular.module('subtrack90.app.user', [
     };
 
     /**
+     * Set sound volume from user (default) options
+     *
+     * @param options
+     */
+    var setVolumeFromUserOptions = function (options) {
+        sound.volume('sfx', options.sfx * VOLUME_MULTIPLIER);
+        sound.volume('music', options.music * VOLUME_MULTIPLIER);
+    };
+
+    /**
      * It's IMPORTANT variable which indicates if user is authorized in app
      *
      * @private
@@ -210,6 +226,7 @@ angular.module('subtrack90.app.user', [
             mockUserBackend.login(username).then(function (restoredUser) {
                 if (restoredUser) {
                     angular.extend(user, restoredUser);
+                    setVolumeFromUserOptions(user.options);
                     saveUserToLocal(user);
                     authorized = true;
                 }
@@ -246,6 +263,7 @@ angular.module('subtrack90.app.user', [
 
             if (restoredUser) {
                 angular.extend(user, restoredUser);
+                setVolumeFromUserOptions(user.options);
                 authorized = true;
             }
 
@@ -287,6 +305,8 @@ angular.module('subtrack90.app.user', [
             if (!options) return false;
 
             angular.extend(user.options, options);
+            setVolumeFromUserOptions(user.options);
+
             return saveUserToLocal(user);
         },
 

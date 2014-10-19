@@ -29,18 +29,4 @@ angular.module('subtrack90.app.options', [
     $scope.$watchCollection('options', function (value) {
         user.setOptions(value);
     });
-
-    /**
-     * Watch on the sfx volume indicator and change it in sound service
-     */
-    $scope.$watch('options.sfx', function (value) {
-        sound.volume('sfx', value * 0.2);
-    });
-
-    /**
-     * Watch on the music volume indicator and change it in sound service
-     */
-    $scope.$watch('options.music', function (value) {
-        sound.volume('music', value * 0.2);
-    });
 });
