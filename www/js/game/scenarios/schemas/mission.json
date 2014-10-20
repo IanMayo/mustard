@@ -420,6 +420,10 @@
                     "properties": {
                         "name": {
                             "type": "string"
+                        },
+                        "hidePoint": {
+                            "type": "boolean",
+                            "description": "whether to hide the marker icon at this point"
                         }
                     }
                 },
