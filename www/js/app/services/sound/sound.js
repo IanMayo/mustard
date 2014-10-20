@@ -217,9 +217,11 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * @returns {{stop: function}}
          */
         play: function (id) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, DEFAULT_VOLUME);
+            var sound = _.findWhere(soundMap, {id: id});
+
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, getVolumeLevelForSound(sound));
             $cordovaNativeAudio.play(id);
-            
+
             return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
         },
 
@@ -234,7 +236,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * @returns {{stop: function}}
          */
         loop: function (id) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, DEFAULT_VOLUME);
+            var sound = _.findWhere(soundMap, {id: id});
+
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, getVolumeLevelForSound(sound));
             $cordovaNativeAudio.loop(id);
 
             return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
@@ -247,8 +251,15 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * @param value of volume
          */
         volume: function (type, value) {
-            angular.forEach(soundMap, function (sound) {
-                $cordovaNativeAudio.setVolumeForComplexAsset(sound.id, value || DEFAULT_VOLUME);
+            var sounds = _.where(soundMap, {type: type});
+
+            setVolumeLevelBySoundType(type, value);
+
+            console.log(sounds);
+
+            angular.forEach(sounds, function (sound) {
+                $cordovaNativeAudio.setVolumeForComplexAsset(sound.id, getVolumeLevelForSound(sound));
+                console.log(getVolumeLevelForSound(sound));
             })
         }
     };
