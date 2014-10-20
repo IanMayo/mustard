@@ -12,6 +12,7 @@
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudio$4.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudio$5.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudio$6.class \
+/Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudio$7.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudio.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudioAsset.class \
 /Users/alexander/Repos/mustard/platforms/android/ant-build/classes/de/neofonie/cordova/plugin/nativeaudio/NativeAudioAssetComplex.class \
