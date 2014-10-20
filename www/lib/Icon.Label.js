@@ -6,27 +6,36 @@ L.IconLabel = L.Icon.Default.extend({
     },
 
     createIcon: function() {
-        var src = this._getIconUrl('icon');
+        var container = L.DomUtil.create('div', 'point-label');
+        var labelContainer = this._labelContainer = L.DomUtil.create('div', 'label-container', container);
+        var iconSize = L.point(this.options.iconSize);
+        var topPosition = -iconSize.y;
+        var leftPosition = iconSize.x / 2;
 
-        if (!src) {
-            if (name === 'icon') {
-                throw new Error('iconUrl not set in Icon options (see the docs).');
+        if (this.options.showIcon) {
+            var src = this._getIconUrl('icon');
+            var img;
+
+            if (!src) {
+                if (name === 'icon') {
+                    throw new Error('iconUrl not set in Icon options (see the docs).');
+                }
+                return null;
             }
-            return null;
+
+            img = this._createImg(src);
+            container.appendChild(img);
+            this._setIconStyles(img, 'icon');
+        } else {
+            topPosition = topPosition / 2;
+            leftPosition = leftPosition / 2;
         }
 
-        var iconSize = L.point(this.options.iconSize)
-        var container = L.DomUtil.create('div', 'point-label');
-        var img = this._createImg(src);
-        container.appendChild(img);
-
-        var labelContainer = this._labelContainer = L.DomUtil.create('div', 'label-container', container);
         labelContainer.style.visibility = 'hidden';
-        labelContainer.style.top = -iconSize.y + 'px';
-        labelContainer.style.left = (iconSize.x / 2 + this.options.iconAndLabelWhiteSpace) + 'px';
+        labelContainer.style.top = topPosition + 'px';
+        labelContainer.style.left = (leftPosition + this.options.iconAndLabelWhiteSpace) + 'px';
         this._labelWrapper = L.DomUtil.create('div', 'label-wrapper', labelContainer);
 
-        this._setIconStyles(img, 'icon');
         return container;
     },
 
