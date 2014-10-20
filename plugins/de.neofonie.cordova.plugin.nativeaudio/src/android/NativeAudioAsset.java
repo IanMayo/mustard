@@ -67,6 +67,15 @@ public class NativeAudioAsset  {
 		}
 	}
 	
+	public void setVolume(String volumeLevel) throws IOException
+	{
+		for ( int x=0; x<voices.size(); x++) 
+		{
+			NativeAudioAssetComplex voice = voices.get(x);
+			voice.setVolume(volumeLevel);
+		}
+	}
+	
 	public void loop() throws IOException
 	{
 		NativeAudioAssetComplex voice = voices.get(playIndex);
