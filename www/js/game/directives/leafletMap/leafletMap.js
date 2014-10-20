@@ -376,14 +376,21 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                         },
                         pointToLayer: function (feature, latlng) {
                             var marker = new L.marker();
-                            var iconLabel = L.iconLabel();
+                            var iconLabel = L.iconLabel({
+                                hideIcon: feature.properties.hidePoint,
+                                markerSymbol: '+',
+                                iconSize: [16, 16]
+                            });
                             marker.setLatLng(latlng);
                             marker.setIcon(iconLabel);
-                            marker.on('add', function () {
-                                iconLabel.addLabel(feature.properties.name);
-                            });
                             // always bring to back marker features
                             marker.setZIndexOffset(-leafletMapConfig.zIndexMarkerHighestOffset);
+                            
+                            if (feature.properties.name) {
+                                marker.on('add', function () {
+                                    iconLabel.addLabel(feature.properties.name);
+                                });
+                            }
 
                             return marker;
                         }
