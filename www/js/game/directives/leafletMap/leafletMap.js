@@ -376,7 +376,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                         },
                         pointToLayer: function (feature, latlng) {
                             var marker = new L.marker();
-                            var iconLabel = L.iconLabel();
+                            var iconLabel = L.iconLabel({showIcon: feature.properties.showPoint});
                             marker.setLatLng(latlng);
                             marker.setIcon(iconLabel);
                             marker.on('add', function () {
