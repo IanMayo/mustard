@@ -13,19 +13,7 @@ L.IconLabel = L.Icon.Default.extend({
         var leftPosition = iconSize.x / 2;
 
         if (this.options.showIcon) {
-            var src = this._getIconUrl('icon');
-            var img;
-
-            if (!src) {
-                if (name === 'icon') {
-                    throw new Error('iconUrl not set in Icon options (see the docs).');
-                }
-                return null;
-            }
-
-            img = this._createImg(src);
-            container.appendChild(img);
-            this._setIconStyles(img, 'icon');
+            container.appendChild(this._customIcon());
         } else {
             topPosition = topPosition / 2;
             leftPosition = leftPosition / 2;
@@ -50,6 +38,32 @@ L.IconLabel = L.Icon.Default.extend({
         width = Math.max(width, this.options.minWidth);
         style.width = (width + 1) + 'px';
         this._labelContainer.style.visibility = 'visible';
+    },
+
+    _customIcon: function () {
+        var icon;
+
+        if (this.options.markerSymbol) {
+            // create symbol icon
+            var icon = L.DomUtil.create('span', 'marker-icon-symbol');
+            icon.innerHTML = this.options.markerSymbol;
+        } else {
+            // create default leaflet icon
+            var src = this._getIconUrl('icon');
+            var img;
+
+            if (!src) {
+                if (name === 'icon') {
+                    throw new Error('iconUrl not set in Icon options (see the docs).');
+                }
+                return null;
+            }
+
+            icon = this._createImg(src);
+            this._setIconStyles(icon, 'icon');
+        }
+
+        return icon;
     }
 });
 

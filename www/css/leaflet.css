@@ -493,3 +493,12 @@
   background: transparent;
   position: absolute;
 }
+
+.marker-icon-symbol {
+  color: #bcdf1b;
+  font-size: 16px;
+  line-height: 16px;
+  vertical-align: baseline;
+  position: absolute;
+  top: -5px
+}
