@@ -12,11 +12,11 @@ L.IconLabel = L.Icon.Default.extend({
         var topPosition = -iconSize.y;
         var leftPosition = iconSize.x / 2;
 
-        if (this.options.showIcon) {
-            container.appendChild(this._customIcon());
-        } else {
+        if (this.options.hideIcon) {
             topPosition = topPosition / 2;
             leftPosition = leftPosition / 2;
+        } else {
+            container.appendChild(this._customIcon());
         }
 
         labelContainer.style.visibility = 'hidden';
