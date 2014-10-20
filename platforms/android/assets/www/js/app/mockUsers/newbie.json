@@ -5,6 +5,7 @@
     "options": {
         "music": 1,
         "sfx": 1,
-        "language": "EN"
+        "language": "EN",
+        "musicEnabled": false
     }
 }

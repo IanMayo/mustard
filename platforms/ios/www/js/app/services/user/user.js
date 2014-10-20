@@ -202,7 +202,8 @@ angular.module('subtrack90.app.user', [
      *    "options": {
      *        "music": 0,
      *        "sfx": 0,
-     *        "language": ""
+     *        "language": "",
+     *        "musicEnabled": false,
      *    }
      * }
      *

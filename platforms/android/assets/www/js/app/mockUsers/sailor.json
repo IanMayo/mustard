@@ -8,6 +8,7 @@
     "options": {
         "music": 4,
         "sfx": 2,
-        "language": "EN"
+        "language": "EN",
+        "musicEnabled": true
     }
 }

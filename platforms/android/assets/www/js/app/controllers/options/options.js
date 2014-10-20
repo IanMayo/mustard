@@ -7,7 +7,7 @@ angular.module('subtrack90.app.options', [
  * @module Options
  * @class OptionsCtrl (controller)
  */
-.controller('OptionsCtrl', function (APP_DEBUG, $scope, user, sound) {
+.controller('OptionsCtrl', function (APP_DEBUG, $scope, user) {
 
     /**
      * Debug flag
@@ -20,7 +20,8 @@ angular.module('subtrack90.app.options', [
     $scope.options = angular.extend({
         music: 0,
         sfx: 0,
-        language: "EN"
+        language: "EN",
+        musicEnabled: true
     }, user.options);
 
     /**
