@@ -11,7 +11,7 @@ angular.module('subtrack90.app.user', [
 /**
  * It is needed to convert the values from user.options to the values for sound.volume
  */
-.constant('VOLUME_MULTIPLIER', 0.2)
+.constant('VOLUME_MULTIPLIER', 0.1)
 
 .factory('user', function (VOLUME_MULTIPLIER, $q, localStorageService, mockUserBackend, sound) {
 
