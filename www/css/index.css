@@ -41,7 +41,7 @@ body {
   margin: 0;
   overflow: hidden;
   /* give most of the app a type-writer style */
-  font-family: 'Conspiracy', "Courier New", Courier, monospace;
+  font: 16px/1.5 'Cutive Mono', "Courier New", Courier, monospace;
 }
 
 /* give the game (and review page) the default font */
@@ -120,7 +120,7 @@ body {
   padding: 0 5px;
   margin:0;
   color: #bcdf1b;
-  font: 11px/1.5  'Orbitron', sans-serif;
+  font: 16px/1.5 'Cutive Mono', sans-serif;
 }
 
 .timeSlider {

@@ -29,7 +29,7 @@
 .data-leaflet-map-container,
 .sonarBearing {
   padding: 10px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cutive Mono', sans-serif;
 }
 
 .mission-name {
@@ -42,7 +42,7 @@
   border-radius: 30px;
   padding: 10px;
   z-index: 0;
-    font-family: 'Orbitron', sans-serif;
+  font-family: 'Cutive Mono', sans-serif;
 
 }
 
@@ -184,9 +184,9 @@
 .speed-label-container .label,
 .course-label-container .label,
 .ship-state-header .label {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 65%;
-  padding-top: 0.5em;
+  font-family: 'Cutive Mono', sans-serif;
+  /*font-size: 65%;*/
+  /*padding-top: 0.5em;*/
 }
 
 /* Time remaining & Time display */
