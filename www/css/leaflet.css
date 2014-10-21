@@ -484,6 +484,8 @@
 
 .leaflet-marker-iconlabel {
   display: block;
+  font-family:monospace;
+  font-weight:bold;
   width: 100px;
   font: 12px;
   margin-top: -15px;
