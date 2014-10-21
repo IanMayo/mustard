@@ -253,8 +253,6 @@
   position: relative;
 }
 .point-label .label-container {
-  border-radius: 4px;
-  background: rgba(170,206,0, 0.9);
   position: absolute;
 }
 
@@ -266,7 +264,8 @@
   padding: 3px;
   max-height: 60px;
   border-radius: 4px;
-  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(170,206,0, 0.9);
+  background: rgba(0,0,0,0.2);
 }
 
 .warning-background {
