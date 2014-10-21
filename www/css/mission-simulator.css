@@ -178,6 +178,14 @@
   margin: 0;
 }
 
+.speed-label-container .label,
+.course-label-container .label,
+.ship-state-header .label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 65%;
+  padding-top: 0.5em;
+}
+
 /* Time remaining & Time display */
 
 .time-remaining-header,
@@ -188,13 +196,6 @@
 .time-remaining-header {
   margin-top: 5px;
 }
-
-.time-remaining-header .label {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 65%;
-  padding-top: 0.5em;
-}
-
 
 /* Back button */
 
