@@ -189,6 +189,13 @@
   margin-top: 5px;
 }
 
+.time-remaining-header .label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 65%;
+  padding-top: 0.5em;
+}
+
+
 /* Back button */
 
 .btn-back {
