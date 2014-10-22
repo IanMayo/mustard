@@ -1,4 +1,5 @@
 .vizSonar {
+  font-family: sans-serif;
   font-size: 10px;
 }
 
@@ -9,7 +10,7 @@
   shape-rendering: crispEdges;
 }
 .vizSonar .axis text {
-  fill: #bcdf1b;
+  fill: #708d15;
 }
 
 .visContainer {
