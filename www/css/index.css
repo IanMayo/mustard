@@ -116,11 +116,12 @@ body {
 }
 
 /** for the leaflet mouse location  */
-.leaflet-container .leaflet-control-mouseposition, .leaflet-container .leaflet-control-scale-line {
+.leaflet-container .leaflet-control-mouseposition,
+.leaflet-container .leaflet-control-scale-line {
   padding: 0 5px;
   margin:0;
   color: #bcdf1b;
-  font: 12px monospace;
+  font-size: 12px;
 }
 
 .timeSlider {
