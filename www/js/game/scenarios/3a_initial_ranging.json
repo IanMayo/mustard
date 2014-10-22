@@ -31,12 +31,12 @@
                 "categories": [],
                 "location": {
                     "lat": 50,
-                    "lng": -8.18
+                    "lng": -8.14
                 },
                 "course": 90,
                 "demCourse": 90,
-                "demSpeed": 10,
-                "speed": 10,
+                "demSpeed": 6,
+                "speed": 6,
                 "height": 0,
                 "demHeight": -10.0
             },
@@ -75,7 +75,7 @@
             "sonars": [
             ],
             "radiatedNoise": {
-                "baseLevel": 100,
+                "baseLevel": 102,
                 "speedPattern": "Uniform"
             },
             "state": {
