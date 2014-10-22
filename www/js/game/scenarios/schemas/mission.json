@@ -42,7 +42,7 @@
                         "properties": {
                             "force": {
                                 "type": "string",
-                                "enum": ["BLUE", "RED", "WHITE"],
+                                "enum": ["BLUE", "RED", "WHITE", "GREEN"],
                                 "description": "Which force this vessel belongs to"
                             },
                             "environment": {
