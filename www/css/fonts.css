@@ -44,3 +44,7 @@
 .redacted-text {
   font-family: 'Conspiracy-PressRelease', 'Courier New', Courier, monospace !important;
 }
+
+.retro-font {
+  font-family: monospace, monospace !important;
+}
