@@ -29,7 +29,6 @@
 .data-leaflet-map-container,
 .sonarBearing {
   padding: 10px;
-  font-family: 'Cutive Mono', sans-serif;
 }
 
 .mission-name {
@@ -42,8 +41,6 @@
   border-radius: 30px;
   padding: 10px;
   z-index: 0;
-  font-family: 'Cutive Mono', sans-serif;
-
 }
 
 .leaflet-control-container .leaflet-left {
@@ -181,14 +178,6 @@
   margin: 0;
 }
 
-.speed-label-container .label,
-.course-label-container .label,
-.ship-state-header .label {
-  font-family: 'Cutive Mono', sans-serif;
-  /*font-size: 65%;*/
-  /*padding-top: 0.5em;*/
-}
-
 /* Time remaining & Time display */
 
 .time-remaining-header,
@@ -269,7 +258,7 @@
 
 .point-label .label-wrapper {
   line-height: 12px;
-  font-size: 11px;
+  font-size: 12px;
   margin: 1px;
   color: #bcdf1b;
   padding: 3px;
