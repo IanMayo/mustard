@@ -2,7 +2,9 @@ L.IconLabel = L.Icon.Default.extend({
     options: {
         minWidth: 50,
         maxWidth: 100,
-        iconAndLabelWhiteSpace: 3
+        iconAndLabelWhiteSpace: 3,
+        iconClassName: '',
+        symbolColor: ''
     },
 
     createIcon: function() {
@@ -49,8 +51,11 @@ L.IconLabel = L.Icon.Default.extend({
 
         if (this.options.markerSymbol) {
             // create symbol icon
-            var icon = L.DomUtil.create('span', 'marker-icon-symbol');
+            icon = L.DomUtil.create('span', 'marker-icon-symbol ' + this.options.iconClassName);
             icon.innerHTML = this.options.markerSymbol;
+            if (this.options.symbolColor) {
+                icon.style.color = this.options.symbolColor;
+            }
         } else {
             // create default leaflet icon
             var src = this._getIconUrl('icon');

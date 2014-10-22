@@ -503,3 +503,7 @@
   position: absolute;
   top: -5px
 }
+.reference-marker {
+  font-size: 30px;
+  line-height: 30px;
+}
