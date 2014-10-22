@@ -53,7 +53,7 @@
         {
             "name": "Target",
             "categories": {
-                "force": "BLUE",
+                "force": "GREEN",
                 "environment": "SURFACE",
                 "type": "MERCHANT"
             },
