@@ -27,6 +27,10 @@ L.IconLabel = L.Icon.Default.extend({
         return container;
     },
 
+    createShadow: function (oldIcon) {
+        return null;
+    },
+
     addLabel: function (text) {
         var width;
         var labelWrapper = this._labelWrapper;
@@ -89,6 +93,10 @@ L.Icon.Name = L.Icon.extend({
         var vectorMarker = L.VectorMarker.icon(this.options);
         var icon = vectorMarker.createIcon();
         return this._createLabel(icon);
+    },
+
+    createShadow: function (oldIcon) {
+        return null;
     },
 
     updateLabel: function (icon, text) {
