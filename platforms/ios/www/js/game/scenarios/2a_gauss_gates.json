@@ -305,7 +305,8 @@
                 "id": "1",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 1<br />10-12 kts"
+                    "name": "Gate 1<br />10-12 kts",
+                    "hidePoint": true
                 },
                 "geometry": {
                     "type": "Point",
@@ -327,7 +328,8 @@
                 "id": "2",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 2<br />6-8 kts"
+                    "name": "Gate 2<br />6-8 kts",
+                    "hidePoint": true
                 },
                 "geometry": {
                     "type": "Point",
@@ -349,7 +351,8 @@
                 "id": "3",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 3<br />15-17 kts"
+                    "name": "Gate 3<br />15-17 kts",
+                    "hidePoint": true
                 },
                 "geometry": {
                     "type": "Point",
@@ -371,7 +374,8 @@
                 "id": "4",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 4<br />10-12 kts"
+                    "name": "Gate 4<br />10-12 kts",
+                    "hidePoint": true
                 },
                 "geometry": {
                     "type": "Point",
@@ -393,7 +397,8 @@
                 "id": "5",
                 "type": "Feature",
                 "properties": {
-                    "name": "Gate 5<br />17-22 kts"
+                    "name": "Gate 5<br />17-22 kts",
+                    "hidePoint": true
                 },
                 "geometry": {
                     "type": "Point",

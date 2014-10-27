@@ -13,7 +13,7 @@ angular.module('subtrack90', [
     'subtrack90.app.missionsIndex',
     'subtrack90.app.splashScreen',
     'subtrack90.app.final',
-    'subtrack90.app.sound',
+    'subtrack90.app.soundManager',
     'subtrack90.game.simulator',
     'subtrack90.game.review',
     'ui.bootstrap',
@@ -34,17 +34,23 @@ angular.module('subtrack90', [
 .constant('SPLASH_ON_MAIN', !!window.cordova)
 
 /**
- * This is the default sound map load delay, we use it to prevent unexpected bugs in $cordovaNativeAudio service
- * and with initialization of mobile Native Audio library within angularjs
+ * Background sound on different pages
  */
-.constant('SOUND_MAP_LOAD_DELAY', 1000)
+.constant('BG_SOUND_ON_META_PAGES', true)
+.constant('BG_SOUND_ON_GAME_PAGES', false)
 
-.config(function ($routeProvider, APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN, $provide) {
+.config(function (APP_DEBUG, IS_MOBILE, SPLASH_ON_LOGIN ,SPLASH_ON_MAIN, BG_SOUND_ON_META_PAGES, BG_SOUND_ON_GAME_PAGES,
+    $routeProvider, $provide) {
 
     if (APP_DEBUG) {
         $routeProvider.when('/debug', {
             controller: 'DebugCtrl',
-            templateUrl: 'js/app/controllers/debug/debug.tpl.html'
+            templateUrl: 'js/app/controllers/debug/debug.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
     }
 
@@ -55,13 +61,21 @@ angular.module('subtrack90', [
             resolve: {
                 splash: ['splashScreen', function (splashScreen) {
                     return splashScreen.resolver(SPLASH_ON_LOGIN);
+                }],
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
                 }]
             }
         })
 
         .when('/register', {
             controller: 'RegistrationCtrl',
-            templateUrl: 'js/app/controllers/registration/registration.tpl.html'
+            templateUrl: 'js/app/controllers/registration/registration.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
 
         .when('/main', {
@@ -73,6 +87,9 @@ angular.module('subtrack90', [
                 }],
                 splash: ['splashScreen', function (splashScreen) {
                     return splashScreen.resolver(SPLASH_ON_MAIN);
+                }],
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
                 }]
             }
         })
@@ -83,28 +100,51 @@ angular.module('subtrack90', [
             resolve: {
                 mission: ['$route', 'missionsIndex', function ($route, missionsIndex) {
                     return missionsIndex.getMission($route.current.params.id);
+                }],
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
                 }]
             }
         })
 
         .when('/profile', {
             controller: 'ProfileCtrl',
-            templateUrl: 'js/app/controllers/userProfile/userProfile.tpl.html'
+            templateUrl: 'js/app/controllers/userProfile/userProfile.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
 
         .when('/options', {
             controller: 'OptionsCtrl',
-            templateUrl: 'js/app/controllers/options/options.tpl.html'
+            templateUrl: 'js/app/controllers/options/options.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
 
         .when('/credits', {
             controller: 'CreditsCtrl',
-            templateUrl: 'js/app/controllers/credits/credits.tpl.html'
+            templateUrl: 'js/app/controllers/credits/credits.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
 
         .when('/final', {
             controller: 'FinalCtrl',
-            templateUrl: 'js/app/controllers/final/final.tpl.html'
+            templateUrl: 'js/app/controllers/final/final.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_META_PAGES);
+                }]
+            }
         })
 
         .when('/game/mission/:scenario', {
@@ -122,17 +162,26 @@ angular.module('subtrack90', [
                         deferred.resolve(response);
                     });
                     return deferred.promise;
+                }],
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_GAME_PAGES);
                 }]
             }
         })
 
         .when('/review/mission', {
             controller: 'ReviewCtrl',
-            templateUrl: 'js/game/controllers/review/review.tpl.html'
+            templateUrl: 'js/game/controllers/review/review.tpl.html',
+            resolve: {
+                bgSound: ['soundManager', function (soundManager) {
+                    return soundManager.resolver(BG_SOUND_ON_GAME_PAGES);
+                }]
+            }
         })
 
         .otherwise({redirectTo: '/main'});
 
+        // TODO: If it's possible please move it to the separate module or something...
         $provide.decorator('popoverPopupDirective', function ($delegate) {
             // replace designed template with html unsafe content
             $delegate[0].templateUrl = "view/popover-html-unsafe.html";
@@ -189,23 +238,11 @@ angular.module('subtrack90', [
             });
         }
 
-}).run(function (SOUND_MAP_LOAD_DELAY, $rootScope, $location, $timeout, user, sound) {
+}).run(function ($rootScope, $location, user, soundManager) {
 
-    // We need to make sure that the DOM is created because run function itself is called a bit earlier
+    // We need to make sure that the DOM is already created because run function is called before
     angular.element(document).ready(function () {
-
-        // Load all sounds of the app
-        $timeout(function () {
-            sound.loadSoundMap([
-                {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
-                {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
-                {id: 'noise', path: 'audio/DarkNoise.mp3', type: 'music'},
-                {id: '1sec', path: 'audio/1sec.mp3', type: 'sfx'},
-                {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3', type: 'sfx'},
-                {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3', type: 'sfx'},
-                {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3', type: 'sfx'}
-            ]);
-        }, SOUND_MAP_LOAD_DELAY);
+        soundManager.loadAppSounds();
     });
 
     $rootScope.$on("$routeChangeStart", function () {

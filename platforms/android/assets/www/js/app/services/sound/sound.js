@@ -154,7 +154,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         },
 
         /**
-         * Set sfx and music volume
+         * Set sfx or music volume
          *
          * @param type of sound
          * @param value of volume
@@ -258,7 +258,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
         },
 
         /**
-         * Set sfx and music volume
+         * Set sfx or music volume
          *
          * @param type of sound
          * @param value of volume

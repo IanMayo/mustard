@@ -200,6 +200,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/soundManager \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady/cordovaReady.js \
@@ -207,6 +208,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend/mockUserBackend.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels/mockUserLevels.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound/sound.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/soundManager/soundManager.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user/user.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/controllers \

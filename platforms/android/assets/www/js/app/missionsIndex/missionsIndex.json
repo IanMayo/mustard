@@ -364,8 +364,8 @@
                 "situation": "To qualify to conduct TMA against a dived target, you first need to practice on a surface target - both to valid yourself and the TMA computer",
                 "forces": {
                     "enemy": "-Nil-",
-                    "friendly": "AF Brigand, Target",
-                    "neutral": "-Nil-"
+                    "friendly": "AF Brigand",
+                    "neutral": "Target"
                 },
                 "objectives": [
                     {

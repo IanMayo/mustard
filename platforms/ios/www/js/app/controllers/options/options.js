@@ -1,13 +1,13 @@
 angular.module('subtrack90.app.options', [
     'subtrack90.app.user',
-    'subtrack90.app.sound'
+    'subtrack90.app.soundManager'
 ])
 
 /**
  * @module Options
  * @class OptionsCtrl (controller)
  */
-.controller('OptionsCtrl', function (APP_DEBUG, $scope, user) {
+.controller('OptionsCtrl', function (APP_DEBUG, $scope, user, soundManager) {
 
     /**
      * Debug flag
@@ -27,7 +27,14 @@ angular.module('subtrack90.app.options', [
     /**
      * Watches on the local options model and changes the user's one
      */
-    $scope.$watchCollection('options', function (value) {
-        user.setOptions(value);
+    $scope.$watchCollection('options', function (newOptions) {
+        user.setOptions(newOptions);
     });
+
+    /**
+     * Let's watch on the musicEnabled user option and play/stop the background music if it's changed
+     */
+    $scope.$watch('options.musicEnabled', function (isEnabled) {
+        isEnabled ? soundManager.playBackgroundSound() : soundManager.stopBackgroundSound();
+    })
 });
