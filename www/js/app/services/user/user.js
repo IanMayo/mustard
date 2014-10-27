@@ -213,6 +213,7 @@ angular.module('subtrack90.app.user', [
                 if (restoredUser) {
                     angular.extend(user, restoredUser);
                     soundManager.setVolume(user.options.sfx, user.options.music);
+                    soundManager.setGlobalBackgroundSound(user.options.musicEnabled);
                     saveUserToLocal(user);
                     authorized = true;
                 }
@@ -250,6 +251,7 @@ angular.module('subtrack90.app.user', [
             if (restoredUser) {
                 angular.extend(user, restoredUser);
                 soundManager.setVolume(user.options.sfx, user.options.music);
+                soundManager.setGlobalBackgroundSound(user.options.musicEnabled);
                 authorized = true;
             }
 
@@ -292,6 +294,7 @@ angular.module('subtrack90.app.user', [
 
             angular.extend(user.options, options);
             soundManager.setVolume(user.options.sfx, user.options.music);
+            soundManager.setGlobalBackgroundSound(user.options.musicEnabled);
 
             return saveUserToLocal(user);
         },
