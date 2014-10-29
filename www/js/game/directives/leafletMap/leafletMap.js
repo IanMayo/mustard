@@ -55,7 +55,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 L.graticule({
                     style: {
                         color: '#791',
-                        weight: 1,
+                        weight: 2,
                         opacity: 0.3
                     },
                     interval: 0.0285,
