@@ -12,7 +12,9 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
         },
         template: '' +
             '<div id="viz-container" class="visContainer">' +
-                '<div id="viz-minor" class="vizSonar retro-font"></div>' +
+                '<div id="viz-minor" class="vizSonar retro-font">' +
+                    '<div class="interlace"></div>' +
+                '</div>' +
             '</div>',
         link: function (scope, element, attrs) {
 
