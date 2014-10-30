@@ -110,6 +110,60 @@ angular.module('subtrack90.game.sonarGraph', [])
             // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
             svgContainer.style({width: '100%', height: '100%'});
 
+            var defs = svgContainer
+                .append('defs');
+
+            var filter = defs.append('filter')
+                .attr('id', 'f3');
+
+            var feConvolve = filter.append('feConvolveMatrix')
+                .attr('result', 'out1');
+
+            var filterType = 5;
+            var matrix;
+            var order;
+            var blendMode;
+
+            switch (filterType) {
+                case 1:
+                    order = '3';
+                    matrix = '1 1 1 1 1 1 1 1 1';
+                    break;
+                case 2:
+                    order = '3';
+                    matrix = '1 0 0 0 0 0 0 0 1';
+                    break;
+                case 3:
+                    order = '10,1';
+                    matrix = '1 1 1 1 1 1 1 1 1 1';
+                    break;
+                case 4:
+                    order = '1,10';
+                    matrix = '1 1 1 1 1 1 1 1 1 1';
+                    break;
+                case 5:
+                    order = '10,1';
+                    matrix = '1 1 1 1 1 1 1 1 1 1';
+                    blendMode = 'screen';
+                    break;
+                case 6:
+                    order = '10,1';
+                    matrix = '0 0 0 0 0 1 1 1 1 1';
+                    blendMode = 'screen';
+                    break;
+            }
+
+            feConvolve
+                .attr('kernelMatrix', matrix)
+                .attr('order', order);
+
+            if (blendMode) {
+                filter.append('feBlend')
+                    .attr('in', 'SourceGraphic')
+                    .attr('in2', 'out1')
+                    .attr('mode', blendMode);
+            }
+
             graph = svgContainer
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
@@ -182,7 +236,8 @@ angular.module('subtrack90.game.sonarGraph', [])
             yAxisElement = graph.append('g')
                 .attr('class', 'y axis')
                 .attr('transform', 'translate(0,0)')
-                .call(yAxisScale.axis);
+                .call(yAxisScale.axis)
+                .attr('filter', 'url(#f3)');
 
             // axis label
             yAxisElement
@@ -212,7 +267,8 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0, 0)')
                 .style('opacity', config.showXAxis ? 1 : 0)
-                .call(xComponent.axis);
+                .call(xComponent.axis)
+                .attr('filter', 'url(#f3)');
 
             // axis label
             xAxisElement.append('text')
@@ -302,7 +358,8 @@ angular.module('subtrack90.game.sonarGraph', [])
         function addGroupContainer() {
             gMain = graph.append("g")
                 .attr('class', 'gMain')
-                .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')');
+                .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')')
+                .attr('filter', 'url(#f3)');
         }
 
         /**
