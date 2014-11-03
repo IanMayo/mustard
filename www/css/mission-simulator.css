@@ -44,8 +44,7 @@
 }
 
 .leaflet-container,
-.visContainer,
-.interlace {
+.visContainer {
   border-radius: 30px;
 }
 
@@ -274,6 +273,9 @@
   background: rgba(0,0,0,0.2);
 }
 
+.image {
+}
+
 .warning-background {
   position: absolute;
   height: 100%;
@@ -338,52 +340,3 @@
 .detectionPath.selected .point {
     fill: rgb(75, 239, 199);
 }
-
-.interlace {
-  position: absolute;
-  background: url(../img/interlace2x.png) top left repeat rgba(255, 255, 255, 0.5);
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  opacity: 0.2;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-}
-
-.interlace:after {
-  content: '';
-  background: #010a01;
-  background: -webkit-linear-gradient(90deg, #010a01 0em, #4bff97 3em, #010a01 20em);
-  background-size: 100% 20em;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: -20em;
-  opacity: 1;
-  -webkit-animation: interference 7s ease infinite;
-  -moz-animation: interference 7s ease infinite;
-  -o-animation: interference 7s ease infinite;
-  animation: interference 7s ease infinite;
-}
-
-@-webkit-keyframes interference {
-  0% {
-    opacity: 1;
-    background-position-y: -100%;
-  }
-
-  50% {
-    opacity: .5;
-    background-position-y: 100%;
-  }
-
-  100% {
-    opacity: 0;
-    background-position-y: 100%;
-  }
-}
-
