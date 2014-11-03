@@ -166,7 +166,10 @@ angular.module('subtrack90.game.sonarGraph', [])
 
             graph = svgContainer
                 .append('g')
-                .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
+                .attr({
+                    'transform': 'translate(' + config.margin.left + ',' + config.margin.top + ')',
+                    'filter': 'url(#f3)'
+                });
         }
 
         /**
@@ -236,8 +239,7 @@ angular.module('subtrack90.game.sonarGraph', [])
             yAxisElement = graph.append('g')
                 .attr('class', 'y axis')
                 .attr('transform', 'translate(0,0)')
-                .call(yAxisScale.axis)
-                .attr('filter', 'url(#f3)');
+                .call(yAxisScale.axis);
 
             // axis label
             yAxisElement
@@ -267,8 +269,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0, 0)')
                 .style('opacity', config.showXAxis ? 1 : 0)
-                .call(xComponent.axis)
-                .attr('filter', 'url(#f3)');
+                .call(xComponent.axis);
 
             // axis label
             xAxisElement.append('text')
@@ -358,8 +359,7 @@ angular.module('subtrack90.game.sonarGraph', [])
         function addGroupContainer() {
             gMain = graph.append("g")
                 .attr('class', 'gMain')
-                .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')')
-                .attr('filter', 'url(#f3)');
+                .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')');
         }
 
         /**
