@@ -152,6 +152,15 @@ body {
   border-bottom: 1px solid #bcdf1b;
 }
 
+.point-label .label-wrapper,
+.leaflet-marker-iconlabel,
+.leaflet-bar a,
+.leaflet-container .leaflet-control-mouseposition,
+.leaflet-container .leaflet-control-scale-line {
+  filter: url("#f3");
+  -webkit-filter: url("#f3");
+}
+
 .leaflet-container {
   background: #000;
 }
