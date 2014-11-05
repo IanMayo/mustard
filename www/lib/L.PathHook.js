@@ -36,7 +36,7 @@
 
         addPathWrapper: function (map) {
             var pathWrapper = L.Path.prototype._createElement('g');
-            pathWrapper.setAttribute('filter', 'url(#f3)');
+            pathWrapper.setAttribute('filter', 'url(#blurElement)');
 
             map._pathRoot.appendChild(pathWrapper);
             map._pathWrapper = pathWrapper;

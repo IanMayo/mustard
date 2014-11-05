@@ -114,7 +114,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .append('g')
                 .attr({
                     'transform': 'translate(' + config.margin.left + ',' + config.margin.top + ')',
-                    'filter': 'url(#f3)'
+                    'filter': 'url(#blurElement)'
                 });
         }
 

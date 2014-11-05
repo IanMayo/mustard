@@ -8,6 +8,7 @@ angular.module('subtrack90.game.svgFilter', [])
     return {
         restrict: 'EA',
         link: function (scope, el) {
+            var blurFilterName = 'blurElement';
             var svgContainer = d3.select(el[0])
                 .append('svg')
                 .style({height: '0', width: 0});
@@ -16,7 +17,7 @@ angular.module('subtrack90.game.svgFilter', [])
                 .append('defs');
 
             var filter = defs.append('filter')
-                .attr('id', 'f3');
+                .attr('id', blurFilterName);
 
             var feConvolve = filter.append('feConvolveMatrix')
                 .attr('result', 'out1');
