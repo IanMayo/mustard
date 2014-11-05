@@ -36,6 +36,7 @@
 
             this._pathRoot = this._createElement('svg');
             this._container = this._createElement('g');
+            this._container.setAttribute('filter', 'url(#f3)');
             this._path = this._createElement('path');
 
             this._pathRoot.appendChild(this._container);
