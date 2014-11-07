@@ -4,6 +4,10 @@
 
 angular.module('subtrack90.game.svgFilter', [])
 
+.constant('svgFilterConfig', {
+    blurFilterName: 'blurElement'
+})
+
 .directive('svgFilter', function () {
     return {
         restrict: 'EA',

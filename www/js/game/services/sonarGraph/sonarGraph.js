@@ -4,7 +4,7 @@
  * Factory class to create a single sonar graph.
  */
 
-angular.module('subtrack90.game.sonarGraph', [])
+angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
 /**
  * @module Sonar Graph
@@ -12,7 +12,7 @@ angular.module('subtrack90.game.sonarGraph', [])
  * @description Sonar Graph. Depends on d3 lib (http://d3js.org/)
  */
 
-.factory('sonarGraph', function () {
+.factory('sonarGraph', ['svgFilterConfig', function (svgFilterConfig) {
 
     /**
      * Graph class.
@@ -114,7 +114,7 @@ angular.module('subtrack90.game.sonarGraph', [])
                 .append('g')
                 .attr({
                     'transform': 'translate(' + config.margin.left + ',' + config.margin.top + ')',
-                    'filter': 'url(#blurElement)'
+                    'filter': 'url(#' + svgFilterConfig.blurFilterName + ')'
                 });
         }
 
@@ -558,4 +558,4 @@ angular.module('subtrack90.game.sonarGraph', [])
     };
 
     return Graph;
-});
+}]);

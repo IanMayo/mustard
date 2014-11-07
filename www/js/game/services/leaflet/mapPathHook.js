@@ -4,7 +4,7 @@
  * The extension creates wrapper with svg filter for all paths in map
  */
 
-angular.module('subtrack90.game.mapPathHook', [])
+angular.module('subtrack90.game.mapPathHook', ['subtrack90.game.svgFilter'])
 
 /**
  * @module Path Hook
@@ -12,7 +12,7 @@ angular.module('subtrack90.game.mapPathHook', [])
  * @description Leaflet Map Plugin
  */
 
-.service('mapPathHook', function () {
+.service('mapPathHook', ['svgFilterConfig', function (svgFilterConfig) {
     var mapExtension = function () {
         L.Path.include({
             _onAddOrig: L.Path.prototype.onAdd,
@@ -48,7 +48,7 @@ angular.module('subtrack90.game.mapPathHook', [])
 
             addPathWrapper: function (map) {
                 var pathWrapper = L.Path.prototype._createElement('g');
-                pathWrapper.setAttribute('filter', 'url(#blurElement)');
+                pathWrapper.setAttribute('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
 
                 map._pathRoot.appendChild(pathWrapper);
                 map._pathWrapper = pathWrapper;
@@ -59,4 +59,4 @@ angular.module('subtrack90.game.mapPathHook', [])
     this.init = function () {
         mapExtension();
     }
-});
+}]);
