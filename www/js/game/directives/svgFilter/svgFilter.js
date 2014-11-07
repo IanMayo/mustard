@@ -15,7 +15,7 @@ angular.module('subtrack90.game.svgFilter', [])
             var blurFilterName = 'blurElement';
             var svgContainer = d3.select(el[0])
                 .append('svg')
-                .style({height: '0', width: 0});
+                .style({height: '0', width: 0, position: 'absolute'});
 
             var defs = svgContainer
                 .append('defs');
