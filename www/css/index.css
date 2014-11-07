@@ -157,7 +157,8 @@ body {
 .leaflet-marker-iconlabel,
 .leaflet-bar a,
 .leaflet-container .leaflet-control-mouseposition,
-.leaflet-container .leaflet-control-scale-line {
+.leaflet-container .leaflet-control-scale-line,
+.mission-name {
   filter: url("#blurElement");
   -webkit-filter: url("#blurElement");
 }
