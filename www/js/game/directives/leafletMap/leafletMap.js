@@ -232,11 +232,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 var icon;
 
                 if (marker) {
-                    icon = L.icon({
-                        iconAngle: 0,
-                        iconUrl: 'img/vessels/' + iconSize + '/' + 'tombstone.png',
-                        iconSize: [iconSize, iconSize],
-                        iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+                    icon = L.iconLabel({
+                        markerSymbol: '&boxvh;',
+                        symbolColor: 'red'
                     });
 
                     if (map.hasLayer(marker)) {
