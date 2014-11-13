@@ -345,11 +345,10 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     marker.setLatLng(entry.location);
                     marker.bindPopup(entry.message);
 
-                    var icon = L.icon({
-                        iconUrl: 'lib/leaflet/images/marker-icon.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [25 / 2, 41],
-                        className: entry.name
+                    var icon = L.iconLabel({
+                        markerSymbol: '+',
+                        iconSize: [16, 16],
+                        iconClassName: entry.name
                     });
                     marker.setIcon(icon);
 
