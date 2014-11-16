@@ -10,7 +10,6 @@
     "options": {
         "music": 3,
         "sfx": 3,
-        "language": "EN",
-        "musicEnabled": true
+        "language": "EN"
     }
 }

@@ -41,7 +41,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * @param sound
      */
     var getVolumeLevelForSound = function (sound) {
-        return volumeLevel[sound.type] || DEFAULT_VOLUME;
+        return volumeLevel[sound.type];
     };
 
     /**
@@ -51,7 +51,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
      * @param volume level of sound
      */
     var setVolumeLevelBySoundType = function (type, volume) {
-        volumeLevel[type] = volume || DEFAULT_VOLUME;
+        volumeLevel[type] = volume;
     };
 
     /**

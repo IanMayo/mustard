@@ -6,9 +6,8 @@
     ],
     "missions": [],
     "options": {
-        "music": 4,
-        "sfx": 2,
-        "language": "EN",
-        "musicEnabled": true
+        "music": 0,
+        "sfx": 3,
+        "language": "EN"
     }
 }

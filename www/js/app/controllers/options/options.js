@@ -20,8 +20,7 @@ angular.module('subtrack90.app.options', [
     $scope.options = angular.extend({
         music: 0,
         sfx: 0,
-        language: "EN",
-        musicEnabled: true
+        language: "EN"
     }, user.options);
 
     /**
@@ -34,7 +33,7 @@ angular.module('subtrack90.app.options', [
     /**
      * Let's watch on the musicEnabled user option and play/stop the background music if it's changed
      */
-    $scope.$watch('options.musicEnabled', function (isEnabled) {
-        isEnabled ? soundManager.playBackgroundSound() : soundManager.stopBackgroundSound();
-    })
+    $scope.$watch('options.music', function (musicVol) {
+        !!musicVol ? soundManager.playBackgroundSound() : soundManager.stopBackgroundSound();
+    });
 });
