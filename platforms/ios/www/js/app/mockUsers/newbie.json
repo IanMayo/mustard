@@ -3,9 +3,8 @@
     "achievements": [],
     "missions": [],
     "options": {
-        "music": 1,
-        "sfx": 1,
-        "language": "EN",
-        "musicEnabled": false
+        "music": 3,
+        "sfx": 3,
+        "language": "EN"
     }
 }

@@ -15,7 +15,7 @@ angular.module('subtrack90.app.soundManager', ['subtrack90.app.sound'])
 /**
  * We need this to convert the values from user volume options to the values for sound.volume method
  */
-.constant('VOLUME_MULTIPLIER', 0.1)
+.constant('VOLUME_MULTIPLIER', 0.2)
 
 .factory('soundManager', function (SOUND_MAP_LOAD_DELAY, VOLUME_MULTIPLIER, $timeout, $q, sound) {
 
@@ -111,14 +111,14 @@ angular.module('subtrack90.app.soundManager', ['subtrack90.app.sound'])
         },
 
         /**
-         * Set the bgSoundEnabled option based on global musicEnabled option
+         * Set the bgSoundEnabled option based on global music volume option
          *
-         * @param isEnabled - is global music option enabled
+         * @param musicVol
          */
-        setGlobalBackgroundSound: function (isEnabled) {
-            bgSoundEnabled = isEnabled;
+        enableBackgroundSound: function (musicVol) {
+            bgSoundEnabled = !!musicVol;
 
-            !isEnabled && this.stopBackgroundSound();
+            !bgSoundEnabled && this.stopBackgroundSound();
         },
 
         /**
