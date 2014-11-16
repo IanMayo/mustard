@@ -7,12 +7,20 @@ angular.module('subtrack90.app.options', [
  * @module Options
  * @class OptionsCtrl (controller)
  */
-.controller('OptionsCtrl', function (APP_DEBUG, $scope, user, soundManager) {
+.controller('OptionsCtrl', function (IS_MOBILE, IS_CORDOVA, APP_DEBUG, $scope, user, soundManager) {
 
     /**
      * Debug flag
      */
     $scope.appDebug = APP_DEBUG;
+
+    /**
+     * Disable music volume control if user uses mobile browser
+     * TODO: remove it when mobile browsers will fully support howler lib
+     *
+     * @type {Boolean}
+     */
+    $scope.disableMusicControl = !IS_CORDOVA && IS_MOBILE;
 
     /**
      * Local options model

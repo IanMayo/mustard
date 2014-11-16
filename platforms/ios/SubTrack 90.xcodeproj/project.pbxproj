@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -496,6 +497,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -520,7 +522,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
-				PROVISIONING_PROFILE = "e0b2ec0a-a750-4fa9-9f01-e96b022c956c";
+				PROVISIONING_PROFILE = "9a89f3ef-481d-4392-bf4e-dfffb587f12e";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -531,6 +533,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SubTrack 90/SubTrack 90-Prefix.pch";
@@ -553,7 +556,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
-				PROVISIONING_PROFILE = "e0b2ec0a-a750-4fa9-9f01-e96b022c956c";
+				PROVISIONING_PROFILE = "9a89f3ef-481d-4392-bf4e-dfffb587f12e";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
