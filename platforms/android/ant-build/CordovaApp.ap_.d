@@ -146,7 +146,6 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/merchant.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/reference.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/submarine.png \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/tombstone.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/torpedo.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/warship.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/64/fisherman.png \

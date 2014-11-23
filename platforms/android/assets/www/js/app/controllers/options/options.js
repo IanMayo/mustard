@@ -1,5 +1,6 @@
 angular.module('subtrack90.app.options', [
     'subtrack90.app.user',
+    'subtrack90.app.sound',
     'subtrack90.app.soundManager'
 ])
 
@@ -7,7 +8,7 @@ angular.module('subtrack90.app.options', [
  * @module Options
  * @class OptionsCtrl (controller)
  */
-.controller('OptionsCtrl', function (IS_MOBILE, IS_CORDOVA, APP_DEBUG, $scope, user, soundManager) {
+.controller('OptionsCtrl', function (IS_MOBILE, IS_CORDOVA, APP_DEBUG, $scope, user, sound, soundManager) {
 
     /**
      * Debug flag
@@ -43,5 +44,12 @@ angular.module('subtrack90.app.options', [
      */
     $scope.$watch('options.music', function (musicVol) {
         !!musicVol ? soundManager.playBackgroundSound() : soundManager.stopBackgroundSound();
+    });
+
+    /**
+     * Play robot blip sound when we change the sfx volume
+     */
+    $scope.$watch('options.sfx', function (sfxVol, oldSfxVol) {
+        sfxVol !== oldSfxVol && sound.play('robot-blip');
     });
 });
