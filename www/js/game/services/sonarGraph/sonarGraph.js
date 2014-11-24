@@ -60,6 +60,19 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             serialRenderingMode: false
         };
 
+        var rS = new rStats({
+            values: {
+                frame: { caption: 'Total frame time (ms)', below: 2 },
+                raf: { caption: 'Time since last rAF (ms)' },
+                fps: { caption: 'Framerate (FPS)', below: 1.5 },
+                action1: { caption: 'Render action #1 (ms)' },
+                render: { caption: 'WebGL Render (ms)' }
+            }
+        } );
+
+        var requestSimulationTime;
+        var _simulationTime;
+
         init(options);
 
         function init(options) {
@@ -397,20 +410,48 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Date} simulationTime
          */
         function changeYAxisDomain(simulationTime) {
-            var time = simulationTime.getTime();
+            _simulationTime = simulationTime;
+            var time;
 
-            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
-            yAxisElement
-                .call(yAxisScale.axis);
+            function animationFrame() {
+                rS('frame').start();
+                rS('rAF').tick();
+                rS('FPS').frame();
+                rS('render').start();
 
-            _.each(renderedDetections, function (detection, key) {
-                // move group container
-                gMain.select('.' + key).
-                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
-            });
+                time = getSimulationTime();
+                if (time !== requestSimulationTime) {
 
-            if (!config.serialRenderingMode) {
-                removeAllExpiredDetections();
+                    requestSimulationTime = time;
+
+                    yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
+                    yAxisElement
+                        .call(yAxisScale.axis);
+
+                    _.each(renderedDetections, function (detection, key) {
+                        // move group container
+                        gMain.select('.' + key).
+                            attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+                    });
+
+                    if (!config.serialRenderingMode) {
+                        removeAllExpiredDetections();
+                    }
+                }
+
+                rS('render').end();
+                rS('frame').end();
+                rS().update();
+
+                requestAnimationFrame(animationFrame);
+            }
+
+            function getSimulationTime() {
+                return _simulationTime.getTime();
+            }
+
+            if (!requestSimulationTime) {
+                requestAnimationFrame(animationFrame);
             }
         }
 
