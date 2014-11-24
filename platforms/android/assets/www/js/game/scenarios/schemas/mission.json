@@ -42,7 +42,7 @@
                         "properties": {
                             "force": {
                                 "type": "string",
-                                "enum": ["BLUE", "RED", "WHITE"],
+                                "enum": ["BLUE", "RED", "WHITE", "GREEN"],
                                 "description": "Which force this vessel belongs to"
                             },
                             "environment": {
@@ -420,6 +420,10 @@
                     "properties": {
                         "name": {
                             "type": "string"
+                        },
+                        "hidePoint": {
+                            "type": "boolean",
+                            "description": "whether to hide the marker icon at this point"
                         }
                     }
                 },
@@ -738,6 +742,22 @@
                 }
             }
         },
+        "speedRange": {
+            "description": "Speed constraints in m/s",
+            "required": ["min", "max"],
+            "properties": {
+                "min": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 12
+                },
+                "max": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 12
+                }
+            }
+        },
         "objectiveFindTarget": {
             "type": "object",
             "description": "Player must select the indicated sonar track",
@@ -954,6 +974,9 @@
                 },
                 "bonusAchievement": {
                     "$ref": "#/definitions/objectiveAchievement"
+                },
+                "speedRange": {
+                    "$ref": "#/definitions/speedRange"
                 }
             }
         },

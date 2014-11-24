@@ -180,14 +180,11 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         /** process all of these objectives, finish if any child completes
          *
          * @param gameState
-         * @param sequence
          * @param vessels
          * @param deadVessels
+         * @param any
          */
-
         var handleOr = function (gameState, any, vessels, deadVessels) {
-            var STOP_CHECKING = false;  // flag for if an object hasn't been reached yet
-
             // loop through all, or until we don't get a result object
             for (var thisId = 0; thisId < any.children.length; thisId++) {
                 // get the next child
@@ -344,8 +341,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                     // ok, game failure
                     obtain.complete = true;
-                    var failureMessage = obtain.failureTime ? obtain.failureTime : obtain.failure;
-                    gameState.failureMessage = failureMessage;
+                    gameState.failureMessage = obtain.failureTime ? obtain.failureTime : obtain.failure;
                     gameState.state = "DO_STOP";
 
                     // clear the flag
@@ -590,23 +586,22 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                         // and store any achievements
                         processAchievements(findTarget.achievement, gameState);
 
-                        var narrMessage = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
-                        insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage);
+                        var narrMessage1 = findTarget.narrSuccess ? findTarget.narrSuccess : "Successfully selected target track";
+                        insertNarrative(gameState, gameState.simulationTime, subject.state.location, narrMessage1);
                     }
                     else {
                         // ok, the user has made the selection too early
                         // ok, game failure
                         findTarget.complete = true;
 
-                        var failureMessage = findTarget.failureEarly ? findTarget.failureEarly : findTarget.failure;
-                        gameState.failureMessage = failureMessage;
+                        gameState.failureMessage = findTarget.failureEarly ? findTarget.failureEarly : findTarget.failure;
                         gameState.state = "DO_STOP";
 
                         // clear the flag
-                        var narrMessage = findTarget.narrFailure ? findTarget.narrFailure : "Selected track too early";
+                        var narrMessage2 = findTarget.narrFailure ? findTarget.narrFailure : "Selected track too early";
 
                         insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                            narrMessage);
+                            narrMessage2);
 
                     }
                 }
@@ -616,15 +611,14 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                     // ok, game failure
                     findTarget.complete = true;
 
-                    var failureMessage = findTarget.failureSelection ? findTarget.failureSelection : findTarget.failure;
-                    gameState.failureMessage = failureMessage;
+                    gameState.failureMessage = findTarget.failureSelection ? findTarget.failureSelection : findTarget.failure;
                     gameState.state = "DO_STOP";
 
                     // clear the flag
-                    var narrMessage = findTarget.narrFailure ? findTarget.narrFailure : "Selected the wrong track";
+                    var narrMessage3 = findTarget.narrFailure ? findTarget.narrFailure : "Selected the wrong track";
 
                     insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                        narrMessage);
+                        narrMessage3);
 
                 }
             }
@@ -634,17 +628,16 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 if (gameState.simulationTime > findTarget.stopTime) {
                     // ok, game failure
                     findTarget.complete = true;
-                    var failureMessage = findTarget.failureTime ? findTarget.failureTime : findTarget.failure;
-                    gameState.failureMessage = failureMessage;
+                    gameState.failureMessage = findTarget.failureTime ? findTarget.failureTime : findTarget.failure;
                     gameState.state = "DO_STOP";
 
                     // clear the flag
                     delete findTarget.stopTime;
 
-                    var narrMessage = findTarget.narrFailure ? findTarget.narrFailure : "Failed to select target track";
+                    var narrMessage4 = findTarget.narrFailure ? findTarget.narrFailure : "Failed to select target track";
 
                     insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                        narrMessage);
+                        narrMessage4);
                 }
             }
         };
@@ -1004,7 +997,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
         /** success if subject passes close to line
          *
          * @param gameState
-         * @param failInArea
+         * @param successOnLine
          * @param vessels
          */
         var handleSuccessOnLine = function (gameState, successOnLine, vessels) {
@@ -1039,35 +1032,43 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 successOnLine.p2.lat, successOnLine.p2.lng);
 
             if (distanceFromLine < successOnLine.range) {
+                // round value to two decimal places, since that's how it's stored in json mission
+                var subjectSpeed = Math.round(subject.state.speed * 100) / 100;
+                var speedRange = successOnLine.speedRange;
 
-                // ok - the target has entered the area
-                successOnLine.complete = true;
-                gameState.successMessage = successOnLine.success;
-                gameState.state = "DO_STOP";
-
-                insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                    "Subject vessel passed marker line");
-
-                // and store any achievements
-                processAchievements(successOnLine.achievement, gameState);
-
-                // hey, is there a bonus time?
-                if (successOnLine.bonusStopTime) {
-                    // note: we're relying on the
-                    if (gameState.simulationTime < successOnLine.bonusStopTime) {
-                        processAchievements(successOnLine.bonusAchievement, gameState);
+                if (speedRange) {
+                    if (subjectSpeed >= speedRange.min && subjectSpeed <= speedRange.max) {
+                        successOnLineWithSuccess(successOnLine, gameState, subject,
+                            "Subject vessel passed marker line at correct speed");
                     }
+                } else {
+                    successOnLineWithSuccess(successOnLine, gameState, subject,
+                        "Subject vessel passed marker line");
                 }
             }
-            else {
-                // right, just check if we have failed to reach our distance in time
+
+
+            // has the user just succeeded?
+            if (!successOnLine.complete) {
+                // no. is this mission time-sensitive?
                 if (successOnLine.stopTime) {
+                    // yes. has the user run out of time?
                     if (gameState.simulationTime > successOnLine.stopTime) {
                         // ok, we've run out of time - game over
                         gameState.failureMessage = successOnLine.failure;
                         gameState.state = "DO_STOP";
+
+                        // sort out the correct message
+                        var msg;
+                        if (successOnLine.speedRange) {
+                            msg = "Subject vessel failed to pass line at correct speed in time";
+                        }
+                        else {
+                            msg = "Subject vessel failed to pass line in time";
+                        }
+
                         insertNarrative(gameState, gameState.simulationTime, subject.state.location,
-                            "Subject vessel failed to pass line in time");
+                            msg);
                     }
                 }
             }
@@ -1101,8 +1102,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 // ok, inject the bounds
                 var tl = L.latLng(failInArea.tl.lat, failInArea.tl.lng);
                 var br = L.latLng(failInArea.br.lat, failInArea.br.lng);
-                var bounds = L.latLngBounds(tl, br);
-                failInArea.boundsObj = bounds;
+                failInArea.boundsObj = L.latLngBounds(tl, br);
             }
 
             // ok, have we left it?
@@ -1161,15 +1161,12 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
                 return;
             }
 
-            var dest = null;
-
             // have we constructed the bounding polygon?
             if (!stayInArea.boundsObj) {
                 // ok, inject the bounds
                 var tl = L.latLng(stayInArea.tl.lat, stayInArea.tl.lng);
                 var br = L.latLng(stayInArea.br.lat, stayInArea.br.lng);
-                var bounds = L.latLngBounds(tl, br);
-                stayInArea.boundsObj = bounds;
+                stayInArea.boundsObj = L.latLngBounds(tl, br);
             }
 
             // ok, have we left it?
@@ -1320,6 +1317,7 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
         /** handle the request to fire a weapon
          *
+         * @param gameState
          * @param action
          * @param vessel
          * @param vessels
@@ -1375,6 +1373,27 @@ angular.module('subtrack90.game.objectives', ['subtrack90.game.geoMath'])
 
                 // and ditch any completed actions
                 vessel.state.actions = _.difference(actions, toRemove);
+            }
+        };
+
+        var successOnLineWithSuccess = function (successOnLine, gameState, subject, message) {
+            // ok - the target has entered the area
+            successOnLine.complete = true;
+            gameState.successMessage = successOnLine.success;
+            gameState.state = "DO_STOP";
+
+            insertNarrative(gameState, gameState.simulationTime, subject.state.location,
+                message);
+
+            // and store any achievements
+            processAchievements(successOnLine.achievement, gameState);
+
+            // hey, is there a bonus time?
+            if (successOnLine.bonusStopTime) {
+                // note: we're relying on the
+                if (gameState.simulationTime < successOnLine.bonusStopTime) {
+                    processAchievements(successOnLine.bonusAchievement, gameState);
+                }
             }
         };
 

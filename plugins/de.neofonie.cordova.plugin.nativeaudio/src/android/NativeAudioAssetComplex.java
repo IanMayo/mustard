@@ -105,6 +105,16 @@ public class NativeAudioAssetComplex implements OnPreparedListener, OnCompletion
 		invokePlay( true );
 	}
 	
+	public void setVolume(String volumeLevel) throws IOException 
+	{
+		try {
+			Float volume = Float.parseFloat(volumeLevel); 
+			mp.setVolume(volume, volume);
+		} catch (IllegalStateException e) {
+			// I don't know why this gets thrown; catch here to save app
+		}
+	}
+	
 	public void unload() throws IOException
 	{
 		this.stop();

@@ -1,4 +1,4 @@
-/Users/alexander/Repos/mustard/platforms/android/ant-build/SubTrack90.ap_ \
+/Users/alexander/Repos/mustard/platforms/android/ant-build/CordovaApp.ap_ \
  : /Users/alexander/Repos/mustard/platforms/android/res/drawable/icon.png \
 /Users/alexander/Repos/mustard/platforms/android/res/drawable-hdpi/icon.png \
 /Users/alexander/Repos/mustard/platforms/android/res/drawable-hdpi/screen.png \
@@ -146,7 +146,6 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/merchant.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/reference.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/submarine.png \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/tombstone.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/torpedo.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/48/warship.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels/64/fisherman.png \
@@ -200,6 +199,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/soundManager \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady/cordovaReady.js \
@@ -207,6 +207,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend/mockUserBackend.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels/mockUserLevels.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound/sound.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/soundManager/soundManager.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user/user.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/controllers \

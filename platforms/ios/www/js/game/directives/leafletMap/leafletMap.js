@@ -186,15 +186,23 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 iconSize = new L.point(iconScale * L.VectorMarker.SVG_SHAPE_WIDTH,
                         iconScale * L.VectorMarker.SVG_SHAPE_HEIGHT);
 
-                icon = L.icon.Name({
-                    labelText: vessel.name,
-                    labelAnchor: new L.Point(iconSize.y / 5 , -iconSize.x / 2),
-                    iconAngle: 0,
-                    markerColor: markerColor,
-                    labelTextColor: markerColor,
-                    iconSize: iconSize,
-                    iconAnchor: new L.point(iconSize.x / 2, iconSize.y)
-                });
+                if ('REFERENCE' === vessel.categories.type) {
+                    icon = L.iconLabel({
+                        markerSymbol: '&curren;',
+                        iconClassName: 'reference-marker',
+                        symbolColor: markerColor
+                    });
+                } else {
+                    icon = L.icon.Name({
+                        labelText: vessel.name,
+                        labelAnchor: new L.Point(iconSize.y / 5 , -iconSize.x / 2),
+                        iconAngle: 0,
+                        markerColor: markerColor,
+                        labelTextColor: markerColor,
+                        iconSize: iconSize,
+                        iconAnchor: new L.point(iconSize.x / 2, iconSize.y)
+                    });
+                }
 
                 marker.setIcon(icon);
 
@@ -224,11 +232,9 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 var icon;
 
                 if (marker) {
-                    icon = L.icon({
-                        iconAngle: 0,
-                        iconUrl: 'img/vessels/' + iconSize + '/' + 'tombstone.png',
-                        iconSize: [iconSize, iconSize],
-                        iconAnchor: [iconSize / 2, iconSize - iconSize / 5]
+                    icon = L.iconLabel({
+                        markerSymbol: '&boxvh;',
+                        symbolColor: 'red'
                     });
 
                     if (map.hasLayer(marker)) {
@@ -337,11 +343,10 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                     marker.setLatLng(entry.location);
                     marker.bindPopup(entry.message);
 
-                    var icon = L.icon({
-                        iconUrl: 'lib/leaflet/images/marker-icon.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [25 / 2, 41],
-                        className: entry.name
+                    var icon = L.iconLabel({
+                        markerSymbol: '+',
+                        iconSize: [16, 16],
+                        iconClassName: entry.name
                     });
                     marker.setIcon(icon);
 
@@ -376,14 +381,21 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                         },
                         pointToLayer: function (feature, latlng) {
                             var marker = new L.marker();
-                            var iconLabel = L.iconLabel();
+                            var iconLabel = L.iconLabel({
+                                hideIcon: feature.properties.hidePoint,
+                                markerSymbol: '+',
+                                iconSize: [16, 16]
+                            });
                             marker.setLatLng(latlng);
                             marker.setIcon(iconLabel);
-                            marker.on('add', function () {
-                                iconLabel.addLabel(feature.properties.name);
-                            });
                             // always bring to back marker features
                             marker.setZIndexOffset(-leafletMapConfig.zIndexMarkerHighestOffset);
+                            
+                            if (feature.properties.name) {
+                                marker.on('add', function () {
+                                    iconLabel.addLabel(feature.properties.name);
+                                });
+                            }
 
                             return marker;
                         }

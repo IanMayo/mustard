@@ -4,10 +4,11 @@
 
 angular.module('subtrack90.app.user', [
     'subtrack90.app.mockUserBackend',
+    'subtrack90.app.soundManager',
     'LocalStorageModule'
 ])
 
-.factory('user', function ($q, localStorageService, mockUserBackend) {
+.factory('user', function ($q, localStorageService, mockUserBackend, soundManager) {
 
     /**
      * It saves user to the local storage
@@ -184,9 +185,10 @@ angular.module('subtrack90.app.user', [
      *        }
      *    ]
      *    "options": {
-     *        "audio": 0,
+     *        "music": 0,
      *        "sfx": 0,
-     *        "language": ""
+     *        "language": "",
+     *        "musicEnabled": false,
      *    }
      * }
      *
@@ -210,6 +212,8 @@ angular.module('subtrack90.app.user', [
             mockUserBackend.login(username).then(function (restoredUser) {
                 if (restoredUser) {
                     angular.extend(user, restoredUser);
+                    soundManager.setVolume(user.options.sfx, user.options.music);
+                    soundManager.enableBackgroundSound(user.options.music);
                     saveUserToLocal(user);
                     authorized = true;
                 }
@@ -246,6 +250,8 @@ angular.module('subtrack90.app.user', [
 
             if (restoredUser) {
                 angular.extend(user, restoredUser);
+                soundManager.setVolume(user.options.sfx, user.options.music);
+                soundManager.enableBackgroundSound(user.options.music);
                 authorized = true;
             }
 
@@ -287,6 +293,9 @@ angular.module('subtrack90.app.user', [
             if (!options) return false;
 
             angular.extend(user.options, options);
+            soundManager.setVolume(user.options.sfx, user.options.music);
+            soundManager.enableBackgroundSound(user.options.music);
+
             return saveUserToLocal(user);
         },
 

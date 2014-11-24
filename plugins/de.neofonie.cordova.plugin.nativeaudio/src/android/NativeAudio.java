@@ -39,6 +39,7 @@ public class NativeAudio extends CordovaPlugin {
 	public static final String LOOP="loop";
 	public static final String UNLOAD="unload";
     public static final String ADD_COMPLETE_LISTENER="addCompleteListener";
+    public static final String SET_VOLUME="setVolumeForComplexAsset";
 
 	private static final String LOGTAG = "NativeAudio";
 	
@@ -143,6 +144,27 @@ public class NativeAudio extends CordovaPlugin {
 		
 		return new PluginResult(Status.OK);
 	}
+	
+	private PluginResult executeSetVolume(JSONArray data) {
+		String audioID, volumeLevel;
+		try {
+			audioID = data.getString(0);
+			volumeLevel = data.getString(1);
+			
+			if (assetMap.containsKey(audioID)) {
+				NativeAudioAsset asset = assetMap.get(audioID);
+				asset.setVolume(volumeLevel);
+			} else {
+				return new PluginResult(Status.ERROR, ERROR_NO_AUDIOID);
+			}			
+		} catch (JSONException e) {
+			return new PluginResult(Status.ERROR, e.toString());
+		} catch (IOException e) {
+			return new PluginResult(Status.ERROR, e.toString());
+		}
+		
+		return new PluginResult(Status.OK);
+	}
 
 	private PluginResult executeUnload(JSONArray data) {
 		String audioID;
@@ -202,6 +224,12 @@ public class NativeAudio extends CordovaPlugin {
 		            }
 		        });
 
+            } else if (SET_VOLUME.equals(action)) {
+				cordova.getThreadPool().execute(new Runnable() {
+		            public void run() {
+		            	callbackContext.sendPluginResult( executeSetVolume(data) );
+		            }
+		        });
             } else if (UNLOAD.equals(action)) {
                 cordova.getThreadPool().execute(new Runnable() {
                     public void run() {
@@ -219,8 +247,7 @@ public class NativeAudio extends CordovaPlugin {
                 } catch (JSONException e) {
                     callbackContext.sendPluginResult(new PluginResult(Status.ERROR, e.toString()));
                 }
-            }
-            else {
+            } else {
                 result = new PluginResult(Status.OK);
             }
 		} catch (Exception ex) {

@@ -194,13 +194,13 @@ angular.module('subtrack90.app.debug', [
 
     var loadSoundMap = function () {
         sound.loadSoundMap([
-            {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-            {id: 'alarm', path: 'audio/Alarm.mp3'},
-            {id: 'noise', path: 'audio/DarkNoise.mp3'},
-            {id: '1sec', path: 'audio/1sec.mp3'},
-            {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3'},
-            {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3'},
-            {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3'}
+            {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+            {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+            {id: 'noise', path: 'audio/DarkNoise.mp3', type: 'music'},
+            {id: '1sec', path: 'audio/1sec.mp3', type: 'sfx'},
+            {id: 'robot-blip', path: 'audio/Robot_blip-Marianne_Gagnon.mp3', type: 'sfx'},
+            {id: 'sad-thrombone', path: 'audio/Sad_Trombone-Joe_Lamb.mp3', type: 'sfx'},
+            {id: 'ta-da', path: 'audio/Ta_Da-SoundBible.mp3', type: 'sfx'}
         ]);
     };
 
@@ -213,17 +213,17 @@ angular.module('subtrack90.app.debug', [
     };
 
     $scope.playTorpedoLaunch = function () {
-        sound.play('torpedo', 0.5);
+        sound.play('torpedo');
     };
 
     $scope.playAlarm = function () {
-        sound.play('alarm', 0.5);
+        sound.play('alarm');
     };
 
     $scope.loopSounds = [];
     $scope.playMusic = function () {
         $scope.loopSounds.push(
-            sound.loop('noise', 0.3)
+            sound.loop('noise')
         );
     };
 
@@ -233,7 +233,7 @@ angular.module('subtrack90.app.debug', [
         })
     };
 
-    $scope.setVolume = function (value) {
-        sound.volume(value);
+    $scope.setVolume = function (type, value) {
+        sound.volume(type, value);
     }
 });

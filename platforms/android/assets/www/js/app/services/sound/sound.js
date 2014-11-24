@@ -16,7 +16,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
  */
 .constant('DEFAULT_VOICES', 10)
 
-.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, DEFAULT_VOICES, $cordovaNativeAudio, $timeout) {
+.factory('sound', function (IS_CORDOVA, DEFAULT_VOLUME, DEFAULT_VOICES, $cordovaNativeAudio) {
 
     /**
      * Map that should contain sound ids and their instances/paths
@@ -26,26 +26,57 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
     var soundMap = [];
 
     /**
+     * Volume level of sfx and music sounds
+     *
+     * @type {Object}
+     */
+    var volumeLevel = {
+        sfx: 0,
+        music: 0
+    };
+
+    /**
+     * Return correct volume level for sound by its type
+     *
+     * @param sound
+     */
+    var getVolumeLevelForSound = function (sound) {
+        return volumeLevel[sound.type];
+    };
+
+    /**
+     * Set particular volume level by sound type
+     *
+     * @param type of sound
+     * @param volume level of sound
+     */
+    var setVolumeLevelBySoundType = function (type, volume) {
+        volumeLevel[type] = volume;
+    };
+
+    /**
      * Play html5audio sound instance
      *
      * @param id
-     * @param volume
      * @param inLoop
-     * @returns {{stop: function}}
+     * @returns {{stop: function, resume: function}}
      */
-    var html5AudioPlay = function (id, volume, inLoop) {
+    var html5AudioPlay = function (id, inLoop) {
         var soundMapItem = _.findWhere(soundMap, {id: id});
 
         if (!soundMapItem) {
-            return {stop: angular.noop};
+            return {stop: angular.noop, resume: angular.noop};
         }
 
         var sound = soundMapItem.instance;
-        sound.volume(volume || DEFAULT_VOLUME);
+        sound.volume(getVolumeLevelForSound(soundMapItem));
         sound.loop(inLoop);
         sound.play();
 
-        return {stop: sound.stop.bind(sound)};
+        return {
+            stop: sound.stop.bind(sound),
+            resume: sound.play.bind(sound)
+        };
     };
 
     /**
@@ -60,9 +91,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @example
          * sound.loadSoundMap([
-         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-         *     {id: 'alarm', path: 'audio/Alarm.mp3'},
-         *     {id: 'music', path: 'audio/DarkNoise.mp3'}
+         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+         *     {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+         *     {id: 'music', path: 'audio/DarkNoise.mp3', type: 'music'}
          * ]);
          *
          * @param map of sounds
@@ -73,6 +104,7 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
             angular.forEach(map, function (sound) {
                 soundMap.push({
                     id: sound.id,
+                    type: sound.type,
                     instance: new Howl({
                         urls: [sound.path]
                     })
@@ -95,49 +127,48 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * Play sound from sound map
          *
          * @example
-         * var instance = sound.play('alert', 0.3);
+         * var instance = sound.play('alert');
          * instance.stop();
+         * instance.resume();
          *
          * @param id of sound in preloaded map
-         * @param volume is a value from 1 to 0.1
          * @returns {Object}
          */
-        play: function (id, volume) {
-            return html5AudioPlay(id, volume, false);
+        play: function (id) {
+            return html5AudioPlay(id, false);
         },
 
         /**
          * Play sound from sound map in a loop
          *
          * @example
-         * var instance = sound.loop('noise', 0.1);
+         * var instance = sound.loop('noise');
          * instance.stop();
+         * instance.resume();
          *
          * @param id of sound in preloaded map
-         * @param volume is a value from 1 to 0.1
          * @returns {Object}
          */
-        loop: function (id, volume) {
-            return html5AudioPlay(id, volume, true);
+        loop: function (id) {
+            return html5AudioPlay(id, true);
         },
 
         /**
-         * Set global volume
+         * Set sfx or music volume
          *
-         * @param value
+         * @param type of sound
+         * @param value of volume
          */
-        volume: function (value) {
-            Howler.volume(value);
+        volume: function (type, value) {
+            var sounds = _.where(soundMap, {type: type});
+
+            setVolumeLevelBySoundType(type, value);
+
+            angular.forEach(sounds, function (sound) {
+                sound.instance.volume(getVolumeLevelForSound(sound));
+            });
         }
     };
-
-    /**
-     * This is the value of global mobile audio volume,
-     * it is needed just to simulate proper behaviour
-     *
-     * @type {Number}
-     */
-    var globalMobileVolume = 0;
 
     /**
      * Audio wrapper for native mobile audio plugin which is based on
@@ -152,9 +183,9 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          *
          * @example
          * sound.loadSoundMap([
-         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3'},
-         *     {id: 'alarm', path: 'audio/Alarm.mp3'},
-         *     {id: 'music', path: 'audio/DarkNoise.mp3'}
+         *     {id: 'torpedo', path: 'audio/TorpedoLaunch.mp3', type: 'sfx'},
+         *     {id: 'alarm', path: 'audio/Alarm.mp3', type: 'sfx'},
+         *     {id: 'music', path: 'audio/DarkNoise.mp3', type: 'music'}
          * ]);
          *
          * @param map of sounds
@@ -163,14 +194,10 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
             mobileAudio.unloadSoundMap();
             soundMap = angular.isArray(map) ? map : [];
 
-            // Brute timeout hack for Android
-            // TODO: Remove timeout somehow
-            $timeout(function () {
-                angular.forEach(soundMap, function (sound) {
-                    $cordovaNativeAudio
-                        .preloadComplex(sound.id, sound.path, globalMobileVolume || DEFAULT_VOLUME, DEFAULT_VOICES);
-                });
-            }, 1000);
+            angular.forEach(soundMap, function (sound) {
+                $cordovaNativeAudio
+                    .preloadComplex(sound.id, sound.path, DEFAULT_VOLUME, DEFAULT_VOICES);
+            });
         },
 
         /**
@@ -188,52 +215,62 @@ angular.module('subtrack90.app.sound', ['ngCordova'])
          * Play sound by its id in sound map
          *
          * @example
-         * var instance = sound.play('torpedo', 0.5);
+         * var instance = sound.play('torpedo');
          * instance.stop();
+         * instance.resume();
          *
          * @param id of sound
-         * @param volume level for sound
-         * @returns {{stop: function}}
+         * @returns {{stop: function, resume: function}}
          */
-        play: function (id, volume) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, globalMobileVolume || volume || DEFAULT_VOLUME);
+        play: function (id) {
+            var sound = _.findWhere(soundMap, {id: id});
+
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, getVolumeLevelForSound(sound));
             $cordovaNativeAudio.play(id);
-            
-            return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
+
+            return {
+                stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id),
+                resume: $cordovaNativeAudio.play.bind($cordovaNativeAudio, id)
+            }
         },
 
         /**
          * Play particular sound in a loop
          *
          * @example
-         * var instance = sound.loop('music', 0.2);
+         * var instance = sound.loop('music');
          * instance.stop();
+         * instance.resume();
          *
          * @param id of sound
-         * @param volume level for sound
-         * @returns {{stop: function}}
+         * @returns {{stop: function, resume: function}}
          */
-        loop: function (id, volume) {
-            $cordovaNativeAudio.setVolumeForComplexAsset(id, globalMobileVolume || volume || DEFAULT_VOLUME);
+        loop: function (id) {
+            var sound = _.findWhere(soundMap, {id: id});
+
+            $cordovaNativeAudio.setVolumeForComplexAsset(id, getVolumeLevelForSound(sound));
             $cordovaNativeAudio.loop(id);
 
-            return {stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id)}
+            return {
+                stop: $cordovaNativeAudio.stop.bind($cordovaNativeAudio, id),
+                resume: $cordovaNativeAudio.loop.bind($cordovaNativeAudio, id)
+            }
         },
 
         /**
-         * Set global volume
+         * Set sfx or music volume
          *
-         * BUG: Android behaviour is different it works only when we refresh the sound map,
-         * in other words just unload/load it, btw iOS works well.
-         * Ok let's make it to be cross-platform solution and refresh the sound map each time we change the volume.
-         *
+         * @param type of sound
          * @param value of volume
          */
-        volume: function (value) {
-            var storedSoundMap = angular.extend([], soundMap);
-            globalMobileVolume = value;
+        volume: function (type, value) {
+            var sounds = _.where(soundMap, {type: type});
 
-            mobileAudio.loadSoundMap(storedSoundMap);
+            setVolumeLevelBySoundType(type, value);
+
+            angular.forEach(sounds, function (sound) {
+                $cordovaNativeAudio.setVolumeForComplexAsset(sound.id, getVolumeLevelForSound(sound));
+            })
         }
     };
 
