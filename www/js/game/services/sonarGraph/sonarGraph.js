@@ -35,6 +35,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         var graph;
         var mainClipPath;
         var gMain;
+        var gTrack;
         var containerElementSize;
 
 
@@ -46,6 +47,19 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         var d3MapDetections = {};
         var renderedDetections = {};
+
+        var rS = new rStats({
+            values: {
+                frame: { caption: 'Total frame time (ms)', below: 2 },
+                raf: { caption: 'Time since last rAF (ms)' },
+                fps: { caption: 'Framerate (FPS)', below: 1.5 },
+                action1: { caption: 'Render action #1 (ms)' },
+                render: { caption: 'WebGL Render (ms)' }
+            }
+        } );
+
+        var requestSimulationTime;
+        var _simulationTime;
 
         var config = {
             containerElement: null,
@@ -84,17 +98,24 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          */
         function changeDetectionsPosition() {
-            _.each(renderedDetections, function (detection, key) {
-                var groupOffset = yAxisScale(detection.date);
-
+            _.each(renderedDetections, function (detection, name) {
+                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
                 // move group container
-                gMain.select('.' + key).
-                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
+                gTrack
+                    .attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
 
                 // move detections points within group
-                _.each(detection.data, function (element) {
-                    element.pointElement.attr('y', - (groupOffset - yAxisScale(element.date - config.initialTime)));
+                var lineData = [];
+
+                _.each(detection.data, function (data) {
+                    lineData.push({
+                        x: xComponent(xTickFormat(data[detectionKeys.x])),
+                        y: - (groupOffset - yAxisScale(data.date))
+                    });
                 });
+
+                renderedDetections[name].lineDatum = lineData;
+                renderedDetections[name].linePath.attr('d', renderedDetections[name].lineGenerator(lineData));
             });
         }
 
@@ -151,21 +172,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 .append('rect')
                 .attr('width', containerElementSize.width)
                 .attr('height', containerElementSize.height);
-
-            var defsPathMarker =  graph
-                .append('defs')
-                .append('g')
-                .attr('id', 'pathMarker_' + config.containerElement.id)
-
-            defsPathMarker.append('ellipse')
-                .attr('class', 'detectionPoint')
-                .attr('rx', config.detectionPointRadii.rx)
-                .attr('ry', config.detectionPointRadii.ry);
-
-            // Add transparent circle to expand "clickable" area. It helps selecting sonar path
-            defsPathMarker.append('circle')
-                .attr('r', 12)
-                .style({fill: 'black', 'fill-opacity': '0'});
         }
 
         /**
@@ -228,63 +234,61 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Append datapoint element to group.
-         *
-         * @param {Object} group
-         * @param {Object} detectionPoint
-         * @param {String} name
-         * @param {Number} offset
-         * @returns {Object}
-         */
-        function appendDetectionPointToGroup(group, detectionPoint, name, offset) {
-            return group
-                .append('use')
-                .attr("xlink:href", '#pathMarker_' + config.containerElement.id)
-                .attr('x', xComponent(xTickFormat(detectionPoint[detectionKeys.x])))
-                .attr('y', - (offset - yAxisScale(detectionPoint.date - config.initialTime)))
-                .attr('class', name + ' point')
-                .attr('detection-name', detectionPoint.trackName);
-        }
-
-        /**
          * Render added detections on graph.
          */
         function render() {
             _.each(d3MapDetections, function (detection, name) {
                 if (!renderedDetections[name]) {
-                    var groupOffset = yAxisScale(detection.date);
                     // new detection
                     var data = [];
-                    // add group element
-                    var group = gMain.append('g')
-                        .attr('class', 'detectionPath ' + name)
-                        .attr('detection-name', detection.trackName);
+                    var generator = d3.svg.line()
+                        .x(function(d) { return d.x})
+                        .y(function(d) { return d.y})
+                        .defined(function(d) { return d.y != null;});
+
+                    var lineDatum = [];
+                    var linePath = gTrack
+                        .append('path')
+                        .datum(lineDatum)
+                        .attr('d', generator)
+                        .attr('class', 'line detectionPath ' + name)
+                        .attr('detection-name', detection.trackName)
+                        .attr('stroke-linecap', "round")
+                        .attr('stroke-linejoin', "round");
 
                     // bind click delegate handler
-                    group.on('click', selectedDetectionHandler);
+                    linePath.on('click', selectedDetectionHandler);
 
-                    // append new point element based on detection
-                    detection.pointElement = appendDetectionPointToGroup(group, detection, name, groupOffset);
                     // there is no element, need to create it
                     data.push(detection);
 
                     // add detection data to rendered collection
                     renderedDetections[name] = {
+                        lineDatum: lineDatum,
+                        lineGenerator: generator,
+                        linePath: linePath,
                         data: data,
-                        group: group,
                         date: detection.date,
                         isExpired: false
                     };
 
                 } else {
-                    // move group element
-                    renderedDetections[name].group
-                        .attr('transform', 'translate(0, ' + yAxisScale(renderedDetections[name].date) +')');
+                    var nextPointDegree = detection.degree;
+                    var lastPointDegree = renderedDetections[name] && _.last(renderedDetections[name].data).degree;
+                    var sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
+                    var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
 
                     if (!renderedDetections[name].isExpired) {
-                        // append new point element based on detection
-                        var groupOffset = yAxisScale(renderedDetections[name].date);
-                        detection.pointElement = appendDetectionPointToGroup(renderedDetections[name].group, detection, name, groupOffset);
+                        var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
+
+                        renderedDetections[name].lineDatum.push({
+                            x: xComponent(xTickFormat(detection[detectionKeys.x])),
+                            y: changeSign ? null : - (groupOffset - yAxisScale(detection.date))
+                        });
+
+                        renderedDetections[name].linePath.attr('d',
+                            renderedDetections[name].lineGenerator(renderedDetections[name].lineDatum));
+
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
@@ -293,9 +297,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                             // datapoint became "invisible" - its time is less then time axis domain lower value
 
                             // remove datapoint from collection
-                            var expiredDetection = renderedDetections[name].data.shift();
-                            // remve datapoint element
-                            expiredDetection.pointElement.remove();
+                            renderedDetections[name].data.shift();
+                            renderedDetections[name].lineDatum.shift();
                         }
                     }
                 }
@@ -306,6 +309,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             gMain = graph.append("g")
                 .attr('class', 'gMain')
                 .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')');
+
+            gTrack = gMain.append('g');
         }
 
         /**
@@ -349,9 +354,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     // datapoint became "invisible" - its time is less then time axis domain lower value
 
                     // extract first datapoint
-                    var expiredDetection = renderedDetections[datapoint].data.shift();
-                    // and remove it
-                    expiredDetection.pointElement.remove();
+                    renderedDetections[datapoint].data.shift();
+                    renderedDetections[datapoint].lineDatum.shift();
 
                     removeExpiredDatapointGroup(datapoint);
                 }
@@ -365,11 +369,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} row
          */
         function addDatapoint(dataset, row) {
-            if (row.name === 'Time' || row.name === 'S1' || row.name === 'S2') {
-                // skip useless paths
-                return;
-            }
-
             dataset[row.name] = {
                 trackName: row.trackName,
                 date: row.date,
@@ -397,20 +396,47 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Date} simulationTime
          */
         function changeYAxisDomain(simulationTime) {
-            var time = simulationTime.getTime();
+            _simulationTime = simulationTime;
+            var time;
 
-            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
-            yAxisElement
-                .call(yAxisScale.axis);
+            function animationFrame() {
+                rS( 'frame' ).start();
+                rS( 'rAF' ).tick();
+                rS( 'FPS' ).frame();
+                rS( 'render' ).start();
 
-            _.each(renderedDetections, function (detection, key) {
-                // move group container
-                gMain.select('.' + key).
-                    attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
-            });
+                time = getSimulationTime();
+                if (time !== requestSimulationTime) {
 
-            if (!config.serialRenderingMode) {
-                removeAllExpiredDetections();
+                    requestSimulationTime = time;
+
+                    yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
+                    yAxisElement
+                        .call(yAxisScale.axis);
+
+                    if (renderedDetections.Ownship) {
+                        gTrack
+                            .attr('transform', 'translate(0,' + yAxisScale(renderedDetections.Ownship.date) + ')');
+                    }
+
+                    if (!config.serialRenderingMode) {
+                        removeAllExpiredDetections();
+                    }
+                }
+
+                rS( 'render' ).end();
+                rS( 'frame' ).end();
+                rS().update();
+
+                requestAnimationFrame(animationFrame);
+            }
+
+            function getSimulationTime() {
+                return _simulationTime.getTime();
+            }
+
+            if (!requestSimulationTime) {
+                requestAnimationFrame(animationFrame);
             }
         }
 
@@ -424,9 +450,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     _.each(renderedDetections[name].data, function (item, index) {
                         if (item.date.getTime() >= yAxisScale.domain()[1].getTime() ||
                             item.date.getTime() <= yAxisScale.domain()[0].getTime()) {
-                            var expiredDetection = renderedDetections[name].data.splice(index, 1).pop();
-                            expiredDetection.pointElement.remove();
-
+                            renderedDetections[name].data.splice(index, 1).pop();
                             removeExpiredDatapointGroup(name);
                         }
                     });
@@ -446,8 +470,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 delete renderedDetections[name];
                 // remove detection collection respectively
                 delete d3MapDetections[name];
-                // remove group wrapper element
-                $('#' + config.containerElement.id + ' .' + name).remove();
             }
         }
 
@@ -465,34 +487,18 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 addDatapoint(d3MapDetections, item);
             });
 
-            findExpiredDetections(detections);
+            //findExpiredDetections(detections);
 
             render();
         }
 
         function selectedDetectionHandler () {
-            var detectionName;
-            var groupElement;
             var target = event.target;
+            var detectionName;
 
-            if (target.tagName && 'g' === target.tagName.toLowerCase()) {
-                groupElement = target;
-            } else {
-                if (target.getAttribute) {
-                    groupElement = target.parentElement;
-                } else if (target.correspondingUseElement) {
-                    // Safari browser
-                    groupElement = target.correspondingUseElement.parentElement;
-                } else {
-                    console.log('Can\'t get class attribute of the target', event.target);
-                }
-            }
-
-            if (groupElement) {
-                detectionName = groupElement.getAttribute('detection-name');
-                config.detectionSelect(detectionName);
-                highlightGroup(groupElement);
-            }
+            detectionName = target.getAttribute('detection-name');
+            config.detectionSelect(detectionName);
+            highlightGroup(target);
         }
 
         function highlightGroup(element) {
@@ -533,7 +539,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          */
         function remove () {
             _.each(renderedDetections, function (detection) {
-                detection.group.on('click', null);
+                detection.linePath.on('click', null);
             });
             svgContainer.remove();
         }
