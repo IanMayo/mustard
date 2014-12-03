@@ -226,74 +226,80 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Render added detections on graph.
          */
         function render() {
-            _.each(d3MapDetections, function (detection, name) {
-                if (!renderedDetections[name]) {
-                    // new detection
-                    var data = [];
-                    var generator = d3.svg.line()
-                        .x(function(d) { return d.x})
-                        .y(function(d) { return d.y})
-                        .defined(function(d) { return d.x != null;});
-
-                    var lineDatum = [{x:null, y: 0}];
-                    var linePath = gTrack
-                        .append('path')
-                        .datum(lineDatum)
-                        .attr('d', generator)
-                        .attr('class', 'line detectionPath ' + name)
-                        .attr('detection-name', detection.trackName)
-                        .attr('stroke-linecap', "round")
-                        .attr('stroke-linejoin', "round");
-
-                    // bind click delegate handler
-                    linePath.on('click', selectedDetectionHandler);
-
-                    // there is no element, need to create it
-                    data.push(detection);
-
-                    // add detection data to rendered collection
-                    renderedDetections[name] = {
-                        lineDatum: lineDatum,
-                        lineGenerator: generator,
-                        linePath: linePath,
-                        data: data,
-                        date: detection.date,
-                        isExpired: false
-                    };
-
+            _.each(d3MapDetections, function (detectionPoint, pathName) {
+                var detectionPath = renderedDetections[pathName];
+                if (!detectionPath) {
+                    createLinePath(detectionPoint, pathName);
                 } else {
-                    var nextPointDegree = detection.degree;
-                    var lastPointDegree = renderedDetections[name] && _.last(renderedDetections[name].data).degree;
-                    var sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
-                    var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
-
-                    if (!renderedDetections[name].isExpired) {
-                        var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
-
-                        renderedDetections[name].lineDatum.push({
-                            x: changeSign ? null : xComponent(xTickFormat(detection[detectionKeys.x])),
-                            y: - (groupOffset - yAxisScale(detection.date))
-                        });
-
-                        // add detection to rendered collection
-                        renderedDetections[name].data.push(detection);
-
-                        if (config.serialRenderingMode) {
-                            renderedDetections[name].linePath.attr('d',
-                                renderedDetections[name].lineGenerator(renderedDetections[name].lineDatum));
-
-                            if (yAxisScale.domain()[0].getTime() >
-                                (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
-                                // datapoint became "invisible" - its time is less then time axis domain lower value
-
-                                // remove datapoint from collection
-                                renderedDetections[name].data.shift();
-                                renderedDetections[name].lineDatum.shift();
-                            }
-                        }
-                    }
+                    addPointToLinePath(detectionPoint, detectionPath);
                 }
             });
+        }
+
+        function createLinePath(detection, name) {
+            var data = [];
+            var generator = d3.svg.line()
+                .x(function (d) { return d.x; })
+                .y(function (d) { return d.y; })
+                .defined(function (d) { return d.x != null; });
+
+            var lineDatum = [{x: null, y: 0}];
+            var linePath = gTrack
+                .append('path')
+                .datum(lineDatum)
+                .attr('d', generator)
+                .attr('class', 'line detectionPath ' + name)
+                .attr('detection-name', detection.trackName)
+                .attr('stroke-linecap', "round")
+                .attr('stroke-linejoin', "round");
+
+            // bind click delegate handler
+            linePath.on('click', selectedDetectionHandler);
+
+            // there is no element, need to create it
+            data.push(detection);
+
+            // add detection data to rendered collection
+            renderedDetections[name] = {
+                lineDatum: lineDatum,
+                lineGenerator: generator,
+                linePath: linePath,
+                data: data,
+                date: detection.date,
+                isExpired: false
+            };
+        }
+
+        function addPointToLinePath(detection, detectionPath) {
+            var nextPointDegree = detection.degree;
+            var lastPointDegree = _.last(detectionPath.data).degree;
+            var sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
+            var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+
+            if (!detectionPath.isExpired) {
+                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
+
+                detectionPath.lineDatum.push({
+                    x: changeSign ? null : xComponent(xTickFormat(detection[detectionKeys.x])),
+                    y: -(groupOffset - yAxisScale(detection.date))
+                });
+
+                // add detection to rendered collection
+                detectionPath.data.push(detection);
+
+                if (config.serialRenderingMode) {
+                    detectionPath.linePath.attr('d', detectionPath.lineGenerator(detectionPath.lineDatum));
+
+                    if (yAxisScale.domain()[0].getTime() >
+                        (_.first(detectionPath.data).date.getTime() + detectionExpireTime)) {
+                        // datapoint became "invisible" - its time is less then time axis domain lower value
+
+                        // remove datapoint from collection
+                        detectionPath.data.shift();
+                        detectionPath.lineDatum.shift();
+                    }
+                }
+            }
         }
 
         function addGroupContainer() {
