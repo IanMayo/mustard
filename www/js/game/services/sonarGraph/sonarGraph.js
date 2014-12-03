@@ -98,24 +98,13 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          */
         function changeDetectionsPosition() {
-            _.each(renderedDetections, function (detection, name) {
+            _.each(renderedDetections, function (detection) {
                 var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
                 // move group container
                 gTrack
                     .attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
 
-                // move detections points within group
-                var lineData = [];
-
-                _.each(detection.data, function (data) {
-                    lineData.push({
-                        x: xComponent(xTickFormat(data[detectionKeys.x])),
-                        y: - (groupOffset - yAxisScale(data.date))
-                    });
-                });
-
-                renderedDetections[name].lineDatum = lineData;
-                renderedDetections[name].linePath.attr('d', renderedDetections[name].lineGenerator(lineData));
+                updateLinePath(detection, groupOffset);
             });
         }
 
@@ -450,48 +439,51 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             var timeAxisUpperBound = yAxisScale.domain()[1].getTime();
             var timeAxisLowerBound = yAxisScale.domain()[0].getTime();
             var testPointDate;
-
-            _.each(d3MapDetections, function (detection, name) {
+            
+            _.each(renderedDetections, function (detection, name) {
                 var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
 
-                if (renderedDetections[name].data.length) {
-                    _.each(renderedDetections[name].data, function (item, index) {
+                if (detection.data.length) {
+                    _.each(detection.data, function (item, index) {
                         testPointDate = item.date.getTime();
                         if (testPointDate >= timeAxisUpperBound || testPointDate <= timeAxisLowerBound) {
-                            renderedDetections[name].data.splice(index, 1);
-                            renderedDetections[name].lineDatum.splice(index, 1);
+                            detection.data.splice(index, 1);
+                            detection.lineDatum.splice(index, 1);
                         }
                     });
 
                     removeExpiredDatapointGroup(name);
 
-                    if (renderedDetections[name]) {
-                        var lineData = [];
-                        var nextPointDegree;
-                        var lastPointDegree;
-                        var sortedPoints;
-                        var changeSign;
-
-                        renderedDetections[name].data = _.sortBy(renderedDetections[name].data,
-                            function (d) {return d.date.getTime()});
-
-                        _.each(renderedDetections[name].data, function (data) {
-                            nextPointDegree = data[detectionKeys.x];
-                            sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
-                            changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
-                            lineData.push({
-                                x: changeSign ? null : xComponent(xTickFormat(nextPointDegree)),
-                                y: - (groupOffset - yAxisScale(data.date))
-                            });
-
-                            lastPointDegree = data[detectionKeys.x];
-                        });
-
-                        renderedDetections[name].linePath.attr('d',
-                            renderedDetections[name].lineGenerator(lineData));
+                    if (detection) {
+                        detection.data = _.sortBy(detection.data, function (d) {return d.date.getTime()});
+                        updateLinePath(detection, groupOffset);
                     }
                 }
             });
+        }
+
+        function updateLinePath(detection, offset) {
+            var lineDatum = [];
+            var nextPointDegree;
+            var lastPointDegree;
+            var sortedPoints;
+            var changeSign;
+
+            _.each(detection.data, function (data) {
+                nextPointDegree = data[detectionKeys.x];
+                sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
+                changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+                lineDatum.push({
+                    x: changeSign ? null : xComponent(xTickFormat(nextPointDegree)),
+                    y: - (offset - yAxisScale(data.date))
+                });
+
+                lastPointDegree = data[detectionKeys.x];
+            });
+
+            detection.lineDatum = lineDatum;
+            detection.linePath.attr('d', detection.lineGenerator(lineDatum));
+            lineDatum = [];
         }
 
         /**
