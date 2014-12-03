@@ -65,7 +65,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             containerElement: null,
             yTicks: 5,
             yDomainDensity: 1,
-            detectionPointRadii: {rx: 0, ry: 0},
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
