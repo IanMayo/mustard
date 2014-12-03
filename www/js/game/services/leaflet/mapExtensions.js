@@ -21,5 +21,8 @@ angular.module('subtrack90.game.mapExtensions', [
                     extension.init();
                 }
             });
+
+            // prevent loading modules next time
+            this.load = angular.noop;
         }
 }]);
