@@ -244,9 +244,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     var generator = d3.svg.line()
                         .x(function(d) { return d.x})
                         .y(function(d) { return d.y})
-                        .defined(function(d) { return d.y != null;});
+                        .defined(function(d) { return d.x != null;});
 
-                    var lineDatum = [];
+                    var lineDatum = [{x:null, y: 0}];
                     var linePath = gTrack
                         .append('path')
                         .datum(lineDatum)
@@ -282,23 +282,25 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                         var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
 
                         renderedDetections[name].lineDatum.push({
-                            x: xComponent(xTickFormat(detection[detectionKeys.x])),
-                            y: changeSign ? null : - (groupOffset - yAxisScale(detection.date))
+                            x: changeSign ? null : xComponent(xTickFormat(detection[detectionKeys.x])),
+                            y: - (groupOffset - yAxisScale(detection.date))
                         });
-
-                        renderedDetections[name].linePath.attr('d',
-                            renderedDetections[name].lineGenerator(renderedDetections[name].lineDatum));
 
                         // add detection to rendered collection
                         renderedDetections[name].data.push(detection);
 
-                        if (config.serialRenderingMode && yAxisScale.domain()[0].getTime() >
-                            (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
-                            // datapoint became "invisible" - its time is less then time axis domain lower value
+                        if (config.serialRenderingMode) {
+                            renderedDetections[name].linePath.attr('d',
+                                renderedDetections[name].lineGenerator(renderedDetections[name].lineDatum));
 
-                            // remove datapoint from collection
-                            renderedDetections[name].data.shift();
-                            renderedDetections[name].lineDatum.shift();
+                            if (yAxisScale.domain()[0].getTime() >
+                                (_.first(renderedDetections[name].data).date.getTime() + detectionExpireTime)) {
+                                // datapoint became "invisible" - its time is less then time axis domain lower value
+
+                                // remove datapoint from collection
+                                renderedDetections[name].data.shift();
+                                renderedDetections[name].lineDatum.shift();
+                            }
                         }
                     }
                 }
@@ -445,15 +447,49 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Used in review mode
          */
         function removeAllExpiredDetections() {
+            var timeAxisUpperBound = yAxisScale.domain()[1].getTime();
+            var timeAxisLowerBound = yAxisScale.domain()[0].getTime();
+            var testPointDate;
+
             _.each(d3MapDetections, function (detection, name) {
+                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
+
                 if (renderedDetections[name].data.length) {
                     _.each(renderedDetections[name].data, function (item, index) {
-                        if (item.date.getTime() >= yAxisScale.domain()[1].getTime() ||
-                            item.date.getTime() <= yAxisScale.domain()[0].getTime()) {
-                            renderedDetections[name].data.splice(index, 1).pop();
-                            removeExpiredDatapointGroup(name);
+                        testPointDate = item.date.getTime();
+                        if (testPointDate >= timeAxisUpperBound || testPointDate <= timeAxisLowerBound) {
+                            renderedDetections[name].data.splice(index, 1);
+                            renderedDetections[name].lineDatum.splice(index, 1);
                         }
                     });
+
+                    removeExpiredDatapointGroup(name);
+
+                    if (renderedDetections[name]) {
+                        var lineData = [];
+                        var nextPointDegree;
+                        var lastPointDegree;
+                        var sortedPoints;
+                        var changeSign;
+
+                        renderedDetections[name].data = _.sortBy(renderedDetections[name].data,
+                            function (d) {return d.date.getTime()});
+
+                        _.each(renderedDetections[name].data, function (data) {
+                            nextPointDegree = data[detectionKeys.x];
+                            sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
+                            changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+                            lineData.push({
+                                x: changeSign ? null : xComponent(xTickFormat(nextPointDegree)),
+                                y: - (groupOffset - yAxisScale(data.date))
+                            });
+
+                            lastPointDegree = data[detectionKeys.x];
+                        });
+
+                        renderedDetections[name].linePath.attr('d',
+                            renderedDetections[name].lineGenerator(lineData));
+                    }
                 }
             });
         }
@@ -463,9 +499,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          * @param {String} name
          */
-        function removeExpiredDatapointGroup (name) {
+        function removeExpiredDatapointGroup(name) {
             if (!renderedDetections[name].data.length) {
                 // if collection is empty
+                // remove a path element from DOM
+                renderedDetections[name].linePath.remove();
                 // remove empty collection
                 delete renderedDetections[name];
                 // remove detection collection respectively
@@ -478,7 +516,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          * @param {Object} detections
          */
-         function addDetection(detections){
+         function addDetection(detections) {
             // create list of path names from detections
             _.map(detections, function (item) {
                 // use normalized name to work with collection correctly
@@ -487,7 +525,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 addDatapoint(d3MapDetections, item);
             });
 
-            //findExpiredDetections(detections);
+            findExpiredDetections(detections);
 
             render();
         }
