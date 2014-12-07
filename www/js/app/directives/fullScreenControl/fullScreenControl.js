@@ -8,7 +8,7 @@ angular.module('subtrack90.app.fullScreenControl', ['subtrack90.app.fullScreen']
  * Full screen control directive
  */
 
-.directive('fullScreenControl', function (IS_MOBILE, IS_CORDOVA, fullScreen) {
+.directive('fullScreenControl', function (IS_CORDOVA, fullScreen) {
 
     return {
         restrict: 'A',
@@ -20,7 +20,7 @@ angular.module('subtrack90.app.fullScreenControl', ['subtrack90.app.fullScreen']
         },
 
         link: function (scope) {
-            scope.hasShown = !IS_MOBILE && !IS_CORDOVA;
+            scope.hasShown = !IS_CORDOVA;
 
             scope.toggleFullScreenMode = function () {
                 fullScreen.toggle();
