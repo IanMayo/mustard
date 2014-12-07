@@ -15,51 +15,29 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 .factory('sonarGraph', ['svgFilterConfig', function (svgFilterConfig) {
 
     /**
-     * Graph class.
+     * SvgView class.
      * @param {Object} options
      * @returns {Object}
      */
-    function Graph(options) {
-
+    function SvgView(options) {
         var xDomain = [-180, 180];
         var xTickValues = _.range(-180, 181, 45);
         var xTickFormat = function (d) { return d; };
 
-        var detectionKeys = {x: 'degree', y: 'date'};
         var yAxisFormat = d3.time.format("%H:%M:%S");
         var xAxisLabel = "Degree º";
 
-        var detectionExpireTime =  1 * 60 * 1000; // 1 minute
-
         var svgContainer;
         var graph;
-        var mainClipPath;
         var gMain;
         var gTrack;
         var containerElementSize;
-
+        var xComponent;
+        var mainClipPath;
 
         var xAxisElement;
         var yAxisElement;
-
         var yAxisScale = d3.time.scale();
-        var xComponent;
-
-        var d3MapDetections = {};
-        var renderedDetections = {};
-
-        var rS = new rStats({
-            values: {
-                frame: { caption: 'Total frame time (ms)', below: 2 },
-                raf: { caption: 'Time since last rAF (ms)' },
-                fps: { caption: 'Framerate (FPS)', below: 1.5 },
-                action1: { caption: 'Render action #1 (ms)' },
-                render: { caption: 'WebGL Render (ms)' }
-            }
-        } );
-
-        var requestSimulationTime;
-        var _simulationTime;
 
         var config = {
             containerElement: null,
@@ -69,13 +47,12 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            initialTime: new Date(),
-            serialRenderingMode: false
+            initialTime: new Date()
         };
 
-        init(options);
+        init();
 
-        function init(options) {
+        function init() {
             _.each(options, function (value, key) {
                 if (value !== undefined) {
                     config[key] = value;
@@ -90,21 +67,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             addGxAxis();
             addGyAxis();
             addGroupContainer();
-        }
-
-        /**
-         * Change detections positions according to settings of axis.
-         *
-         */
-        function changeDetectionsPosition() {
-            _.each(renderedDetections, function (detection) {
-                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
-                // move group container
-                gTrack
-                    .attr('transform', 'translate(0,' + yAxisScale(detection.date) + ')');
-
-                updateLinePath(detection, groupOffset);
-            });
         }
 
         /**
@@ -128,6 +90,68 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
+         * Create group element with clip path attribute.
+         * Create group element what contains line paths
+         */
+        function addGroupContainer() {
+            gMain = graph.append("g")
+                .attr({
+                    'class': 'gMain',
+                    'clip-path': 'url(#clipPath_' + config.containerElement.id + ')'
+                });
+
+            gTrack = gMain.append('g');
+        }
+
+        /**
+         * Add clip path for sonar graph.
+         */
+        function addClipPath() {
+            mainClipPath = graph
+                .append('defs')
+                .append('clipPath')
+                .attr('id', 'clipPath_' + config.containerElement.id)
+                .append('rect')
+                .attr({
+                    'height': containerElementSize.height,
+                    'width': containerElementSize.width
+                });
+        }
+
+        /**
+         * Highlight line path.
+         *
+         * @param {Object} element Target line path
+         */
+        function highlightLinePath(element) {
+            gMain.selectAll('.detectionPath').call(removeHighlightSelection);
+            d3.select(element).classed('selected', true);
+        }
+
+        /**
+         * Remove highlighting from line paths
+         *
+         * @param {Array} selection Line paths collection
+         */
+        function removeHighlightSelection(selection) {
+            _.each(selection[0] ,function (path) {
+                d3.select(path).classed('selected', false);
+            });
+        }
+
+        /**
+         * Update dimensions of the clip path
+         */
+        function updateClipPathDimensions() {
+            graph
+                .select('#clipPath_' + config.containerElement.id + ' rect')
+                .attr({
+                    'height': containerElementSize.height,
+                    'width': containerElementSize.width
+                });
+        }
+
+        /**
          * Calculate sonar size without margin values.
          */
         function elementSize(dimension) {
@@ -138,28 +162,40 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Configure d3 lib scale for axes
+         *
          */
-        function configureScale() {
-            xComponent = d3.scale.linear()
-                .domain(xDomain)
-                .range([0, containerElementSize.width]);
-
-            yAxisScale.range([containerElementSize.height, 0]);
+        function updateLabelPosition() {
+            yAxisElement
+                .select('.axis-unit')
+                .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)');
         }
 
         /**
-         * Add clip path for sonar graph and reusable detection point.
+         * Add X axis to the graph
          */
-        function addClipPath() {
+        function addGxAxis() {
+            // d3 axis component
+            xComponent.axis = d3.svg.axis()
+                .scale(xComponent)
+                .tickValues(xTickValues)
+                .tickFormat(xTickFormat)
+                .orient("top");
 
-            mainClipPath = graph
-                .append('defs')
-                .append('clipPath')
-                .attr('id', 'clipPath_' + config.containerElement.id)
-                .append('rect')
-                .attr('width', containerElementSize.width)
-                .attr('height', containerElementSize.height);
+            // add axis element and apply axis component
+            xAxisElement = graph.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', 'translate(0, 0)')
+                .style('opacity', config.showXAxis ? 1 : 0)
+                .call(xComponent.axis);
+
+            // axis label
+            xAxisElement.append('text')
+                .classed('axis-unit', true)
+                .attr('transform', 'translate(' + containerElementSize.width + ',0)')
+                .attr('y', 0)
+                .attr('dy', '1.71em')
+                .style('text-anchor', 'end')
+                .text(xAxisLabel);
         }
 
         /**
@@ -194,38 +230,198 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Add X axis to the graph
+         * Configure d3 lib scale for axes
          */
-        function addGxAxis() {
-            // d3 axis component
-            xComponent.axis = d3.svg.axis()
-                .scale(xComponent)
-                .tickValues(xTickValues)
-                .tickFormat(xTickFormat)
-                .orient("top");
+        function configureScale() {
+            xComponent = d3.scale.linear()
+                .domain(xDomain)
+                .range([0, containerElementSize.width]);
 
-            // add axis element and apply axis component
-            xAxisElement = graph.append('g')
-                .attr('class', 'x axis')
-                .attr('transform', 'translate(0, 0)')
-                .style('opacity', config.showXAxis ? 1 : 0)
-                .call(xComponent.axis);
+            yAxisScale.range([containerElementSize.height, 0]);
+        }
 
-            // axis label
-            xAxisElement.append('text')
-                .classed('axis-unit', true)
-                .attr('transform', 'translate(' + containerElementSize.width + ',0)')
-                .attr('y', 0)
-                .attr('dy', '1.71em')
-                .style('text-anchor', 'end')
-                .text(xAxisLabel);
+        /**
+         * Selected line path handler.
+         */
+        function selectLinePath() {
+            var target = event.target;
+            var detectionName;
+
+            detectionName = target.getAttribute('detection-name');
+            config.detectionSelect(detectionName);
+            highlightLinePath(target);
+        }
+
+        /**
+         * Create Line path.
+         *
+         * @param {String} pathName
+         * @returns {Object} Line path
+         */
+        function linePath(pathName) {
+            var lineDatum = [{x: null, y: 0}];
+            var linePath = gTrack
+                .append('path')
+                .datum(lineDatum)
+                .attr('d', lineGenerator())
+                .attr('class', 'line detectionPath ' + name)
+                .attr('detection-name', pathName)
+                .attr('stroke-linecap', "round")
+                .attr('stroke-linejoin', "round");
+
+            // bind click delegate handler
+            linePath.on('click', selectLinePath);
+
+            return linePath;
+        }
+
+        /**
+         * Line path generator function.
+         *
+         * @returns {Object} Line generator
+         */
+        function lineGenerator() {
+            var generator = d3.svg.line()
+                .x(function (d) { return d.x; })
+                .y(function (d) { return d.y; })
+                .defined(function (d) { return d.x != null; });
+            return generator;
+        }
+
+        /**
+         * Remove svg element from DOM.
+         */
+        this.removeContainer = function () {
+            svgContainer.remove()
+        };
+
+        /**
+         * Update Y domain.
+         *
+         * @param {Integer} time
+         */
+        this.updateVisibleDomain = function (time) {
+            yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
+            yAxisElement
+                .call(yAxisScale.axis);
+        };
+
+        /**
+         * Change vertical offset of line paths group
+         * @param timeOffset
+         */
+        this.changeTracksOffset = function (timeOffset) {
+            gTrack
+                .attr('transform', 'translate(0,' + yAxisScale(timeOffset) + ')');
+        };
+
+        /**
+         * Change height of svg view.
+         *
+         * @param {Object} dimension Height and width new values
+         */
+        this.changeGraphHeight = function (dimension) {
+            elementSize(dimension);
+            yAxisScale.range([containerElementSize.height, 0]);
+            updateClipPathDimensions();
+            updateLabelPosition();
+        };
+
+        /**
+         * Create a new line path.
+         *
+         * @param {String} pathName
+         * @returns {Object} line path properties
+         */
+        this.createLinePath = function (pathName) {
+            return {
+                generator: lineGenerator(),
+                path: linePath(pathName),
+                datum: [{x: null, y: 0}]
+            }
+        };
+
+        this.visibleDomain = function () {
+            return yAxisScale.domain();
+        };
+
+        /**
+         * Convert date value to scalable Y coordinate.
+         *
+         * @param {Date} date
+         * @returns {Integer}
+         */
+        this.yCoordinate = function (date) {
+            return yAxisScale(date);
+        };
+
+        /**
+         * Convert degree value to scalable X coordinate.
+         *
+         * @param nextPointDegree
+         * @returns {Integer}
+         */
+        this.xCoordinate = function (nextPointDegree) {
+            return xComponent(xTickFormat(nextPointDegree));
+        };
+    }
+
+    /**
+     * Graph class.
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function Graph(options) {
+
+        var detectionKeys = {x: 'degree', y: 'date'};
+        var detectionExpireTime =  1 * 60 * 1000; // 1 minute
+        var processedDetections = {};
+        var renderedDetections = {};
+        var svgView;
+
+        var rS = new rStats({
+            values: {
+                frame: { caption: 'Total frame time (ms)', below: 2 },
+                raf: { caption: 'Time since last rAF (ms)' },
+                fps: { caption: 'Framerate (FPS)', below: 1.5 },
+                action1: { caption: 'Render action #1 (ms)' },
+                render: { caption: 'WebGL Render (ms)' }
+            }
+        } );
+
+        var requestSimulationTime;
+        var _simulationTime;
+
+        var config = {
+            serialRenderingMode: false
+        };
+
+        init(options);
+
+        function init(options) {
+            _.each(options, function (value, key) {
+                if (value !== undefined) {
+                    config[key] = value;
+                }
+            });
+
+            svgView = new SvgView(options);
+        }
+
+        /**
+         * Change detections positions according to settings of axis.
+         */
+        function changeDetectionsPosition() {
+            _.each(renderedDetections, function (detection) {
+                updateLinePath(detection);
+            });
         }
 
         /**
          * Render added detections on graph.
          */
         function render() {
-            _.each(d3MapDetections, function (detectionPoint, pathName) {
+            _.each(processedDetections, function (detectionPoint, pathName) {
                 var detectionPath = renderedDetections[pathName];
                 if (!detectionPath) {
                     createLinePath(detectionPoint, pathName);
@@ -237,32 +433,16 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         function createLinePath(detection, name) {
             var data = [];
-            var generator = d3.svg.line()
-                .x(function (d) { return d.x; })
-                .y(function (d) { return d.y; })
-                .defined(function (d) { return d.x != null; });
-
-            var lineDatum = [{x: null, y: 0}];
-            var linePath = gTrack
-                .append('path')
-                .datum(lineDatum)
-                .attr('d', generator)
-                .attr('class', 'line detectionPath ' + name)
-                .attr('detection-name', detection.trackName)
-                .attr('stroke-linecap', "round")
-                .attr('stroke-linejoin', "round");
-
-            // bind click delegate handler
-            linePath.on('click', selectedDetectionHandler);
+            var linePath = svgView.createLinePath(detection.trackName);
 
             // there is no element, need to create it
             data.push(detection);
 
             // add detection data to rendered collection
             renderedDetections[name] = {
-                lineDatum: lineDatum,
-                lineGenerator: generator,
-                linePath: linePath,
+                lineDatum: linePath.datum,
+                lineGenerator: linePath.generator,
+                linePath: linePath.path,
                 data: data,
                 date: detection.date,
                 isExpired: false
@@ -276,11 +456,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
 
             if (!detectionPath.isExpired) {
-                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
+                var yCoordinate = svgView.yCoordinate(renderedDetections['Ownship'].date);
 
                 detectionPath.lineDatum.push({
-                    x: changeSign ? null : xComponent(xTickFormat(detection[detectionKeys.x])),
-                    y: -(groupOffset - yAxisScale(detection.date))
+                    x: changeSign ? null : svgView.xCoordinate(detection[detectionKeys.x]),
+                    y: -(yCoordinate - svgView.yCoordinate(detection.date))
                 });
 
                 // add detection to rendered collection
@@ -289,7 +469,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 if (config.serialRenderingMode) {
                     detectionPath.linePath.attr('d', detectionPath.lineGenerator(detectionPath.lineDatum));
 
-                    if (yAxisScale.domain()[0].getTime() >
+                    if (svgView.visibleDomain()[0].getTime() >
                         (_.first(detectionPath.data).date.getTime() + detectionExpireTime)) {
                         // datapoint became "invisible" - its time is less then time axis domain lower value
 
@@ -299,14 +479,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     }
                 }
             }
-        }
-
-        function addGroupContainer() {
-            gMain = graph.append("g")
-                .attr('class', 'gMain')
-                .attr('clip-path', 'url(#clipPath_'+config.containerElement.id+')');
-
-            gTrack = gMain.append('g');
         }
 
         /**
@@ -345,11 +517,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         function removeExpiredDetection(datapoints) {
             _.each(datapoints, function (datapoint) {
 
-                if (yAxisScale.domain()[0].getTime() >
+                if (svgView.visibleDomain()[0].getTime() >
                     (_.first(renderedDetections[datapoint].data).date.getTime() + detectionExpireTime)) {
-                    // datapoint became "invisible" - its time is less then time axis domain lower value
+                    // datapoint became "invisible" (outdated) - its time is less then time axis domain lower value
 
-                    // extract first datapoint
+                    // remove outdated point (the first)
                     renderedDetections[datapoint].data.shift();
                     renderedDetections[datapoint].lineDatum.shift();
 
@@ -373,19 +545,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             };
         }
 
-        function updateClipPathHeight() {
-            graph
-                .select('#clipPath_' + config.containerElement.id + ' rect')
-                .attr('width', containerElementSize.width)
-                .attr('height', containerElementSize.height);
-        }
-
-        function updateLabelPosition() {
-            yAxisElement
-                .select('.axis-unit')
-                .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)');
-        }
-
         /**
          * Reconfigure Y-axis domain.
          *
@@ -406,13 +565,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
                     requestSimulationTime = time;
 
-                    yAxisScale.domain([time - config.yDomainDensity * 60 * 1000, time]);
-                    yAxisElement
-                        .call(yAxisScale.axis);
+                    svgView.updateVisibleDomain(time);
 
                     if (renderedDetections.Ownship) {
-                        gTrack
-                            .attr('transform', 'translate(0,' + yAxisScale(renderedDetections.Ownship.date) + ')');
+                        svgView.changeTracksOffset(renderedDetections.Ownship.date);
                     }
 
                     if (!config.serialRenderingMode) {
@@ -441,12 +597,12 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Used in review mode
          */
         function removeAllExpiredDetections() {
-            var timeAxisUpperBound = yAxisScale.domain()[1].getTime();
-            var timeAxisLowerBound = yAxisScale.domain()[0].getTime();
+            var timeAxisUpperBound = svgView.visibleDomain()[1].getTime();
+            var timeAxisLowerBound = svgView.visibleDomain()[0].getTime();
             var testPointDate;
             
             _.each(renderedDetections, function (detection, name) {
-                var groupOffset = yAxisScale(renderedDetections['Ownship'].date);
+                var groupOffset = svgView.yCoordinate(renderedDetections['Ownship'].date);
 
                 if (detection.data.length) {
                     _.each(detection.data, function (item, index) {
@@ -479,8 +635,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
                 changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
                 lineDatum.push({
-                    x: changeSign ? null : xComponent(xTickFormat(nextPointDegree)),
-                    y: - (offset - yAxisScale(data.date))
+                    x: changeSign ? null : svgView.xCoordinate(nextPointDegree),
+                    y: - (offset - svgView.yCoordinate(data.date))
                 });
 
                 lastPointDegree = data[detectionKeys.x];
@@ -504,7 +660,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 // remove empty collection
                 delete renderedDetections[name];
                 // remove detection collection respectively
-                delete d3MapDetections[name];
+                delete processedDetections[name];
             }
         }
 
@@ -519,32 +675,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 // use normalized name to work with collection correctly
                 // replace spaces
                 item.name = item.trackName.replace(/\W/, '_');
-                addDatapoint(d3MapDetections, item);
+                addDatapoint(processedDetections, item);
             });
 
             findExpiredDetections(detections);
-
             render();
-        }
-
-        function selectedDetectionHandler () {
-            var target = event.target;
-            var detectionName;
-
-            detectionName = target.getAttribute('detection-name');
-            config.detectionSelect(detectionName);
-            highlightGroup(target);
-        }
-
-        function highlightGroup(element) {
-            gMain.selectAll('.detectionPath').call(removeHighlightSelection);
-            d3.select(element).classed('selected', true);
-        }
-
-        function removeHighlightSelection(selection) {
-            _.each(selection[0] ,function (path) {
-                d3.select(path).classed('selected', false);
-            });
         }
 
         /**
@@ -553,11 +688,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} dimension
          */
         function changeGraphHeight(dimension) {
-            elementSize(dimension);
-            yAxisScale.range([containerElementSize.height, 0]);
-            updateClipPathHeight();
+            svgView.changeGraphHeight(dimension);
             changeDetectionsPosition();
-            updateLabelPosition();
         }
 
         /**
@@ -566,7 +698,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @returns {Array}
          */
         function visibleDomain() {
-            return yAxisScale.domain();
+            return svgView.visibleDomain();
         }
 
         /**
@@ -576,7 +708,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             _.each(renderedDetections, function (detection) {
                 detection.linePath.on('click', null);
             });
-            svgContainer.remove();
+            svgView.removeContainer();
         }
 
         return {
