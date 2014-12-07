@@ -15,6 +15,10 @@ angular.module('subtrack90.app.fullScreenControl', ['subtrack90.app.fullScreen']
         replace: true,
         templateUrl: 'js/app/directives/fullScreenControl/fullScreenControl.tpl.html',
 
+        scope: {
+            compact: '='
+        },
+
         link: function (scope) {
             scope.hasShown = !IS_MOBILE && !IS_CORDOVA;
 

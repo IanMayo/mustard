@@ -1,5 +1,6 @@
 <button title="Full Screen"
-        class="btn btn-default btn-lg"
+        class="btn btn-default"
+        ng-class="{'btn-lg': !compact, 'pull-right': !compact, 'btn-sm': compact}"
         ng-click="toggleFullScreenMode()"
         ng-show="hasShown">
   <span class="glyphicon glyphicon-fullscreen"></span>
