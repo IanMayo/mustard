@@ -2,7 +2,7 @@ angular.module('subtrack90.app.debug', [
     'subtrack90.app.user',
     'subtrack90.app.splashScreen',
     'subtrack90.app.sound',
-    'subtrack90.app.fullscreen',
+    'subtrack90.app.fullScreen',
     'subtrack90.game.message',
     'LocalStorageModule'
 ])
@@ -11,13 +11,12 @@ angular.module('subtrack90.app.debug', [
  * @module Debug
  * @class DebugCtrl (controller)
  */
-.controller('DebugCtrl', function (IS_MOBILE, IS_CORDOVA, $q, $scope, $timeout, sound, fullscreen, user,
+.controller('DebugCtrl', function (IS_MOBILE, IS_CORDOVA, $q, $scope, $timeout, sound, fullScreen, user,
    localStorageService, $location, message, splashScreen) {
 
     /**
      * DEBUG CONSOLE METHODS
      */
-
     $scope.isMobile = IS_MOBILE;
     $scope.isCordova = IS_CORDOVA;
 
@@ -239,6 +238,6 @@ angular.module('subtrack90.app.debug', [
     };
 
     $scope.toggleFullScreenMode = function () {
-        fullscreen.toggle();
+        fullScreen.toggle();
     };
 });

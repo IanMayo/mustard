@@ -5,13 +5,13 @@
  * https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Using_full_screen_mode
  */
 
-angular.module('subtrack90.app.fullscreen', [])
+angular.module('subtrack90.app.fullScreen', [])
 
-.factory('fullscreen', function () {
+.factory('fullScreen', function () {
 
     return {
         /**
-         * Request fullscreen mode of course if it's possible
+         * Request full-screen mode of course if it's possible
          */
         request: function () {
             if (document.documentElement.requestFullscreen) {
@@ -26,7 +26,7 @@ angular.module('subtrack90.app.fullscreen', [])
         },
 
         /**
-         * If fullscreen mode is allowed then we can use this to go back to the normal mode
+         * If full-screen mode is allowed then we can use this to go back to the normal mode
          */
         exit: function () {
             if (document.exitFullscreen) {
@@ -41,15 +41,22 @@ angular.module('subtrack90.app.fullscreen', [])
         },
 
         /**
-         * Toggle normal and fullscreen modes
+         * Check if full-screen mode is on
+         *
+         * @returns {Boolean}
+         */
+        isFullScreen: function () {
+            return !document.fullscreenElement &&
+                !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement &&
+                !document.msFullscreenElement
+        },
+
+        /**
+         * Toggle normal and full-screen mode
          */
         toggle: function () {
-            !document.fullscreenElement &&
-            !document.mozFullScreenElement &&
-            !document.webkitFullscreenElement &&
-            !document.msFullscreenElement
-                ? this.request()
-                : this.exit();
+            this.isFullScreen() ? this.request() : this.exit();
         }
     }
 });
