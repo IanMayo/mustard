@@ -158,6 +158,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/app.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/directives \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/index.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/missionsIndex \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers \
@@ -189,12 +190,16 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/registration/registration.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/userProfile/userProfile.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/controllers/userProfile/userProfile.tpl.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/directives/fullScreenControl \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/directives/fullScreenControl/fullScreenControl.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/directives/fullScreenControl/fullScreenControl.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/missionsIndex/missionsIndex.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers/commander.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers/newbie.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers/sailor.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/mockUsers/saveUser.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/fullScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels \
@@ -203,6 +208,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/cordovaReady/cordovaReady.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/fullScreen/fullScreen.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/missionsIndex/missionsIndex.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserBackend/mockUserBackend.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/mockUserLevels/mockUserLevels.js \
