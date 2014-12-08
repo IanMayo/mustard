@@ -2,7 +2,10 @@
  * @module subtrack90.game.leafletMapDirective
  */
 
-angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTourDirective'])
+angular.module('subtrack90.game.leafletMapDirective', [
+    'subtrack90.game.reviewTourDirective',
+    'subtrack90.game.mapExtensions'
+])
 
 .constant('leafletMapConfig', {
     initialZoom: 11,
@@ -17,7 +20,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
     }
 })
 
-.directive('leafletMap', ['leafletMapConfig', function (leafletMapConfig) {
+.directive('leafletMap', ['leafletMapConfig', 'mapExtensions', function (leafletMapConfig, mapExtensions) {
 
     return {
         restrict: 'EA',
@@ -55,7 +58,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
                 L.graticule({
                     style: {
                         color: '#791',
-                        weight: 1,
+                        weight: 2,
                         opacity: 0.3
                     },
                     interval: 0.0285,
@@ -303,6 +306,7 @@ angular.module('subtrack90.game.leafletMapDirective', ['subtrack90.game.reviewTo
              * Create Leaflet map.
              */
             var createMap = function () {
+                mapExtensions.load();
                 map = new L.Map(element[0], {attributionControl: false});
 
                 configureLayers();
