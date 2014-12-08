@@ -10,7 +10,7 @@ angular.module('subtrack90.game.mapVectorMarker', ['subtrack90.game.svgFilter'])
  * @description Leaflet Map Plugin
  */
 
-.service('mapVectorMarker', ['svgFilterConfig', function (svgFilterConfig) {
+.service('mapVectorMarker', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
     var mapExtension = function () {
 
         L.VectorMarker = {};
@@ -48,7 +48,10 @@ angular.module('subtrack90.game.mapVectorMarker', ['subtrack90.game.svgFilter'])
 
                 this._pathRoot = this._createElement('svg');
                 this._container = this._createElement('g');
-                this._container.setAttribute('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+                if (!IS_MOBILE) {
+                    this._container.setAttribute('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+                }
+
                 this._path = this._createElement('path');
 
                 this._pathRoot.appendChild(this._container);

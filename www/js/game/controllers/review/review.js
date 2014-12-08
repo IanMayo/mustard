@@ -9,6 +9,7 @@ angular.module('subtrack90.game.review', [
     'subtrack90.game.reviewTourDirective',
     'subtrack90.game.geoMath',
     'subtrack90.game.sonarBearing',
+    'subtrack90.game.svgFilter',
     'subtrack90.game.rzslider'
 ])
 

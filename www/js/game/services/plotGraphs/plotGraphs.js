@@ -66,7 +66,6 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
                 containerElement: graph.element.get(-1),
                 yTicks: graph.yTicks,
                 yDomainDensity: graph.duration,
-                detectionPointRadii: graph.detectionPointRadii,
                 yAxisLabel: graph.yAxisLabel,
                 showXAxis: graph.showXAxis,
                 margin: graph.margin,
