@@ -12,7 +12,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
  * @description Sonar Graph. Depends on d3 lib (http://d3js.org/)
  */
 
-.factory('sonarGraph', ['svgFilterConfig', function (svgFilterConfig) {
+.factory('sonarGraph', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
 
     /**
      * SvgView class.
@@ -82,10 +82,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
             graph = svgContainer
                 .append('g')
-                .attr({
-                    'transform': 'translate(' + config.margin.left + ',' + config.margin.top + ')',
-                    'filter': 'url(#' + svgFilterConfig.blurFilterName + ')'
-                });
+                .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
+
+            if (!IS_MOBILE) {
+                graph.attr('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+            }
         }
 
         /**

@@ -12,7 +12,7 @@ angular.module('subtrack90.game.mapPathHook', ['subtrack90.game.svgFilter'])
  * @description Leaflet Map Plugin
  */
 
-.service('mapPathHook', ['svgFilterConfig', function (svgFilterConfig) {
+.service('mapPathHook', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
     var mapExtension = function () {
         L.Path.include({
             _onAddOrig: L.Path.prototype.onAdd,
@@ -48,7 +48,9 @@ angular.module('subtrack90.game.mapPathHook', ['subtrack90.game.svgFilter'])
 
             addPathWrapper: function (map) {
                 var pathWrapper = L.Path.prototype._createElement('g');
-                pathWrapper.setAttribute('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+                if (!IS_MOBILE) {
+                    pathWrapper.setAttribute('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+                }
 
                 map._pathRoot.appendChild(pathWrapper);
                 map._pathWrapper = pathWrapper;
