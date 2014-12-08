@@ -379,19 +379,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         var renderedDetections = {};
         var svgView;
 
-        var rS = new rStats({
-            values: {
-                frame: { caption: 'Total frame time (ms)', below: 2 },
-                raf: { caption: 'Time since last rAF (ms)' },
-                fps: { caption: 'Framerate (FPS)', below: 1.5 },
-                action1: { caption: 'Render action #1 (ms)' },
-                render: { caption: 'WebGL Render (ms)' }
-            }
-        } );
-
-        var requestSimulationTime;
-        var _simulationTime;
-
         var config = {
             serialRenderingMode: false
         };
@@ -550,44 +537,13 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Date} simulationTime
          */
         function changeYAxisDomain(simulationTime) {
-            _simulationTime = simulationTime;
-            var time;
+            svgView.updateVisibleDomain(simulationTime.getTime());
+            svgView.changeTracksOffset(config.initialTime);
 
-            function animationFrame() {
-                rS( 'frame' ).start();
-                rS( 'rAF' ).tick();
-                rS( 'FPS' ).frame();
-                rS( 'render' ).start();
-
-                time = getSimulationTime();
-                if (time !== requestSimulationTime) {
-
-                    requestSimulationTime = time;
-
-                    svgView.updateVisibleDomain(time);
-                    svgView.changeTracksOffset(config.initialTime);
-
-                    if (!config.serialRenderingMode) {
-                        removeAllExpiredDetections();
-                    }
-                }
-
-                rS( 'render' ).end();
-                rS( 'frame' ).end();
-                rS().update();
-
-                requestAnimationFrame(animationFrame);
-            }
-
-            function getSimulationTime() {
-                return _simulationTime.getTime();
-            }
-
-            if (!requestSimulationTime) {
-                requestAnimationFrame(animationFrame);
+            if (!config.serialRenderingMode) {
+                removeAllExpiredDetections();
             }
         }
-
         /**
          * Remove all expired detections.
          * Used in review mode
