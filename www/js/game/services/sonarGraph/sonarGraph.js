@@ -46,8 +46,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
-            detectionSelect: function () {},
-            initialTime: new Date()
+            detectionSelect: function () {}
         };
 
         init();
@@ -412,8 +411,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Change detections positions according to settings of axis.
          */
         function changeDetectionsPosition() {
+            var groupOffset = yAxisOriginCoordinate();
             _.each(renderedDetections, function (detection) {
-                updateLinePath(detection);
+                updateLinePath(detection, groupOffset);
             });
         }
 
@@ -452,15 +452,13 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         function addPointToLinePath(detection, detectionPath) {
             var nextPointDegree = detection.degree;
             var lastPointDegree = _.last(detectionPath.data).degree;
-            var sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
-            var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
 
             if (!detectionPath.isExpired) {
-                var yCoordinate = svgView.yCoordinate(renderedDetections['Ownship'].date);
+                var groupOffset = yAxisOriginCoordinate();
 
                 detectionPath.lineDatum.push({
-                    x: changeSign ? null : svgView.xCoordinate(detection[detectionKeys.x]),
-                    y: -(yCoordinate - svgView.yCoordinate(detection.date))
+                    x: xCoordinate(nextPointDegree, lastPointDegree),
+                    y: -(groupOffset - svgView.yCoordinate(detection.date))
                 });
 
                 // add detection to rendered collection
@@ -566,10 +564,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     requestSimulationTime = time;
 
                     svgView.updateVisibleDomain(time);
-
-                    if (renderedDetections.Ownship) {
-                        svgView.changeTracksOffset(renderedDetections.Ownship.date);
-                    }
+                    svgView.changeTracksOffset(config.initialTime);
 
                     if (!config.serialRenderingMode) {
                         removeAllExpiredDetections();
@@ -599,10 +594,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         function removeAllExpiredDetections() {
             var timeAxisUpperBound = svgView.visibleDomain()[1].getTime();
             var timeAxisLowerBound = svgView.visibleDomain()[0].getTime();
+            var groupOffset = yAxisOriginCoordinate();
             var testPointDate;
             
             _.each(renderedDetections, function (detection, name) {
-                var groupOffset = svgView.yCoordinate(renderedDetections['Ownship'].date);
 
                 if (detection.data.length) {
                     _.each(detection.data, function (item, index) {
@@ -627,24 +622,48 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             var lineDatum = [];
             var nextPointDegree;
             var lastPointDegree;
-            var sortedPoints;
-            var changeSign;
 
             _.each(detection.data, function (data) {
                 nextPointDegree = data[detectionKeys.x];
-                sortedPoints = _.sortBy([nextPointDegree, lastPointDegree], function (num) {return num});
-                changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
                 lineDatum.push({
-                    x: changeSign ? null : svgView.xCoordinate(nextPointDegree),
+                    x: xCoordinate(nextPointDegree, lastPointDegree),
                     y: - (offset - svgView.yCoordinate(data.date))
                 });
 
-                lastPointDegree = data[detectionKeys.x];
+                lastPointDegree = nextPointDegree;
             });
 
             detection.lineDatum = lineDatum;
             detection.linePath.attr('d', detection.lineGenerator(lineDatum));
             lineDatum = [];
+        }
+
+        /**
+         * Determine x-coordinate of a next point.
+         * null value assumes that line path "changes side of the sonar" form let
+         *
+         * @param {Integer} nextPoint degree
+         * @param {Integer} lastPoint degree
+         * @returns {null|Integer} x-coordinate of a next point
+         */
+        function xCoordinate(nextPoint, lastPoint) {
+            var sortedPoints = _.sortBy([nextPoint, lastPoint], function (num) {return num});
+            var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+
+            if (changeSign) {
+                return null;
+            }
+
+            return svgView.xCoordinate(nextPoint);
+        }
+
+        /**
+         * Returns Y-coordinate depend on Y-axis domain
+         *
+         * @returns {Integer}
+         */
+        function yAxisOriginCoordinate() {
+            return svgView.yCoordinate(config.initialTime);
         }
 
         /**
@@ -689,6 +708,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          */
         function changeGraphHeight(dimension) {
             svgView.changeGraphHeight(dimension);
+            svgView.changeTracksOffset(config.initialTime);
             changeDetectionsPosition();
         }
 
