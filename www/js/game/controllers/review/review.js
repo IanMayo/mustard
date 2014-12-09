@@ -27,7 +27,9 @@ angular.module('subtrack90.game.review', [
     $scope.history = reviewSnapshot.get();
 
     /**
-     * Current state of review
+     * Current state of review.
+     * "reviewTime" option is updated in the ReviewTour directive.
+     *
      * @type {Object}
      */
     $scope.reviewState = {
@@ -257,7 +259,7 @@ angular.module('subtrack90.game.review', [
             $scope.$broadcast('changeMarkers', $scope.vessels);
             $scope.$broadcast('vesselRoutes', routes);
             $scope.$broadcast('changeTargetsVisibility', true);
-        }, 100);
+        }, 1000);
     };
 
     var showNarrativeMarkers = function () {
@@ -284,7 +286,7 @@ angular.module('subtrack90.game.review', [
 
         $timeout(function () {
             $scope.$broadcast('narrativeMarkers', narratives);
-        }, 100);
+        }, 1000);
     };
 
     // create a wrapped ownship instance, for convenience
