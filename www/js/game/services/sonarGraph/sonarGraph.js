@@ -341,7 +341,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             }
         };
 
-        this.visibleDomain = function () {
+        this.visibleDomain = function (time) {
+            if (time) {
+                this.updateVisibleDomain(time.getTime());
+            }
             return yAxisScale.domain();
         };
 
@@ -674,8 +677,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          * @returns {Array}
          */
-        function visibleDomain() {
-            return svgView.visibleDomain();
+        function visibleDomain(time) {
+            return svgView.visibleDomain(time);
         }
 
         /**

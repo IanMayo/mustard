@@ -134,11 +134,9 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
             dataSeriesCache = dataSeries;
         }
 
-        this.updatePlotTime(reviewTime);
-
         _.each(sonarGraphs, function (sonar) {
             // Current indexes of tracks according to current time axis boundaries
-            var currentIndexesRange = _.map(sonar.timeAxisBoundaries(), function (item) {
+            var currentIndexesRange = _.map(sonar.timeAxisBoundaries(reviewTime), function (item) {
                     var time = item.getTime() / parseInt(config.trackTimeStep);
                     if (time > 0) {
                         return time;
@@ -156,6 +154,8 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
                     sonar.addDetection(detections);
                 }
             });
+
+            sonar.changeYAxisDomain(reviewTime);
         });
     };
 
