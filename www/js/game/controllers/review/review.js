@@ -27,7 +27,9 @@ angular.module('subtrack90.game.review', [
     $scope.history = reviewSnapshot.get();
 
     /**
-     * Current state of review
+     * Current state of review.
+     * "reviewTime" option is updated in the ReviewTour directive.
+     *
      * @type {Object}
      */
     $scope.reviewState = {
