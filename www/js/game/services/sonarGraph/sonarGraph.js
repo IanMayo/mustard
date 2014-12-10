@@ -422,7 +422,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             });
         }
 
-        function createLinePath(detection, name) {
+        function createLinePath(detection, groupId) {
             var data = [];
             var linePath = svgView.createLinePath(detection.trackName);
 
@@ -430,7 +430,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             data.push(detection);
 
             // add detection data to rendered collection
-            renderedDetections[name] = {
+            renderedDetections[groupId] = {
                 lineDatum: linePath.datum,
                 lineGenerator: linePath.generator,
                 linePath: linePath.path,
@@ -477,7 +477,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          */
         function findExpiredDetections(detections) {
             var existedDetections = _.keys(renderedDetections);
-            var newDetections = _.pluck(detections, 'name');
+            var newDetections = _.pluck(detections, 'groupId');
             var expiredDetections = [];
 
             _.each(existedDetections, function (detection) {
@@ -526,11 +526,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} row
          */
         function addDatapoint(dataset, row) {
-            dataset[row.name] = {
+            dataset[row.groupId] = {
                 trackName: row.trackName,
                 date: row.date,
                 degree: row.degree,
-                strength: row.strength ? row.strength : null
+                strength: row.strength
             };
         }
 
@@ -557,7 +557,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             var groupOffset = yAxisOriginCoordinate();
             var testPointDate;
             
-            _.each(renderedDetections, function (detection, name) {
+            _.each(renderedDetections, function (detection, groupId) {
 
                 if (detection.data.length) {
                     _.each(detection.data, function (item, index) {
@@ -568,7 +568,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                         }
                     });
 
-                    removeExpiredDatapointGroup(name);
+                    removeExpiredDatapointGroup(groupId);
 
                     if (detection) {
                         detection.data = _.sortBy(detection.data, function (d) {return d.date.getTime()});
@@ -629,17 +629,17 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         /**
          * Remove group wrapper element of detections.
          *
-         * @param {String} name
+         * @param {String} groupId
          */
-        function removeExpiredDatapointGroup(name) {
-            if (!renderedDetections[name].data.length) {
+        function removeExpiredDatapointGroup(groupId) {
+            if (!renderedDetections[groupId].data.length) {
                 // if collection is empty
                 // remove a path element from DOM
-                renderedDetections[name].linePath.remove();
+                renderedDetections[groupId].linePath.remove();
                 // remove empty collection
-                delete renderedDetections[name];
+                delete renderedDetections[groupId];
                 // remove detection collection respectively
-                delete processedDetections[name];
+                delete processedDetections[groupId];
             }
         }
 
@@ -651,9 +651,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          function addDetection(detections) {
             // create list of path names from detections
             _.map(detections, function (item) {
-                // use normalized name to work with collection correctly
+                // use normalized id to work with collection correctly
                 // replace spaces
-                item.name = item.trackName.replace(/\W/, '_');
+                item.groupId = item.trackName.replace(/\W/, '_') + ':' + item.strength;
                 addDatapoint(processedDetections, item);
             });
 
