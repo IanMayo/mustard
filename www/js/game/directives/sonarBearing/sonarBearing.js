@@ -17,7 +17,6 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
             '</div>',
         link: function (scope, element, attrs) {
 
-            var lineStroke = 2;
             var colors = {
                 indicator: "#aace00",
                 heading: "#1A68DB"
@@ -49,17 +48,32 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 });
             };
 
+            var normalizeSignalStrength = function (strength) {
+                var signalStrength = Math.ceil(strength);
+                var minValue = 0;
+                var maxValue = 10;
+
+                if (signalStrength >= maxValue) {
+                    signalStrength = maxValue;
+                } else if (signalStrength <= minValue) {
+                    signalStrength = minValue;
+                }
+
+                return signalStrength;
+            };
+
             var assignDetectionsPointsToNames = function (detections) {
                 var detectionsAssociatedWithLabels = [];
                 var time = detections.detections[0];
                 var currentTime = new Date(time);
                 var detectionsPoints = _.rest(detections.detections);
+
                 _.each(detectionsPoints, function (point, index) {
                     detectionsAssociatedWithLabels.push({
                         trackName: detections.tracks[index],
                         date: currentTime,
-                        degree: point,
-                        strength: lineStroke
+                        degree: point.bearing,
+                        strength: normalizeSignalStrength(point.strength)
                     });
                 });
 
