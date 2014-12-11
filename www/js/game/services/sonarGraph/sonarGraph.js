@@ -123,9 +123,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          * @param {Object} element Target line path
          */
-        function highlightLinePath(element) {
+        function highlightLinePath(detectionName) {
             gMain.selectAll('.detectionPath').call(removeHighlightSelection);
-            d3.select(element).classed('selected', true);
+            gTrack.selectAll('.' + detectionName).classed('selected', true);
         }
 
         /**
@@ -249,7 +249,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
             detectionName = target.getAttribute('detection-name');
             config.detectionSelect(detectionName);
-            highlightLinePath(target);
+            highlightLinePath(detectionName);
         }
 
         /**
@@ -258,16 +258,22 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {String} pathName
          * @returns {Object} Line path
          */
-        function linePath(pathName) {
+        function linePath(pathName, opacity) {
             var lineDatum = [{x: null, y: 0}];
             var linePath = gTrack
                 .append('path')
                 .datum(lineDatum)
                 .attr('d', lineGenerator())
-                .attr('class', 'line detectionPath ' + name)
+                .attr('class', 'line detectionPath ' + pathName)
                 .attr('detection-name', pathName)
                 .attr('stroke-linecap', "round")
-                .attr('stroke-linejoin', "round");
+                .attr('stroke-linejoin', "round")
+                .attr('stroke-opacity', opacity);
+
+            var existed = gTrack.selectAll('.selected.' + pathName);
+            if (existed.size()) {
+                linePath.classed('selected', true);
+            }
 
             // bind click delegate handler
             linePath.on('click', selectLinePath);
@@ -333,10 +339,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {String} pathName
          * @returns {Object} line path properties
          */
-        this.createLinePath = function (pathName) {
+        this.createLinePath = function (pathName, opacity) {
             return {
                 generator: lineGenerator(),
-                path: linePath(pathName),
+                path: linePath(pathName, opacity),
                 datum: [{x: null, y: 0}]
             }
         };
@@ -421,15 +427,15 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             });
         }
 
-        function createLinePath(detection, groupId) {
+        function createLinePath(detection, name) {
             var data = [];
-            var linePath = svgView.createLinePath(detection.trackName);
+            var linePath = svgView.createLinePath(detection.trackName,  detection.strength / 10);
 
             // there is no element, need to create it
             data.push(detection);
 
             // add detection data to rendered collection
-            renderedDetections[groupId] = {
+            renderedDetections[name] = {
                 lineDatum: linePath.datum,
                 lineGenerator: linePath.generator,
                 linePath: linePath.path,
