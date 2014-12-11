@@ -375,9 +375,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
      * @returns {Object}
      */
     function Graph(options) {
-
-        var detectionKeys = {x: 'degree', y: 'date'};
         var detectionExpireTime =  1 * 60 * 1000; // 1 minute
+        var pointsTimeGap = 2000;
         var processedDetections = {};
         var renderedDetections = {};
         var svgView;
@@ -441,14 +440,14 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         function addPointToLinePath(detection, detectionPath) {
-            var nextPointDegree = detection.degree;
-            var lastPointDegree = _.last(detectionPath.data).degree;
+            var nextPoint = detection;
+            var lastPoint = _.last(detectionPath.data);
 
             if (!detectionPath.isExpired) {
                 var groupOffset = yAxisOriginCoordinate();
 
                 detectionPath.lineDatum.push({
-                    x: xCoordinate(nextPointDegree, lastPointDegree),
+                    x: xCoordinate(nextPoint, lastPoint),
                     y: -(groupOffset - svgView.yCoordinate(detection.date))
                 });
 
@@ -580,17 +579,17 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         function updateLinePath(detection, offset) {
             var lineDatum = [];
-            var nextPointDegree;
-            var lastPointDegree;
+            var nextPoint;
+            var lastPoint;
 
             _.each(detection.data, function (data) {
-                nextPointDegree = data[detectionKeys.x];
+                nextPoint = data;
                 lineDatum.push({
-                    x: xCoordinate(nextPointDegree, lastPointDegree),
+                    x: xCoordinate(nextPoint, lastPoint),
                     y: - (offset - svgView.yCoordinate(data.date))
                 });
 
-                lastPointDegree = nextPointDegree;
+                lastPoint = nextPoint;
             });
 
             detection.lineDatum = lineDatum;
@@ -602,19 +601,31 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Determine x-coordinate of a next point.
          * null value assumes that line path "changes side of the sonar" form let
          *
-         * @param {Integer} nextPoint degree
-         * @param {Integer} lastPoint degree
+         * @param {Object} nextPoint
+         * @param {Object} lastPoint
          * @returns {null|Integer} x-coordinate of a next point
          */
         function xCoordinate(nextPoint, lastPoint) {
-            var sortedPoints = _.sortBy([nextPoint, lastPoint], function (num) {return num});
-            var changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+            var lastPointDegree;
+            var lastPointTime;
+            var sortedPoints;
+            var changeSign;
 
-            if (changeSign) {
+            if (lastPoint) {
+                lastPointDegree = lastPoint.degree;
+                lastPointTime = lastPoint.date.getTime();
+            } else {
+                lastPointDegree = lastPointTime = undefined;
+            }
+
+            sortedPoints = _.sortBy([nextPoint.degree, lastPointDegree], function (num) {return num});
+            changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
+
+            if (changeSign || ((nextPoint.date.getTime() - lastPointTime) > pointsTimeGap)) {
                 return null;
             }
 
-            return svgView.xCoordinate(nextPoint);
+            return svgView.xCoordinate(nextPoint.degree);
         }
 
         /**
