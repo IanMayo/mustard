@@ -268,7 +268,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 .attr('detection-name', pathName)
                 .attr('stroke-linecap', "round")
                 .attr('stroke-linejoin', "round")
-                .attr('stroke-opacity', opacity);
+                .attr('stroke-opacity', opacity)
+                .attr('stroke-dasharray', '0.3')
+                .attr('stroke-linecap', 'butt');
 
             var existed = gTrack.selectAll('.selected.' + pathName);
             if (existed.size()) {
