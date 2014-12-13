@@ -10,6 +10,7 @@ angular.module('subtrack90.app.fullScreen', [])
 .factory('fullScreen', function () {
 
     return {
+
         /**
          * Request full-screen mode of course if it's possible
          */

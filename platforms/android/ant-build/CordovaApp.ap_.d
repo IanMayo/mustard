@@ -245,6 +245,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/shipState \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/svgFilter \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeDisplay \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeRemaining \
@@ -279,6 +280,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/sonarBearing/demo/index.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView/spatialView.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/spatialView/spatialView.tpl.html \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/svgFilter/svgFilter.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay/timeBearingDisplay.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeBearingDisplay/timeBearingDisplay.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives/timeDisplay/timeDisplay.js \
@@ -392,6 +394,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/decision \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/detection \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/geoMath \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation \
@@ -402,6 +405,12 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/decision/decision.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/detection/detection.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/geoMath/geoMath.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapExtensions.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapGraticule.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapIconLabel.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapMarkerRotate.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapPathHook.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/leaflet/mapVectorMarker.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/message.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/message.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/message/messageList.tpl.html \
@@ -435,13 +444,9 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/d3.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/fpsmeter.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/howler \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Icon.Label.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/jquery.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Control.MousePosition.js \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.Graticule.js \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/L.VectorMarker.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/leaflet \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/Marker.Rotate.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/modernizr \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ng-cordova \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/ngDraggable.js \

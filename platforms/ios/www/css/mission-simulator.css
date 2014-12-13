@@ -37,10 +37,15 @@
   font-size: 125%;
 }
 
-.leaflet-container, .visContainer {
-  border-radius: 30px;
+.leaflet-container,
+.visContainer {
   padding: 10px;
   z-index: 0;
+}
+
+.leaflet-container,
+.visContainer {
+  border-radius: 30px;
 }
 
 .leaflet-control-container .leaflet-left {
@@ -267,6 +272,9 @@
   background: rgba(0,0,0,0.2);
 }
 
+.image {
+}
+
 .warning-background {
   position: absolute;
   height: 100%;
@@ -328,6 +336,14 @@
   fill: rgb(170, 206, 0);
 }
 
-.detectionPath.selected .point {
-    fill: rgb(75, 239, 199);
+
+.line {
+  fill: none;
+  stroke: rgb(170, 206, 0);
+  stroke-width: 8px;
+
+}
+
+.detectionPath.selected {
+  stroke: rgb(75, 239, 199);
 }

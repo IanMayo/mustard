@@ -41,6 +41,7 @@
   <link rel="stylesheet" type="text/css" href="css/profile.css">
   <link rel="stylesheet" type="text/css" href="css/sonar.css">
   <link rel="stylesheet" type="text/css" href="lib/angular-hotkeys/build/hotkeys.css">
+
   <title>SubTrack &#39;90 - ASW Trainer</title>
 </head>
 
@@ -52,9 +53,6 @@
 
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="lib/Marker.Rotate.js"></script>
-<script type="text/javascript" src="lib/L.VectorMarker.js"></script>
-<script type="text/javascript" src="lib/Icon.Label.js"></script>
 <script type="text/javascript" src="lib/modernizr/modernizr.custom.93820.js"></script>
 <script type="text/javascript" src="lib/underscore-min.js"></script>
 <script type="text/javascript" src="lib/underscore.number.js"></script>
@@ -71,7 +69,6 @@
 <script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
-<script type="text/javascript" src="lib/L.Graticule.js"></script>
 <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
 <script type="text/javascript" src="lib/d3.min.js"></script>
@@ -131,6 +128,7 @@
 <script type="text/javascript" src="js/game/directives/notificationIcon/notificationIcon.js"></script>
 <script type="text/javascript" src="js/game/directives/warningAboutTimer/warningAboutTimer.js"></script>
 <script type="text/javascript" src="js/game/directives/rzslider/rzslider.js"></script>
+<script type="text/javascript" src="js/game/directives/svgFilter/svgFilter.js"></script>
 
 <!-- Game services -->
 <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
@@ -144,6 +142,12 @@
 <script type="text/javascript" src="js/game/services/plotGraphs/plotGraphs.js"></script>
 <script type="text/javascript" src="js/game/services/sonarGraph/sonarGraph.js"></script>
 <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapPathHook.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapVectorMarker.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapIconLabel.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapGraticule.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapMarkerRotate.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapExtensions.js"></script>
 
 <script type="text/javascript">
   app.initialize();
