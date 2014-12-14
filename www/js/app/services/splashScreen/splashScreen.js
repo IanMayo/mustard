@@ -78,7 +78,7 @@ angular.module('subtrack90.app.splashScreen', [])
      *
      * @returns {Boolean}
      */
-    var preventMultipleSplashScreens = function () {
+    var splashScreenExistsOrBlocked = function () {
         return $body.find(options.idSel).length || isBlocked;
     };
 
@@ -89,7 +89,7 @@ angular.module('subtrack90.app.splashScreen', [])
          * @param deferred
          */
         show: function (deferred) {
-            if (preventMultipleSplashScreens()) return;
+            if (splashScreenExistsOrBlocked()) return;
 
             getTemplate().then(function (responce) {
                 createSplashScreenElement(responce.data, deferred);
