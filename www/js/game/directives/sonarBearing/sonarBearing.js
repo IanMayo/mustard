@@ -49,15 +49,9 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
             };
 
             var normalizeSignalStrength = function (strength) {
-                var signalStrength = Math.ceil(strength);
-                var minValue = 0;
-                var maxValue = 10;
-
-                if (signalStrength >= maxValue) {
-                    signalStrength = maxValue;
-                } else if (signalStrength <= minValue) {
-                    signalStrength = minValue;
-                }
+                var signalStrength =  Math.max(0, strength);
+                signalStrength = Math.min(10, signalStrength);
+                signalStrength = Math.round(signalStrength / 10 * 100) / 100;
 
                 return signalStrength;
             };

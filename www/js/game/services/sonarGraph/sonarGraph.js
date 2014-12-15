@@ -431,7 +431,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         function createLinePath(detection, name) {
             var data = [];
-            var linePath = svgView.createLinePath(detection.trackName,  detection.strength / 10);
+            var linePath = svgView.createLinePath(detection.trackName,  detection.strength);
 
             // there is no element, need to create it
             data.push(detection);
@@ -533,6 +533,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} row
          */
         function addDatapoint(dataset, row) {
+            if (row.strength === 0) {
+                // invisible detection can be omitted
+                return;
+            }
+
             dataset[row.groupId] = {
                 trackName: row.trackName,
                 date: row.date,
