@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -496,8 +495,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -522,7 +521,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
-				PROVISIONING_PROFILE = "de3dacb1-e535-4a76-98fa-a9e7e10aea90";
+				PROVISIONING_PROFILE = "091fa136-06f2-426d-a8ac-0bf1ecb0c1ba";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -532,8 +531,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alexander Vasileyko (U8333665R6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alexander Vasileyko (TH7G96RYJJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SubTrack 90/SubTrack 90-Prefix.pch";
@@ -556,7 +555,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "SubTrack 90";
-				PROVISIONING_PROFILE = "de3dacb1-e535-4a76-98fa-a9e7e10aea90";
+				PROVISIONING_PROFILE = "091fa136-06f2-426d-a8ac-0bf1ecb0c1ba";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

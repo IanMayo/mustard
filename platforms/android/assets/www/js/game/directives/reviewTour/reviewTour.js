@@ -4,6 +4,11 @@
 
 angular.module('subtrack90.game.reviewTourDirective', ['subtrack90.game.leafletMapDirective'])
 
+/**
+ * Review tour has "onShown" callback with "changeTime". In the handler "reviewTime" property of "reviewState"
+ * is updated according to tour step. Having a new value in the "reviewTime" time slider updates to actual position
+ * and review tout shows actual tour step.
+ */
 .directive('reviewTour', function () {
     return {
         restrict: 'EA',

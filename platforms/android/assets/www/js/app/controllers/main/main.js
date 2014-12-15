@@ -36,7 +36,7 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
      */
     $scope.isLockedLevel = function (id) {
         var isLocked = true;
-        var level = _.findWhere($scope.player.levels, {id: id});
+        var level = _.findWhere($scope.player.levels, {id: id}) || {};
 
         _.every(level.missions, function (mission) {
             isLocked = mission.status === 'LOCKED';

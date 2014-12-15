@@ -22,8 +22,9 @@
   <meta charset="utf-8"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="format-detection" content="telephone=no"/>
-  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui,
     width=device-width"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="stylesheet" type="text/css" href="css/fonts.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
@@ -40,6 +41,7 @@
   <link rel="stylesheet" type="text/css" href="css/profile.css">
   <link rel="stylesheet" type="text/css" href="css/sonar.css">
   <link rel="stylesheet" type="text/css" href="lib/angular-hotkeys/build/hotkeys.css">
+
   <title>SubTrack &#39;90 - ASW Trainer</title>
 </head>
 
@@ -51,9 +53,6 @@
 
 <script type="text/javascript" src="lib/jquery.min.js"></script>
 <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="lib/Marker.Rotate.js"></script>
-<script type="text/javascript" src="lib/L.VectorMarker.js"></script>
-<script type="text/javascript" src="lib/Icon.Label.js"></script>
 <script type="text/javascript" src="lib/modernizr/modernizr.custom.93820.js"></script>
 <script type="text/javascript" src="lib/underscore-min.js"></script>
 <script type="text/javascript" src="lib/underscore.number.js"></script>
@@ -70,7 +69,6 @@
 <script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
 <script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
-<script type="text/javascript" src="lib/L.Graticule.js"></script>
 <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
 <script type="text/javascript" src="lib/d3.min.js"></script>
@@ -92,6 +90,9 @@
 <script type="text/javascript" src="js/app/controllers/credits/credits.js"></script>
 <script type="text/javascript" src="js/app/controllers/final/final.js"></script>
 
+<!-- App directives -->
+<script type="text/javascript" src="js/app/directives/fullScreenControl/fullScreenControl.js"></script>
+
 <!-- App services -->
 <script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
 <script type="text/javascript" src="js/app/services/mockUserBackend/mockUserBackend.js"></script>
@@ -101,6 +102,7 @@
 <script type="text/javascript" src="js/app/services/splashScreen/splashScreen.js"></script>
 <script type="text/javascript" src="js/app/services/sound/sound.js"></script>
 <script type="text/javascript" src="js/app/services/soundManager/soundManager.js"></script>
+<script type="text/javascript" src="js/app/services/fullScreen/fullScreen.js"></script>
 
 <!-- Game controllers -->
 <script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
@@ -126,6 +128,7 @@
 <script type="text/javascript" src="js/game/directives/notificationIcon/notificationIcon.js"></script>
 <script type="text/javascript" src="js/game/directives/warningAboutTimer/warningAboutTimer.js"></script>
 <script type="text/javascript" src="js/game/directives/rzslider/rzslider.js"></script>
+<script type="text/javascript" src="js/game/directives/svgFilter/svgFilter.js"></script>
 
 <!-- Game services -->
 <script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
@@ -139,6 +142,12 @@
 <script type="text/javascript" src="js/game/services/plotGraphs/plotGraphs.js"></script>
 <script type="text/javascript" src="js/game/services/sonarGraph/sonarGraph.js"></script>
 <script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapPathHook.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapVectorMarker.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapIconLabel.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapGraticule.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapMarkerRotate.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapExtensions.js"></script>
 
 <script type="text/javascript">
   app.initialize();

@@ -13,6 +13,7 @@ angular.module('subtrack90', [
     'subtrack90.app.missionsIndex',
     'subtrack90.app.splashScreen',
     'subtrack90.app.final',
+    'subtrack90.app.fullScreenControl',
     'subtrack90.app.soundManager',
     'subtrack90.game.simulator',
     'subtrack90.game.review',
@@ -240,7 +241,7 @@ angular.module('subtrack90', [
 
 }).run(function ($rootScope, $location, user, soundManager) {
 
-    // We need to make sure that the DOM is already created because run function is called before
+    // We need to make sure that the DOM is already created because "run" function is called before
     angular.element(document).ready(function () {
         soundManager.loadAppSounds();
     });
