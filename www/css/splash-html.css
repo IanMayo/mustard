@@ -1,0 +1,79 @@
+#splash {
+  position: absolute;
+  background: #f6f6f6 url(../img/splash/letter_clear.jpg) repeat;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  z-index: 100000;
+}
+
+#splash .label-splash {
+  position: relative;
+  margin-top: -80px;
+  top: 100%;
+  font-size: 250%;
+}
+
+#splash h1 {
+  margin-bottom: 20px;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+#splash p {
+  margin: 11px 0;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+#splash h3 {
+  margin: 15px 0;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#splash .redacted-text {
+  font-weight: bold;
+}
+
+#splash #wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  text-align: left;
+}
+
+#splash #content {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+  text-align: justify;
+  text-justify: inter-word;
+  color: #333;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+}
+
+#splash .date {
+  float: right;
+  text-align: right;
+  display: block;
+  width: 100%;
+}
+
+#splash #logo {
+  margin-right: 10%;
+  float: left;
+  display: block;
+}
+
+#splash #header {
+  float: left;
+  display: block;
+}
+
+#splash #letter {
+  float: left;
+}
