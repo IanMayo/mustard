@@ -33,7 +33,7 @@ angular.module('subtrack90.app.splashScreen', [])
     };
 
     /**
-     * Get splash screen template via HTTP service and cache it
+     * Get splash screen template via $http service and cache it
      */
     var getTemplate = function () {
         return $http({
@@ -44,7 +44,7 @@ angular.module('subtrack90.app.splashScreen', [])
     };
 
     /**
-     * We close splash screen here that's why we invented it
+     * Handler to close (hide) splash screen
      *
      * @param deferred
      */
@@ -59,7 +59,7 @@ angular.module('subtrack90.app.splashScreen', [])
     };
 
     /**
-     * Create splash screen element and add it to the body
+     * Create splash screen element and add it to the body element
      *
      * @param template
      * @param deferred
@@ -74,7 +74,7 @@ angular.module('subtrack90.app.splashScreen', [])
     };
 
     /**
-     * Check the existing or blocking of current splash screen
+     * Check the existence and blocking of splash screen
      *
      * @returns {Boolean}
      */
@@ -113,7 +113,7 @@ angular.module('subtrack90.app.splashScreen', [])
         },
 
         /**
-         * Resolver method for using in $routeProvider resolve
+         * Resolver method for using in $routeProvider
          *
          * @param splashOnPage
          * @returns {deferred.promise}
