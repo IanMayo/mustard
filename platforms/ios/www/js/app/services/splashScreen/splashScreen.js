@@ -4,7 +4,14 @@
 
 angular.module('subtrack90.app.splashScreen', [])
 
-.factory('splashScreen', ['$q', 'IS_MOBILE', function ($q, IS_MOBILE) {
+.factory('splashScreen', ['$q', '$http', 'IS_MOBILE', function ($q, $http, IS_MOBILE) {
+
+    /**
+     * Body element
+     *
+     * @type {jQuery|HTMLElement}
+     */
+    var $body = $('body');
 
     /**
      * Indicates that splash screen is blocked and we can't show it by splash.show()
@@ -22,20 +29,75 @@ angular.module('subtrack90.app.splashScreen', [])
         id: 'splash',
         idSel: '#splash',
         fadeOutDelay: 500,
-        labelTmpl:
-            '<h3 class="label-splash">' +
-                '<span class="label label-info">Click anywhere to continue</span>' +
-            '</h3>'
+        templateUrl: 'js/app/services/splashScreen/splashScreen.tpl.html'
     };
 
     /**
-     * Body element
-     *
-     * @type {jQuery|HTMLElement}
+     * Get splash screen template via $http service and cache it
      */
-    var $body = $('body');
+    var getTemplate = function () {
+        return $http({
+            method: 'GET',
+            url: options.templateUrl,
+            cache: true
+        });
+    };
+
+    /**
+     * Handler to close (hide) splash screen
+     *
+     * @param deferred
+     */
+    var splashScreenClickHandler = function (deferred) {
+        var $element = $(this);
+
+        $element.fadeOut(options.fadeOutDelay, function() {
+            $element.remove();
+        });
+
+        deferred.resolve(true);
+    };
+
+    /**
+     * Create splash screen element and add it to the body element
+     *
+     * @param template
+     * @param deferred
+     */
+    var createSplashScreenElement = function (template, deferred) {
+        var $splash = $(document.createElement('div'));
+
+        $splash.attr({id: options.id})
+            .bind(IS_MOBILE ? 'touchend' : 'click', splashScreenClickHandler.bind($splash, deferred))
+            .append(template)
+            .appendTo($body);
+    };
+
+    /**
+     * Check the existence and blocking of splash screen
+     *
+     * @returns {Boolean}
+     */
+    var splashScreenExistsOrBlocked = function () {
+        return $body.find(options.idSel).length || isBlocked;
+    };
 
     return {
+        /**
+         * Show splash screen
+         *
+         * @param deferred
+         */
+        show: function (deferred) {
+            if (splashScreenExistsOrBlocked()) return;
+
+            getTemplate().then(function (responce) {
+                createSplashScreenElement(responce.data, deferred);
+            }).catch(function (error) {
+                deferred.resolve(error);
+            });
+        },
+
         /**
          * Block splash screen
          */
@@ -51,41 +113,16 @@ angular.module('subtrack90.app.splashScreen', [])
         },
 
         /**
-         * Show splash screen and add on touch handler to close it
+         * Resolver method for using in $routeProvider
          *
-         * @param deferred
-         */
-        show: function (deferred) {
-            if ($body.find(options.idSel).length || isBlocked) {
-                return;
-            }
-
-            $(document.createElement('div'))
-                .attr({id: options.id})
-                .bind(IS_MOBILE ? 'touchend' : 'click', function () {
-                    var $element = $(this);
-
-                    $element.fadeOut(options.fadeOutDelay, function() {
-                        $element.remove();
-                    });
-
-                    deferred.resolve(true);
-                })
-                .append(options.labelTmpl)
-                .appendTo($body);
-        },
-
-        /**
-         * Resolver method for using in $routeProvider resolve
-         *
-         * @param showSplash
+         * @param splashOnPage
          * @returns {deferred.promise}
          */
-        resolver: function (showSplash) {
+        resolver: function (splashOnPage) {
             var deferred = $q.defer();
             var self = this;
 
-            if (showSplash && !isBlocked) {
+            if (splashOnPage && !isBlocked) {
                 self.show(deferred);
                 self.block();
             } else {

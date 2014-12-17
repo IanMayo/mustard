@@ -52,7 +52,8 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/profile.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/sonar.css \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-html.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-img.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers.png \
@@ -118,6 +119,9 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/twitter.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/vessels \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/letter_clear.jpg \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/logo.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/sign.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash-wide.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash-wide@2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash/splash.png \
@@ -213,6 +217,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/sound/sound.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/soundManager/soundManager.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/splashScreen/splashScreen.tpl.html \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/app/services/user/user.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/controllers \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/directives \
