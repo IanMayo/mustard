@@ -112,7 +112,7 @@ angular.module('subtrack90.game.decision', ['subtrack90.game.geoMath'])
         /* SPECIAL PROCESSING: note that we use a 1-indexed value for the current
          entry in the array, since a zero value is also "falsy"  */
 
-        const DISTANCE_THRESHOLD = 200;
+        var DISTANCE_THRESHOLD = 200;
 
         // ok - is this just starting?
         if (!path.current) {
