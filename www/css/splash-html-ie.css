@@ -1,0 +1,11 @@
+#splash .content p,
+#splash .content h1,
+#splash .content h2,
+#splash .content h3,
+#splash .content span {
+  zoom: 1;
+  background-color: #b0b0b0;
+  filter:
+    progid:DXImageTransform.Microsoft.Chroma(Color=#b0b0b0)
+    progid:DXImageTransform.Microsoft.Glow(Color=#c0c0c0, strength=1)
+}
