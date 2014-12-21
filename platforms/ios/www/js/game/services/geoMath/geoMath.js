@@ -95,7 +95,7 @@ angular.module('subtrack90.game.geoMath', [])
          */
     var distanceFromLine = function pDistance(x, y, x1, y1, x2, y2) {
 
-        const R = 60.0 * 1852;  // conversion factor from degrees to metres
+        var R = 60.0 * 1852;  // conversion factor from degrees to metres
 
         var A = x - x1;
         var B = y - y1;
@@ -239,7 +239,7 @@ angular.module('subtrack90.game.geoMath', [])
                 brng += Math.PI * 2;
             }
 
-            const R = 6371000;  // radius in metres
+            var R = 6371000;  // radius in metres
             var d = dist / R;  // d = angular distance covered on earth’s surface
             var lat1 = toRads(location.lat);
             var lon1 = toRads(location.lng);
@@ -277,7 +277,7 @@ angular.module('subtrack90.game.geoMath', [])
          * @returns {Number} Distance in m between this point and destination point
          */
         rhumbDistanceFromTo: function (origin, point) {
-            const R = 6371000;  // earth radius in m
+            var R = 6371000;  // earth radius in m
             var lat1 = toRads(origin.lat);
             var lat2 = toRads(point.lat);
             var dLat = toRads(point.lat - origin.lat);

@@ -52,6 +52,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/options.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/profile.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/sonar.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-html-ie.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-html.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-img.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
