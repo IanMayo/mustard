@@ -14,32 +14,130 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
 .factory('sonarGraph', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
 
+    var extendClass = function (desctination, source) {
+        desctination.prototype = Object.create(source.prototype);
+        desctination.prototype.constructor = desctination;
+    };
+
     /**
      * SvgView class.
+     * @class SvgView
      * @param {Object} options
      * @returns {Object}
      */
     function SvgView(options) {
-        var xDomain = [-180, 180];
-        var xTickValues = _.range(-180, 181, 45);
-        var xTickFormat = function (d) { return d; };
 
-        var yAxisFormat = d3.time.format("%H:%M:%S");
+        /**
+         * X axis domain valid values
+         * 
+         * @type {Array}
+         */
+        var xDomain = [-180, 180];
+
+        /**
+         * X axis tick values
+         *
+         * @type {Array}
+         */
+        var xTickValues = _.range(-180, 181, 45);
+        
+        /**
+         * X axis tick format function
+         *  
+         * @returns {String}
+         */
+        var xTickFormat = function (d) {return d;};
+
+        /**
+         * Y axis tick format template
+         *
+         * @type {String}
+         */
+        var yTickFormat = d3.time.format("%H:%M:%S");
+
+        /**
+         * X axis label
+         *
+         * @type {String}
+         */
         var xAxisLabel = "Degree º";
 
-        var svgContainer;
-        var graph;
-        var gMain;
-        var gTrack;
-        var containerElementSize;
-        var xComponent;
-        var mainClipPath;
+        /**
+         * Svg element
+         *
+         * @type {Object}
+         */
+        var svgElement;
 
+        /**
+         * Svg container of internal content
+         *
+         * @type {Object}
+         */
+        var svgElementsContainer;
+
+        /**
+         * Group element with defined clip path
+         *
+         * @type {Object}
+         */
+        var detectionsVisibleArea;
+
+        /**
+         * Group element for detections translation
+         *
+         * @type {Object}
+         */
+        var detectionsTranslationGroup;
+
+        /**
+         * Height and width of the container element
+         *
+         * @type {Object}
+         */
+        var containerElementSize;
+
+        /**
+         * X axis component
+         *
+         * @type {Object}
+         */
+        var xComponent;
+
+        /**
+         * X axis element
+         *
+         * @type {Object}
+         */
         var xAxisElement;
+
+        /**
+         * Y axis element
+         *
+         * @type {Object}
+         */
         var yAxisElement;
+
+        /**
+         * Y axis scale function
+         *
+         * @type {Object}
+         */
         var yAxisScale = d3.time.scale();
 
-        var config = {
+        /**
+         * Sonar config
+         *
+         * @type {Object}
+         */
+        var config = {};
+
+        /**
+         * Default config values
+         *
+         * @type {Object}
+         */
+        var defaults = {
             containerElement: null,
             yTicks: 5,
             yDomainDensity: 1,
@@ -52,62 +150,83 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         init();
 
         function init() {
-            _.each(options, function (value, key) {
-                if (value !== undefined) {
-                    config[key] = value;
-                }
-            });
+            config = _.extend({}, defaults, options);
 
-            addSvgElement();
+            svgElement = addSvgElement();
+            svgElementsContainer = addSvgElementsContainer();
             elementSize(config.elementSize);
-            configureScale();
+            xComponent = addXComponent();
+            setYAxisRange();
 
             addClipPath();
-            addGxAxis();
-            addGyAxis();
-            addGroupContainer();
+            xAxisElement = addGxAxis();
+            yAxisElement = addGyAxis();
+            detectionsVisibleArea = addGroupContainer();
+            detectionsTranslationGroup = addGroupToTranslate();
         }
 
         /**
-         * Add svg element and apply margin values.
+         *  Add svg element.
+         *
+         *  @return {Object}
          */
         function addSvgElement() {
-            svgContainer = d3.select(config.containerElement)
+            var element = d3.select(config.containerElement)
                 .append('svg')
-                .attr('class', 'graph g-wrapper');
+                .attr('class', 'graph');
 
             // https://bugzilla.mozilla.org/show_bug.cgi?id=779368
             // http://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/
-            svgContainer.style({width: '100%', height: '100%'});
+            element.style({width: '100%', height: '100%'});
 
-            graph = svgContainer
+            return element;
+        }
+
+        /**
+         *  Add svg elements container.
+         *
+         *  @return {Object}
+         */
+        function addSvgElementsContainer() {
+            var element = svgElement
                 .append('g')
                 .attr('transform', 'translate(' + config.margin.left + ',' + config.margin.top + ')');
 
             if (!IS_MOBILE) {
-                graph.attr('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
+                element.attr('filter', 'url(#' + svgFilterConfig.blurFilterName + ')');
             }
+
+            return element;
         }
 
         /**
-         * Create group element with clip path attribute.
-         * Create group element what contains line paths
+         * Create group element to define clip path.
+         *
+         *  @return {Object}
          */
         function addGroupContainer() {
-            gMain = graph.append("g")
+            return svgElementsContainer.append("g")
                 .attr({
                     'class': 'gMain',
                     'clip-path': 'url(#clipPath_' + config.containerElement.id + ')'
                 });
-
-            gTrack = gMain.append('g');
         }
 
         /**
-         * Add clip path for sonar graph.
+         * Add group element wrapper for detections paths.
+         * Element is used to translate all detections paths.
+         *
+         *  @return {Object}
+         */
+        function addGroupToTranslate() {
+            return detectionsVisibleArea.append('g');
+        }
+
+        /**
+         * Add clip path element for sonar graph.
          */
         function addClipPath() {
-            mainClipPath = graph
+            svgElementsContainer
                 .append('defs')
                 .append('clipPath')
                 .attr('id', 'clipPath_' + config.containerElement.id)
@@ -119,31 +238,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Highlight line path.
-         *
-         * @param {Object} element Target line path
-         */
-        function highlightLinePath(detectionName) {
-            gMain.selectAll('.detectionPath').call(removeHighlightSelection);
-            gTrack.selectAll('.' + detectionName).classed('selected', true);
-        }
-
-        /**
-         * Remove highlighting from line paths
-         *
-         * @param {Array} selection Line paths collection
-         */
-        function removeHighlightSelection(selection) {
-            _.each(selection[0] ,function (path) {
-                d3.select(path).classed('selected', false);
-            });
-        }
-
-        /**
          * Update dimensions of the clip path
          */
         function updateClipPathDimensions() {
-            graph
+            svgElementsContainer
                 .select('#clipPath_' + config.containerElement.id + ' rect')
                 .attr({
                     'height': containerElementSize.height,
@@ -162,7 +260,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         *
+         * Update label position of Y axis
          */
         function updateLabelPosition() {
             yAxisElement
@@ -172,6 +270,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         /**
          * Add X axis to the graph
+         *
+         * @return {Object}
          */
         function addGxAxis() {
             // d3 axis component
@@ -182,24 +282,28 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 .orient("top");
 
             // add axis element and apply axis component
-            xAxisElement = graph.append('g')
+            var axis = svgElementsContainer.append('g')
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0, 0)')
                 .style('opacity', config.showXAxis ? 1 : 0)
                 .call(xComponent.axis);
 
             // axis label
-            xAxisElement.append('text')
+            axis.append('text')
                 .classed('axis-unit', true)
                 .attr('transform', 'translate(' + containerElementSize.width + ',0)')
                 .attr('y', 0)
                 .attr('dy', '1.71em')
                 .style('text-anchor', 'end')
                 .text(xAxisLabel);
+
+            return axis;
         }
 
         /**
          * Add Y axis to the graph
+         *
+         * @return {Object}
          */
         function addGyAxis() {
             // d3 axis component
@@ -207,18 +311,18 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 .scale(yAxisScale)
                 .ticks(config.yTicks)
                 .tickFormat(function (d) {
-                    return yAxisFormat(d);
+                    return yTickFormat(d);
                 })
                 .orient('left');
 
             // add axis element and apply axis component
-            yAxisElement = graph.append('g')
+            var axis = svgElementsContainer.append('g')
                 .attr('class', 'y axis')
                 .attr('transform', 'translate(0,0)')
                 .call(yAxisScale.axis);
 
             // axis label
-            yAxisElement
+            axis
                 .append('text')
                 .classed('axis-unit', true)
                 .attr('transform', 'translate(0,' + containerElementSize.height + ') rotate(-90)')
@@ -227,80 +331,53 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 .attr('dx', '2.71em')
                 .style('text-anchor', 'end')
                 .text(config.yAxisLabel);
+
+            return axis;
         }
 
         /**
-         * Configure d3 lib scale for axes
+         * Configure scale of X axis
+         *
+         * @return {Object}
          */
-        function configureScale() {
-            xComponent = d3.scale.linear()
+        function addXComponent() {
+            return d3.scale.linear()
                 .domain(xDomain)
                 .range([0, containerElementSize.width]);
+        }
 
+        /**
+         * Update range values of Y axis
+         */
+        function setYAxisRange() {
             yAxisScale.range([containerElementSize.height, 0]);
         }
 
         /**
-         * Selected line path handler.
+         * Settings getter
+         *
+         * @returns {Object}
          */
-        function selectLinePath() {
-            var target = event.target;
-            var detectionName;
-
-            detectionName = target.getAttribute('detection-name');
-            config.detectionSelect(detectionName);
-            highlightLinePath(detectionName);
-        }
+        this.config = function () {
+            return config;
+        };
 
         /**
-         * Create Line path.
+         * Remove highlighting from line paths
          *
-         * @param {String} pathName
-         * @returns {Object} Line path
+         * @param {Array} selection Line paths collection
          */
-        function linePath(pathName, opacity) {
-            var lineDatum = [{x: null, y: 0}];
-            var linePath = gTrack
-                .append('path')
-                .datum(lineDatum)
-                .attr('d', lineGenerator())
-                .attr('class', 'line detectionPath ' + pathName)
-                .attr('detection-name', pathName)
-                .attr('stroke-linecap', "round")
-                .attr('stroke-linejoin', "round")
-                .attr('stroke-opacity', opacity)
-                .attr('stroke-dasharray', '0.3')
-                .attr('stroke-linecap', 'butt');
-
-            var existed = gTrack.selectAll('.selected.' + pathName);
-            if (existed.size()) {
-                linePath.classed('selected', true);
-            }
-
-            // bind click delegate handler
-            linePath.on('click', selectLinePath);
-
-            return linePath;
-        }
-
-        /**
-         * Line path generator function.
-         *
-         * @returns {Object} Line generator
-         */
-        function lineGenerator() {
-            var generator = d3.svg.line()
-                .x(function (d) { return d.x; })
-                .y(function (d) { return d.y; })
-                .defined(function (d) { return d.x != null; });
-            return generator;
-        }
+        this.removeHighlightSelection = function (selection) {
+            _.each(selection[0] ,function (path) {
+                d3.select(path).classed('selected', false);
+            });
+        };
 
         /**
          * Remove svg element from DOM.
          */
         this.removeContainer = function () {
-            svgContainer.remove()
+            svgElement.remove()
         };
 
         /**
@@ -319,7 +396,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param timeOffset
          */
         this.changeTracksOffset = function (timeOffset) {
-            gTrack
+            detectionsTranslationGroup
                 .attr('transform', 'translate(0,' + yAxisScale(timeOffset) + ')');
         };
 
@@ -333,20 +410,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             yAxisScale.range([containerElementSize.height, 0]);
             updateClipPathDimensions();
             updateLabelPosition();
-        };
-
-        /**
-         * Create a new line path.
-         *
-         * @param {String} pathName
-         * @returns {Object} line path properties
-         */
-        this.createLinePath = function (pathName, opacity) {
-            return {
-                generator: lineGenerator(),
-                path: linePath(pathName, opacity),
-                datum: [{x: null, y: 0}]
-            }
         };
 
         this.visibleDomain = function (time) {
@@ -375,106 +438,280 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         this.xCoordinate = function (nextPointDegree) {
             return xComponent(xTickFormat(nextPointDegree));
         };
+
+        this.detectionContainer = function () {
+            return detectionsVisibleArea;
+        };
+
+        this.detectionWrapper = function () {
+            return detectionsTranslationGroup;
+        };
     }
 
     /**
-     * Graph class.
+     * LinesSvgView class.
+     * @class LinesSvgView
      * @param {Object} options
      * @returns {Object}
      */
-    function Graph(options) {
-        var detectionExpireTime =  1 * 60 * 1000; // 1 minute
-        var pointsTimeGap = 2000;
-        var processedDetections = {};
-        var renderedDetections = {};
-        var svgView;
+    function LinesSvgView(options) {
+        SvgView.call(this, options);
 
-        var config = {
-            serialRenderingMode: false
+        var self = this;
+
+        /**
+         * Selected line path handler.
+         */
+        function selectLinePath() {
+            var target = event.target;
+            var detectionName;
+
+            detectionName = target.getAttribute('detection-name');
+            self.config().detectionSelect(detectionName);
+            highlightLinePath(detectionName);
+        }
+
+        /**
+         * Highlight line path.
+         *
+         * @param {Object} detectionName Element Target line path
+         */
+        function highlightLinePath(detectionName) {
+            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+            self.detectionWrapper().selectAll('.' + detectionName).classed('selected', true);
+        }
+
+        /**
+         * Create Line path.
+         *
+         * @param {String} pathName
+         * @param {Float} opacity
+         * @returns {Object} Line path
+         */
+        this.linePath = function (pathName, opacity) {
+            var lineDatum = [{x: null, y: 0}];
+            var linePath = this.detectionWrapper()
+                .append('path')
+                .datum(lineDatum)
+                .attr('d', this.lineGenerator())
+                .attr('class', 'line detectionPath ' + pathName)
+                .attr('detection-name', pathName)
+                .attr('stroke-linecap', "round")
+                .attr('stroke-linejoin', "round")
+                .attr('stroke-opacity', opacity)
+                .attr('stroke-dasharray', '0.3')
+                .attr('stroke-linecap', 'butt');
+
+            var existed = this.detectionWrapper().selectAll('.selected.' + pathName);
+            if (existed.size()) {
+                linePath.classed('selected', true);
+            }
+
+            // bind click delegate handler
+            linePath.on('click', selectLinePath);
+
+            return linePath;
         };
 
-        init(options);
-
-        function init(options) {
-            _.each(options, function (value, key) {
-                if (value !== undefined) {
-                    config[key] = value;
-                }
-            });
-
-            svgView = new SvgView(options);
-        }
+        /**
+         * Line path generator function.
+         *
+         * @returns {Object} Line generator
+         */
+        this.lineGenerator = function () {
+            return d3.svg.line()
+                .x(function (d) { return d.x; })
+                .y(function (d) { return d.y; })
+                .defined(function (d) { return d.x != null; });
+        };
 
         /**
-         * Change detections positions according to settings of axis.
+         * Line path properties.
+         *
+         * @returns {Object} Line path properties
          */
-        function changeDetectionsPosition() {
-            var groupOffset = yAxisOriginCoordinate();
-            _.each(renderedDetections, function (detection) {
-                updateLinePath(detection, groupOffset);
-            });
-        }
+        this.createLinePath = function (pathName, opacity) {
+            return {
+                generator: this.lineGenerator(),
+                path: this.linePath(pathName, opacity),
+                datum: [{x: null, y: 0}]
+            }
+        };
+    }
+
+    extendClass(LinesSvgView, SvgView);
+
+    /**
+     * DotsSvgView class.
+     * @class DotsSvgView
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function DotsSvgView(options) {
+        options = _.extend(options, {
+            detectionPointRadii: {rx: 4, ry: 5}
+        });
+
+        SvgView.call(this, options);
+
+        var self = this;
+        //var opacitySegments = {};
+        var colors = d3.scale.linear()
+            .domain([0, 100])
+            .range([0, 45]);
+
+        reusablePoint();
 
         /**
-         * Render added detections on graph.
+         * Create a new line path.
+         *
+         * @param {String} pathName
+         * @returns {Object} line path properties
          */
-        function render() {
-            _.each(processedDetections, function (detectionPoint, pathName) {
-                var detectionPath = renderedDetections[pathName];
-                if (!detectionPath) {
-                    createLinePath(detectionPoint, pathName);
+        this.createPointsGroup = function (point, name) {
+            var group = self.detectionWrapper().append('g')
+                .attr('class', 'detectionPath ' + name)
+                .attr('detection-name', point.trackName);
+
+            // bind click delegate handler
+            group.on('click', selectDetectionGroup);
+            //opacitySegments[name] = {};
+
+            return group;
+
+        };
+
+        /**
+         * Append datapoint element to group.
+         *
+         * @param {Object} detection
+         * @param {Object} group
+         * @param {Number} groupOffset
+         * @returns {Object}
+         */
+        this.addDetectionToGroup = function (detection, group, groupOffset) {
+            //var segment = opacitySegment(group, detection);
+
+            return group
+                .append('use')
+                .attr({
+                    'xlink:href': '#pathMarker_' + this.config().containerElement.id,
+                    'x': self.xCoordinate(detection.degree),
+                    'y': - (groupOffset - self.yCoordinate(detection.date - this.config().initialTime)),
+                    'class': 'point',
+                    'detection-name': detection.trackName
+                })
+                .style({fill: 'hsl(70, 100%, ' + colors(detection.strength * 100) + '%)'});
+        };
+
+        //function opacitySegment(group, detection) {
+        //    var segmentId = 'segment-' + detection.strength.toString();
+        //    var segmentGroup = opacitySegments[detection.groupId];
+        //    var segment = segmentGroup[segmentId];
+        //
+        //    if (!segment) {
+        //        segment = group.append('g')
+        //            .attr('filter', 'url(#constantOpacity-' + detection.strength.toString().replace(/\./, '') + ')');
+        //        segmentGroup[segmentId] = segment;
+        //    }
+        //
+        //    return segment;
+        //}
+        //
+
+        /**
+         * Handler of selected detection group
+         */
+        function selectDetectionGroup () {
+            var detectionName;
+            var groupElement;
+            var target = event.target;
+
+            if (target.tagName && 'g' === target.tagName.toLowerCase()) {
+                groupElement = target;
+            } else {
+                if (target.getAttribute) {
+                    groupElement = target.parentElement;
+                } else if (target.correspondingUseElement) {
+                    // Safari browser
+                    groupElement = target.correspondingUseElement.parentElement;
                 } else {
-                    addPointToLinePath(detectionPoint, detectionPath);
-                }
-            });
-        }
-
-        function createLinePath(detection, name) {
-            var data = [];
-            var linePath = svgView.createLinePath(detection.trackName,  detection.strength);
-
-            // there is no element, need to create it
-            data.push(detection);
-
-            // add detection data to rendered collection
-            renderedDetections[name] = {
-                lineDatum: linePath.datum,
-                lineGenerator: linePath.generator,
-                linePath: linePath.path,
-                data: data,
-                date: detection.date,
-                isExpired: false
-            };
-        }
-
-        function addPointToLinePath(detection, detectionPath) {
-            var nextPoint = detection;
-            var lastPoint = _.last(detectionPath.data);
-
-            if (!detectionPath.isExpired) {
-                var groupOffset = yAxisOriginCoordinate();
-
-                detectionPath.lineDatum.push({
-                    x: xCoordinate(nextPoint, lastPoint),
-                    y: -(groupOffset - svgView.yCoordinate(detection.date))
-                });
-
-                // add detection to rendered collection
-                detectionPath.data.push(detection);
-
-                if (config.serialRenderingMode) {
-                    detectionPath.linePath.attr('d', detectionPath.lineGenerator(detectionPath.lineDatum));
-
-                    if (svgView.visibleDomain()[0].getTime() >
-                        (_.first(detectionPath.data).date.getTime() + detectionExpireTime)) {
-                        // datapoint became "invisible" - its time is less then time axis domain lower value
-
-                        // remove datapoint from collection
-                        detectionPath.data.shift();
-                        detectionPath.lineDatum.shift();
-                    }
+                    console.log('Can\'t get class attribute of the target', event.target);
                 }
             }
+
+            if (groupElement) {
+                detectionName = groupElement.getAttribute('detection-name');
+                self.config().detectionSelect(detectionName);
+                highlightGroup(groupElement);
+            }
+        }
+
+        /**
+         * Highlight a target detection group.
+         */
+        function highlightGroup(element) {
+            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+            d3.select(element).classed('selected', true);
+        }
+
+        /**
+         * Create element with reusable detection point
+         */
+        function reusablePoint() {
+            var graphNode = self.detectionContainer().node().parentNode;
+            var defsPathMarker =  d3.select(graphNode)
+                .select('defs')
+                .append('g')
+                .attr('id', 'pathMarker_' + self.config().containerElement.id);
+
+            defsPathMarker.append('ellipse')
+                .attr('class', 'detectionPoint')
+                .attr('rx', self.config().detectionPointRadii.rx)
+                .attr('ry', self.config().detectionPointRadii.ry)
+                .attr('cx', '4')
+                .attr('cy', '5')
+                .attr('clip-path', 'url(#hole)');
+
+            // Add transparent circle to expand "clickable" area. It helps selecting sonar path
+            //defsPathMarker.append('circle')
+            //    .attr('r', 12)
+            //    .style({fill: 'black', 'fill-opacity': '0'});
+
+            d3.select(graphNode)
+                .select('defs')
+                .append('clipPath')
+                .attr('id', 'hole')
+                .append('rect')
+                .attr({
+                    'x': 0,
+                    'y': 3,
+                    'height': 5,
+                    'width': 8
+                });
+        }
+    }
+
+    extendClass(DotsSvgView, SvgView);
+
+    /**
+     * Detections class.
+     * @class Detections
+     * @abstract
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function Detections(options) {
+        this.detectionExpireTime =  1 * 60 * 1000; // 1 minute
+        this.pointsTimeGap = 2000;
+        this.svgView = null;
+
+        var processedDetections = {};
+        var renderedDetections = {};
+        var self = this;
+
+        if (this.constructor === Detections) {
+            throw new Error("Can't instantiate abstract class!");
         }
 
         /**
@@ -483,7 +720,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} detections
          */
         function findExpiredDetections(detections) {
-            var existedDetections = _.keys(renderedDetections);
+            var existedDetections = _.keys(this.renderedDetections);
             var newDetections = _.pluck(detections, 'groupId');
             var expiredDetections = [];
 
@@ -491,18 +728,310 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 if (!_.contains(newDetections, detection)) {
                     // a detection series disappeared
                     expiredDetections.push(detection);
-                    renderedDetections[detection].isExpired = true;
+                    this.renderedDetections[detection].isExpired = true;
                 } else {
                     // a detection series appeared again
-                    renderedDetections[detection].isExpired = false;
+                    this.renderedDetections[detection].isExpired = false;
                 }
-            });
+            }, this);
 
             if (expiredDetections.length) {
                 // expired series exist - analise them
-                removeExpiredDetection(expiredDetections);
+                this.removeExpiredDetection(expiredDetections);
             }
         }
+
+        /**
+         * Add detection to the processed detection.
+         *
+         * @param {Object} detection
+         */
+        function addProcessedDetection(detection) {
+            if (detection.strength === 0) {
+                // invisible detection can be omitted
+                return;
+            }
+
+            processedDetections[detection.groupId] = {
+                groupId: detection.groupId,
+                trackName: detection.trackName,
+                date: detection.date,
+                degree: detection.degree,
+                strength: detection.strength
+            };
+        }
+
+        this.addDetection = function (detections) {
+            // create list of path names from detections
+            _.map(detections, function (detection) {
+                // use normalized id to work with collection correctly
+                // replace spaces
+                detection.groupId = this.createGroupId(detection);
+                if (detection.groupId !== 'Ownship') {
+                }
+                addProcessedDetection(detection);
+            }, this);
+
+            findExpiredDetections(detections);
+            this.addDetections();
+        };
+
+        this.processedDetections = function () {
+            return processedDetections;
+        };
+
+        this.renderedDetections = function (detection) {
+            if (detection) {
+                return renderedDetections[detection];
+            }
+
+            return renderedDetections;
+        };
+
+        this.setRenderedDetections = function (name, detection) {
+            renderedDetections[name] = detection;
+        };
+
+        this.settings = function () {
+            return options;
+        };
+
+        /**
+         * Remove group wrapper element of detections.
+         *
+         * @param {String} groupId
+         */
+        this.removeExpiredDatapointGroup = function (groupId) {
+            if (!this.renderedDetections[groupId].data.length) {
+                // if collection is empty
+                // remove a path element from DOM
+                this.renderedDetections[groupId].linePath.remove();
+                // remove empty collection
+                delete this.renderedDetections[groupId];
+                // remove detection collection respectively
+                delete processedDetections[groupId];
+            }
+        };
+
+        /**
+         * Change detections positions according to settings of axis.
+         */
+        this.changeDetectionsPosition = function (dimension) {
+            this.svgView.changeGraphHeight(dimension);
+            this.svgView.changeTracksOffset(this.settings().initialTime);
+
+            var groupOffset = this.yAxisOriginCoordinate();
+            _.each(renderedDetections, function (detection) {
+                this.updateDetection(detection, groupOffset);
+            }, this);
+        };
+
+        this.addDetections = function () {
+            var groupOffset = this.yAxisOriginCoordinate();
+            _.each(processedDetections, function (detectionPoint, groupId) {
+                var detectionPath = renderedDetections[groupId];
+                if (!detectionPath) {
+                    this.createPathContainer(detectionPoint, groupId);
+                } else {
+                    this.addPointToPath(detectionPoint, detectionPath, groupOffset);
+                }
+            }, this);
+        };
+
+        /**
+         * Returns Y-coordinate depend on Y-axis domain
+         *
+         * @returns {Integer}
+         */
+        this.yAxisOriginCoordinate = function () {
+            return self.svgView.yCoordinate(options.initialTime);
+        };
+
+        this.moveDetections = function (simulationTime) {
+            this.svgView.updateVisibleDomain(simulationTime.getTime());
+            this.svgView.changeTracksOffset(options.initialTime);
+
+            if (!options.serialRenderingMode) {
+                this.removeAllExpiredDetections();
+            }
+        };
+
+        this.currentTimeBoundaries = function (time) {
+            return this.svgView.visibleDomain(time);
+        }
+    }
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.createPathContainer = function () {};
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.addPointToPath = function () {};
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.removeAllExpiredDetections = function () {};
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.removeDetections = function () {};
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.createGroupId = function () {};
+
+    /**
+     * @abstract method
+     */
+    Detections.prototype.updateDetection = function () {};
+
+    /**
+     * DotDetections class.
+     * @class DotDetections
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function DotDetections(options) {
+        Detections.call(this, options);
+
+        this.svgView = new DotsSvgView(options);
+
+        /**
+         * Remove group wrapper element of detections.
+         *
+         * @param {String} groupId
+         */
+        this.removeExpiredDatapointGroup = function (groupId) {
+            if (!this.renderedDetections(groupId).data.length) {
+                // if collection is empty
+                // remove empty collection
+                delete this.renderedDetections(groupId);
+                // remove detection collection respectively
+                delete this.processedDetections(groupId);
+                // remove group wrapper element
+                //$('#' + options.containerElement.id + ' .' + groupId).remove();
+            }
+        };
+
+        /**
+         * Remove expired (out of clip path) element from DOM and detection points respectively.
+         *
+         * @param {Object} groupIds
+         */
+        this.removeExpiredDetection = function (groupIds) {
+            _.each(groupIds, function (groupId) {
+                if (this.svgView.visibleDomain()[0].getTime() >
+                    (_.first(this.renderedDetections(groupId).data).date.getTime() + this.detectionExpireTime)) {
+                    // datapoint became "invisible" - its time is less then time axis domain lower value
+
+                    // extract first datapoint
+                    var expiredDetection = this.renderedDetections(groupId).data.shift();
+                    // and remove it
+                    if (expiredDetection.pointElement) {
+                        expiredDetection.pointElement.remove();
+                    }
+
+                    this.removeExpiredDatapointGroup(groupId);
+                }
+            }, this);
+        }
+    }
+
+    extendClass(DotDetections, Detections);
+
+    /**
+     * Remove all expired detections.
+     * Used in review mode
+     */
+    DotDetections.prototype.removeAllExpiredDetections = function () {
+        _.each(this.processedDetections(), function (detection, groupId) {
+            _.each(this.renderedDetections(groupId).data, function (item, index) {
+                if (item.date.getTime() >= this.svgView.visibleDomain()[1].getTime() ||
+                    item.date.getTime() <= this.svgView.visibleDomain()[0].getTime()) {
+                    var expiredDetection = this.renderedDetections(groupId).data.splice(index, 1).pop();
+                    if (expiredDetection.pointElement) {
+                        expiredDetection.pointElement.remove();
+                    }
+
+                    this.removeExpiredDatapointGroup(groupId);
+                }
+            }, this);
+        }, this);
+    };
+
+    DotDetections.prototype.createPathContainer = function (detection, name) {
+        var data = [];
+        var group = this.svgView.createPointsGroup(detection, name);
+
+        // there is no element, need to create it
+        data.push(detection);
+
+        // add detection data to rendered collection
+        this.setRenderedDetections(name, {
+            data: data,
+            group: group,
+            date: detection.date,
+            isExpired: false
+        });
+    };
+
+    DotDetections.prototype.removeDetections = function () {
+        _.each(this.renderedDetections(), function (detection) {
+            detection.group.on('click', null);
+        });
+
+        this.svgView.removeContainer();
+    };
+
+    DotDetections.prototype.addPointToPath = function (detection, detectionPath, groupOffset) {
+        if (!detectionPath.isExpired) {
+            // append new point element based on detection
+            detection.pointElement = this.svgView.addDetectionToGroup(detection, detectionPath.group, groupOffset);
+            // add detection to rendered collection
+            detectionPath.data.push(detection);
+
+            if (this.settings().serialRenderingMode && this.svgView.visibleDomain()[0].getTime() >
+                (_.first(detectionPath.data).date.getTime() + this.detectionExpireTime)) {
+                // detection point became "invisible" - its time is less then time axis domain lower value
+
+                // remove datapoint from collection
+                var expiredDetection = detectionPath.data.shift();
+                // remove datapoint element
+                if (expiredDetection.pointElement) {
+                    expiredDetection.pointElement.remove();
+                }
+            }
+        }
+    };
+
+    DotDetections.prototype.createGroupId = function (detection) {
+        return detection.trackName.replace(/\W/, '_');
+    };
+
+    DotDetections.prototype.updateDetection = function (detection, groupOffset) {
+        _.each(detection.data, function (element) {
+            if (element.pointElement) {
+                element.pointElement.attr('y', - (groupOffset - this.svgView.yCoordinate(element.date)));
+            }
+        }, this);
+    };
+
+    /**
+     * LineDetections class.
+     * @class LineDetections
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function LineDetections(options) {
+        Detections.call(this, options);
+
+        this.svgView = new LinesSvgView(options);
 
         /**
          * Remove expired (out of clip path) element from DOM and datapoint respectively.
@@ -510,105 +1039,20 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} dataset
          * @param {Object} datapoints
          */
-        function removeExpiredDetection(datapoints) {
+        this.removeExpiredDetection = function (datapoints) {
             _.each(datapoints, function (datapoint) {
-
-                if (svgView.visibleDomain()[0].getTime() >
-                    (_.first(renderedDetections[datapoint].data).date.getTime() + detectionExpireTime)) {
+                if (this.svgView.visibleDomain()[0].getTime() >
+                    (_.first(this.renderedDetections[datapoint].data).date.getTime() + this.detectionExpireTime)) {
                     // datapoint became "invisible" (outdated) - its time is less then time axis domain lower value
 
                     // remove outdated point (the first)
-                    renderedDetections[datapoint].data.shift();
-                    renderedDetections[datapoint].lineDatum.shift();
+                    this.renderedDetections[datapoint].data.shift();
+                    this.renderedDetections[datapoint].lineDatum.shift();
 
-                    removeExpiredDatapointGroup(datapoint);
+                    this.removeExpiredDatapointGroup(datapoint);
                 }
-            });
-        }
-
-        /**
-         * Add datapoint to the dataset.
-         *
-         * @param {Object} dataset
-         * @param {Object} row
-         */
-        function addDatapoint(dataset, row) {
-            if (row.strength === 0) {
-                // invisible detection can be omitted
-                return;
-            }
-
-            dataset[row.groupId] = {
-                trackName: row.trackName,
-                date: row.date,
-                degree: row.degree,
-                strength: row.strength
-            };
-        }
-
-        /**
-         * Reconfigure Y-axis domain.
-         *
-         * @param {Date} simulationTime
-         */
-        function changeYAxisDomain(simulationTime) {
-            svgView.updateVisibleDomain(simulationTime.getTime());
-            svgView.changeTracksOffset(config.initialTime);
-
-            if (!config.serialRenderingMode) {
-                removeAllExpiredDetections();
-            }
-        }
-        /**
-         * Remove all expired detections.
-         * Used in review mode
-         */
-        function removeAllExpiredDetections() {
-            var timeAxisUpperBound = svgView.visibleDomain()[1].getTime();
-            var timeAxisLowerBound = svgView.visibleDomain()[0].getTime();
-            var groupOffset = yAxisOriginCoordinate();
-            var testPointDate;
-            
-            _.each(renderedDetections, function (detection, groupId) {
-
-                if (detection.data.length) {
-                    _.each(detection.data, function (item, index) {
-                        testPointDate = item.date.getTime();
-                        if (testPointDate >= timeAxisUpperBound || testPointDate <= timeAxisLowerBound) {
-                            detection.data.splice(index, 1);
-                            detection.lineDatum.splice(index, 1);
-                        }
-                    });
-
-                    removeExpiredDatapointGroup(groupId);
-
-                    if (detection) {
-                        detection.data = _.sortBy(detection.data, function (d) {return d.date.getTime()});
-                        updateLinePath(detection, groupOffset);
-                    }
-                }
-            });
-        }
-
-        function updateLinePath(detection, offset) {
-            var lineDatum = [];
-            var nextPoint;
-            var lastPoint;
-
-            _.each(detection.data, function (data) {
-                nextPoint = data;
-                lineDatum.push({
-                    x: xCoordinate(nextPoint, lastPoint),
-                    y: - (offset - svgView.yCoordinate(data.date))
-                });
-
-                lastPoint = nextPoint;
-            });
-
-            detection.lineDatum = lineDatum;
-            detection.linePath.attr('d', detection.lineGenerator(lineDatum));
-            lineDatum = [];
-        }
+            }, this);
+        };
 
         /**
          * Determine x-coordinate of a next point.
@@ -618,7 +1062,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Object} lastPoint
          * @returns {null|Integer} x-coordinate of a next point
          */
-        function xCoordinate(nextPoint, lastPoint) {
+        this.xCoordinate = function (nextPoint, lastPoint) {
             var lastPointDegree;
             var lastPointTime;
             var sortedPoints;
@@ -634,93 +1078,196 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             sortedPoints = _.sortBy([nextPoint.degree, lastPointDegree], function (num) {return num});
             changeSign = Math.abs(sortedPoints[0] - sortedPoints[1]) > 350;
 
-            if (changeSign || ((nextPoint.date.getTime() - lastPointTime) > pointsTimeGap)) {
+            if (changeSign || ((nextPoint.date.getTime() - lastPointTime) > this.pointsTimeGap)) {
                 return null;
             }
 
-            return svgView.xCoordinate(nextPoint.degree);
+            return this.svgView.xCoordinate(nextPoint.degree);
         }
+    }
 
-        /**
-         * Returns Y-coordinate depend on Y-axis domain
-         *
-         * @returns {Integer}
-         */
-        function yAxisOriginCoordinate() {
-            return svgView.yCoordinate(config.initialTime);
-        }
+    extendClass(LineDetections, Detections);
 
-        /**
-         * Remove group wrapper element of detections.
-         *
-         * @param {String} groupId
-         */
-        function removeExpiredDatapointGroup(groupId) {
-            if (!renderedDetections[groupId].data.length) {
-                // if collection is empty
-                // remove a path element from DOM
-                renderedDetections[groupId].linePath.remove();
-                // remove empty collection
-                delete renderedDetections[groupId];
-                // remove detection collection respectively
-                delete processedDetections[groupId];
+    /**
+     * Remove all expired detections.
+     * Used in review mode
+     */
+    LineDetections.prototype.removeAllExpiredDetections = function () {
+        var timeAxisUpperBound = this.svgView.visibleDomain()[1].getTime();
+        var timeAxisLowerBound = this.svgView.visibleDomain()[0].getTime();
+        var groupOffset = this.yAxisOriginCoordinate();
+        var testPointDate;
+
+        _.each(this.renderedDetections, function (detection, groupId) {
+
+            if (detection.data.length) {
+                _.each(detection.data, function (item, index) {
+                    testPointDate = item.date.getTime();
+                    if (testPointDate >= timeAxisUpperBound || testPointDate <= timeAxisLowerBound) {
+                        detection.data.splice(index, 1);
+                        detection.lineDatum.splice(index, 1);
+                    }
+                });
+
+                this.removeExpiredDatapointGroup(groupId);
+
+                if (detection) {
+                    detection.data = _.sortBy(detection.data, function (d) {return d.date.getTime()});
+                    this.updateDetection(detection, groupOffset);
+                }
+            }
+        }, this);
+    };
+
+    LineDetections.prototype.createPathContainer = function (detection, name) {
+        var data = [];
+        var linePath = this.svgView.createLinePath(detection.trackName,  detection.strength);
+
+        // there is no element, need to create it
+        data.push(detection);
+
+        // add detection data to rendered collection
+        this.setRenderedDetections(name, {
+            lineDatum: linePath.datum,
+            lineGenerator: linePath.generator,
+            linePath: linePath.path,
+            data: data,
+            date: detection.date,
+            isExpired: false
+        });
+    };
+
+    LineDetections.prototype.addPointToPath = function (detection, detectionPath, groupOffset) {
+        var nextPoint = detection;
+        var lastPoint = _.last(detectionPath.data);
+
+        if (!detectionPath.isExpired) {
+            detectionPath.lineDatum.push({
+                x: this.xCoordinate(nextPoint, lastPoint),
+                y: -(groupOffset - this.svgView.yCoordinate(detection.date))
+            });
+
+            // add detection to rendered collection
+            detectionPath.data.push(detection);
+
+            if (this.settings().serialRenderingMode) {
+                detectionPath.linePath.attr('d', detectionPath.lineGenerator(detectionPath.lineDatum));
+
+                if (this.svgView.visibleDomain()[0].getTime() >
+                    (_.first(detectionPath.data).date.getTime() + this.detectionExpireTime)) {
+                    // datapoint became "invisible" - its time is less then time axis domain lower value
+
+                    // remove datapoint from collection
+                    detectionPath.data.shift();
+                    detectionPath.lineDatum.shift();
+                }
             }
         }
+    };
 
-        /**
-         * Add new detections to graph.
-         *
-         * @param {Object} detections
-         */
-         function addDetection(detections) {
-            // create list of path names from detections
-            _.map(detections, function (item) {
-                // use normalized id to work with collection correctly
-                // replace spaces
-                item.groupId = item.trackName.replace(/\W/, '_') + ':' + item.strength;
-                addDatapoint(processedDetections, item);
+    LineDetections.prototype.removeDetections = function () {
+        _.each(this.renderedDetections(), function (detection) {
+            detection.linePath.on('click', null);
+        });
+
+        this.svgView.removeContainer();
+    };
+
+    LineDetections.prototype.createGroupId = function (detection) {
+        return detection.trackName.replace(/\W/, '_') + ':' + detection.strength;
+    };
+
+    LineDetections.prototype.updateDetection = function (detection, offset) {
+        var lineDatum = [];
+        var nextPoint;
+        var lastPoint;
+
+        _.each(detection.data, function (data) {
+            nextPoint = data;
+            lineDatum.push({
+                x: this.xCoordinate(nextPoint, lastPoint),
+                y: - (offset - this.svgView.yCoordinate(data.date))
             });
 
-            findExpiredDetections(detections);
-            render();
-        }
+            lastPoint = nextPoint;
+        }, this);
 
-        /**
-         * Update graph height value and reconfigure Y-axis with a new range.
-         *
-         * @param {Object} dimension
-         */
-        function changeGraphHeight(dimension) {
-            svgView.changeGraphHeight(dimension);
-            svgView.changeTracksOffset(config.initialTime);
-            changeDetectionsPosition();
-        }
+        detection.lineDatum = lineDatum;
+        detection.linePath.attr('d', detection.lineGenerator(lineDatum));
+        lineDatum = [];
+    };
 
-        /**
-         * Return current boundaries of Y axis.
-         *
-         * @returns {Array}
-         */
-        function visibleDomain(time) {
-            return svgView.visibleDomain(time);
-        }
+    /**
+     * Graph class.
+     * @class Graph
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function Graph(options) {
+        var builder;
 
-        /**
-         * Remove graph from DOM and remove handlers
-         */
-        function remove () {
-            _.each(renderedDetections, function (detection) {
-                detection.linePath.on('click', null);
-            });
-            svgView.removeContainer();
+        var config = {
+            serialRenderingMode: false
+        };
+
+        var builderDotMode = false;
+
+        _.each(options, function (value, key) {
+            if (value !== undefined) {
+                config[key] = value;
+            }
+        });
+
+        if (builderDotMode) {
+            builder = new DotDetections(config);
+        } else {
+            builder = new LineDetections(config);
         }
 
         return {
-            changeYAxisDomain: changeYAxisDomain,
-            addDetection: addDetection,
-            changeGraphHeight: changeGraphHeight,
-            timeAxisBoundaries: visibleDomain,
-            remove: remove
+
+            /**
+             * Reconfigure Y-axis domain.
+             *
+             * @param {Date} simulationTime
+             */
+            changeYAxisDomain: function (simulationTime) {
+                builder.moveDetections(simulationTime);
+            },
+
+            /**
+             * Add new detections to graph.
+             *
+             * @param {Object} detections
+             */
+            addDetection: function (detections) {
+                builder.addDetection(detections);
+            },
+
+            /**
+             * Update graph height value and reconfigure Y-axis with a new range.
+             *
+             * @param {Object} dimension
+             */
+            changeGraphHeight: function (dimension) {
+                builder.changeDetectionsPosition(dimension);
+            },
+
+            /**
+             * Return current boundaries of Y axis.
+             *
+             * @returns {Array}
+             */
+            timeAxisBoundaries: function (time) {
+                return builder.currentTimeBoundaries(time);
+            },
+
+            /**
+             * Remove graph from DOM and remove handlers
+             */
+            remove: function () {
+                builder.removeDetections();
+            }
         }
     }
 
