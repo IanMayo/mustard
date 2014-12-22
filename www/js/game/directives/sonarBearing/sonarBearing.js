@@ -33,7 +33,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                         plotElements.graphs.push({
                             element: el,
                             height: 1,
-                            duration: 8,
+                            duration: 4,
                             yTicks: 15,
                             margin: {top: 25, left: 60, bottom: 5, right: 10}
                         });
