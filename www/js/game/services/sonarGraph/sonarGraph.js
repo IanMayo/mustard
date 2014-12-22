@@ -1210,7 +1210,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             serialRenderingMode: false
         };
 
-        var builderDotMode = false;
+        var builderDotMode = true   ;
 
         _.each(options, function (value, key) {
             if (value !== undefined) {
