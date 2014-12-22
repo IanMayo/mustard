@@ -39,6 +39,15 @@
         <strong>Game Credits (including Help)</strong>  and <strong>Game Settings</strong>
       </p>
 
+      <tabset vertical="true" class="sideways">
+        <tab ng-repeat="level in levels">
+          <tab-heading>
+            {{ level.id }}. {{ level.name }}.
+          </tab-heading>
+          <small>{{ level.description }}</small>
+        </tab>
+      </tabset>
+
       <!-- Folder with missions -->
       <div ng-repeat="level in levels">
         <div>

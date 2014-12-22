@@ -37,3 +37,40 @@
 .nav-stacked .active > a:focus {
   border-color: #ddd transparent #ddd #ddd !important;
 }
+
+.sideways .nav-stacked {
+  margin-top:50px;
+  border: none;
+  position: relative;
+}
+
+.sideways .nav-stacked > li {
+  height: 20px;
+  width: 120px;
+  margin-bottom: 100px;
+
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.sideways .nav-stacked > li > a {
+  border-bottom: 1px solid #ddd;
+  border-right-color: transparent;
+  text-align: center;
+  border-radius: 4px 4px 0 0;
+}
+
+.sideways .nav-stacked > li.active > a,
+.sideways .nav-stacked > li.active > a:hover,
+.sideways .nav-stacked > li.active > a:focus {
+  border-bottom-color: transparent;
+  border-right-color: #ddd;
+  border-left-color: #ddd;
+}
+
+.sideways .nav-stacked {
+  left: -50px;
+}
