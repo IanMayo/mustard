@@ -605,7 +605,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 })
                 .style({fill: 'hsl(70, 100%, ' + colors(detection.strength * 100) + '%)'});
 
-            detectionPointClipPath(point, detection.strength)
+            detectionPointClipPath(point, detection.strength);
+
+            return point;
         };
 
         /**
@@ -625,7 +627,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
             point.attr({
                 'clip-path': 'url(#' + clipPathPrefix +  '-' + _.random(1, 10) + ')'
-            })
+            });
         }
 
         //function opacitySegment(group, detection) {
