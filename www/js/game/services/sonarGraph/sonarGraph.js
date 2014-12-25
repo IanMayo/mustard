@@ -29,7 +29,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
 
         /**
          * X axis domain valid values
-         * 
+         *
          * @type {Array}
          */
         var xDomain = [-180, 180];
@@ -40,10 +40,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @type {Array}
          */
         var xTickValues = _.range(-180, 181, 45);
-        
+
         /**
          * X axis tick format function
-         *  
+         *
          * @returns {String}
          */
         var xTickFormat = function (d) {return d;};
@@ -549,7 +549,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
      */
     function DotsSvgView(options) {
         options = _.extend(options, {
-            detectionPointRadii: {rx: 4, ry: 5}
+            detectionPointRadii: {rx: 5, ry: 6},
+            opaqueClipPathPrefix: 'opaque-clip-path',
+            transparentClipPathPrefix: 'transparent-clip-path'
         });
 
         SvgView.call(this, options);
@@ -592,7 +594,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         this.addDetectionToGroup = function (detection, group, groupOffset) {
             //var segment = opacitySegment(group, detection);
 
-            return group
+            var point = group
                 .append('use')
                 .attr({
                     'xlink:href': '#pathMarker_' + this.config().containerElement.id,
@@ -602,7 +604,29 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                     'detection-name': detection.trackName
                 })
                 .style({fill: 'hsl(70, 100%, ' + colors(detection.strength * 100) + '%)'});
+
+            detectionPointClipPath(point, detection.strength)
         };
+
+        /**
+         * Set clip-path attribute for a detection point
+         * @param {Object} point
+         * @param {Float} strength
+         */
+        function detectionPointClipPath(point, strength) {
+            var clipPathPrefix;
+
+            if (strength >= 0.95) {
+                clipPathPrefix = self.config().opaqueClipPathPrefix;
+            } else {
+                var transparencyGroup = (Math.round(strength * 10) * 10).toString() + 'p';
+                clipPathPrefix = self.config().transparentClipPathPrefix + '-' + transparencyGroup;
+            }
+
+            point.attr({
+                'clip-path': 'url(#' + clipPathPrefix +  '-' + _.random(1, 10) + ')'
+            })
+        }
 
         //function opacitySegment(group, detection) {
         //    var segmentId = 'segment-' + detection.strength.toString();
@@ -659,36 +683,106 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Create element with reusable detection point
          */
         function reusablePoint() {
+            var config = self.config();
             var graphNode = self.detectionContainer().node().parentNode;
-            var defsPathMarker =  d3.select(graphNode)
-                .select('defs')
+            var defs = d3.select(graphNode).select('defs');
+            var defsPathMarker = defs
                 .append('g')
-                .attr('id', 'pathMarker_' + self.config().containerElement.id);
+                .attr('id', 'pathMarker_' + config.containerElement.id);
 
             defsPathMarker.append('ellipse')
                 .attr('class', 'detectionPoint')
-                .attr('rx', self.config().detectionPointRadii.rx)
-                .attr('ry', self.config().detectionPointRadii.ry)
-                .attr('cx', '4')
-                .attr('cy', '5')
-                .attr('clip-path', 'url(#hole)');
+                .attr('rx', config.detectionPointRadii.rx)
+                .attr('ry', config.detectionPointRadii.ry)
+                .attr('cx', config.detectionPointRadii.rx)
+                .attr('cy', config.detectionPointRadii.ry);
 
             // Add transparent circle to expand "clickable" area. It helps selecting sonar path
             //defsPathMarker.append('circle')
             //    .attr('r', 12)
             //    .style({fill: 'black', 'fill-opacity': '0'});
+            createClipPathsForTransparentPoints(defs);
+            addClipPathsForOpaquePoints(defs);
+        }
 
-            d3.select(graphNode)
-                .select('defs')
-                .append('clipPath')
-                .attr('id', 'hole')
-                .append('rect')
-                .attr({
-                    'x': 0,
-                    'y': 3,
-                    'height': 5,
-                    'width': 8
-                });
+        /**
+         * Create random clip-path elements for transparent points.
+         *
+         * @param {Object} parentElement
+         */
+        function createClipPathsForTransparentPoints(parentElement) {
+            // transparency step
+            var transparency;
+            // number of points in path for a specific transparency step.
+            var pointsInPath;
+
+            var x = self.config().detectionPointRadii.rx;
+            var y = self.config().detectionPointRadii.ry;
+
+            /**
+             * Create a clip-paths element for a specific number of points and transparency step
+             *
+             * @param pointsDensity
+             * @param transparencyStep
+             */
+            var createClipPath = function (pointsDensity, transparencyStep) {
+                var rx = self.config().detectionPointRadii.rx;
+                var ry = self.config().detectionPointRadii.ry;
+
+                // The fewer density of density is, the fewer scatters of radii are
+                var radiiFactor = Math.round(Math.pow(Math.log(pointsDensity), 2));
+                var xRadiusInterval = [rx - radiiFactor, rx + radiiFactor];
+                var yRadiusInterval = [ry - radiiFactor, ry + radiiFactor];
+
+                var pointsNumber = _.range(Math.round(pointsDensity + Math.pow(Math.log(pointsDensity), 3)));
+
+                var pathFunction =
+                    d3.svg.line()
+                        .x(function () { return _.random.apply(this, xRadiusInterval) })
+                        .y(function () { return _.random.apply(this, yRadiusInterval) });
+
+                for (var i = 1; i <= 10; i++) {
+                    parentElement.append('clipPath')
+                        .attr('id', self.config().transparentClipPathPrefix + '-' + transparencyStep + 'p-' + i)
+                        .append('path')
+                        .attr('d', function () {
+                            return pathFunction(pointsNumber) + 'Z';
+                        });
+                }
+            };
+
+            // initial values
+            transparency = 10;
+            pointsInPath = 3;
+
+            do {
+                createClipPath(pointsInPath, transparency);
+                transparency += 10;
+                pointsInPath += 1;
+            } while (transparency < 100);
+        }
+
+        /**
+         * Create random clip-path elements for opaque points.
+         *
+         * @param parentElement
+         */
+        function addClipPathsForOpaquePoints(parentElement) {
+            var pointsNumberInPath = _.range(30);
+            var clipPathsNumber = 10;
+            var x = self.config().detectionPointRadii.rx * 2;
+            var y = self.config().detectionPointRadii.ry * 2;
+
+            var pathFunction = d3.svg.line()
+                    .x(function () { return _.random(x) })
+                    .y(function () { return _.random(y) });
+
+            for (var i = 1; i <= clipPathsNumber; i++) {
+                parentElement.append('clipPath')
+                    .attr('id', self.config().opaqueClipPathPrefix + '-' + i)
+                    .append('path')
+                    .attr('d', function () {return pathFunction(pointsNumberInPath) + 'Z'});
+            }
         }
     }
 
