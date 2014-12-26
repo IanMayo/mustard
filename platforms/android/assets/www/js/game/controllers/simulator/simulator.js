@@ -24,6 +24,7 @@ angular.module('subtrack90.game.simulator', [
     'subtrack90.game.warningAboutTimer',
     'subtrack90.app.user',
     'subtrack90.app.sound',
+    'subtrack90.game.svgFilter',
     'ngDraggable'
 ])
 

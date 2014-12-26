@@ -12,7 +12,8 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
         },
         template: '' +
             '<div id="viz-container" class="visContainer">' +
-                '<div id="viz-minor" class="vizSonar retro-font"></div>' +
+                '<div id="viz-minor" class="vizSonar retro-font">' +
+                '</div>' +
             '</div>',
         link: function (scope, element, attrs) {
 
@@ -35,7 +36,6 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                             height: 1,
                             duration: 8,
                             yTicks: 15,
-                            detectionPointRadii: {rx: 4, ry: 5},
                             margin: {top: 25, left: 60, bottom: 5, right: 10}
                         });
                         break;
@@ -52,7 +52,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
             var assignDetectionsPointsToNames = function (detections) {
                 var detectionsAssociatedWithLabels = [];
                 var time = detections.detections[0];
-                var currentTime = new Date(time.getTime());
+                var currentTime = new Date(time);
                 var detectionsPoints = _.rest(detections.detections);
                 _.each(detectionsPoints, function (point, index) {
                     detectionsAssociatedWithLabels.push({
