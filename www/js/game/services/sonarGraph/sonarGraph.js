@@ -623,7 +623,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             if (strength >= 0.95) {
                 clipPathPrefix = self.config().opaqueClipPathPrefix;
             } else {
-                var transparencyGroup = (Math.round(strength * 10) * 10).toString() + 'p';
+                var transparencyGroup = ((Math.round(strength * 10) || 1) * 10).toString() + 'p';
                 clipPathPrefix = self.config().transparentClipPathPrefix + '-' + transparencyGroup;
             }
 
