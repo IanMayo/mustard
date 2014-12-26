@@ -368,8 +368,9 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * @param {Array} selection Line paths collection
          */
         this.removeHighlightSelection = function (selection) {
-            _.each(selection[0] ,function (path) {
-                d3.select(path).classed('selected', false);
+            _.each(selection[0], function (path) {
+                d3.select(path)
+                    .attr('filter', null);
             });
         };
 
@@ -551,7 +552,8 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         options = _.extend(options, {
             detectionPointRadii: {rx: 5, ry: 6},
             opaqueClipPathPrefix: 'opaque-clip-path',
-            transparentClipPathPrefix: 'transparent-clip-path'
+            transparentClipPathPrefix: 'transparent-clip-path',
+            selectedPathColorFilter: 'selected-path-color-filter'
         });
 
         SvgView.call(this, options);
@@ -678,7 +680,24 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          */
         function highlightGroup(element) {
             self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            d3.select(element).classed('selected', true);
+            d3.select(element)
+                .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+        }
+
+        /**
+         * Create color filter for selected detection path
+         *
+         * @param {Object} defs element
+         */
+        function selectedPathColor(defs) {
+            defs.append('filter')
+                .attr('id', self.config().selectedPathColorFilter)
+                .append('feColorMatrix')
+                .attr({
+                    'in': 'SourceGraphic',
+                    'type': 'hueRotate',
+                    'values': '40'
+                });
         }
 
         /**
@@ -705,6 +724,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             //    .style({fill: 'black', 'fill-opacity': '0'});
             createClipPathsForTransparentPoints(defs);
             addClipPathsForOpaquePoints(defs);
+            selectedPathColor(defs);
         }
 
         /**
