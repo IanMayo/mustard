@@ -1,3 +1,4 @@
+/* Stacked tabs */
 .nav-stacked {
   float: left;
   border-bottom: none;
@@ -38,16 +39,17 @@
   border-color: #ddd transparent #ddd #ddd !important;
 }
 
+/* Sideways stacked tabs */
 .sideways .nav-stacked {
-  margin-top:50px;
+  margin-top: 101px;
   border: none;
   position: relative;
 }
 
 .sideways .nav-stacked > li {
-  height: 20px;
-  width: 120px;
-  margin-bottom: 100px;
+  height: 30px;
+  width: 200px;
+  margin-bottom: 170px;
 
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -61,16 +63,26 @@
   border-right-color: transparent;
   text-align: center;
   border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sideways .nav-stacked > li > a:hover,
+.sideways .nav-stacked > li > a:focus {
+  border-color: #eee #eee #ddd #eee !important;
 }
 
 .sideways .nav-stacked > li.active > a,
 .sideways .nav-stacked > li.active > a:hover,
 .sideways .nav-stacked > li.active > a:focus {
-  border-bottom-color: transparent;
-  border-right-color: #ddd;
-  border-left-color: #ddd;
+  border-bottom-color: transparent !important;
+  border-right-color: #ddd !important;
+  border-left-color: #ddd !important;
 }
 
 .sideways .nav-stacked {
-  left: -50px;
+  left: -80px;
+  top: -10px;
+  margin-right: -80px !important;
 }
