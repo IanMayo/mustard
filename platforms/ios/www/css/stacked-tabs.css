@@ -39,6 +39,11 @@
   border-color: #ddd transparent #ddd #ddd !important;
 }
 
+ul.nav-stacked > li.disabled > a:hover,
+ul.nav-stacked > li.disabled > a:focus {
+  border-color: transparent transparent #ddd transparent !important;
+}
+
 /* Sideways stacked tabs (left) */
 .sideways .nav-stacked {
   margin-top: 101px;

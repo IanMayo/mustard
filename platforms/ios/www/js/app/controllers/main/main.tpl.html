@@ -40,34 +40,29 @@
       </p>
 
       <tabset vertical="true" class="sideways right">
-        <tab ng-repeat="level in levels">
+        <tab ng-repeat="level in levels" disabled="isLockedLevel(level.id)">
           <tab-heading>
             {{ level.id }}. {{ level.name }}.
           </tab-heading>
-          <small>{{ level.description }}</small>
+
+          <h3 class="text-left mission-level">
+            {{ level.id }}. {{ level.name }}. <small>{{ level.description }}</small>
+          </h3>
+
+          <div class="mission-list">
+            <div ng-repeat="mission in level.missions"
+                 ng-click="moveToMission([mission.id])"
+                 ng-class="{'redacted-text': isLocked(mission.id)}"
+                 class="text-center mission">
+              <h5 class="text-left">
+                <strong>{{ mission.id }}. {{ mission.name }}. </strong>
+                <small>{{ mission.description }}</small>
+                <span ng-hide="isLocked(mission.id)" class="glyphicon glyphicon-play-circle mission-glyph"></span>
+              </h5>
+            </div>
+          </div>
         </tab>
       </tabset>
-
-      <!-- Folder with missions -->
-      <div ng-repeat="level in levels">
-        <div>
-          <h4 class="text-left mission-level" ng-class="{'redacted-text': isLockedLevel(level.id)}">
-            {{ level.id }}. {{ level.name }}. <small>{{ level.description }}</small>
-          </h4>
-        </div>
-        <div class="mission-list">
-          <div ng-repeat="mission in level.missions"
-            ng-click="moveToMission([mission.id])"
-            ng-class="{'redacted-text': isLocked(mission.id)}"
-            class="text-center mission">
-            <h5 class="text-left">
-              <strong>{{ mission.id }}. {{ mission.name }}. </strong>
-              <small>{{ mission.description }}</small>
-              <span ng-hide="isLocked(mission.id)" class="glyphicon glyphicon-play-circle mission-glyph"></span>
-            </h5>
-          </div>
-        </div>
-      </div>
 
     </div>
   </div>
