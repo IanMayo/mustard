@@ -39,7 +39,7 @@
   border-color: #ddd transparent #ddd #ddd !important;
 }
 
-/* Sideways stacked tabs */
+/* Sideways stacked tabs (left) */
 .sideways .nav-stacked {
   margin-top: 101px;
   border: none;
@@ -85,4 +85,18 @@
   left: -80px;
   top: -10px;
   margin-right: -80px !important;
+}
+
+/* Sideways stacked tabs (right) */
+.sideways.right .nav-stacked {
+  float: right;
+  left: 0;
+}
+
+.sideways.right .nav-stacked > li {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
