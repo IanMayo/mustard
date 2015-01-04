@@ -1,9 +1,11 @@
 <div class="wrapper-mobile without-top-nav">
   <div class="container-with-scroll-mobile">
-    <div class="container-fluid">
+    <div class="container-fluid container-mission-name">
       <h3>{{ mission.id }} : {{ mission.name }}</h3>
+    </div>
 
-      <tabset vertical="true" class="sideways right">
+    <div class="container-fluid container-mission-tabs">
+      <tabset vertical="true" class="sideways">
         <tab heading="Op Order">
           <h5>1. Situation</h5>
 
@@ -39,7 +41,7 @@
       </tabset>
     </div>
 
-    <div class="container-fluid text-center">
+    <div class="container-fluid container-mission-controls text-center">
       <button
         ng-click="moveToMission([mission.url])"
         type="button" class="btn btn-danger btn-lg">{{missionAttempted() ? 'Replay' : 'Play'}}

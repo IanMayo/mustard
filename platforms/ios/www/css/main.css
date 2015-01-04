@@ -29,3 +29,23 @@
   margin: 0;
   overflow: hidden;
 }
+
+.container-mission-name {
+  height: 75px;
+}
+
+.container-mission-tabs {
+  height: 100%;
+  /* please do not optimize it */
+  margin-top: -75px;
+  margin-bottom: -75px;
+  padding-top: 75px;
+  padding-bottom: 75px;
+  overflow: hidden;
+}
+
+.container-mission-controls {
+  height: 75px;
+  padding-top: 15px;
+  overflow: hidden;
+}
