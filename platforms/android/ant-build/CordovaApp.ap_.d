@@ -40,7 +40,6 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Sad_Trombone-Joe_Lamb.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/Ta_Da-SoundBible.mp3 \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/audio/TorpedoLaunch.mp3 \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/css/bootstrap.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/fonts.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/index.css \
@@ -444,6 +443,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-hotkeys \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-leaflet \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/d3.min.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/fpsmeter.min.js \
@@ -631,6 +631,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.min.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angularjs-slider/dist/rzslider.min.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap/bootstrap.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/_config.yml \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/bower.json \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/bootstrap-tour/build \

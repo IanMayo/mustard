@@ -77,6 +77,10 @@ body {
   color: black;
 }
 
+.mission-list .glyphicon-play-circle {
+  color: yellowgreen;
+}
+
 /* make the "play" button to the right of the mission nice & clear */
 .mission-glyph {
   font-size: 18px;
