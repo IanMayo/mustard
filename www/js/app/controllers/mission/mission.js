@@ -42,4 +42,10 @@ angular.module('subtrack90.app.mission', [])
     $scope.nextMission = function () {
         $location.path('/mission/' + nextMission.id)
     };
+
+    /**
+     * We need it for angular bootstrap tabs component,
+     * it can't get direct boolean values from $scope.failedMission()
+     */
+    $scope.isMissionFailed = $scope.failedMission();
 }]);
