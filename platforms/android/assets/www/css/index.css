@@ -54,15 +54,6 @@ body {
   background-color: #b5d0d0;
 }
 
-#missionOrders .panel-group{
-  height: 400px;
-  overflow-y: auto;
-}
-
-#missionOrders .panel-body{
-  overflow-y: visible;
-}
-
 /* show click cursor for missions */
 .mission-list div {
   cursor: pointer;
