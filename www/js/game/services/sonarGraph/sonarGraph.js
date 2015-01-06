@@ -653,7 +653,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         function selectDetectionGroup () {
             var detectionName;
             var groupElement;
-            var target = event.target;
+            var target = d3.event.target;
 
             if (target.tagName && 'g' === target.tagName.toLowerCase()) {
                 groupElement = target;
@@ -661,10 +661,10 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 if (target.getAttribute) {
                     groupElement = target.parentElement;
                 } else if (target.correspondingUseElement) {
-                    // Safari browser
+                    // Safari browser and IE
                     groupElement = target.correspondingUseElement.parentElement;
                 } else {
-                    console.log('Can\'t get class attribute of the target', event.target);
+                    console.log('Can\'t get correct target element ', target);
                 }
             }
 
