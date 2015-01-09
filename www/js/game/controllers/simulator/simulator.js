@@ -544,24 +544,25 @@ angular.module('subtrack90.game.simulator', [
          */
         var collateCurrentSonarDetections = function () {
             var detections = [];
-            var thisB;
-            var detectionsWithTracks = {};
+            var partialData = {};
+            var detectionsWithTracks;
 
             _.each($scope.ownShip.detections(), function (detection) {
+                partialData = {
+                    bearing: detection.bearing,
+                    strength: detection.strength
+                };
                 // is this the first item?
                 if (!detections.length) {
                     detections = [new Date(detection.time)];
                 }
 
-                thisB = detection.bearing;
-
                 // clip to +/- 180
-                if (thisB > 180) {
-                    thisB -= 360;
+                if (partialData.bearing > 180) {
+                    partialData.bearing -= 360;
                 }
-
                 // add this detection to the list
-                detections.push(thisB);
+                detections.push(partialData);
             });
 
             detectionsWithTracks = {
