@@ -1,19 +1,18 @@
 /**
- * @module Plot Graphs
+ * @module Sonar Plot
  *
  * Creates plot with one (live) sonar graph
  * Or several graphs (live sonar plus sonars with time offset to show historical detections)
  */
 
-angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
+angular.module('subtrack90.game.sonarPlot', ['subtrack90.game.sonarGraph'])
 
 /**
- * @module Plot Graphs
+ * @module Sonar Plot
  * @class Service
- * @description Plot sonar graphs
  */
 
-.service('plotGraphs', ['sonarGraph', function (sonarGraph) {
+.service('sonarPlot', ['sonarGraph', function (sonarGraph) {
     var config = {
         sonarElement: null,
         graphs: [],
@@ -160,10 +159,10 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
     };
 
     /**
-     * Remove Plot Graphs
+     * Remove Sonar Plot
      */
     this.remove = function () {
-        $(window).off('resize.plotGraph');
+        $(window).off('resize.sonarPlot');
         _.each(sonarGraphs, function (graph) {
             graph.remove();
         });
@@ -174,7 +173,7 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      *
      */
     function init() {
-        $(window).on('resize.plotGraph', resizeWindowHandler);
+        $(window).on('resize.sonarPlot', resizeWindowHandler);
     }
 
     /**

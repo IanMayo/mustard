@@ -2,15 +2,15 @@
  * @module subtrack90.game.sonarBearing
  */
 
-angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
+angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.sonarPlot'])
 
 /**
  * Create composite sonar plot.
  *
- * The sonar plot can be configured to contain one or move custom graphs (plotGraphs).
+ * The sonar plot can be configured to contain one or more custom graphs (plotGraphs).
  * Previously, multiple plotGraphs have been present to allow different zoom levels
  */
-.directive('sonarBearing', ['plotGraphs', function (plotGraphs) {
+.directive('sonarBearing', ['sonarPlot', function (sonarPlot) {
     return {
         restrict: 'EA',
         scope: {
@@ -108,26 +108,26 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 trackTimeStep: attrs.timeStep
             }, plotElements, colors);
 
-            plotGraphs.setup(options);
-            plotGraphs.createPlot();
+            sonarPlot.setup(options);
+            sonarPlot.createPlot();
 
             scope.$on('addDetections', function addDetectionsToPlots(event, detectionSeries, simulationTime) {
                 _.each(detectionSeries, function (series) {
                     if (series.detections.length) {
                         var detections = assignDetectionsPointsToNames(series);
-                        plotGraphs.addDetection(detections);
+                        sonarPlot.addDetection(detections);
                     }
                 });
 
-                plotGraphs.updatePlotTime(new Date(simulationTime));
+                sonarPlot.updatePlotTime(new Date(simulationTime));
             });
 
             scope.$on('updateReviewPlot', function (event, time, detections) {
-                plotGraphs.updateReviewPlot(new Date(time), detections);
+                sonarPlot.updateReviewPlot(new Date(time), detections);
             });
 
             scope.$on('$destroy', function () {
-                plotGraphs.remove();
+                sonarPlot.remove();
             });
         }
     }
