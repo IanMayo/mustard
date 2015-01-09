@@ -5,9 +5,11 @@
 angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
 /**
-* Create element with a sonar plot.
-* The sonar plot can contain one or move custom graphs depends on template of the directive.
-*/
+ * Create composite sonar plot.
+ *
+ * The sonar plot can be configured to contain one or move custom graphs (plotGraphs).
+ * Previously, multiple plotGraphs have been present to allow different zoom levels
+ */
 .directive('sonarBearing', ['plotGraphs', function (plotGraphs) {
     return {
         restrict: 'EA',
