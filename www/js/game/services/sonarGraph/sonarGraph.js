@@ -663,8 +663,6 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
                 } else if (target.correspondingUseElement) {
                     // Safari browser and IE
                     groupElement = target.correspondingUseElement.parentNode;
-                } else {
-                    console.log('Can\'t get correct target element ', target);
                 }
             }
 
