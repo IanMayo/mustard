@@ -1,18 +1,18 @@
 /**
- * @module Sonar Graph
+ * @module Sonar SubPlot
  *
- * Factory class to create a single sonar graph.
+ * Factory class to create a sonar subplot.
  */
 
-angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
+angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
 /**
- * @module Sonar Graph
+ * @module Sonar SubPlot
  * @class Service
- * @description Sonar Graph. Depends on d3 lib (http://d3js.org/)
+ * @description Sonar SubPlot. Depends on d3 lib (http://d3js.org/)
  */
 
-.factory('sonarGraph', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
+.factory('sonarSubPlot', ['svgFilterConfig', 'IS_MOBILE', function (svgFilterConfig, IS_MOBILE) {
 
     var extendClass = function (desctination, source) {
         desctination.prototype = Object.create(source.prototype);
@@ -223,7 +223,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Add clip path element for sonar graph.
+         * Add clip path element for sub plot.
          */
         function addClipPath() {
             svgElementsContainer
@@ -269,7 +269,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Add X axis to the graph
+         * Add X axis to the sub plot
          *
          * @return {Object}
          */
@@ -301,7 +301,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
         }
 
         /**
-         * Add Y axis to the graph
+         * Add Y axis to the sub plot
          *
          * @return {Object}
          */
@@ -406,7 +406,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          *
          * @param {Object} dimension Height and width new values
          */
-        this.changeGraphHeight = function (dimension) {
+        this.changeSubPlotHeight = function (dimension) {
             elementSize(dimension);
             yAxisScale.range([containerElementSize.height, 0]);
             updateClipPathDimensions();
@@ -931,7 +931,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
          * Change detections positions according to settings of axis.
          */
         this.changeDetectionsPosition = function (dimension) {
-            this.svgView.changeGraphHeight(dimension);
+            this.svgView.changeSubPlotHeight(dimension);
             this.svgView.changeTracksOffset(this.settings().initialTime);
 
             var groupOffset = this.yAxisOriginCoordinate();
@@ -1312,12 +1312,12 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
     };
 
     /**
-     * Graph class.
-     * @class Graph
+     * SubPlot class.
+     * @class SubPlot
      * @param {Object} options
      * @returns {Object}
      */
-    function Graph(options) {
+    function SubPlot(options) {
         var builder;
 
         var config = {
@@ -1350,7 +1350,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             },
 
             /**
-             * Add new detections to graph.
+             * Add new detections to sub plot.
              *
              * @param {Object} detections
              */
@@ -1359,11 +1359,11 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             },
 
             /**
-             * Update graph height value and reconfigure Y-axis with a new range.
+             * Update sub plot height value and reconfigure Y-axis with a new range.
              *
              * @param {Object} dimension
              */
-            changeGraphHeight: function (dimension) {
+            changeSubPlotHeight: function (dimension) {
                 builder.changeDetectionsPosition(dimension);
             },
 
@@ -1377,7 +1377,7 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
             },
 
             /**
-             * Remove graph from DOM and remove handlers
+             * Remove sub plot from DOM and remove handlers
              */
             remove: function () {
                 builder.removeDetections();
@@ -1386,14 +1386,14 @@ angular.module('subtrack90.game.sonarGraph', ['subtrack90.game.svgFilter'])
     }
 
     /**
-     * Create an instance of the Graph class.
+     * Create an instance of the SubPlot class.
      *
      * @param {Object} config
-     * @returns {Object} Graph class instance
+     * @returns {Object} SubPlot class instance
      */
-    Graph.build = function (config) {
-        return new Graph(config);
+    SubPlot.build = function (config) {
+        return new SubPlot(config);
     };
 
-    return Graph;
+    return SubPlot;
 }]);

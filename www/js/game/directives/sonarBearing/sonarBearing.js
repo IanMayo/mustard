@@ -7,8 +7,8 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.sonarPlot'])
 /**
  * Create composite sonar plot.
  *
- * The sonar plot can be configured to contain one or more custom graphs (plotGraphs).
- * Previously, multiple plotGraphs have been present to allow different zoom levels
+ * The sonar plot can be configured to contain one or more custom sub plots (sonarSubPlot).
+ * Previously, multiple sonarSubPlots have been present to allow different zoom levels
  */
 .directive('sonarBearing', ['sonarPlot', function (sonarPlot) {
     return {
@@ -30,14 +30,14 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.sonarPlot'])
             var containerElement = element.children();
             var plotElements = {
                 sonarElement: containerElement[0],
-                graphs: []
+                subPlots: []
             };
 
-            // Add sonar graphs to the sonar plot.
+            // Add sonar sub plots to the sonar plot.
             angular.forEach(containerElement.children(), function (el, index) {
                 switch(index) {
-                    case 0: plotElements.liveGraphElement = el;
-                        plotElements.graphs.push({
+                    case 0: plotElements.liveSubPlotElement = el;
+                        plotElements.subPlots.push({
                             element: el,
                             height: 1,
                             duration: 4,
