@@ -4,6 +4,10 @@
 
 angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
 
+/**
+* Create element with a sonar plot.
+* The sonar plot can contain one or move custom graphs depends on template of the directive.
+*/
 .directive('sonarBearing', ['plotGraphs', function (plotGraphs) {
     return {
         restrict: 'EA',
@@ -27,6 +31,7 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 graphs: []
             };
 
+            // Add sonar graphs to the sonar plot.
             angular.forEach(containerElement.children(), function (el, index) {
                 switch(index) {
                     case 0: plotElements.liveGraphElement = el;
@@ -41,6 +46,11 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 }
             });
 
+            /**
+             * Send a message when a detection path was selected.
+             *
+             * @param {String} detectionName detection path name
+             */
             var pointClickCallback = function (detectionName) {
                 // 'Safe' $apply
                 scope.$evalAsync(function (scope) {
@@ -48,14 +58,28 @@ angular.module('subtrack90.game.sonarBearing', ['subtrack90.game.plotGraphs'])
                 });
             };
 
+            /**
+             * Create correct signal strength value to use it in the detection path transparency factor.
+             *
+             * @param {Float} strength Signal strength
+             * @returns  {Float} signal strength value from 0 to 1 with 0.01 step
+             */
             var normalizeSignalStrength = function (strength) {
+                // use signal strength values from 0 to 10
                 var signalStrength =  Math.max(0, strength);
                 signalStrength = Math.min(10, signalStrength);
+
+                // change the basis from 0-10 to 0-1
                 signalStrength = Math.round(signalStrength / 10 * 100) / 100;
 
                 return signalStrength;
             };
 
+            /**
+             * Map detections points to detections names
+             * @param {Array} detections Detections series
+             * @returns {Array} detections
+             */
             var assignDetectionsPointsToNames = function (detections) {
                 var detectionsAssociatedWithLabels = [];
                 var time = detections.detections[0];
