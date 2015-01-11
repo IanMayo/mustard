@@ -402,9 +402,9 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movement \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarGraph \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarPlot \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarSubPlot \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/decision/decision.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/detection/detection.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/geoMath/geoMath.js \
@@ -436,9 +436,9 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-icon.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/movementSimulation/images/marker-shadow.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/objectives/objectives.js \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/plotGraphs/plotGraphs.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/reviewSnapshot/reviewSnapshot.js \
-/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarGraph/sonarGraph.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarPlot/sonarPlot.js \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/js/game/services/sonarSubPlot/sonarSubPlot.js \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-hotkeys \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/lib/angular-leaflet \

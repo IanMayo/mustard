@@ -20,6 +20,7 @@
   float: none;
   min-width: 50px;
   margin-right: -1px;
+  cursor: pointer;
 }
 
 .nav-stacked > li > a {
@@ -64,8 +65,10 @@ ul.nav-stacked > li.disabled > a:focus {
 }
 
 .sideways .nav-stacked > li > a {
+  margin-right: 1px;
+  margin-left: -1px;
   border-bottom: 1px solid #ddd;
-  border-right-color: transparent;
+  background-color: #eee;
   text-align: center;
   border-radius: 4px 4px 0 0;
   overflow: hidden;
@@ -81,21 +84,32 @@ ul.nav-stacked > li.disabled > a:focus {
 .sideways .nav-stacked > li.active > a,
 .sideways .nav-stacked > li.active > a:hover,
 .sideways .nav-stacked > li.active > a:focus {
+  background-color: #fff;
+  border-color: #ddd !important;
   border-bottom-color: transparent !important;
-  border-right-color: #ddd !important;
-  border-left-color: #ddd !important;
 }
 
 .sideways .nav-stacked {
   left: -80px;
-  top: -10px;
-  margin-right: -80px !important;
+  top: -17px;
+  margin-right: -145px !important;
+}
+
+.sideways .nav-stacked + .tab-content {
+  border: 1px solid #ddd;
+  padding: 15px 30px;
+  border-radius: 0 4px 4px 4px;
 }
 
 /* Sideways stacked tabs (right) */
 .sideways.right .nav-stacked {
   float: right;
-  left: 0;
+  left: -66px;
+  top: -15px;
+}
+
+.sideways.right .nav-stacked + .tab-content {
+  border-radius: 4px 0 4px 4px;
 }
 
 .sideways.right .nav-stacked > li {

@@ -1,22 +1,21 @@
 /**
- * @module Plot Graphs
+ * @module Sonar Plot
  *
- * Creates plot with one (live) sonar graph
- * Or several graphs (live sonar plus sonars with time offset to show historical detections)
+ * Creates plot with one (live) sonar sub plot
+ * Or several sub plots (live sonar plus sonars with time offset to show historical detections)
  */
 
-angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
+angular.module('subtrack90.game.sonarPlot', ['subtrack90.game.sonarSubPlot'])
 
 /**
- * @module Plot Graphs
+ * @module Sonar Plot
  * @class Service
- * @description Plot sonar graphs
  */
 
-.service('plotGraphs', ['sonarGraph', function (sonarGraph) {
+.service('sonarPlot', ['sonarSubPlot', function (sonarSubPlot) {
     var config = {
         sonarElement: null,
-        graphs: [],
+        subPlots: [],
         colors : {
             indicator: "#aace00",
             heading: "#1A68DB"
@@ -26,7 +25,7 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
     var seriesStack = [];
 
     var $sonarElement = null;
-    var sonarGraphs;
+    var subPlots;
 
     var dataSeriesCache = [];
 
@@ -43,14 +42,14 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
     this.setup = function (options) {
         config = _.extend(config, options);
         $sonarElement = $(config.sonarElement);
-        sonarGraphs = [];
+        subPlots = [];
 
-        _.map(config.graphs, function (graph) {
-            graph.element = $(graph.element);
-            graph.timeLatency = graph.duration * 60 * 1000; // milliseconds
+        _.map(config.subPlots, function (subPlot) {
+            subPlot.element = $(subPlot.element);
+            subPlot.timeLatency = subPlot.duration * 60 * 1000; // milliseconds
         });
 
-        fitGraphsHeight();
+        fitSubPlotsHeight();
 
         return this;
     };
@@ -61,22 +60,22 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      * @param {Object} options
      */
     this.createPlot = function () {
-        _.each(config.graphs, function (graph) {
+        _.each(config.subPlots, function (subPlot) {
             var sonarConfig = {
-                containerElement: graph.element.get(-1),
-                yTicks: graph.yTicks,
-                yDomainDensity: graph.duration,
-                yAxisLabel: graph.yAxisLabel,
-                showXAxis: graph.showXAxis,
-                margin: graph.margin,
+                containerElement: subPlot.element.get(-1),
+                yTicks: subPlot.yTicks,
+                yDomainDensity: subPlot.duration,
+                yAxisLabel: subPlot.yAxisLabel,
+                showXAxis: subPlot.showXAxis,
+                margin: subPlot.margin,
                 serialRenderingMode: !config.reviewMode,
-                elementSize: graphDimension(graph.element),
+                elementSize: subPlotDimension(subPlot.element),
                 detectionSelect: config.detectionSelect,
                 initialTime: config.initialTime
             };
 
-            var graph = sonarGraph.build(sonarConfig);
-            sonarGraphs.push(graph);
+            var subPlot = sonarSubPlot.build(sonarConfig);
+            subPlots.push(subPlot);
         });
     };
 
@@ -88,19 +87,19 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
     this.addDetection = function (series) {
         var lastDetectionTime;
 
-        _.each(sonarGraphs, function (sonar, index) {
+        _.each(subPlots, function (sonar, index) {
             if (index > 0) {
-                if (lastDetectionTime > config.graphs[index - 1].timeLatency) {
-                    // a graph with historical data is ready to be rendered
+                if (lastDetectionTime > config.subPlots[index - 1].timeLatency) {
+                    // a sub plot with historical data is ready to be rendered
                     sonar.addDetection(seriesStack.shift());
                 } else {
                     // detection can't be rendered because its date is within live-time fragment
-                    // just update time axis on the graph
+                    // just update time axis on the sub plot
                     var detectionsForAxis = _.map(series, fixTime);
                     sonar.changeYAxisDomain(detectionsForAxis);
                 }
             } else {
-                // add detection to the graph with live data
+                // add detection to the sub plot with live data
                 sonar.addDetection(series);
 
                 // add detection to the cached stack
@@ -116,8 +115,8 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      * @param {Date} Time
      */
     this.updatePlotTime = function (time) {
-        _.each(sonarGraphs, function (sonar) {
-            sonar.changeYAxisDomain(time);
+        _.each(subPlots, function (subPlot) {
+            subPlot.changeYAxisDomain(time);
         });
     };
 
@@ -134,9 +133,9 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
             dataSeriesCache = dataSeries;
         }
 
-        _.each(sonarGraphs, function (sonar) {
+        _.each(subPlots, function (subPlot) {
             // Current indexes of tracks according to current time axis boundaries
-            var currentIndexesRange = _.map(sonar.timeAxisBoundaries(reviewTime), function (item) {
+            var currentIndexesRange = _.map(subPlot.timeAxisBoundaries(reviewTime), function (item) {
                     var time = item.getTime() / parseInt(config.trackTimeStep);
                     if (time > 0) {
                         return time;
@@ -151,21 +150,21 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
             _.each(partialTrackSeries, function (series) {
                 if (series.detections.length) {
                     var detections = config.dataSeriesHandler(series);
-                    sonar.addDetection(detections);
+                    subPlot.addDetection(detections);
                 }
             });
 
-            sonar.changeYAxisDomain(reviewTime);
+            subPlot.changeYAxisDomain(reviewTime);
         });
     };
 
     /**
-     * Remove Plot Graphs
+     * Remove Sonar Plot
      */
     this.remove = function () {
-        $(window).off('resize.plotGraph');
-        _.each(sonarGraphs, function (graph) {
-            graph.remove();
+        $(window).off('resize.sonarPlot');
+        _.each(subPlots, function (subPlot) {
+            subPlot.remove();
         });
     };
 
@@ -174,18 +173,18 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      *
      */
     function init() {
-        $(window).on('resize.plotGraph', resizeWindowHandler);
+        $(window).on('resize.sonarPlot', resizeWindowHandler);
     }
 
     /**
-     * Set graph height in plot
+     * Set sub plot height in plot
      *
      */
-    function fitGraphsHeight() {
+    function fitSubPlotsHeight() {
         var height = $sonarElement.height();
 
-        _.each(config.graphs, function (graph) {
-            graph.element.height(Math.floor(graph.height * height));
+        _.each(config.subPlots, function (subPlot) {
+            subPlot.element.height(Math.floor(subPlot.height * height));
         });
     }
 
@@ -194,7 +193,7 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      *
      * @return {Object} element dimension
      */
-    function graphDimension($element) {
+    function subPlotDimension($element) {
         return {
             height: $element.height(),
             width: $element.width()
@@ -202,13 +201,13 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
     }
 
     /**
-     * Change date in detection according to time latency of a previous graph
+     * Change date in detection according to time latency of a previous sub plot
      *
      * @return {Object} detection
      */
     function fixTime(detection) {
         var detection = _.extend({}, detection); // "copy" object
-        var time = detection.date.getTime() - _.first(config.graphs).timeLatency;
+        var time = detection.date.getTime() - _.first(config.subPlots).timeLatency;
         detection.date = new Date(time);
         return detection;
     }
@@ -218,10 +217,10 @@ angular.module('subtrack90.game.plotGraphs', ['subtrack90.game.sonarGraph'])
      *
      */
     function resizeWindowHandler() {
-        fitGraphsHeight();
+        fitSubPlotsHeight();
 
-        _.each(sonarGraphs, function (sonar, index) {
-            sonar.changeGraphHeight(graphDimension(config.graphs[index].element));
+        _.each(subPlots, function (subPlot, index) {
+            subPlot.changeSubPlotHeight(subPlotDimension(config.subPlots[index].element));
         });
     }
 

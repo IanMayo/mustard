@@ -47,5 +47,6 @@
 .container-mission-controls {
   height: 75px;
   padding-top: 15px;
+  padding-left: 69px;
   overflow: hidden;
 }
