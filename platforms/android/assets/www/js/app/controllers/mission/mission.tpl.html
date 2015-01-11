@@ -1,12 +1,10 @@
 <div class="wrapper-mobile without-top-nav">
   <div class="container-with-scroll-mobile">
-    <div class="container-fluid container-mission-name">
-      <h3>{{ mission.id }} : {{ mission.name }}</h3>
-    </div>
 
     <div class="container-fluid container-mission-tabs">
       <tabset vertical="true" class="sideways">
         <tab heading="Op Order">
+          <h3>{{ mission.id }} : {{ mission.name }}</h3>
           <h5>1. Situation</h5>
 
           <p>
@@ -36,6 +34,7 @@
         </tab>
 
         <tab heading="Guidance" active="isMissionFailed">
+          <h3>{{ mission.id }} : {{ mission.name }}</h3>
           <div ng-include="mission.guidanceUrl"></div>
         </tab>
       </tabset>
