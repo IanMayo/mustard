@@ -560,12 +560,15 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 lightness: d3.scale.linear()
                     .domain([0, 1])
                     .range([0, 0.45])
-            }
+            },
+            hueValueForSelectedPath: 155
         });
 
         SvgView.call(this, options);
 
         var self = this;
+        // IE9 doesn't support filters based on color matrix
+        var presentColorMatrixFilter = !!window['SVGFEColorMatrixElement'];
         //var opacitySegments = {};
 
         reusablePoint();
@@ -602,6 +605,14 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
             var config = this.config();
             var colorModel = config.colorModel;
+            var hueValue = colorModel.hue;
+
+            if (!presentColorMatrixFilter) {
+                if (group.classed('selectedPath')) {
+                    hueValue = config.hueValueForSelectedPath;
+                }
+            }
+
             var point = group
                 .append('use')
                 .attr({
@@ -612,7 +623,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                     'detection-name': detection.trackName
                 })
                 .style({fill:
-                    d3.hsl(colorModel.hue, colorModel.saturation, colorModel.lightness(detection.strength))});
+                    d3.hsl(hueValue, colorModel.saturation, colorModel.lightness(detection.strength))});
 
             detectionPointClipPath(point, detection.strength);
 
@@ -686,13 +697,13 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         function highlightGroup(element) {
             var groupElement = d3.select(element);
 
-            if (window['SVGFEColorMatrixElement']) {
+            if (presentColorMatrixFilter) {
                 // browser supports filter type - just apply the filter to A group element
                 self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
                 groupElement.attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
             } else {
                 // need to change color of each point within a group
-                var hueVale = self.config().colorModel.hue + 85;
+                var hueVale = self.config().hueValueForSelectedPath;
                 removeHighlightingFromPoints();
                 groupElement.classed('selectedPath', true);
                 changeColorHueValueOnPoints(groupElement, hueVale);
