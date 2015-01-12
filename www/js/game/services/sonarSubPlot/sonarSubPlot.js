@@ -144,7 +144,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
-            detectionSelect: function () {}
+            detectionSelect: function () {},
+            selectedPathClass: 'selectedPath'
         };
 
         init();
@@ -479,7 +480,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          */
         function highlightLinePath(detectionName) {
             self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            self.detectionWrapper().selectAll('.' + detectionName).classed('selectedPath', true);
+            self.detectionWrapper().selectAll('.' + detectionName).classed(self.config().selectedPathClass, true);
         }
 
         /**
@@ -503,9 +504,9 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 .attr('stroke-dasharray', '0.3')
                 .attr('stroke-linecap', 'butt');
 
-            var existed = this.detectionWrapper().selectAll('.selectedPath.' + pathName);
+            var existed = this.detectionWrapper().selectAll('.' + self.config().selectedPathClass + '.' + pathName);
             if (existed.size()) {
-                linePath.classed('selectedPath', true);
+                linePath.classed(self.config().selectedPathClass, true);
             }
 
             // bind click delegate handler
@@ -608,7 +609,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             var hueValue = colorModel.hue;
 
             if (!presentColorMatrixFilter) {
-                if (group.classed('selectedPath')) {
+                if (group.classed(self.config().selectedPathClass)) {
                     hueValue = config.hueValueForSelectedPath;
                 }
             }
@@ -705,7 +706,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 // need to change color of each point within a group
                 var hueVale = self.config().hueValueForSelectedPath;
                 removeHighlightingFromPoints();
-                groupElement.classed('selectedPath', true);
+                groupElement.classed(self.config().selectedPathClass, true);
                 changeColorHueValueOnPoints(groupElement, hueVale);
             }
         }
@@ -715,8 +716,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          */
         function removeHighlightingFromPoints() {
             var hueValue = self.config().colorModel.hue;
-            var selectedGroup = self.detectionContainer().select('.selectedPath');
-            selectedGroup.classed('selectedPath', false);
+            var selectedGroup = self.detectionContainer().select('.' + self.config().selectedPathClass);
+            selectedGroup.classed(self.config().selectedPathClass, false);
             changeColorHueValueOnPoints(selectedGroup, hueValue);
         }
 
