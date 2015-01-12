@@ -570,7 +570,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         var self = this;
         // IE9 doesn't support filters based on color matrix
         var presentColorMatrixFilter = !!window['SVGFEColorMatrixElement'];
-        //var opacitySegments = {};
 
         reusablePoint();
 
@@ -587,7 +586,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
             // bind click delegate handler
             group.on('click', selectDetectionGroup);
-            //opacitySegments[name] = {};
 
             return group;
 
@@ -602,8 +600,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          * @returns {Object}
          */
         this.addDetectionToGroup = function (detection, group, groupOffset) {
-            //var segment = opacitySegment(group, detection);
-
             var config = this.config();
             var colorModel = config.colorModel;
             var hueValue = colorModel.hue;
@@ -650,21 +646,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 'clip-path': 'url(#' + clipPathPrefix +  '-' + _.random(1, 10) + ')'
             });
         }
-
-        //function opacitySegment(group, detection) {
-        //    var segmentId = 'segment-' + detection.strength.toString();
-        //    var segmentGroup = opacitySegments[detection.groupId];
-        //    var segment = segmentGroup[segmentId];
-        //
-        //    if (!segment) {
-        //        segment = group.append('g')
-        //            .attr('filter', 'url(#constantOpacity-' + detection.strength.toString().replace(/\./, '') + ')');
-        //        segmentGroup[segmentId] = segment;
-        //    }
-        //
-        //    return segment;
-        //}
-        //
 
         /**
          * Handler of selected detection group
