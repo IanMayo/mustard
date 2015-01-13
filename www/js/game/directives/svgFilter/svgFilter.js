@@ -35,10 +35,21 @@ angular.module('subtrack90.game.svgFilter', [])
                 var filter = defs.append('filter')
                         .attr('id', svgFilterConfig.blurFilterName);
 
-                filter.append('feConvolveMatrix')
-                    .attr('result', 'convolve')
-                    .attr('order', '10,1')
-                    .attr('kernelMatrix', '1 1 1 1 1 1 1 1 1 1');
+                var ua = navigator.userAgent;
+                var IS_IE10 = ua.indexOf('MSIE 10') > 0;
+
+                if (IS_IE10) {
+                    // Temporary solution for IE 10 browser what has difficulties with order attribute value 10,1
+                    filter.append('feConvolveMatrix')
+                        .attr('result', 'convolve')
+                        .attr('order', '3')
+                        .attr('kernelMatrix', '1 2 1 2 4 2 1 2 1');
+                } else {
+                    filter.append('feConvolveMatrix')
+                        .attr('result', 'convolve')
+                        .attr('order', '10,1')
+                        .attr('kernelMatrix', '1 1 1 1 1 1 1 1 1 1');
+                }
 
                 filter.append('feBlend')
                     .attr('in', 'SourceGraphic')
