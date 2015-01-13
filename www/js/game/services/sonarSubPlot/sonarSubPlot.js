@@ -144,7 +144,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
-            detectionSelect: function () {}
+            detectionSelect: function () {},
+            selectedPathClass: 'selectedPath'
         };
 
         init();
@@ -479,7 +480,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          */
         function highlightLinePath(detectionName) {
             self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            self.detectionWrapper().selectAll('.' + detectionName).classed('selected', true);
+            self.detectionWrapper().selectAll('.' + detectionName).classed(self.config().selectedPathClass, true);
         }
 
         /**
@@ -503,9 +504,9 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 .attr('stroke-dasharray', '0.3')
                 .attr('stroke-linecap', 'butt');
 
-            var existed = this.detectionWrapper().selectAll('.selected.' + pathName);
+            var existed = this.detectionWrapper().selectAll('.' + self.config().selectedPathClass + '.' + pathName);
             if (existed.size()) {
-                linePath.classed('selected', true);
+                linePath.classed(self.config().selectedPathClass, true);
             }
 
             // bind click delegate handler
@@ -553,16 +554,22 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             detectionPointRadii: {rx: 5, ry: 6},
             opaqueClipPathPrefix: 'opaque-clip-path',
             transparentClipPathPrefix: 'transparent-clip-path',
-            selectedPathColorFilter: 'selected-path-color-filter'
+            selectedPathColorFilter: 'selected-path-color-filter',
+            colorModel: {
+                hue: 70,
+                saturation: 1,
+                lightness: d3.scale.linear()
+                    .domain([0, 1])
+                    .range([0, 0.45])
+            },
+            hueValueForSelectedPath: 155
         });
 
         SvgView.call(this, options);
 
         var self = this;
-        //var opacitySegments = {};
-        var colors = d3.scale.linear()
-            .domain([0, 100])
-            .range([0, 45]);
+        // IE9 doesn't support filters based on color matrix
+        var presentColorMatrixFilter = !!window['SVGFEColorMatrixElement'];
 
         reusablePoint();
 
@@ -579,7 +586,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
             // bind click delegate handler
             group.on('click', selectDetectionGroup);
-            //opacitySegments[name] = {};
 
             return group;
 
@@ -594,18 +600,27 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          * @returns {Object}
          */
         this.addDetectionToGroup = function (detection, group, groupOffset) {
-            //var segment = opacitySegment(group, detection);
+            var config = this.config();
+            var colorModel = config.colorModel;
+            var hueValue = colorModel.hue;
+
+            if (!presentColorMatrixFilter) {
+                if (group.classed(self.config().selectedPathClass)) {
+                    hueValue = config.hueValueForSelectedPath;
+                }
+            }
 
             var point = group
                 .append('use')
                 .attr({
-                    'xlink:href': '#pathMarker_' + this.config().containerElement.id,
+                    'xlink:href': '#pathMarker_' + config.containerElement.id,
                     'x': self.xCoordinate(detection.degree),
-                    'y': - (groupOffset - self.yCoordinate(detection.date - this.config().initialTime)),
+                    'y': - (groupOffset - self.yCoordinate(detection.date - config.initialTime)),
                     'class': 'point',
                     'detection-name': detection.trackName
                 })
-                .style({fill: 'hsl(70, 100%, ' + colors(detection.strength * 100) + '%)'});
+                .style({fill:
+                    d3.hsl(hueValue, colorModel.saturation, colorModel.lightness(detection.strength))});
 
             detectionPointClipPath(point, detection.strength);
 
@@ -631,21 +646,6 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 'clip-path': 'url(#' + clipPathPrefix +  '-' + _.random(1, 10) + ')'
             });
         }
-
-        //function opacitySegment(group, detection) {
-        //    var segmentId = 'segment-' + detection.strength.toString();
-        //    var segmentGroup = opacitySegments[detection.groupId];
-        //    var segment = segmentGroup[segmentId];
-        //
-        //    if (!segment) {
-        //        segment = group.append('g')
-        //            .attr('filter', 'url(#constantOpacity-' + detection.strength.toString().replace(/\./, '') + ')');
-        //        segmentGroup[segmentId] = segment;
-        //    }
-        //
-        //    return segment;
-        //}
-        //
 
         /**
          * Handler of selected detection group
@@ -677,9 +677,44 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          * Highlight a target detection group.
          */
         function highlightGroup(element) {
-            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            d3.select(element)
-                .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+            var groupElement = d3.select(element);
+
+            if (presentColorMatrixFilter) {
+                // browser supports filter type - just apply the filter to A group element
+                self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+                groupElement.attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+            } else {
+                // need to change color of each point within a group
+                var hueVale = self.config().hueValueForSelectedPath;
+                removeHighlightingFromPoints();
+                groupElement.classed(self.config().selectedPathClass, true);
+                changeColorHueValueOnPoints(groupElement, hueVale);
+            }
+        }
+
+        /**
+         * Remove highlighting from detections points within a group element.
+         */
+        function removeHighlightingFromPoints() {
+            var hueValue = self.config().colorModel.hue;
+            var selectedGroup = self.detectionContainer().select('.' + self.config().selectedPathClass);
+            selectedGroup.classed(self.config().selectedPathClass, false);
+            changeColorHueValueOnPoints(selectedGroup, hueValue);
+        }
+
+        /**
+         * Change hue value on detection points within a group element.
+         *
+         * @param {Object} d3 wrapped element groupElement
+         * @param {Integer} hueValue
+         */
+        function changeColorHueValueOnPoints(groupElement, hueValue) {
+            groupElement.selectAll('use').each(function () {
+                var useElement = d3.select(this);
+                var oldColor = d3.hsl(useElement.style('fill'));
+                var newColor = d3.hsl(hueValue, oldColor.s, oldColor.l);
+                useElement.style('fill', newColor);
+            });
         }
 
         /**
