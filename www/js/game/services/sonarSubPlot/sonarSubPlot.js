@@ -152,7 +152,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            selectedPathClass: 'selectedPath'
+            selectedPathClass: 'selectedPath',
+            highlightedSegmentClass: 'highlightedSegment'
         };
 
         init();
@@ -624,26 +625,26 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         };
 
         /**
-         * Append datapoint element to group.
+         * Append detection point element to detection path.
          *
          * @param {Object} detection
-         * @param {Object} group
+         * @param {Object} segment
          * @param {Number} groupOffset
-         * @returns {Object}
+         * @returns {Object} d3js element
          */
-        this.addDetectionToGroup = function (detection, group, groupOffset) {
+        this.addDetectionToGroup = function (detection, segment, groupOffset) {
             var config = this.config();
             var colorModel = config.colorModel;
             var hueValue = colorModel.hue;
 
             if (!presentColorMatrixFilter) {
                 // highlight fresh-added points
-                if (group.classed(self.config().selectedPathClass)) {
+                if (segment.classed(self.config().highlightedSegmentClass)) {
                     hueValue = config.hueValueForSelectedPath;
                 }
             }
 
-            var point = group
+            var point = segment
                 .append('use')
                 .attr({
                     'xlink:href': '#pathMarker_' + config.containerElement.id,
@@ -681,7 +682,9 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
             selectedPath.classed(self.config().selectedPathClass, false);
             selectedPath.selectAll('g').each(function () {
-                this.removeAttribute('filter');
+                d3.select(this)
+                    .attr('filter', null)
+                    .classed(self.config().highlightedSegmentClass, false);
             });
         };
 
@@ -743,9 +746,11 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             var segmentElement = d3.select(element);
             self.removeHighlightingFromDetection();
             d3.select(element.parentNode).classed(self.config().selectedPathClass, true);
+            segmentElement.classed(self.config().highlightedSegmentClass, true);
 
             if (presentColorMatrixFilter) {
-                segmentElement.attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')')
+                segmentElement
+                    .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
             } else {
                 var hueVale = self.config().hueValueForSelectedPath;
                 changeColorHueValueOnPoints(segmentElement, hueVale);
