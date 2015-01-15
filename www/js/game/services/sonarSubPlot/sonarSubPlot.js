@@ -133,6 +133,13 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         var config = {};
 
         /**
+         * Highlighted track name
+         *
+         * @type {String}
+         */
+        var highlightedTrack;
+
+        /**
          * Default config values
          *
          * @type {Object}
@@ -145,7 +152,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
             detectionSelect: function () {},
-            selectedPathClass: 'selectedPath'
+            selectedPathClass: 'selectedPath',
+            highlightedSegmentClass: 'highlightedSegment'
         };
 
         init();
@@ -448,6 +456,24 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         this.detectionWrapper = function () {
             return detectionsTranslationGroup;
         };
+
+        /**
+         * Set highlighted track name.
+         *
+         * @param {String} trackName
+         */
+        this.setHighlightedTrackName = function (trackName) {
+            highlightedTrack = trackName;
+        };
+
+        /**
+         * Get highlighted track name.
+         *
+         * @returns {String} highlighted track name
+         */
+        this.highlightedTrackName = function () {
+            return highlightedTrack;
+        };
     }
 
     /**
@@ -479,9 +505,16 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          * @param {Object} detectionName Element Target line path
          */
         function highlightLinePath(detectionName) {
-            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+            self.removeHighlightingFromDetection();
             self.detectionWrapper().selectAll('.' + detectionName).classed(self.config().selectedPathClass, true);
         }
+
+        /**
+         * Remove highlighting from detection path.
+         */
+        this.removeHighlightingFromDetection = function () {
+            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+        };
 
         /**
          * Create Line path.
@@ -592,25 +625,26 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         };
 
         /**
-         * Append datapoint element to group.
+         * Append detection point element to detection path.
          *
          * @param {Object} detection
-         * @param {Object} group
+         * @param {Object} segment
          * @param {Number} groupOffset
-         * @returns {Object}
+         * @returns {Object} d3js element
          */
-        this.addDetectionToGroup = function (detection, group, groupOffset) {
+        this.addDetectionToGroup = function (detection, segment, groupOffset) {
             var config = this.config();
             var colorModel = config.colorModel;
             var hueValue = colorModel.hue;
 
             if (!presentColorMatrixFilter) {
-                if (group.classed(self.config().selectedPathClass)) {
+                // highlight fresh-added points
+                if (segment.classed(self.config().highlightedSegmentClass)) {
                     hueValue = config.hueValueForSelectedPath;
                 }
             }
 
-            var point = group
+            var point = segment
                 .append('use')
                 .attr({
                     'xlink:href': '#pathMarker_' + config.containerElement.id,
@@ -625,6 +659,33 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             detectionPointClipPath(point, detection.strength);
 
             return point;
+        };
+
+        /**
+         * Remove highlighting from detection path.
+         */
+        this.removeHighlightingFromDetection = function () {
+            if (presentColorMatrixFilter) {
+                // browser supports filter type - just remove filter attribute
+                self.removeHighlightSelection();
+            } else {
+                // need to change color of each point within a group
+                removeHighlightingFromPoints();
+            }
+        };
+
+        /**
+         * Remove highlighting from detection paths.
+         */
+        this.removeHighlightSelection = function () {
+            var selectedPath = self.detectionContainer().select('.' + self.config().selectedPathClass);
+
+            selectedPath.classed(self.config().selectedPathClass, false);
+            selectedPath.selectAll('g').each(function () {
+                d3.select(this)
+                    .attr('filter', null)
+                    .classed(self.config().highlightedSegmentClass, false);
+            });
         };
 
         /**
@@ -650,45 +711,49 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         /**
          * Handler of selected detection group
          */
-        function selectDetectionGroup () {
+        function selectDetectionGroup() {
             var detectionName;
-            var groupElement;
+            var segmentElement;
             var target = d3.event.target;
 
             if (target.tagName && 'g' === target.tagName.toLowerCase()) {
-                groupElement = target;
+                segmentElement = target;
             } else {
                 if (target.getAttribute) {
-                    groupElement = target.parentElement;
+                    segmentElement = target.parentElement;
                 } else if (target.correspondingUseElement) {
                     // Safari browser and IE
-                    groupElement = target.correspondingUseElement.parentNode;
+                    segmentElement = target.correspondingUseElement.parentNode;
                 }
             }
 
-            if (groupElement) {
-                detectionName = groupElement.getAttribute('detection-name');
-                self.config().detectionSelect(detectionName);
-                highlightGroup(groupElement);
+            if (segmentElement) {
+                var groupElement = segmentElement.parentNode;
+                if (groupElement) {
+                    detectionName = groupElement.getAttribute('detection-name');
+                    self.config().detectionSelect(detectionName);
+                    self.setHighlightedTrackName(detectionName);
+
+                    highlightSegment(segmentElement);
+                }
             }
         }
 
         /**
          * Highlight a target detection group.
          */
-        function highlightGroup(element) {
-            var groupElement = d3.select(element);
+        function highlightSegment(element) {
+            var segmentElement = d3.select(element);
+            self.removeHighlightingFromDetection();
+            d3.select(element.parentNode).classed(self.config().selectedPathClass, true);
+            segmentElement.classed(self.config().highlightedSegmentClass, true);
 
             if (presentColorMatrixFilter) {
-                // browser supports filter type - just apply the filter to A group element
-                self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-                groupElement.attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+                segmentElement
+                    .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
             } else {
-                // need to change color of each point within a group
                 var hueVale = self.config().hueValueForSelectedPath;
-                removeHighlightingFromPoints();
-                groupElement.classed(self.config().selectedPathClass, true);
-                changeColorHueValueOnPoints(groupElement, hueVale);
+                changeColorHueValueOnPoints(segmentElement, hueVale);
             }
         }
 
@@ -909,6 +974,20 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 strength: detection.strength
             };
         }
+        
+        function deselectPath() {
+            _.each(renderedDetections, function (detection, groupId) {
+                if (!processedDetections[groupId]) {
+                    // there was no a new detection data for a rendered path
+                    if (detection.segment.node().hasChildNodes()) {
+                        // create a new segment only if the segment is not empty
+                        var segment = detection.group.append('g');
+                        segment.classed('contactSegment', true);
+                        detection.segment = segment;
+                    }
+                }
+            });
+        }
 
         this.addDetection = function (detections) {
             // create list of path names from detections
@@ -999,10 +1078,13 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         this.moveDetections = function (simulationTime) {
             this.svgView.updateVisibleDomain(simulationTime.getTime());
             this.svgView.changeTracksOffset(options.initialTime);
+            deselectPath();
 
             if (!options.serialRenderingMode) {
                 this.removeAllExpiredDetections();
             }
+
+            processedDetections = {};
         };
 
         this.currentTimeBoundaries = function (time) {
@@ -1117,6 +1199,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
     DotDetections.prototype.createPathContainer = function (detection, name) {
         var data = [];
         var group = this.svgView.createPointsGroup(detection, name);
+        var segment = group.append('g');
+        segment.classed('contactSegment', true);
 
         // there is no element, need to create it
         data.push(detection);
@@ -1126,7 +1210,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             data: data,
             group: group,
             date: detection.date,
-            isExpired: false
+            isExpired: false,
+            segment: segment // wrap detections points in segments for each detection contact series
         });
     };
 
@@ -1141,7 +1226,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
     DotDetections.prototype.addPointToPath = function (detection, detectionPath, groupOffset) {
         if (!detectionPath.isExpired) {
             // append new point element based on detection
-            detection.pointElement = this.svgView.addDetectionToGroup(detection, detectionPath.group, groupOffset);
+            detection.pointElement = this.svgView.addDetectionToGroup(detection, detectionPath.segment, groupOffset);
             // add detection to rendered collection
             detectionPath.data.push(detection);
 
