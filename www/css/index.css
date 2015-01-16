@@ -55,8 +55,9 @@ body {
 }
 
 /* show click cursor for missions */
-.mission-list div {
+.mission-list {
   cursor: pointer;
+  margin: 25px 0 65px 0;
 }
 
 /* don't show "click" cursor for redacted missions */
