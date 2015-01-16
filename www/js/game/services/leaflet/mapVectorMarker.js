@@ -62,9 +62,15 @@ angular.module('subtrack90.game.mapVectorMarker', ['subtrack90.game.svgFilter'])
                 this._pathRoot.setAttribute('viewBox', '0 0 ' + shapeWidth + ' ' + shapeHeight);
 
                 this._path.setAttribute('d', pintPath);
-                this._path.setAttribute('fill', 'none');
                 this._path.setAttribute('stroke-width', '3');
                 this._path.setAttribute('stroke', options.markerColor);
+
+                if (options.fillMarker) {
+                    this._path.setAttribute('fill', options.fillMarker.color);
+                    this._path.setAttribute('opacity', options.fillMarker.opacity);
+                } else {
+                    this._path.setAttribute('fill', 'none');
+                }
 
                 div.appendChild(this._pathRoot);
 
