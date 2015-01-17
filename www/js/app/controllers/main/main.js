@@ -82,6 +82,17 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
         return res;
     };
 
+    $scope.markMission = function (id) {
+        switch (user.getMission(id).status) {
+            case 'SUCCESS':
+                return '&#x2714;';
+            case 'LOCKED':
+                return '<i class="glyphicon glyphicon-lock"></i>';
+            default:
+                return '';
+        }
+    };
+
     /** navigate to the specified URL, if the mission is avaialble to the current user
      *
      * @param id

@@ -55,10 +55,12 @@
             <td>
               <strong>{{ mission.id }}. {{ mission.name }}. </strong>
               <small>{{ mission.description }}</small>
+              <!--
               <span ng-hide="isLocked(mission.id)" class="glyphicon glyphicon-play-circle mission-glyph"></span>
+              -->
             </td>
             <td class="text-center" width="60px">
-              <span ng-class="glyphFor(mission.id)"></span>
+              <h4 ng-bind-html="markMission(mission.id)"></h4>
             </td>
           </tr>
         </table>
