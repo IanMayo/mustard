@@ -196,7 +196,7 @@ angular.module('subtrack90.game.leafletMapDirective', [
                         symbolColor: markerColor
                     });
                 } else {
-                    icon = L.icon.Name({
+                    var configIcon = {
                         labelText: vessel.name,
                         labelAnchor: new L.Point(iconSize.y / 5 , -iconSize.x / 2),
                         iconAngle: 0,
@@ -204,7 +204,17 @@ angular.module('subtrack90.game.leafletMapDirective', [
                         labelTextColor: markerColor,
                         iconSize: iconSize,
                         iconAnchor: new L.point(iconSize.x / 2, iconSize.y)
-                    });
+                    };
+
+                    if ('TORPEDO' === vessel.categories.type) {
+                        configIcon =_.extend(configIcon, {fillMarker: {
+                                color: markerColor,
+                                opacity: 0.4
+                            }
+                        });
+                    }
+
+                    icon = L.icon.Name(configIcon);
                 }
 
                 marker.setIcon(icon);

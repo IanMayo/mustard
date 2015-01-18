@@ -55,8 +55,9 @@ body {
 }
 
 /* show click cursor for missions */
-.mission-list div {
+.mission-list {
   cursor: pointer;
+  margin: 25px 0 65px 0;
 }
 
 /* don't show "click" cursor for redacted missions */
@@ -70,6 +71,14 @@ body {
 
 .mission-list .glyphicon-play-circle {
   color: yellowgreen;
+}
+
+.mission-list .glyphicon-handwritten-ok:before {
+  content: "\2714";
+}
+
+.mission-list .glyphicon-empty {
+  visibility: hidden;
 }
 
 /* make the "play" button to the right of the mission nice & clear */

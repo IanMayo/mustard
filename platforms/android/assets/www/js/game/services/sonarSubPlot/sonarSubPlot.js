@@ -133,6 +133,13 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         var config = {};
 
         /**
+         * Highlighted track name
+         *
+         * @type {String}
+         */
+        var highlightedTrack;
+
+        /**
          * Default config values
          *
          * @type {Object}
@@ -144,7 +151,9 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             yAxisLabel: "Time",
             showXAxis: true,
             margin: {top: 25, left: 100, bottom: 5, right: 50},
-            detectionSelect: function () {}
+            detectionSelect: function () {},
+            selectedPathClass: 'selectedPath',
+            highlightedSegmentClass: 'highlightedSegment'
         };
 
         init();
@@ -447,6 +456,24 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         this.detectionWrapper = function () {
             return detectionsTranslationGroup;
         };
+
+        /**
+         * Set highlighted track name.
+         *
+         * @param {String} trackName
+         */
+        this.setHighlightedTrackName = function (trackName) {
+            highlightedTrack = trackName;
+        };
+
+        /**
+         * Get highlighted track name.
+         *
+         * @returns {String} highlighted track name
+         */
+        this.highlightedTrackName = function () {
+            return highlightedTrack;
+        };
     }
 
     /**
@@ -478,9 +505,16 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
          * @param {Object} detectionName Element Target line path
          */
         function highlightLinePath(detectionName) {
-            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            self.detectionWrapper().selectAll('.' + detectionName).classed('selected', true);
+            self.removeHighlightingFromDetection();
+            self.detectionWrapper().selectAll('.' + detectionName).classed(self.config().selectedPathClass, true);
         }
+
+        /**
+         * Remove highlighting from detection path.
+         */
+        this.removeHighlightingFromDetection = function () {
+            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
+        };
 
         /**
          * Create Line path.
@@ -503,9 +537,9 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 .attr('stroke-dasharray', '0.3')
                 .attr('stroke-linecap', 'butt');
 
-            var existed = this.detectionWrapper().selectAll('.selected.' + pathName);
+            var existed = this.detectionWrapper().selectAll('.' + self.config().selectedPathClass + '.' + pathName);
             if (existed.size()) {
-                linePath.classed('selected', true);
+                linePath.classed(self.config().selectedPathClass, true);
             }
 
             // bind click delegate handler
@@ -553,16 +587,22 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             detectionPointRadii: {rx: 5, ry: 6},
             opaqueClipPathPrefix: 'opaque-clip-path',
             transparentClipPathPrefix: 'transparent-clip-path',
-            selectedPathColorFilter: 'selected-path-color-filter'
+            selectedPathColorFilter: 'selected-path-color-filter',
+            colorModel: {
+                hue: 70,
+                saturation: 1,
+                lightness: d3.scale.linear()
+                    .domain([0, 1])
+                    .range([0, 0.45])
+            },
+            hueValueForSelectedPath: 155
         });
 
         SvgView.call(this, options);
 
         var self = this;
-        //var opacitySegments = {};
-        var colors = d3.scale.linear()
-            .domain([0, 100])
-            .range([0, 45]);
+        // IE9 doesn't support filters based on color matrix
+        var presentColorMatrixFilter = !!window['SVGFEColorMatrixElement'];
 
         reusablePoint();
 
@@ -579,37 +619,73 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
 
             // bind click delegate handler
             group.on('click', selectDetectionGroup);
-            //opacitySegments[name] = {};
 
             return group;
 
         };
 
         /**
-         * Append datapoint element to group.
+         * Append detection point element to detection path.
          *
          * @param {Object} detection
-         * @param {Object} group
+         * @param {Object} segment
          * @param {Number} groupOffset
-         * @returns {Object}
+         * @returns {Object} d3js element
          */
-        this.addDetectionToGroup = function (detection, group, groupOffset) {
-            //var segment = opacitySegment(group, detection);
+        this.addDetectionToGroup = function (detection, segment, groupOffset) {
+            var config = this.config();
+            var colorModel = config.colorModel;
+            var hueValue = colorModel.hue;
 
-            var point = group
+            if (!presentColorMatrixFilter) {
+                // highlight fresh-added points
+                if (segment.classed(self.config().highlightedSegmentClass)) {
+                    hueValue = config.hueValueForSelectedPath;
+                }
+            }
+
+            var point = segment
                 .append('use')
                 .attr({
-                    'xlink:href': '#pathMarker_' + this.config().containerElement.id,
+                    'xlink:href': '#pathMarker_' + config.containerElement.id,
                     'x': self.xCoordinate(detection.degree),
-                    'y': - (groupOffset - self.yCoordinate(detection.date - this.config().initialTime)),
+                    'y': - (groupOffset - self.yCoordinate(detection.date - config.initialTime)),
                     'class': 'point',
                     'detection-name': detection.trackName
                 })
-                .style({fill: 'hsl(70, 100%, ' + colors(detection.strength * 100) + '%)'});
+                .style({fill:
+                    d3.hsl(hueValue, colorModel.saturation, colorModel.lightness(detection.strength))});
 
             detectionPointClipPath(point, detection.strength);
 
             return point;
+        };
+
+        /**
+         * Remove highlighting from detection path.
+         */
+        this.removeHighlightingFromDetection = function () {
+            if (presentColorMatrixFilter) {
+                // browser supports filter type - just remove filter attribute
+                self.removeHighlightSelection();
+            } else {
+                // need to change color of each point within a group
+                removeHighlightingFromPoints();
+            }
+        };
+
+        /**
+         * Remove highlighting from detection paths.
+         */
+        this.removeHighlightSelection = function () {
+            var selectedPath = self.detectionContainer().select('.' + self.config().selectedPathClass);
+
+            selectedPath.classed(self.config().selectedPathClass, false);
+            selectedPath.selectAll('g').each(function () {
+                d3.select(this)
+                    .attr('filter', null)
+                    .classed(self.config().highlightedSegmentClass, false);
+            });
         };
 
         /**
@@ -632,54 +708,78 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             });
         }
 
-        //function opacitySegment(group, detection) {
-        //    var segmentId = 'segment-' + detection.strength.toString();
-        //    var segmentGroup = opacitySegments[detection.groupId];
-        //    var segment = segmentGroup[segmentId];
-        //
-        //    if (!segment) {
-        //        segment = group.append('g')
-        //            .attr('filter', 'url(#constantOpacity-' + detection.strength.toString().replace(/\./, '') + ')');
-        //        segmentGroup[segmentId] = segment;
-        //    }
-        //
-        //    return segment;
-        //}
-        //
-
         /**
          * Handler of selected detection group
          */
-        function selectDetectionGroup () {
+        function selectDetectionGroup() {
             var detectionName;
-            var groupElement;
+            var segmentElement;
             var target = d3.event.target;
 
             if (target.tagName && 'g' === target.tagName.toLowerCase()) {
-                groupElement = target;
+                segmentElement = target;
             } else {
                 if (target.getAttribute) {
-                    groupElement = target.parentElement;
+                    segmentElement = target.parentElement;
                 } else if (target.correspondingUseElement) {
                     // Safari browser and IE
-                    groupElement = target.correspondingUseElement.parentNode;
+                    segmentElement = target.correspondingUseElement.parentNode;
                 }
             }
 
-            if (groupElement) {
-                detectionName = groupElement.getAttribute('detection-name');
-                self.config().detectionSelect(detectionName);
-                highlightGroup(groupElement);
+            if (segmentElement) {
+                var groupElement = segmentElement.parentNode;
+                if (groupElement) {
+                    detectionName = groupElement.getAttribute('detection-name');
+                    self.config().detectionSelect(detectionName);
+                    self.setHighlightedTrackName(detectionName);
+
+                    highlightSegment(segmentElement);
+                }
             }
         }
 
         /**
          * Highlight a target detection group.
          */
-        function highlightGroup(element) {
-            self.detectionContainer().selectAll('.detectionPath').call(self.removeHighlightSelection);
-            d3.select(element)
-                .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+        function highlightSegment(element) {
+            var segmentElement = d3.select(element);
+            self.removeHighlightingFromDetection();
+            d3.select(element.parentNode).classed(self.config().selectedPathClass, true);
+            segmentElement.classed(self.config().highlightedSegmentClass, true);
+
+            if (presentColorMatrixFilter) {
+                segmentElement
+                    .attr('filter', 'url(#' + self.config().selectedPathColorFilter + ')');
+            } else {
+                var hueVale = self.config().hueValueForSelectedPath;
+                changeColorHueValueOnPoints(segmentElement, hueVale);
+            }
+        }
+
+        /**
+         * Remove highlighting from detections points within a group element.
+         */
+        function removeHighlightingFromPoints() {
+            var hueValue = self.config().colorModel.hue;
+            var selectedGroup = self.detectionContainer().select('.' + self.config().selectedPathClass);
+            selectedGroup.classed(self.config().selectedPathClass, false);
+            changeColorHueValueOnPoints(selectedGroup, hueValue);
+        }
+
+        /**
+         * Change hue value on detection points within a group element.
+         *
+         * @param {Object} d3 wrapped element groupElement
+         * @param {Integer} hueValue
+         */
+        function changeColorHueValueOnPoints(groupElement, hueValue) {
+            groupElement.selectAll('use').each(function () {
+                var useElement = d3.select(this);
+                var oldColor = d3.hsl(useElement.style('fill'));
+                var newColor = d3.hsl(hueValue, oldColor.s, oldColor.l);
+                useElement.style('fill', newColor);
+            });
         }
 
         /**
@@ -874,6 +974,20 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
                 strength: detection.strength
             };
         }
+        
+        function deselectPath() {
+            _.each(renderedDetections, function (detection, groupId) {
+                if (!processedDetections[groupId]) {
+                    // there was no a new detection data for a rendered path
+                    if (detection.segment.node().hasChildNodes()) {
+                        // create a new segment only if the segment is not empty
+                        var segment = detection.group.append('g');
+                        segment.classed('contactSegment', true);
+                        detection.segment = segment;
+                    }
+                }
+            });
+        }
 
         this.addDetection = function (detections) {
             // create list of path names from detections
@@ -964,10 +1078,13 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
         this.moveDetections = function (simulationTime) {
             this.svgView.updateVisibleDomain(simulationTime.getTime());
             this.svgView.changeTracksOffset(options.initialTime);
+            deselectPath();
 
             if (!options.serialRenderingMode) {
                 this.removeAllExpiredDetections();
             }
+
+            processedDetections = {};
         };
 
         this.currentTimeBoundaries = function (time) {
@@ -1082,6 +1199,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
     DotDetections.prototype.createPathContainer = function (detection, name) {
         var data = [];
         var group = this.svgView.createPointsGroup(detection, name);
+        var segment = group.append('g');
+        segment.classed('contactSegment', true);
 
         // there is no element, need to create it
         data.push(detection);
@@ -1091,7 +1210,8 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
             data: data,
             group: group,
             date: detection.date,
-            isExpired: false
+            isExpired: false,
+            segment: segment // wrap detections points in segments for each detection contact series
         });
     };
 
@@ -1106,7 +1226,7 @@ angular.module('subtrack90.game.sonarSubPlot', ['subtrack90.game.svgFilter'])
     DotDetections.prototype.addPointToPath = function (detection, detectionPath, groupOffset) {
         if (!detectionPath.isExpired) {
             // append new point element based on detection
-            detection.pointElement = this.svgView.addDetectionToGroup(detection, detectionPath.group, groupOffset);
+            detection.pointElement = this.svgView.addDetectionToGroup(detection, detectionPath.segment, groupOffset);
             // add detection to rendered collection
             detectionPath.data.push(detection);
 

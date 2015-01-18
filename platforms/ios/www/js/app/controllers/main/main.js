@@ -82,7 +82,24 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
         return res;
     };
 
-    /** navigate to the specified URL, if the mission is avaialble to the current user
+    /**
+     * Return specific glyph-icon class by mission status
+     *
+     * @param id of mission
+     * @returns {String}
+     */
+    $scope.glyphForMission = function (id) {
+        switch (_.findWhere(userMissions, {id: id}).status) {
+            case 'SUCCESS':
+                return 'glyphicon-handwritten-ok';
+            case 'LOCKED':
+                return 'glyphicon-lock';
+            default:
+                return 'glyphicon-empty';
+        }
+    };
+
+    /** navigate to the specified URL, if the mission is available to the current user
      *
      * @param id
      */
@@ -90,45 +107,6 @@ angular.module('subtrack90.app.main', ['subtrack90.app.user'])
         if (!$scope.isLocked(id)) {
             $location.path('mission/' + id);
         }
-    };
-
-    /** whether the specified mission is has been completed by this user
-     *
-     * @param id the mission id
-     * @returns {String}  the glyph to use
-     */
-    $scope.glyphFor = function (id) {
-        var res = false;
-
-        // ok, lookup this id in the player achievemtns
-        var found = _.find(userMissions, function (ach) {
-            return ach.id == id;
-        });
-
-        // has this level been tried?
-        if (found) {
-            switch (found.status) {
-                case "SUCCESS":
-                    res = "glyphicon glyphicon-check";
-                    break;
-                case "UNLOCKED":
-                    res = "glyphicon glyphicon-unchecked";
-                    break;
-                case "FAILURE":
-                    res = "glyphicon glyphicon-unchecked";
-                    break;
-                case "LOCKED":
-                    res = "glyphicon glyphicon-lock";
-                    break;
-            }
-        }
-
-        // fallback - just lock it
-        if (!res) {
-            res = "glyphicon glyphicon-lock";
-        }
-
-        return res;
     };
 
 });
