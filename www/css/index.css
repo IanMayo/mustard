@@ -73,6 +73,14 @@ body {
   color: yellowgreen;
 }
 
+.mission-list .glyphicon-handwritten-ok:before {
+  content: "\2714";
+}
+
+.mission-list .glyphicon-empty {
+  visibility: hidden;
+}
+
 /* make the "play" button to the right of the mission nice & clear */
 .mission-glyph {
   font-size: 18px;
