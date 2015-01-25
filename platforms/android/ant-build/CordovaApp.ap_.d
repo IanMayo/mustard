@@ -115,6 +115,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/googlep.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/lock.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/logo.png \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/img/mission-list-border.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/mockup.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/splash \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/img/twitter.png \

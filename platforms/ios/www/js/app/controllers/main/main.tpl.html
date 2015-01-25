@@ -47,13 +47,13 @@
           </h3>
         </div>
 
-        <table class="table table-striped table-bordered mission-list">
+        <table class="table mission-list">
           <tr ng-repeat="mission in level.missions"
             ng-click="moveToMission([mission.id])"
             ng-class="{'redacted-text': isLocked(mission.id)}"
             class="mission">
             <td>
-              <strong>{{ mission.id }}. {{ mission.name }}. </strong>
+              <span>{{ mission.id }}. {{ mission.name }}. </span>
               <small>{{ mission.description }}</small>
               <!--
               <span ng-hide="isLocked(mission.id)" class="glyphicon glyphicon-play-circle mission-glyph"></span>

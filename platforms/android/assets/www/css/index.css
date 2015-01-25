@@ -54,10 +54,35 @@ body {
   background-color: #b5d0d0;
 }
 
-/* show click cursor for missions */
+/* add background image to the mission list */
 .mission-list {
-  cursor: pointer;
   margin: 25px 0 65px 0;
+  border: 5px solid;
+  border-collapse: inherit;
+  cursor: pointer;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
+}
+
+.mission-list td {
+  border-top: 0 !important;
+  border-bottom: 5px solid !important;
+  border-left: 0 !important;
+  border-right: 5px solid !important;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
+}
+
+.mission-list tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.mission-list td:last-child {
+  border-right: 0 !important;
 }
 
 /* don't show "click" cursor for redacted missions */
