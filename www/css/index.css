@@ -54,10 +54,37 @@ body {
   background-color: #b5d0d0;
 }
 
-/* show click cursor for missions */
+/* add background image to the mission list */
 .mission-list {
-  cursor: pointer;
   margin: 25px 0 65px 0;
+  border: 6px solid;
+  border-collapse: inherit;
+  cursor: pointer;
+
+  /* TODO: add correct border image */
+  -moz-border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+  -webkit-border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+  border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+}
+
+.mission-list td {
+  border-top: 0 !important;
+  border-bottom: 6px solid !important;
+  border-left: 0 !important;
+  border-right: 6px solid !important;
+
+  /* TODO: add correct border image */
+  -moz-border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+  -webkit-border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+  border-image: url(http://www.w3.org/TR/css3-background/border.png) 26 repeat;
+}
+
+.mission-list tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.mission-list td:last-child {
+  border-right: 0 !important;
 }
 
 /* don't show "click" cursor for redacted missions */
