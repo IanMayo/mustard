@@ -208,6 +208,13 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
                         case "FISHERMAN":
                             sensorError = 2;
                             break;
+                        case "TORPEDO":
+                            sensorError = 3;
+                            break;
+                        default:
+                            sensorError = 2;
+                            console.log('No sensor error present for ' + thisV.categories.type);
+                            break;
                     }
 
                     // is this me?
