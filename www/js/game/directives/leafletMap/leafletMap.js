@@ -66,6 +66,12 @@ angular.module('subtrack90.game.leafletMapDirective', [
                 }).addTo(map);
             };
 
+            // Add Compass Rose control to the map.
+            var addCompassRose = function () {
+                var compass = new L.Control.Compass();
+                map.addControl(compass);
+            };
+
             /**
              * Map layers configurations.
              */
@@ -321,6 +327,7 @@ angular.module('subtrack90.game.leafletMapDirective', [
 
                 configureLayers();
                 addMapFeatures();
+                addCompassRose();
             };
 
             /**
