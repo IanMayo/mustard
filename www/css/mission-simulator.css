@@ -338,19 +338,9 @@
   stroke-width: 10px;
 }
 
-.data-leaflet-map-container .leaflet-compass .compass-icon {
+.compass-icon {
   height: 76px;
   width: 76px;
   margin: 2px;
   background: url('images/compass-rose.png') center center no-repeat;
-}
-
-.data-leaflet-map-container .leaflet-compass .compass-button {
-  height: 76px;
-  width: 76px;
-}
-.data-leaflet-map-container .leaflet-control.leaflet-compass,
-.data-leaflet-map-container .leaflet-compass .compass-button.active {
-  background: none;
-  box-shadow: none;
 }
