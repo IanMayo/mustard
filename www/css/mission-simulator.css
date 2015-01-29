@@ -347,6 +347,6 @@
   width: 76px;
   float: right;
   position: relative;
-  z-index: 1;
+  z-index: 5;
   background: url('images/compass-rose.png') no-repeat;
 }
