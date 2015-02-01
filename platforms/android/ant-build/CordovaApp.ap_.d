@@ -55,6 +55,7 @@
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-html.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/splash-img.css \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/stacked-tabs.css \
+/Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/compass-rose.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers-2x.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/layers.png \
 /Users/alexander/Repos/mustard/platforms/android/assets/www/css/images/marker-icon-2x.png \

@@ -337,3 +337,16 @@
   stroke: rgb(170, 206, 0);
   stroke-width: 10px;
 }
+
+.leaflet-top .leaflet-compass {
+  margin-top: 22px;
+}
+
+.compass-rose {
+  height: 76px;
+  width: 76px;
+  float: right;
+  position: relative;
+  z-index: 5;
+  background: url('images/compass-rose.png') no-repeat;
+}
