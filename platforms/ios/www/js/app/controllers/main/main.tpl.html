@@ -53,7 +53,7 @@
             ng-class="{'redacted-text': isLocked(mission.id)}"
             class="mission">
             <td>
-              <span>{{ mission.id }}. {{ mission.name }}. </span>
+              <strong>{{ mission.id }}. {{ mission.name }}. </strong>
               <small>{{ mission.description }}</small>
               <!--
               <span ng-hide="isLocked(mission.id)" class="glyphicon glyphicon-play-circle mission-glyph"></span>
