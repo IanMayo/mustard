@@ -332,18 +332,21 @@
   }
 }
 
-.detectionPath .point {
-  fill: rgb(170, 206, 0);
-}
-
-
 .line {
   fill: none;
   stroke: rgb(170, 206, 0);
-  stroke-width: 8px;
-
+  stroke-width: 10px;
 }
 
-.detectionPath.selected {
-  stroke: rgb(75, 239, 199);
+.leaflet-top .leaflet-compass {
+  margin-top: 22px;
+}
+
+.compass-rose {
+  height: 76px;
+  width: 76px;
+  float: right;
+  position: relative;
+  z-index: 5;
+  background: url('images/compass-rose.png') no-repeat;
 }

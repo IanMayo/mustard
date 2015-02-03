@@ -12,7 +12,7 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
 
 .service('detection', ['geoMath', function (geoMath) {
 
-    const ABSORPTION_COEFFICIENT = 0.000073152;
+    var ABSORPTION_COEFFICIENT = 0.000073152;
     /* db / metre */
 
     var getOrigin = function (location, offset, heading) {
@@ -111,7 +111,7 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
     var processThisVessel = function (tNow, myVessel, allVessels) {
 
         // how much turn rate leads to array unsteady
-        const TURN_THRESHOLD = 0.1;
+        var TURN_THRESHOLD = 0.1;
         /* degs / sec */
 
         // ok, sort out my own noise levels
@@ -207,6 +207,13 @@ angular.module('subtrack90.game.detection', ['subtrack90.game.geoMath'])
                             break;
                         case "FISHERMAN":
                             sensorError = 2;
+                            break;
+                        case "TORPEDO":
+                            sensorError = 3;
+                            break;
+                        default:
+                            sensorError = 2;
+                            console.log('No sensor error present for ' + thisV.categories.type);
                             break;
                     }
 
