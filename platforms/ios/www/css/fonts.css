@@ -1,44 +1,29 @@
 @font-face {
   font-family: 'Conspiracy';
   /* IE9 Compat Modes */
-  src: url('../fonts/Conspiracy-Regular.eot');
+  src: url('../fonts/conspiracy-regular.eot');
   /* IE6-IE8 */
-  src: url('../fonts/Conspiracy-Regular.eot?#iefix') format('embedded-opentype'),
+  src: url('../fonts/conspiracy-regular.eot?#iefix') format('embedded-opentype'),
   /* Modern Browsers */
-  url('../fonts/Conspiracy-Regular.woff') format('woff'),
+  url('../fonts/conspiracy-regular.woff') format('woff'),
   /* Safari, Android, iOS */
-  url('../fonts/Conspiracy-Regular.ttf') format('truetype'),
+  url('../fonts/conspiracy-regular.ttf') format('truetype'),
   /* Legacy iOS */
-  url('../fonts/Conspiracy-Regular.svg#Conspiracy-Regular') format('svg');
-}
-
-@font-face {
-  font-family: 'Conspiracy';
-  /* IE9 Compat Modes */
-  src: url('../fonts/Conspiracy-Bold.eot');
-  /* IE6-IE8 */
-  src: url('../fonts/Conspiracy-Bold.eot?#iefix') format('embedded-opentype'),
-    /* Modern Browsers */
-  url('../fonts/Conspiracy-Bold.woff') format('woff'),
-    /* Safari, Android, iOS */
-  url('../fonts/Conspiracy-Bold.ttf') format('truetype'),
-    /* Legacy iOS */
-  url('../fonts/Conspiracy-Bold.svg#Conspiracy-Bold') format('svg');
-  font-weight: 500;
+  url('../fonts/conspiracy-regular.svg#Conspiracy-Regular') format('svg');
 }
 
 @font-face {
   font-family: 'Conspiracy-PressRelease';
   /* IE9 Compat Modes */
-  src: url('../fonts/Conspiracy-PressRelease.eot');
+  src: url('../fonts/conspiracy-pressrelease.eot');
   /* IE6-IE8 */
-  src: url('../fonts/Conspiracy-PressRelease.eot?#iefix') format('embedded-opentype'),
+  src: url('../fonts/conspiracy-pressrelease.eot?#iefix') format('embedded-opentype'),
   /* Modern Browsers */
-  url('../fonts/Conspiracy-PressRelease.woff') format('woff'),
+  url('../fonts/conspiracy-pressrelease.woff') format('woff'),
   /* Safari, Android, iOS */
-  url('../fonts/Conspiracy-PressRelease.ttf') format('truetype'),
+  url('../fonts/conspiracy-pressrelease.ttf') format('truetype'),
   /* Legacy iOS */
-  url('../fonts/Conspiracy-PressRelease.svg#Conspiracy-PressRelease') format('svg');
+  url('../fonts/conspiracy-pressrelease.svg#Conspiracy-PressRelease') format('svg');
 }
 
 .redacted-text {

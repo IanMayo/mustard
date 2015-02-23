@@ -36,7 +36,7 @@ body {
   -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
   -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
   /*background-image: url("../img/mockup.png");*/
-  background-size: 100% 100%;
+  /*background-size: 100% 100%;*/
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -50,48 +50,74 @@ body {
 }
 
 /** give the leaflet map a plain, sea-colored background */
-#spatial-view .leaflet-container
-{
-    background-color:#b5d0d0;
+#spatial-view .leaflet-container {
+  background-color: #b5d0d0;
 }
 
-#missionOrders .panel-group{
-  height:400px;
-  overflow-y: auto;
+/* add background image to the mission list */
+.mission-list {
+  margin: 25px 0 65px 0;
+  border: 5px solid;
+  border-collapse: inherit;
+  cursor: pointer;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
 }
 
-#missionOrders .panel-body{
-  overflow-y: visible;
+.mission-list td {
+  border-top: 0 !important;
+  border-bottom: 5px solid !important;
+  border-left: 0 !important;
+  border-right: 5px solid !important;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
 }
 
-/* show click cursor for missions */
-.mission-list div {
-    cursor: pointer;
+.mission-list tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.mission-list td:last-child {
+  border-right: 0 !important;
 }
 
 /* don't show "click" cursor for redacted missions */
 .mission-list .redacted-text{
-    cursor: text;
+  cursor: text;
 }
 
 .mission-level small, .mission-list small{
-    color: black;
+  color: black;
+}
+
+.mission-list .glyphicon-play-circle {
+  color: yellowgreen;
+}
+
+.mission-list .glyphicon-handwritten-ok:before {
+  content: "\2714";
+}
+
+.mission-list .glyphicon-empty {
+  visibility: hidden;
 }
 
 /* make the "play" button to the right of the mission nice & clear */
 .mission-glyph {
-    font-size: 18px;
- }
-
-.mission-level{
-    margin-top: 1.5em;
+  font-size: 18px;
 }
 
-
+.mission-level{
+  margin-top: 1.5em;
+}
 
 /* if the situation has <b> bold text, we really want to make the player aware of it */
 #situation b{
-    color: #e55;
+  color: #e55;
 }
 
 /* indent the list of objectives */
@@ -101,18 +127,18 @@ body {
 
 /* hide the symbol for the list items, since we're using a glyph */
 #objectiveList ul{
-    list-style-type: none;
-    padding-left:20px;
+  list-style-type: none;
+  padding-left:20px;
 }
 
 /** display the mission name at the top of the objectives list */
 #objectives-header{
-    border-bottom: solid #888 2px;
-    margin-bottom:5px;
-    font-weight: bold;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  border-bottom: solid #888 2px;
+  margin-bottom:5px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 /** for the leaflet mouse location  */
