@@ -1,0 +1,13 @@
+{
+    "name": "Sailor",
+    "achievements": [
+        {"name": "Newbie"},
+        {"name": "Speed Demon"}
+    ],
+    "missions": [],
+    "options": {
+        "music": 0,
+        "sfx": 3,
+        "language": "EN"
+    }
+}

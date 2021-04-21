@@ -1,0 +1,20 @@
+.vizSonar {
+  font-size: 10px;
+}
+
+.vizSonar .axis path,
+.vizSonar .axis line {
+  fill: none;
+  stroke: #535353;
+  shape-rendering: crispEdges;
+}
+.vizSonar .axis text {
+  fill: #708d15;
+}
+
+.visContainer {
+  display: block;
+  height: 100%;
+  position: relative;
+  background-color: #000000;
+}

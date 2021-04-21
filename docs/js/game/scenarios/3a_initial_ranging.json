@@ -1,0 +1,164 @@
+{
+    "id": "3a",
+    "name": "Initial Ranging",
+    "description": "An introduction to passive ranging",
+    "situation": "To qualify to conduct TMA against a dived target, you first need to practice on a surface target - both to valid yourself and the TMA computer",
+    "welcome": "Your vessel now has a passive Range Calculator.  \n\nInitiate a ranging manoeuvre by selecting a sonar track.  Then, press the 'Start' button, let the caculator average the bearing rate for a minute, then make a turn, then wait another minute.\n\nThe solution will be shown on the map.",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 50,
+                    "lng": -8.14
+                },
+                "course": 90,
+                "demCourse": 90,
+                "demSpeed": 6,
+                "speed": 6,
+                "height": 0,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 14,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "GREEN",
+                "environment": "SURFACE",
+                "type": "MERCHANT"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 49.9,
+                        "lng": -8.1
+                    },
+                    "br": {
+                        "lat": 50.1,
+                        "lng": -7.8
+                    },
+                    "height": -30
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 102,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.05,
+                    "lng": -7.9
+                },
+                "course": 300,
+                "demCourse": 300,
+                "demSpeed": 7,
+                "speed": 7,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 10,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Gain & keep contact",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact",
+                    "description": "Travel East to gain contact on the Platfom Support Vessel working in that area",
+                    "type": "GAIN_CONTACT",
+                    "elapsed": 480,
+                    "success": "Well done, you've gained contact within the 8 minute limit",
+                    "failure": "Sorry, you didn't make contact in time. You do just have to keep heading East!"
+                },
+                {
+                    "name": "Conduct 3 ranging times",
+                    "description": "Perform 3 ranging manoeuvres on surface target",
+                    "type": "OBTAIN_SOLUTION",
+                    "count" : 3,
+                    "subject" : "Ownship",
+                    "success": "Well done, 3 solutions obtained",
+                    "elapsed": 7200,
+                    "failureTime": "You didn't create your solutions in time"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
+}

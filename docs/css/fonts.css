@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Conspiracy';
+  /* IE9 Compat Modes */
+  src: url('../fonts/conspiracy-regular.eot');
+  /* IE6-IE8 */
+  src: url('../fonts/conspiracy-regular.eot?#iefix') format('embedded-opentype'),
+  /* Modern Browsers */
+  url('../fonts/conspiracy-regular.woff') format('woff'),
+  /* Safari, Android, iOS */
+  url('../fonts/conspiracy-regular.ttf') format('truetype'),
+  /* Legacy iOS */
+  url('../fonts/conspiracy-regular.svg#Conspiracy-Regular') format('svg');
+}
+
+@font-face {
+  font-family: 'Conspiracy-PressRelease';
+  /* IE9 Compat Modes */
+  src: url('../fonts/conspiracy-pressrelease.eot');
+  /* IE6-IE8 */
+  src: url('../fonts/conspiracy-pressrelease.eot?#iefix') format('embedded-opentype'),
+  /* Modern Browsers */
+  url('../fonts/conspiracy-pressrelease.woff') format('woff'),
+  /* Safari, Android, iOS */
+  url('../fonts/conspiracy-pressrelease.ttf') format('truetype'),
+  /* Legacy iOS */
+  url('../fonts/conspiracy-pressrelease.svg#Conspiracy-PressRelease') format('svg');
+}
+
+.redacted-text {
+  font-family: 'Conspiracy-PressRelease', 'Courier New', Courier, monospace !important;
+}
+
+.retro-font {
+  font-family: monospace, monospace !important;
+}

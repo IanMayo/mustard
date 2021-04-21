@@ -1,0 +1,16 @@
+<div class="data-leaflet-map-container">
+  <!-- we're temporarily hiding the show toggle buttons in the next block -->
+  <div class="data-leaflet-map-controls text-right" data-ng-hide="true">
+    <label>Show targets
+      <input type="checkbox" data-ng-checked="targetsVisibility" data-ng-model="targetsVisibility"
+             data-ng-change="toggleTargets()"/>
+    </label>
+    <label>Show detections
+      <input type="checkbox" data-ng-model="showSonarDetections" data-ng-change="toggleDetections()"/>
+    </label>
+  </div>
+  <div data-leaflet-map class="data-leaflet-map retro-font" ng-drop="true" ng-drop-success="markLocation(uiEvent)">
+    <div class="mission-name">[ {{missionID}} - {{missionName}} ]</div>
+    <div class="compass-rose"></div>
+  </div>
+</div>

@@ -1,0 +1,218 @@
+{
+    "id": "4b",
+    "name": "Influence evasive SM",
+    "description": "Take control of the Ops Area by handing on an evasive SM to Airborne assets",
+    "welcome": "The dived submarine now has a distinctly evasive bebaviour. We're going to try to push him into the area of MPA coverage to the North East.",
+    "situation": "Now that the dived SM knows who is boss, we're going to push him into an area of dense MPA coverage, so that we're free to transit to escort the incoming HVU.  Intel on his SOPs is that each time he detects us he will head out on the opposite bearing for around 15 minutes.",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "behaviours": [],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_STEADY_TIME"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -26,
+                    "disabled": false
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 49.91,
+                    "lng": -7.90
+                },
+                "course": 270,
+                "demCourse": 270,
+                "demSpeed": 6,
+                "speed": 6,
+                "height": 0,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 12,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+
+            "behaviours": [
+                {
+                    "name": "Flee blue",
+                    "type": "EVADE",
+                    "target": "Ownship",
+                    "fleeTime": 1000,
+                    "height": -30,
+                    "speed": 12
+                },
+                {
+                    "name": "Shipping Route offset",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 50.03,
+                            "lng": -8.07
+                        },
+                        {
+                            "lat": 49.89,
+                            "lng": -8.04
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -8.16
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": true,
+                    "forever": true
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_HULL",
+                    "categories": ["NO_COMPLEX_SELF_NOISE", "NO_SIMPLE_SELF_NOISE", "NO_STEADY_TIME", "NO_BOW_NULL", "NO_AMBIGUOUS"],
+                    "offset": 0,
+                    "ArrayGain": 26,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 86,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "location": {
+                    "lat": 50.0,
+                    "lng": -8.10
+                },
+                "course": 310,
+                "demCourse": 310,
+                "demSpeed": 5,
+                "speed": 5,
+                "time": 0,
+                "height": -40,
+                "demHeight": -40.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 8,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Find submarine",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Gain contact on SM",
+                    "description": "Gain contact with the dived submarine, he's roughly to your North West",
+                    "type": "GAIN_CONTACT",
+                    "target": "Target",
+                    "elapsed": 3300,
+                    "success": "Ok, we've got a feint trace on the target submarine.",
+                    "failure": "Sorry, you didn't make contact in time. Was he hidden in your bow null?"
+                },
+                {
+                    "name": "Force SM to MPA Coverage",
+                    "description": "Force target into MPA coverage zone",
+                    "type": "SUCCESS_IN_AREA",
+                    "subject": "Target",
+                    "tl": {
+                        "lat": 50.12,
+                        "lng": -7.89
+                    },
+                    "br": {
+                        "lat": 50.01,
+                        "lng": -7.77
+                    },
+                    "elapsed": 5600,
+                    "success": "Well done, the MPA can take over now. ",
+                    "failure" :"You didn't force target during the time window"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+
+                    ]
+                },
+                "id": "OpsArea"
+            },
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "MPA Coverage"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-7.89, 50.12],
+                            [-7.89, 50.02],
+                            [-7.77, 50.02],
+                            [-7.77, 50.12],
+                            [-7.89, 50.12 ]
+                        ]
+
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
+}

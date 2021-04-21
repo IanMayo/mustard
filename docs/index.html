@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html ng-app="subtrack90">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui,
+    width=device-width"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap-tour/build/css/bootstrap-tour.min.css">
+  <link rel="stylesheet" type="text/css" href="lib/angularjs-slider/dist/rzslider.css">
+  <link rel="stylesheet" type="text/css" href="lib/angular-hotkeys/build/hotkeys.css">
+  <link rel="stylesheet" type="text/css" href="css/fonts.css">
+  <link rel="stylesheet" type="text/css" href="css/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/options.css">
+  <link rel="stylesheet" type="text/css" href="css/messages.css">
+  <link rel="stylesheet" type="text/css" href="css/modal-messages.css">
+  <link rel="stylesheet" type="text/css" href="css/mission-simulator.css">
+  <link rel="stylesheet" type="text/css" href="css/stacked-tabs.css">
+  <link rel="stylesheet" type="text/css" href="css/profile.css">
+  <link rel="stylesheet" type="text/css" href="css/sonar.css">
+  <link rel="stylesheet" type="text/css" href="css/splash-html.css">
+
+  <!--[if IE 9]>
+  <link rel="stylesheet" type="text/css" href="css/splash-html-ie.css">
+  <![endif]-->
+
+  <title>SubTrack &#39;90 - ASW Trainer</title>
+</head>
+
+<body>
+<div class="app-body" ng-view></div>
+
+<!-- Libs -->
+<script type="text/javascript" src="cordova.js"></script>
+
+<script type="text/javascript" src="lib/jquery.min.js"></script>
+<script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="lib/modernizr/modernizr.custom.93820.js"></script>
+<script type="text/javascript" src="lib/underscore-min.js"></script>
+<script type="text/javascript" src="lib/underscore.number.js"></script>
+<script type="text/javascript" src="lib/howler/howler.js"></script>
+
+<script type="text/javascript" src="lib/angular/angular.js"></script>
+<script type="text/javascript" src="lib/angular/angular-route.js"></script>
+<script type="text/javascript" src="lib/angular/angular-touch.js"></script>
+<script type="text/javascript" src="lib/angular/angular-local-storage.js"></script>
+<script type="text/javascript" src="lib/angular/angular-animate.js"></script>
+<script type="text/javascript" src="lib/angular/angular-sanitize.js"></script>
+<script type="text/javascript" src="lib/angularjs-slider/dist/rzslider.min.js"></script>
+<script type="text/javascript" src="lib/ng-cordova/ng-cordova.js"></script>
+<script type="text/javascript" src="lib/ui-bootstrap-0.10.0.min.js"></script>
+<script type="text/javascript" src="lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
+<script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
+<script type="text/javascript" src="lib/fpsmeter.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap-tour/build/js/bootstrap-tour-standalone.min.js"></script>
+<script type="text/javascript" src="lib/d3.min.js"></script>
+<script type="text/javascript" src="lib/ngDraggable.js"></script>
+<script type="text/javascript" src="lib/angular-hotkeys/build/hotkeys.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="js/app/index.js"></script>
+<script type="text/javascript" src="js/app/app.js"></script>
+
+<!-- App controllers -->
+<script type="text/javascript" src="js/app/controllers/login/login.js"></script>
+<script type="text/javascript" src="js/app/controllers/registration/registration.js"></script>
+<script type="text/javascript" src="js/app/controllers/main/main.js"></script>
+<script type="text/javascript" src="js/app/controllers/mission/mission.js"></script>
+<script type="text/javascript" src="js/app/controllers/userProfile/userProfile.js"></script>
+<script type="text/javascript" src="js/app/controllers/options/options.js"></script>
+<script type="text/javascript" src="js/app/controllers/debug/debug.js"></script>
+<script type="text/javascript" src="js/app/controllers/credits/credits.js"></script>
+<script type="text/javascript" src="js/app/controllers/final/final.js"></script>
+
+<!-- App directives -->
+<script type="text/javascript" src="js/app/directives/fullScreenControl/fullScreenControl.js"></script>
+
+<!-- App services -->
+<script type="text/javascript" src="js/app/services/cordovaReady/cordovaReady.js"></script>
+<script type="text/javascript" src="js/app/services/mockUserBackend/mockUserBackend.js"></script>
+<script type="text/javascript" src="js/app/services/mockUserLevels/mockUserLevels.js"></script>
+<script type="text/javascript" src="js/app/services/user/user.js"></script>
+<script type="text/javascript" src="js/app/services/missionsIndex/missionsIndex.js"></script>
+<script type="text/javascript" src="js/app/services/splashScreen/splashScreen.js"></script>
+<script type="text/javascript" src="js/app/services/sound/sound.js"></script>
+<script type="text/javascript" src="js/app/services/soundManager/soundManager.js"></script>
+<script type="text/javascript" src="js/app/services/fullScreen/fullScreen.js"></script>
+
+<!-- Game controllers -->
+<script type="text/javascript" src="js/game/controllers/simulator/simulator.js"></script>
+<script type="text/javascript" src="js/game/controllers/review/review.js"></script>
+
+<!-- Game directives -->
+<script type="text/javascript" src="js/game/directives/spatialView/spatialView.js"></script>
+<script type="text/javascript" src="js/game/directives/rangeCalculator/rangeCalculator.js"></script>
+<script type="text/javascript" src="js/game/directives/shipControls/shipControls.js"></script>
+<script type="text/javascript" src="js/game/directives/shipState/shipState.js"></script>
+<script type="text/javascript" src="js/game/directives/timeBearingDisplay/timeBearingDisplay.js"></script>
+<script type="text/javascript" src="js/game/directives/fireWeapon/fireWeapon.js"></script>
+<script type="text/javascript" src="js/game/directives/timeDisplay/timeDisplay.js"></script>
+<script type="text/javascript" src="js/game/directives/timeRemaining/timeRemaining.js"></script>
+<script type="text/javascript" src="js/game/directives/objectiveList/objectiveList.js"></script>
+<script type="text/javascript" src="js/game/directives/leafletMap/leafletMap.js"></script>
+<script type="text/javascript" src="js/game/directives/reviewTour/reviewTour.js"></script>
+<script type="text/javascript" src="js/game/directives/eventPicker/eventPicker.js"></script>
+<script type="text/javascript" src="js/game/directives/clickRepeat/clickRepeat.js"></script>
+<script type="text/javascript" src="js/game/directives/elementVisibility/elementVisibility.js"></script>
+<script type="text/javascript" src="js/game/directives/messageList/messageList.js"></script>
+<script type="text/javascript" src="js/game/directives/sonarBearing/sonarBearing.js"></script>
+<script type="text/javascript" src="js/game/directives/notificationIcon/notificationIcon.js"></script>
+<script type="text/javascript" src="js/game/directives/warningAboutTimer/warningAboutTimer.js"></script>
+<script type="text/javascript" src="js/game/directives/rzslider/rzslider.js"></script>
+<script type="text/javascript" src="js/game/directives/svgFilter/svgFilter.js"></script>
+
+<!-- Game services -->
+<script type="text/javascript" src="js/game/services/movementSimulation/movementSimulation.js"></script>
+<script type="text/javascript" src="js/game/services/decision/decision.js"></script>
+<script type="text/javascript" src="js/game/services/reviewSnapshot/reviewSnapshot.js"></script>
+<script type="text/javascript" src="js/game/services/detection/detection.js"></script>
+<script type="text/javascript" src="js/game/services/geoMath/geoMath.js"></script>
+<script type="text/javascript" src="js/game/services/movement/movement.js"></script>
+<script type="text/javascript" src="js/game/services/objectives/objectives.js"></script>
+<script type="text/javascript" src="js/game/services/message/message.js"></script>
+<script type="text/javascript" src="js/game/services/sonarPlot/sonarPlot.js"></script>
+<script type="text/javascript" src="js/game/services/sonarSubPlot/sonarSubPlot.js"></script>
+<script type="text/javascript" src="js/game/services/movementSimulation/dygraph-combined.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapPathHook.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapVectorMarker.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapIconLabel.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapGraticule.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapMarkerRotate.js"></script>
+<script type="text/javascript" src="js/game/services/leaflet/mapExtensions.js"></script>
+
+<script type="text/javascript">
+  app.initialize();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+/* Stacked tabs */
+.nav-stacked {
+  float: left;
+  border-bottom: none;
+  margin-right: 10px !important;
+}
+
+.nav-stacked + .tab-content,
+.nav-stacked + .tab-content > .tab-pane {
+  border: none;
+  overflow: auto;
+}
+
+.nav-stacked {
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
+
+.nav-stacked > li {
+  float: none;
+  min-width: 50px;
+  margin-right: -1px;
+  cursor: pointer;
+}
+
+.nav-stacked > li > a {
+  padding: 14px 20px;
+  border-radius: 4px 0 0 4px;
+  margin-right: -1px;
+}
+
+.nav-stacked > li > a:hover,
+.nav-stacked > li > a:focus {
+  border-color: #eee #ddd #eee #eee !important;
+}
+
+.nav-stacked .active > a,
+.nav-stacked .active > a:hover,
+.nav-stacked .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd !important;
+}
+
+ul.nav-stacked > li.disabled > a:hover,
+ul.nav-stacked > li.disabled > a:focus {
+  border-color: transparent transparent #ddd transparent !important;
+}
+
+/* Sideways stacked tabs (left) */
+.sideways .nav-stacked {
+  margin-top: 101px;
+  border: none;
+  position: relative;
+}
+
+.sideways .nav-stacked > li {
+  height: 30px;
+  width: 200px;
+  margin-bottom: 170px;
+
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.sideways .nav-stacked > li > a {
+  margin-right: 1px;
+  margin-left: -1px;
+  border-bottom: 1px solid #ddd;
+  background-color: #eee;
+  text-align: center;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sideways .nav-stacked > li > a:hover,
+.sideways .nav-stacked > li > a:focus {
+  border-color: #eee #eee #ddd #eee !important;
+}
+
+.sideways .nav-stacked > li.active > a,
+.sideways .nav-stacked > li.active > a:hover,
+.sideways .nav-stacked > li.active > a:focus {
+  background-color: #fff;
+  border-color: #ddd !important;
+  border-bottom-color: transparent !important;
+}
+
+.sideways .nav-stacked {
+  left: -80px;
+  top: -17px;
+  margin-right: -145px !important;
+}
+
+.sideways .nav-stacked + .tab-content {
+  border: 1px solid #ddd;
+  padding: 15px 30px;
+  border-radius: 0 4px 4px 4px;
+}
+
+/* Sideways stacked tabs (right) */
+.sideways.right .nav-stacked {
+  float: right;
+  left: -66px;
+  top: -15px;
+}
+
+.sideways.right .nav-stacked + .tab-content {
+  border-radius: 4px 0 4px 4px;
+}
+
+.sideways.right .nav-stacked > li {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}

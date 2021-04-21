@@ -1,0 +1,1446 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Schema for Mustard Game Levels",
+    "type": "object",
+    "required": ["id", "name", "description", "vessels", "patrolArea", "environment", "objectives", "features"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "The unique identifier for this mission, beginning with the phase number"
+        },
+        "name": {
+            "type": "string",
+            "description": "Title for this mission"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of what is covered in this mission"
+        },
+        "welcome": {
+            "type": "string",
+            "description": "Text displayed at start of mission"
+        },
+        "vessels": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["name", "categories", "behaviours", "sonars", "radiatedNoise", "state", "perf"],
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of this vessel, 'Ownship' for player's vessel"
+                    },
+                    "weapons": {
+                        "$ref": "#/definitions/weapons"
+                    },
+                    "categories": {
+                        "type": "object",
+                        "required": ["force", "environment", "type"],
+                        "properties": {
+                            "force": {
+                                "type": "string",
+                                "enum": ["BLUE", "RED", "WHITE", "GREEN"],
+                                "description": "Which force this vessel belongs to"
+                            },
+                            "environment": {
+                                "type": "string",
+                                "enum": ["SURFACE", "SUBSURFACE"],
+                                "description": "Where this vessel is found"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": ["WARSHIP", "SUBMARINE", "MERCHANT", "FISHERMAN"],
+                                "description": "Type of vessel"
+                            }
+                        }
+                    },
+                    "unableToPerformRanging": {
+                        "type": "boolean",
+                        "description": "Whether this vessel is capable of performing ranging manoeuvres"
+                    },
+                    "behaviours": {
+                        "type": "array",
+                        "description": "List of behaviours exhibited by this vessel",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "type"],
+                            "oneOf": [
+                                {
+                                    "$ref": "#/definitions/behaviourPath"
+                                },
+                                {
+                                    "$ref": "#/definitions/behaviourRectangleWander"
+                                },
+                                {
+                                    "$ref": "#/definitions/behaviourSnort"
+                                },
+                                {
+                                    "$ref": "#/definitions/behaviourEvade"
+                                },
+                                {
+                                    "$ref": "#/definitions/behaviourAttack"
+                                }
+                            ]
+                        }
+                    },
+                    "sonars": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "description": "List of sonars carried by this vessel",
+                        "items": {
+                            "type": "object",
+                            "description": "Individual sonar",
+                            "required": ["name", "categories", "offset", "ArrayGain", "DT"],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "categories": {
+                                    "type": "array",
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "string",
+                                        "enum": ["NO_STEADY_TIME", "NO_SIMPLE_SELF_NOISE", "NO_COMPLEX_SELF_NOISE", "NO_BOW_NULL", "NO_AMBIGUOUS"]
+                                    }
+                                },
+                                "offset": {
+                                    "type": "integer",
+                                    "description": "Distance from centre of ownship back to centre of towed array (m)"
+                                },
+                                "ArrayGain": {
+                                    "type": "integer",
+                                    "description": "Effectiveness of the sonar (dB)"
+                                },
+                                "DT": {
+                                    "type": "integer",
+                                    "description": "Detection threshold - the minimum SNR required to make detection"
+                                },
+                                "disabled": {
+                                    "type": "boolean",
+                                    "description": "Whether this sonar is active"
+                                }
+                            }
+                        }
+                    },
+                    "radiatedNoise": {
+                        "type": "object",
+                        "description": "How noisy this vessel is",
+                        "required": ["baseLevel", "speedPattern"],
+                        "properties": {
+                            "baseLevel": {
+                                "type": "integer",
+                                "description": "Core noise level (at stationary)"
+                            },
+                            "speedPattern": {
+                                "type": "string",
+                                "enum": ["Uniform"],
+                                "description": "How the noise increases with speed"
+                            }
+                        }
+                    },
+                    "state": {
+                        "type": "object",
+                        "description": "Initial state of this vessel",
+                        "required": ["time", "categories", "location", "height", "course", "speed", "demCourse", "demSpeed", "demHeight" ],
+                        "properties": {
+                            "time": {
+                                "type": "integer",
+                                "description": "Time at which this state is valid (secs)"
+                            },
+                            "location": {
+                                "$ref": "#/definitions/latLng"
+                            },
+                            "height": {
+                                "type": "number",
+                                "description": "Altitude of this vessel (-ve for underwater) (m)"
+                            },
+                            "course": {
+                                "type": "number",
+                                "description": "Current course of this vessel (degs)"
+                            },
+                            "speed": {
+                                "type": "number",
+                                "description": "Current speed of this vessel (m/s)"
+                            },
+                            "demCourse": {
+                                "type": "number",
+                                "description": "Demanded course of this vessel (degs)"
+                            },
+                            "demSpeed": {
+                                "type": "number",
+                                "description": "Demanded speed of this vessel (m/s)"
+                            },
+                            "demHeight": {
+                                "type": "number",
+                                "description": "Demanded height of this vessel (m)"
+                            }
+                        }
+                    },
+                    "perf": {
+                        "type": "object",
+                        "description": "Movement characteristics of this vessel",
+                        "required": ["turnRadius", "accelerationRate", "decelerationRate", "minSpeed", "maxSpeed", "climbRate", "diveRate" ],
+                        "properties": {
+                            "turnRadius": {
+                                "type": "number",
+                                "description": "m"
+                            },
+                            "accelerationRate": {
+                                "type": "number",
+                                "description": "m/s/s"
+                            },
+                            "decelerationRate": {
+                                "type": "number",
+                                "description": "m/s/s"
+                            },
+                            "minSpeed": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "maxSpeed": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "climbRate": {
+                                "type": "number",
+                                "description": "m/s"
+                            },
+                            "diveRate": {
+                                "type": "number",
+                                "description": "m/s"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "patrolArea": {
+            "type": "array",
+            "description": "Rough bounds of area for this operation",
+            "additionalProperties": false,
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "array",
+                "description": "Series of x/y coordinates representing rectangle",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "type": "number"
+                }
+            }
+        },
+        "environment": {
+            "type": "object",
+            "description": "Customisable environment description",
+            "properties": {
+
+            }
+        },
+        "objectives": {
+            "type": "array",
+            "description": "Elements that watch the scenario unfold, including success/failure tests",
+            "additionalProperties": false,
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["name", "type"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of this grouping"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of organisational grouping",
+                        "enum": ["SEQUENCE", "OR"
+                        ]
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/definitions/objectiveFindTarget"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveDistanceToCategory"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveDistanceFromCategory"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveStayInArea"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveSuccessInArea"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveSuccessOnLine"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveProximity"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveGainContact"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveMaintainContact"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveObtainSolution"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveDistance"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveDestroyTarget"
+                                },
+                                {
+                                    "$ref": "#/definitions/objectiveElapsed"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "allow a second tier of objectives",
+                                    "required": ["name", "type"],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Name of this grouping"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Type of organisational grouping",
+                                            "enum": ["SEQUENCE", "OR"
+                                            ]
+                                        },
+                                        "children": {
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "$ref": "#/definitions/objectiveFindTarget"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistanceToCategory"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistanceFromCategory"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveStayInArea"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveSuccessInArea"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveSuccessOnLine"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveProximity"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveGainContact"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveMaintainContact"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveObtainSolution"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDistance"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveDestroyTarget"
+                                                    },
+                                                    {
+                                                        "$ref": "#/definitions/objectiveElapsed"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "features": {
+            "type": "object",
+            "description": "Collection of geographic features to draw on the Map control",
+            "additionalProperties": false,
+            "required": ["type", "features"],
+            "properties": {
+                "type": {
+                    "enum": ["FeatureCollection"]
+                },
+                "features": {
+                    "type": "array",
+                    "additionalProperties": false,
+                    "uniqueItems": true,
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/featurePoint"
+                            },
+                            {
+                                "$ref": "#/definitions/featureLineString"
+                            },
+                            {
+                                "$ref": "#/definitions/featurePolygon"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "featurePoint": {
+            "type": "object",
+            "description" : "A fixed point",
+            "required": ["type", "properties", "geometry", "id"],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "hidePoint": {
+                            "type": "boolean",
+                            "description": "whether to hide the marker icon at this point"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["Point"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+
+                                    "type": "number",
+                                    "additionalProperties": false,
+                                    "description": "pattern for Point object"
+
+                                }
+                            ]
+
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "featureLineString": {
+            "type": "object",
+            "description" : "A series of points",
+            "required": ["type", "properties", "geometry", "id"],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["LineString"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "array",
+                                    "additionalProperties": false,
+                                    "description": "pattern for LineString object",
+                                    "items": [
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "featurePolygon": {
+            "type": "object",
+            "required": ["type", "properties", "geometry", "id"],
+            "description" : "A series of ring objects, the first one plotted as the polygon",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "enum": ["Feature"]
+                },
+                "properties": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": {
+                            "enum": ["Polygon"]
+                        },
+                        "coordinates": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "array",
+                                    "additionalProperties": false,
+                                    "description": "pattern for Polygon object",
+                                    "items": [
+                                        {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+
+        },
+        "behaviourName": {
+            "additionalProperties": false,
+            "description": "Unique name for this instance of this behaviour",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "behaviourHeight": {
+            "additionalProperties": false,
+            "description": "Height (or -ve for depth) to travel at in assorted behaviours",
+            "properties": {
+                "height": {
+                    "type": "integer"
+                }
+            }
+        },
+        "behaviourPath": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/behaviourName"
+                },
+                "type": {
+                    "enum": ["PATH"]
+                },
+                "height": {
+                    "$ref": "#/definitions/behaviourHeight"
+                },
+                "path": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "description": "Route followed in Path behaviour",
+                    "items": {
+                        "$ref": "#/definitions/latLng"
+                    }
+                },
+                "speed": {
+                    "type": "number",
+                    "description": "How fast to travel along this path (previous speed restored afterwards)"
+                },
+                "repeat": {
+                    "type": "boolean",
+                    "description": "Once this PATH behaviour is complete, should we repeat the steps in reverse order"
+                },
+                "forever": {
+                    "type": "boolean",
+                    "description": "Once this PATH behaviour is complete, shall we just continue looping through the points?"
+                }
+            }
+        },
+        "behaviourRectangleWander": {
+            "additionalProperties": false,
+            "description": "Wander around area. When edge of rectangle is reached, set demanded course to bearing to centre of area.",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/behaviourName"
+                },
+                "type": {
+                    "enum": ["RECTANGLE_WANDER"]
+                },
+                "height": {
+                    "$ref": "#/definitions/behaviourHeight"
+                },
+                "tl": {
+                    "$ref": "#/definitions/latLng",
+                    "description": "Co-ords of top-left corner of patrol area"
+                },
+                "br": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "speed": {
+                    "type": "integer"
+                }
+            }
+        },
+        "behaviourSnort": {
+            "additionalProperties": false,
+            "description": "When battery reaches danger level, snort until safe level",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/behaviourName"
+                },
+                "type": {
+                    "enum": ["SNORT"]
+                },
+                "height": {
+                    "$ref": "#/definitions/behaviourHeight",
+                    "description": "Height (-ve depth) to travel at for snort"
+                },
+                "startLevel": {
+                    "type": "integer",
+                    "description": "Battery level at which snorting will start"
+                },
+                "stopLevel": {
+                    "type": "integer",
+                    "description": "Battery level at which snorting will be complete"
+                }
+            }
+        },
+        "behaviourEvade": {
+            "additionalProperties": false,
+            "description": "Vessel will turn away when specified target is detected",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/behaviourName"
+                },
+                "type": {
+                    "enum": ["EVADE"]
+                },
+                "height": {
+                    "$ref": "#/definitions/behaviourHeight"
+                },
+                "target": {
+                    "type": "string",
+                    "description": "Name of target to evade"
+                },
+                "fleeTime": {
+                    "type": "integer",
+                    "description": "How long to evade for (secs)"
+                },
+                "speed": {
+                    "type": "integer",
+                    "description": "Speed to evade at (m/s)"
+                }
+            }
+        },
+        "behaviourAttack": {
+            "additionalProperties": false,
+            "description": "Vessel will face towards named target, for as long as it is detected",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/behaviourName"
+                },
+                "type": {
+                    "enum": ["ATTACK"]
+                },
+                "target": {
+                    "type": "string",
+                    "description": "Name of vessel to chase"
+                },
+                "height": {
+                    "$ref": "#/definitions/behaviourHeight",
+                    "description": "Height (-ve depth) to chase at"
+                },
+                "speed": {
+                    "type": "integer",
+                    "description": "Speed to chase at (m/s)"
+                }
+            }
+        },
+        "objectiveAchievement": {
+            "description": "Award the player with an achievement",
+            "required": ["name", "message"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this achievement. Icon name is inferred from this"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message to accompany achievement"
+                }
+            }
+        },
+        "latLng": {
+            "required": ["lat", "lng"],
+            "properties": {
+                "lat": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "lng": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                }
+            }
+        },
+        "speedRange": {
+            "description": "Speed constraints in m/s",
+            "required": ["min", "max"],
+            "properties": {
+                "min": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 12
+                },
+                "max": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 12
+                }
+            }
+        },
+        "objectiveFindTarget": {
+            "type": "object",
+            "description": "Player must select the indicated sonar track",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["FIND_TARGET"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "clearAfterwards": {
+                    "type": "boolean"
+                },
+                "after": {
+                    "type": "integer"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "elapsedNot": {
+                    "type": "integer"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "targetSubString": {
+                    "type": "string"
+                },
+                "failureEarly": {
+                    "type": "string"
+                },
+                "failureSelection": {
+                    "type": "string"
+                },
+                "failureTime": {
+                    "type": "string"
+                },
+                "narrSuccess": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveDistanceToCategory": {
+            "type": "object",
+            "description": "Fail if the subject gets within specified distance of specified category of vesssels",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["DISTANCE_TO_CATEGORY"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "range": {
+                    "type": "number"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveDistanceFromCategory": {
+            "type": "object",
+            "description": "Failure if subject passes outside specified range of named category of vessel",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["DISTANCE_FROM_CATEGORY"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "range": {
+                    "type": "number"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "elapsed": {
+                    "type": "integer"
+                }
+            }
+        },
+        "objectiveStayInArea": {
+            "type": "object",
+            "description": "Failure if subject vessel passes outside specified rectangular bounds",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["STAY_IN_AREA"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "tl": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "br": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveSuccessOnLine": {
+            "type": "object",
+            "description": "Success if subject vessel passes close to the line",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["SUCCESS_ON_LINE"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "range": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "p1": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "p2": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "bonusAchievementTime": {
+                    "type": "integer"
+                },
+                "bonusAchievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "speedRange": {
+                    "$ref": "#/definitions/speedRange"
+                }
+            }
+        },
+        "objectiveSuccessInArea": {
+            "type": "object",
+            "description": "Success if subject vessel passes into specified rectangular bounds",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["SUCCESS_IN_AREA"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "tl": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "br": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveProximity": {
+            "type": "object",
+            "description": "Subject vessel must pass within specified range target within specified time, potentially at indicated course and speed",
+            "required": ["name", "description", "failure"],
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["PROXIMITY"]
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "range": {
+                    "type": "number"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/latLng"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "course": {
+                    "type": "integer"
+                },
+                "courseError": {
+                    "type": "integer"
+                },
+                "bonusAchievementTime": {
+                    "type": "integer"
+                },
+                "bonusAchievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "maxSpeed": {
+                    "type": "number"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "target": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveGainContact": {
+            "type": "object",
+            "description": "Subject vessel must gain contact with specified target within elapsed time",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["GAIN_CONTACT"]
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                }
+            }
+        },
+        "objectiveMaintainContact": {
+            "type": "object",
+            "description": "Subject vessel must stay in continuous contact with target for specified period",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["MAINTAIN_CONTACT"]
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                }
+            }
+        },
+        "objectiveObtainSolution": {
+            "type": "object",
+            "description": "Player must achieve specified number of solutions, at specified accuracy",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["OBTAIN_SOLUTION"]
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "accuracy": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failureTime": {
+                    "type": "string"
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveDistance": {
+            "type": "object",
+            "description": "Subject vessel must stay outside specified distance of target",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["DISTANCE"]
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "range": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                }
+            }
+        },
+        "objectiveDestroyTarget": {
+            "type": "object",
+            "description": "Subject vessel must destroy named target within time limit",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["DESTROY_TARGET"]
+                },
+                "elapsed": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "failure": {
+                    "type": "string"
+                }
+            }
+
+        },
+        "objectiveElapsed": {
+            "type": "object",
+            "description": "Game must continue for specified time period",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of this observer instance"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Player's description of this observer"
+                },
+                "type": {
+                    "enum": ["ELAPSED"]
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "achievement": {
+                    "$ref": "#/definitions/objectiveAchievement"
+                },
+                "success": {
+                    "type": "string"
+                },
+                "successAction": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "enum": ["ACTIVATE_SONAR"]
+                        },
+                        "sonar": {
+                            "enum": ["BASIC_TOWED"]
+                        },
+                        "subject": {
+                            "type": "string"
+                        },
+                        "disabled": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "weapons": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "required": ["type"],
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "count": {
+                        "type": "integer"
+                    },
+                    "template": {
+                        "type": "object",
+                        "required": ["name", "duration", "effectiveRadius", "categories", "behaviours", "sonars", "radiatedNoise", "state", "perf"],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "duration": {
+                                "type": "integer"
+                            },
+                            "effectiveRadius": {
+                                "type": "integer"
+                            },
+                            "categories": {
+                                "type": "object",
+                                "required": ["force", "environment", "type"],
+                                "properties": {
+                                    "force": {
+                                        "type": "string"
+                                    },
+                                    "environment": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "behaviours": {
+                                "type": "array",
+                                "minItems": 0,
+                                "uniqueItems": true,
+                                "items": {
+
+                                }
+                            },
+                            "sonars": {
+                                "type": "array",
+                                "minItems": 0,
+                                "uniqueItems": true,
+                                "items": {
+
+                                }
+                            },
+                            "radiatedNoise": {
+                                "type": "object",
+                                "required": ["baseLevel", "speedPattern"],
+                                "properties": {
+                                    "baseLevel": {
+                                        "type": "integer"
+                                    },
+                                    "speedPattern": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "state": {
+                                "type": "object",
+                                "required": ["time", "categories", "location", "height", "course", "speed", "demCourse", "demSpeed", "demHeight"],
+                                "properties": {
+                                    "time": {
+                                        "type": "string"
+                                    },
+                                    "categories": {
+                                        "type": "array",
+                                        "minItems": 0,
+                                        "uniqueItems": true,
+                                        "items": {
+
+                                        }
+                                    },
+                                    "location": {
+                                        "type": "string"
+                                    },
+                                    "height": {
+                                        "type": "integer"
+                                    },
+                                    "course": {
+                                        "type": "string"
+                                    },
+                                    "speed": {
+                                        "type": "integer"
+                                    },
+                                    "demCourse": {
+                                        "type": "string"
+                                    },
+                                    "demSpeed": {
+                                        "type": "integer"
+                                    },
+                                    "demHeight": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "perf": {
+                                "type": "object",
+                                "required": ["turnRadius", "accelerationRate", "decelerationRate", "minSpeed", "maxSpeed", "climbRate", "diveRate"],
+                                "properties": {
+                                    "turnRadius": {
+                                        "type": "number"
+                                    },
+                                    "accelerationRate": {
+                                        "type": "number"
+                                    },
+                                    "decelerationRate": {
+                                        "type": "number"
+                                    },
+                                    "minSpeed": {
+                                        "type": "integer"
+                                    },
+                                    "maxSpeed": {
+                                        "type": "integer"
+                                    },
+                                    "climbRate": {
+                                        "type": "integer"
+                                    },
+                                    "diveRate": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

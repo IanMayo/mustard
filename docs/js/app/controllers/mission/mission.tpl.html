@@ -1,0 +1,65 @@
+<div class="wrapper-mobile without-top-nav">
+  <div class="container-with-scroll-mobile">
+
+    <div class="container-fluid container-mission-tabs">
+      <tabset vertical="true" class="sideways">
+        <tab heading="Op Order">
+          <h3>{{ mission.id }} : {{ mission.name }}</h3>
+          <h5>1. Situation</h5>
+
+          <p>
+            <span>Enemy Forces: </span>
+            <strong>{{ mission.forces.enemy }}</strong>
+            <span> Friendly Forces: </span>
+            <strong>{{ mission.forces.friendly }}</strong>
+            <span> Neutral: </span>
+            <strong>{{ mission.forces.neutral }}</strong>
+          </p>
+
+          <span id="situation" data-ng-bind-html="mission.situation"></span>
+
+          <h5>2. Mission</h5>
+          {{mission.description}}
+
+          <h5>3. Execution</h5>
+          <div id="objectiveList" ng-repeat="objective in mission.objectives">
+            <strong>{{ objective.name }}:</strong>
+            <ul class="small">
+              <li ng-repeat="obj in objective.children | filter:canSucceed">
+                <span class="glyphicon glyphicon-record"></span>
+                {{ obj.name }}
+              </li>
+            </ul>
+          </div>
+        </tab>
+
+        <tab heading="Guidance" active="isMissionFailed">
+          <h3>{{ mission.id }} : {{ mission.name }}</h3>
+          <div ng-include="mission.guidanceUrl"></div>
+        </tab>
+      </tabset>
+    </div>
+
+    <div class="container-fluid container-mission-controls">
+      <button
+        ng-click="moveToMission([mission.url])"
+        type="button" class="btn btn-danger btn-lg">{{missionAttempted() ? 'Replay' : 'Play'}}
+      </button>
+      <button ng-click="doReview([mission.url])" type="button" ng-disabled="!reviewEnabled()"
+        class="btn btn-default btn-lg btn-disabled">Review
+      </button>
+      <button ng-click="nextMission()" ng-disabled="!nextMissionEnabled()" type="button" class="btn btn-success btn-lg">
+        Next Mission
+      </button>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-mobile-bottom">
+  <div class="container-fluid">
+    <a href="#/main" class="btn btn-default btn-sm pull-left">
+       <i class="glyphicon glyphicon-arrow-left"></i> Back
+    </a>
+    <span full-screen-control></span>
+  </div>
+</nav>

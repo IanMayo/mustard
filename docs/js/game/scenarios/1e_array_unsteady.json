@@ -1,0 +1,228 @@
+{
+    "id": "1e",
+    "name": "Unsteady Array",
+    "description": "The effects of the array being unsteady",
+    "situation" : "Ok, you're ready for a real puzzler. We're going to switch off the array heading sensors, so you will lose contact during and after each Ownship turn.  There's a dived target in the scenario, and we want you to track it.",
+    "welcome": "Ok, keep track on the dived target as ownship goes through a series of manoeuvres",
+    "vessels": [
+        {
+            "name": "Ownship",
+            "categories": {
+                "force": "BLUE",
+                "environment": "SURFACE",
+                "type": "WARSHIP"
+            },
+            "unableToPerformRanging": true,
+            "behaviours": [
+                {
+                    "name": "Quick turn",
+                    "type": "PATH",
+                    "path": [
+                        {
+                            "lat": 49.9,
+                            "lng": -7.97
+                        },
+                        {
+                            "lat": 49.94,
+                            "lng": -8.01
+                        },
+                        {
+                            "lat": 49.98,
+                            "lng": -8.01
+                        },
+                        {
+                            "lat": 50.07,
+                            "lng": -7.8
+                        },
+                        {
+                            "lat": 60.96,
+                            "lng": -7.95
+                        }
+                    ],
+                    "height": 0,
+                    "repeat": false,
+                    "forever": false
+                }
+            ],
+            "sonars": [
+                {
+                    "name": "BASIC_TOWED",
+                    "categories": ["NO_COMPLEX_SELF_NOISE","NO_BOW_NULL"],
+                    "offset": -1000,
+                    "ArrayGain": 18,
+                    "DT": -8
+                }
+            ],
+            "radiatedNoise": {
+                "baseLevel": 90,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "time": 0,
+                "categories": [],
+                "location": {
+                    "lat": 49.87,
+                    "lng": -7.98
+                },
+                "height": 0,
+                "course": 15,
+                "speed": 10,
+                "demCourse": 0,
+                "demSpeed": 10,
+                "demHeight": -10.0
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 40,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        },
+        {
+            "name": "Target",
+            "categories": {
+                "force": "RED",
+                "environment": "SUBSURFACE",
+                "type": "SUBMARINE"
+            },
+            "behaviours": [
+                {
+                    "name": "Patrol area",
+                    "type": "RECTANGLE_WANDER",
+                    "tl": {
+                        "lat": 50.02,
+                        "lng": -8
+                    },
+                    "br": {
+                        "lat": 49.94,
+                        "lng": -7.75
+                    },
+                    "height": -30
+                }
+            ],
+            "sonars": [
+            ],
+            "radiatedNoise": {
+                "baseLevel": 104,
+                "speedPattern": "Uniform"
+            },
+            "state": {
+                "categories": [],
+                "time": 0,
+                "location": {
+                    "lat": 49.9,
+                    "lng": -8.15
+                },
+                "height": 0,
+                "course": 45,
+                "speed": 14,
+                "demCourse": 45,
+                "demSpeed": 14,
+                "demHeight": 0.0,
+                "batteryLevel": 60
+            },
+            "perf": {
+                "turnRadius": 1200.0,
+                "accelerationRate": 0.3,
+                "decelerationRate": 0.8,
+                "minSpeed": 4,
+                "maxSpeed": 20,
+                "batteryUsage": 0.00035,
+                "chargeRate": 0.013,
+                "climbRate": 1,
+                "diveRate": 2
+            }
+        }
+    ],
+    "patrolArea": [
+        [50.15, -8.25],
+        [49.85, -7.75]
+    ],
+    "environment": {},
+    "objectives": [
+        {
+            "name": "Sonar Qualification",
+            "type": "SEQUENCE",
+            "children": [
+                {
+                    "name": "Select dived target track [Leg 1]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "description" : "Start off by selecting the truth track for the submarine to the West of you",
+                    "target": "Target_a",
+                    "elapsed": 300,
+                    "success": "Well done initial target track spotted",
+                    "failure": "Did you miss the clue? It's to the West of you.",
+                    "narrSuccess" : "Identified Leg 1"
+                },
+                {
+                    "name": "Select dived target track [Leg 2]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 330,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "Well done Second Leg target track spotted.  Keep watching the truth track, ready to predict its path",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 2"
+                },
+                {
+                    "name": "Select dived target track [Leg 3]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 870,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "That's the Third Leg target track spotted.  Keep watching the truth track, ready to predict its path",
+                    "failure": "Come on, it's not a very cluttered track",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 3"
+                },
+                {
+                    "name": "Select dived target track [Leg 4]",
+                    "type": "FIND_TARGET",
+                    "clearAfterwards" : true,
+                    "subject": "Ownship",
+                    "after" : 1380,
+                    "description" : "Select the dived truth track after the end of the next turn",
+                    "target": "Target_a",
+                    "success": "That's the all of the legs spotted. Well done.",
+                    "failure": "Go on, give it another go.",
+                    "failureEarly": "No, you have to wait until the second ownship leg starts",
+                    "narrSuccess" : "Identified Leg 4"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {
+                    "name": "Ops Area"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-8.25, 50.15],
+                            [-8.25, 49.85],
+                            [-7.75, 49.85],
+                            [-7.75, 50.15],
+                            [-8.25, 50.15 ]
+                        ]
+                    ]
+                },
+                "id": "OpsArea"
+            }
+        ]
+    }
+}

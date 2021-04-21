@@ -1,0 +1,15 @@
+{
+    "name": "Commander",
+    "achievements": [
+        {"name": "Newbie"},
+        {"name": "Speed Demon"},
+        {"name": "Driver"},
+        {"name": "Ram Raider"}
+    ],
+    "missions": [],
+    "options": {
+        "music": 3,
+        "sfx": 3,
+        "language": "EN"
+    }
+}

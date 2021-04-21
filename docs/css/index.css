@@ -1,0 +1,208 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/* make transparent link selection, adjust last value opacity 0 to 1.0 */
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* styles for ng-cloack directive */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+html, body, .app-body {
+  height: 100%;
+}
+
+body {
+  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+  /*background-image: url("../img/mockup.png");*/
+  /*background-size: 100% 100%;*/
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  /* give most of the app a type-writer style */
+  font-family: "Conspiracy", "Courier New", Courier, monospace;
+}
+
+/* give the game (and review page) the default font */
+.mission-simulator {
+  font-family: "Helvetic Neue", Helvetica, Arial, monospace;
+}
+
+/** give the leaflet map a plain, sea-colored background */
+#spatial-view .leaflet-container {
+  background-color: #b5d0d0;
+}
+
+/* add background image to the mission list */
+.mission-list {
+  margin: 25px 0 65px 0;
+  border: 5px solid;
+  border-collapse: inherit;
+  cursor: pointer;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
+}
+
+.mission-list td {
+  border-top: 0 !important;
+  border-bottom: 5px solid !important;
+  border-left: 0 !important;
+  border-right: 5px solid !important;
+
+  -moz-border-image: url(../img/mission-list-border.png) 5 repeat;
+  -webkit-border-image: url(../img/mission-list-border.png) 5 repeat;
+  border-image: url(../img/mission-list-border.png) 5 repeat;
+}
+
+.mission-list tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.mission-list td:last-child {
+  border-right: 0 !important;
+}
+
+/* don't show "click" cursor for redacted missions */
+.mission-list .redacted-text{
+  cursor: text;
+}
+
+.mission-level small, .mission-list small{
+  color: black;
+}
+
+.mission-list .glyphicon-play-circle {
+  color: yellowgreen;
+}
+
+.mission-list .glyphicon-handwritten-ok:before {
+  content: "\2714";
+}
+
+.mission-list .glyphicon-empty {
+  visibility: hidden;
+}
+
+/* make the "play" button to the right of the mission nice & clear */
+.mission-glyph {
+  font-size: 18px;
+}
+
+.mission-level{
+  margin-top: 1.5em;
+}
+
+/* if the situation has <b> bold text, we really want to make the player aware of it */
+#situation b{
+  color: #e55;
+}
+
+/* indent the list of objectives */
+#objectiveList{
+  padding-left:20px;
+}
+
+/* hide the symbol for the list items, since we're using a glyph */
+#objectiveList ul{
+  list-style-type: none;
+  padding-left:20px;
+}
+
+/** display the mission name at the top of the objectives list */
+#objectives-header{
+  border-bottom: solid #888 2px;
+  margin-bottom:5px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/** for the leaflet mouse location  */
+.leaflet-container .leaflet-control-mouseposition,
+.leaflet-container .leaflet-control-scale-line {
+  padding: 0 5px;
+  margin:0;
+  color: #bcdf1b;
+  font-size: 12px;
+}
+
+.timeSlider {
+  position: relative;
+}
+.eventPicker {
+  position: absolute;
+  height: 40px;
+  top: 30px;
+  width: 100%;
+}
+
+.eventPicker .eventMarker {
+  position: absolute;
+}
+.eventPicker .glyphicon {
+  font-size: 21px;
+}
+
+.sonarBearing {
+  display: block;
+  height: 100%;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: #bcdf1b;
+  border-bottom: 1px solid #bcdf1b;
+}
+
+/* blurElement filter is created in an embed svg element */
+.point-label .label-wrapper,
+.leaflet-marker-iconlabel,
+.leaflet-bar a,
+.leaflet-container .leaflet-control-mouseposition,
+.leaflet-container .leaflet-control-scale-line,
+.mission-name {
+  filter: url("#blurElement");
+  -webkit-filter: url("#blurElement");
+}
+
+.leaflet-container {
+  background: #000;
+}
+
+.leaflet-control-scale-line {
+  border: 2px solid #bcdf1b;
+  background: transparent;
+  color: #bcdf1b;
+}
+
+.leaflet-control-scale-line:not(:first-child) {
+  border-top: 2px solid #bcdf1b;
+  border-bottom: 2px solid #bcdf1b;
+}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+  border-bottom: 2px solid #bcdf1b;
+}

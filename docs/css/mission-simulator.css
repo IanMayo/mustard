@@ -1,0 +1,352 @@
+/* Mission simulator layout */
+
+.mission-simulator,
+.time-bearing-container,
+.spatial-container,
+.data-leaflet-map-container,
+.data-leaflet-map,
+.mission-controls,
+.mission-controls li,
+.ship-controls,
+.time-display-container,
+.tab-bar-container,
+.tab-content,
+.tabbable,
+.range-calculator,
+.simulation-event-slider {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.time-bearing-spatial-container {
+  padding: 0 0 175px 0;
+  margin-bottom: -175px;
+  height: 100%;
+  background: url(../img/dirty-metal-surface.jpg) no-repeat;
+}
+
+.data-leaflet-map-container,
+.sonarBearing {
+  padding: 10px;
+}
+
+.mission-name {
+  color: #384c26;
+  text-align: right;
+  font-size: 125%;
+}
+
+.leaflet-container,
+.visContainer {
+  padding: 10px;
+  z-index: 0;
+}
+
+.leaflet-container,
+.visContainer {
+  border-radius: 30px;
+}
+
+.leaflet-control-container .leaflet-left {
+  left: 7px;
+}
+
+.leaflet-control-container .leaflet-right {
+  right: 7px;
+}
+
+.leaflet-control-container .leaflet-top {
+  top: 7px;
+}
+
+.leaflet-control-container .leaflet-bottom {
+  bottom: 7px;
+}
+
+.time-bearing-container,
+.spatial-container,
+.ship-state-container {
+  position: relative; /* needed for FPS meter */
+}
+
+.time-display-container {
+  padding: 10px 0 0 10px;
+  width: 130px;
+  margin-bottom: -40px;
+}
+
+.tab-bar-container {
+  width: 325px;
+  padding: 10px 0 10px 5px;
+  overflow: hidden;
+}
+
+.event-slider-container {
+  background-color: #ffffff;
+  border-top: 2px solid grey;
+}
+
+.simulation-event-slider {
+  padding: 5px 0 10px;
+}
+
+.ship-state-info-container {
+  padding: 5px 0 0 10px;
+}
+
+.narrative-info-container {
+  padding: 5px 0 0 10px;
+}
+
+.controls-container {
+  padding: 0;
+  height: 175px;
+  border-top: 2px solid grey;
+  background-color: #ffffff;
+}
+
+.spatial-view,
+.time-bearing-display {
+  height: 100%;
+}
+
+.data-leaflet-map-controls {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Ship controls */
+
+.ship-controls {
+  display: block;
+  text-align: center;
+  padding: 15px 10px 0 10px;
+}
+
+.speed-container,
+.course-container {
+  height: 50%;
+}
+
+.speed-label-container,
+.course-label-container {
+  display: inline-block;
+  padding: 0 10px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.label-speed,
+.label-course {
+  display: block;
+  padding: 5px 0;
+  width: 60px;
+  font-size: 12px;
+}
+
+.btn-round {
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  border: 2px solid red;
+  border-radius: 50%;
+  outline: none;
+}
+
+.btn-round:focus,
+.btn-round:hover {
+  outline: none;
+}
+
+/* Objective list */
+
+.objective-list li {
+  position: static;
+}
+
+.objective-list li .glyphicon {
+  font-size: 14px;
+}
+
+/* Ship state */
+
+.ship-state {
+  display: block;
+  padding-top: 50px;
+  text-align: center;
+}
+
+.ship-state-header {
+  margin: 0;
+}
+
+/* Time remaining & Time display */
+
+.time-remaining-header,
+.timer-header {
+  margin: 0 0 10px 0;
+}
+
+.time-remaining-header {
+  margin-top: 5px;
+}
+
+/* Back button */
+
+.btn-back {
+  margin-left: 10px;
+}
+
+/* Range calculator */
+
+.range-calculator {
+  display: block;
+  padding: 10px;
+  width: 200px;
+}
+
+.range-target,
+.range-status {
+  margin-bottom: 10px;
+}
+
+.range-controls {
+  margin-top: 5px;
+}
+
+/* Lock overlay styles please use/change it carefully */
+
+.lock-target {
+  position: relative !important;
+}
+
+.lock-overlay {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: .9;
+  background: white url(../img/lock.png) no-repeat center;
+  background-size: 50% auto;
+  z-index: 1000;
+}
+
+.location-marker {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+}
+.location-marker .glyphicon {
+  top: 6px;
+  font-size: 1.6em;
+}
+.location-marker-name {
+  display: inline-block;
+  line-height: 35px;
+}
+
+.point-label {
+  width: 120px;
+  position: relative;
+}
+.point-label .label-container {
+  position: absolute;
+}
+
+.point-label .label-wrapper {
+  line-height: 12px;
+  font-size: 12px;
+  margin: 1px;
+  color: #bcdf1b;
+  padding: 3px;
+  max-height: 60px;
+  border-radius: 4px;
+  border: 1px solid rgba(170,206,0, 0.9);
+  background: rgba(0,0,0,0.2);
+}
+
+.image {
+}
+
+.warning-background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: red;
+  opacity: 0;
+  bottom: 175px;
+}
+
+.warning-background.play-warning {
+  -moz-animation:  warnOpacity 1s 0 infinite;
+  -webkit-animation: warnOpacity 1s 0 infinite;
+  animation: warnOpacity 1s 0 infinite;
+}
+
+@-moz-keyframes warnOpacity {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@-webkit-keyframes warnOpacity {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes warnOpacity {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.line {
+  fill: none;
+  stroke: rgb(170, 206, 0);
+  stroke-width: 10px;
+}
+
+.leaflet-top .leaflet-compass {
+  margin-top: 22px;
+}
+
+.compass-rose {
+  height: 76px;
+  width: 76px;
+  float: right;
+  position: relative;
+  z-index: 5;
+  background: url('images/compass-rose.png') no-repeat;
+}

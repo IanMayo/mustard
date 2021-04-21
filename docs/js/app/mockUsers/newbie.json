@@ -1,0 +1,10 @@
+{
+    "name": "Newbie",
+    "achievements": [],
+    "missions": [],
+    "options": {
+        "music": 3,
+        "sfx": 3,
+        "language": "EN"
+    }
+}
